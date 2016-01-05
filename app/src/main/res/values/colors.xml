@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--toolbar-->
+    <color name="colorPrimary">#353535</color>
+    <!--toolbar文字颜色-->
+    <color name="textColorPrimary">#ffffff</color>
+    <!--状态条-->
+    <color name="colorPrimaryDark">#353535</color>
+    <!--强调-->
+    <color name="colorAccent">#FF4081</color>
+    <!--窗口背景色-->
+    <color name="colorWindowBackgroundColor">#E4E4E4</color>
+    <!--底部导航条背景色-->
+    <color name="colorNavigationBarColor">#353535</color>
+    <!--轮播图背景色-->
+    <color name="SliderImageColor">#EEEEEE</color>
+    <!--首页ImageView背景色-->
+    <color name="gridImageViewColor">#FFFFFF</color>
+    <!--gridView背景色-->
+    <color name="gridBackgroundColor">#E4E4E4</color>
+
+    <!--通用颜色-->
+    <color name="white">#ffffff</color>
+</resources>
