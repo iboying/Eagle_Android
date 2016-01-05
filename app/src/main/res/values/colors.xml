@@ -18,6 +18,8 @@
     <color name="gridImageViewColor">#FFFFFF</color>
     <!--gridView背景色-->
     <color name="gridBackgroundColor">#E4E4E4</color>
+    侧边菜单栏背景色
+    <color name="drawerBackgroundColor">#3F3F3F</color>
 
     <!--通用颜色-->
     <color name="white">#ffffff</color>
