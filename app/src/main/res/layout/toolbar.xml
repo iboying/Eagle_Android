@@ -7,6 +7,7 @@
     android:layout_height="48dp"
     android:background="?attr/colorPrimary"
     android:minHeight="48dp"
+    android:fitsSystemWindows="true"
     android:theme="@style/ActionBarThemeOverlay"
     app:popupTheme="@style/ActionBarPopupThemeOverlay"
     app:titleTextAppearance="@style/ActionBar.TitleText">
