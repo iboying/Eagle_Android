@@ -91,25 +91,25 @@ public class MainActivity extends AppCompatActivity
         gridview.setAdapter(new ImageAdapter(this));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == 0) {
-                    Intent i = new Intent(MainActivity.this, SystemStatus.class);
-                    startActivity(i);
-                } else if (position == 1) {
-                    Intent i = new Intent(MainActivity.this, WarnMessages.class);
-                    startActivity(i);
-                } else if (position == 2) {
-                    Intent i = new Intent(MainActivity.this, WorkPlan.class);
-                    startActivity(i);
-                } else if (position == 3) {
-                    Intent i = new Intent(MainActivity.this, PowerManage.class);
-                    startActivity(i);
-                } else if (position == 4) {
-                    Intent i = new Intent(MainActivity.this, ItManage.class);
-                    startActivity(i);
-                } else if (position == 5) {
-                    Intent i = new Intent(MainActivity.this, Other.class);
-                    startActivity(i);
-                }
+            if (position == 0) {
+                Intent i = new Intent(MainActivity.this, SystemStatus.class);
+                startActivity(i);
+            } else if (position == 1) {
+                Intent i = new Intent(MainActivity.this, WarnMessages.class);
+                startActivity(i);
+            } else if (position == 2) {
+                Intent i = new Intent(MainActivity.this, WorkPlan.class);
+                startActivity(i);
+            } else if (position == 3) {
+                Intent i = new Intent(MainActivity.this, PowerManage.class);
+                startActivity(i);
+            } else if (position == 4) {
+                Intent i = new Intent(MainActivity.this, ItManage.class);
+                startActivity(i);
+            } else if (position == 5) {
+                Intent i = new Intent(MainActivity.this, Other.class);
+                startActivity(i);
+            }
             }
         });
     }

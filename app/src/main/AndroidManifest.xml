@@ -24,32 +24,56 @@
         <activity
             android:name=".SystemStatus"
             android:label="@string/title_activity_system_status"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".WarnMessages"
             android:label="@string/title_activity_warn_messages"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".WorkPlan"
             android:label="@string/title_activity_work_plan"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".PowerManage"
             android:label="@string/title_activity_power_manage"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".ItManage"
             android:label="@string/title_activity_it_manage"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".Other"
             android:label="@string/title_activity_other"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
     </application>
 
