@@ -5,4 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_system_status">SystemStatus</string>
+    <string name="title_activity_warn_messages">WarnMessages</string>
+    <string name="title_activity_work_plan">WorkPlan</string>
+    <string name="title_activity_power_manage">PowerManage</string>
+    <string name="title_activity_it_manage">ItManage</string>
+    <string name="title_activity_other">Other</string>
 </resources>

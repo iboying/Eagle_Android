@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.buoyantec.eagle_android" >
 
+    <!-- if you want to load images from the internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +21,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SystemStatus"
+            android:label="@string/title_activity_system_status"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".WarnMessages"
+            android:label="@string/title_activity_warn_messages"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".WorkPlan"
+            android:label="@string/title_activity_work_plan"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".PowerManage"
+            android:label="@string/title_activity_power_manage"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".ItManage"
+            android:label="@string/title_activity_it_manage"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Other"
+            android:label="@string/title_activity_other"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
-    <!-- if you want to load images from the internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

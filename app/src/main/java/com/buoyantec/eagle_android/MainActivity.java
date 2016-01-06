@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -42,22 +43,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //图片轮播
-        SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
-        TextSliderView textSliderView = new TextSliderView(this);
-        textSliderView
-                .description("数据主机房")
-                .image(R.drawable.image_room);
-        sliderShow.addSlider(textSliderView);
-        sliderShow.setDuration(8000);
+        initCarousel();
 
         //GridView
-        GridView gridview = (GridView) findViewById(R.id.grid_view);
-        gridview.setAdapter(new ImageAdapter(this));
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+        initGridView();
     }
 
     @Override
@@ -111,5 +100,45 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //---------------------私有方法------------------------
+    //初始化栅格布局
+    private void initGridView(){
+        GridView gridview = (GridView) findViewById(R.id.grid_view);
+        gridview.setAdapter(new ImageAdapter(this));
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                if (position == 0) {
+                    Intent i = new Intent(MainActivity.this, SystemStatus.class);
+                    startActivity(i);
+                } else if (position == 1) {
+                    Intent i = new Intent(MainActivity.this, WarnMessages.class);
+                    startActivity(i);
+                } else if (position == 2) {
+                    Intent i = new Intent(MainActivity.this, WorkPlan.class);
+                    startActivity(i);
+                } else if (position == 3) {
+                    Intent i = new Intent(MainActivity.this, PowerManage.class);
+                    startActivity(i);
+                } else if (position == 4) {
+                    Intent i = new Intent(MainActivity.this, ItManage.class);
+                    startActivity(i);
+                } else if (position == 5) {
+                    Intent i = new Intent(MainActivity.this, Other.class);
+                    startActivity(i);
+                }
+            }
+        });
+    }
+    //初始化轮播控件
+    private void initCarousel() {
+        SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
+        TextSliderView textSliderView = new TextSliderView(this);
+        textSliderView
+                .description("数据主机房")
+                .image(R.drawable.image_room);
+        sliderShow.addSlider(textSliderView);
+        sliderShow.setDuration(8000);
     }
 }
