@@ -23,4 +23,5 @@
 
     <!--通用颜色-->
     <color name="white">#ffffff</color>
+    <color name="gray">#C1C1C1</color>
 </resources>

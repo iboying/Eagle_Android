@@ -9,4 +9,12 @@
     tools:showIn="@layout/activity_power_manage"
     tools:context="com.buoyantec.eagle_android.PowerManage">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/power_manage_listView"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:dividerHeight="1dp"
+        android:background="@color/white"/>
 </RelativeLayout>
