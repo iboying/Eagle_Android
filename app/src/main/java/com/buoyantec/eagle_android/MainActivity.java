@@ -87,8 +87,17 @@ public class MainActivity extends AppCompatActivity
     //---------------------私有方法------------------------
     //初始化栅格布局
     private void initGridView(){
+        // references to our images
+        Integer[] images = {
+                R.drawable.icon_system_status, R.drawable.icon_info,
+                R.drawable.icon_work_order, R.drawable.icon_power_manager,
+                R.drawable.icon_phone, R.drawable.icon_other
+        };
+        // texts of images
+        String[] texts = { "系统状态", "告警信息", "工作安排", "能效管理", "IT管理", "其他" };
+
         GridView gridview = (GridView) findViewById(R.id.grid_view);
-        gridview.setAdapter(new MyGridAdapter(this));
+        gridview.setAdapter(new MainGridAdapter(gridview, this, images, texts));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             if (position == 0) {

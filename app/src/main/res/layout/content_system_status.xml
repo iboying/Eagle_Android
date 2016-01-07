@@ -1,33 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_system_status"
-    tools:context="com.buoyantec.eagle_android.SystemStatus"
+    android:layout_marginTop="48dp"
     android:background="@color/colorWindowBackgroundColor">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_system_status"
+        tools:context="com.buoyantec.eagle_android.SystemStatus">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="动力系统"
-        android:id="@+id/textPowerSystem"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="环境系统"
-        android:id="@+id/textEnvSystem"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="安防系统"
-        android:id="@+id/textSafeSystem"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="动力系统"
+            android:id="@+id/textPowerSystem"/>
+        <GridView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/grid_power_system"
+            android:layout_width="match_parent"
+            android:layout_height="164dp"
+            android:horizontalSpacing="1dp"
+            android:verticalSpacing="1dp"
+            android:numColumns="3"
+            android:gravity="center"
+            android:background="@color/gridBackgroundColor"
+            android:scrollbars="none"
+            android:clickable="true">
+        </GridView>
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="环境系统"
+            android:id="@+id/textEnvSystem"/>
+        <GridView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/grid_env_system"
+            android:layout_width="match_parent"
+            android:layout_height="164dp"
+            android:horizontalSpacing="1dp"
+            android:verticalSpacing="1dp"
+            android:numColumns="3"
+            android:gravity="center"
+            android:background="@color/gridBackgroundColor"
+            android:scrollbars="none"
+            android:clickable="true">
+        </GridView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="安防系统"
+            android:id="@+id/textSafeSystem"/>
+        <GridView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/grid_safe_system"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:horizontalSpacing="1dp"
+            android:verticalSpacing="1dp"
+            android:numColumns="3"
+            android:gravity="center"
+            android:background="@color/gridBackgroundColor"
+            android:scrollbars="none"
+            android:clickable="true">
+        </GridView>
+    </LinearLayout>
+</ScrollView>
+

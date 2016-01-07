@@ -4,24 +4,31 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 /**
  * Created by kang on 15/12/31.
- * 自定义适配器
+ * 应用首页的Grid适配器
  */
-public class MyGridAdapter extends BaseAdapter {
+public class MainGridAdapter extends BaseAdapter {
     private Context mContext;
+    private Integer[] images;
+    private String[] texts;
+    private GridView gridView;
 
-    public MyGridAdapter(Context c) {
-        mContext = c;
+    public MainGridAdapter(GridView gridView, Context c, Integer[] images, String[] texts) {
+        this.gridView = gridView;
+        this.mContext = c;
+        this.images = images;
+        this.texts = texts;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return images.length;
     }
 
     public Object getItem(int position) {
@@ -31,25 +38,20 @@ public class MyGridAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, parent, false);
+//            GridView.LayoutParams param = new AbsListView.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT, gridView.getHeight()/2);
+//            convertView.setLayoutParams(param);
         }
         TextView tv = BaseViewHolder.get(convertView, R.id.grid_view_text);
         ImageView iv = BaseViewHolder.get(convertView, R.id.grid_view_image);
-        iv.setBackgroundResource(mThumbIds[position]);
-        tv.setText(mTexts[position]);
+
+        iv.setBackgroundResource(images[position]);
+        tv.setText(texts[position]);
 
         return convertView;
     }
-
-    // references to our images
-    private Integer[] mThumbIds = {
-        R.drawable.icon_system_status, R.drawable.icon_info,
-        R.drawable.icon_work_order, R.drawable.icon_power_manager,
-        R.drawable.icon_phone, R.drawable.icon_other
-    };
-    private String[] mTexts = { "系统状态", "告警信息", "工作安排", "能效管理", "IT管理", "其他" };
 }

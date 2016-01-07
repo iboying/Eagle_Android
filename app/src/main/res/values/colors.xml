@@ -23,6 +23,4 @@
 
     <!--通用颜色-->
     <color name="white">#ffffff</color>
-    <color name="common_text">#ff333333</color>
-    <color name="line">#ffd3dde6</color>
 </resources>

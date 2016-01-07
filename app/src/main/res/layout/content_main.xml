@@ -22,7 +22,7 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
-    <!--GridView布局按钮-->
+    <!--GridView布局-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
