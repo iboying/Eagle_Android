@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
     //初始化栅格布局
     private void initGridView(){
         GridView gridview = (GridView) findViewById(R.id.grid_view);
-        gridview.setAdapter(new ImageAdapter(this));
+        gridview.setAdapter(new MyGridAdapter(this));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             if (position == 0) {
