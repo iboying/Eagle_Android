@@ -11,12 +11,12 @@
     android:background="@drawable/list_item_bg">
 
     <ImageView
-        android:id="@+id/list_item_image"
+        android:id="@+id/list_item_to_image"
         android:layout_width="32dp"
         android:layout_height="32dp"/>
 
     <TextView
-        android:id="@+id/list_item_text"
+        android:id="@+id/list_item_to_text"
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_weight="1"
@@ -27,14 +27,13 @@
         android:maxLines="1"
         android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/list_item_status"
+    <com.joanzapata.iconify.widget.IconTextView
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:gravity="center_vertical"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:textSize="14sp"
+        android:text="{fa-angle-right}"
+        android:textSize="20sp"
         android:textColor="@color/gray"
-        android:text="正常"/>
+        android:maxLines="1"
+        android:singleLine="true"/>
 </LinearLayout>

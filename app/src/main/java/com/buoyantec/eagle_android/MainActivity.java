@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity
 
         //GridView
         initGridView();
+
+        View target = findViewById(R.id.toolbar_title);
+        BadgeView badge = new BadgeView(this, target);
+        badge.setText("1");
+        badge.show();
     }
 
     @Override

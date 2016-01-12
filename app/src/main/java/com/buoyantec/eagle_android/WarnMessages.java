@@ -30,6 +30,7 @@ public class WarnMessages extends AppCompatActivity {
         };
         // texts of images
         String[] texts = { "配电系统", "UPS系统", "温湿度系统" };
+        // 添加徽章
 
         ListView listView = (ListView) findViewById(R.id.warn_messages_listView);
         listView.setAdapter(new MainListAdapter(listView, this, images, texts));

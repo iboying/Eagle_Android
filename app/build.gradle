@@ -33,4 +33,6 @@ dependencies {
     compile 'com.daimajia.slider:library:1.1.5@aar'
     compile 'com.ikimuhendis:ldrawer:0.1'
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    //字体图标
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1' // (v4.5)
 }

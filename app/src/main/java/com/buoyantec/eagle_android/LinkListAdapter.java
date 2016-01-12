@@ -10,16 +10,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * Created by kang on 16/1/7.
- * 告警信息页面适配器, 不含有第二级跳转, 只显示状态信息
+ * Created by kang on 16/1/12.
+ * 能效管理页面的ListView适配器, 含有第二级跳转
  */
-public class MainListAdapter extends BaseAdapter{
+public class LinkListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer[] images;
     private String[] texts;
     private ListView listView;
 
-    public MainListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
+    public LinkListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
         this.listView = listView;
         this.mContext = c;
         this.images = images;
@@ -32,6 +32,7 @@ public class MainListAdapter extends BaseAdapter{
     }
 
     @Override
+
     public Object getItem(int position) {
         return position;
     }
@@ -44,10 +45,10 @@ public class MainListAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_to, parent, false);
         }
-        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_text);
-        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_image);
+        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_to_image);
+        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_to_text);
 
         iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
