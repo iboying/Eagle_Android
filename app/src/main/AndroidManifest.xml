@@ -85,6 +85,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.SystemStatus" />
         </activity>
+        <activity
+            android:name=".UpsSystem"
+            android:label="@string/title_activity_ups_system"
+            android:parentActivityName=".SystemStatus"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.SystemStatus" />
+        </activity>
     </application>
 
 </manifest>
