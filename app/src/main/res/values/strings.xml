@@ -11,4 +11,5 @@
     <string name="title_activity_power_manage">能效管理</string>
     <string name="title_activity_it_manage">IT管理</string>
     <string name="title_activity_other">其他</string>
+    <string name="title_activity_power_distribution">配电系统</string>
 </resources>
