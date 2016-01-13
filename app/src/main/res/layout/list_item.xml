@@ -27,14 +27,18 @@
         android:maxLines="1"
         android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/list_item_status"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:textSize="14sp"
-        android:textColor="@color/gray"
-        android:text="正常"/>
+        android:layout_height="32dp">
+        <TextView
+            android:id="@+id/list_item_status"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:textColor="@color/gray"
+            android:text="正常"/>
+    </LinearLayout>
 </LinearLayout>

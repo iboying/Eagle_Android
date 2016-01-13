@@ -36,8 +36,8 @@ public class BadgeView extends TextView {
     public static final int POSITION_CENTER = 5;
 
     private static final int DEFAULT_MARGIN_DIP = 5;
-    private static final int DEFAULT_LR_PADDING_DIP = 5;
-    private static final int DEFAULT_CORNER_RADIUS_DIP = 8;
+    private static final int DEFAULT_LR_PADDING_DIP = 6;
+    private static final int DEFAULT_CORNER_RADIUS_DIP = 10;
     private static final int DEFAULT_POSITION = POSITION_TOP_RIGHT;
     private static final int DEFAULT_BADGE_COLOR = Color.parseColor("#CCFF0000"); //Color.RED;
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
@@ -150,7 +150,7 @@ public class BadgeView extends TextView {
             this.target = target;
 
             ((ViewGroup) target).addView(container,
-                    new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+                    new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
             this.setVisibility(View.GONE);
             container.addView(this);

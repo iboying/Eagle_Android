@@ -1,14 +1,14 @@
 <resources>
-    <string name="app_name">Eagle_Android</string>
+    <string name="app_name">iGrid</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">打开侧边菜单</string>
+    <string name="navigation_drawer_close">关闭侧边菜单</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_system_status">SystemStatus</string>
-    <string name="title_activity_warn_messages">WarnMessages</string>
-    <string name="title_activity_work_plan">WorkPlan</string>
-    <string name="title_activity_power_manage">PowerManage</string>
-    <string name="title_activity_it_manage">ItManage</string>
-    <string name="title_activity_other">Other</string>
+    <string name="action_settings">设置</string>
+    <string name="title_activity_system_status">系统状态</string>
+    <string name="title_activity_warn_messages">告警信息</string>
+    <string name="title_activity_work_plan">工作计划</string>
+    <string name="title_activity_power_manage">能效管理</string>
+    <string name="title_activity_it_manage">IT管理</string>
+    <string name="title_activity_other">其他</string>
 </resources>

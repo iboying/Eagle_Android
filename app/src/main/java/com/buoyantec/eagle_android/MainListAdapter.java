@@ -48,9 +48,19 @@ public class MainListAdapter extends BaseAdapter{
         }
         TextView tv = BaseViewHolder.get(convertView, R.id.list_item_text);
         ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_image);
+        TextView status = BaseViewHolder.get(convertView, R.id.list_item_status);
 
         iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
+
+        Integer[] num = {0,0,4};
+        //添加徽章提示信息
+        if (num[position] != 0) {
+            status.setText("");
+            BadgeView badge = new BadgeView(mContext, status);
+            badge.setText(num[position].toString());
+            badge.show();
+        }
 
         return convertView;
     }

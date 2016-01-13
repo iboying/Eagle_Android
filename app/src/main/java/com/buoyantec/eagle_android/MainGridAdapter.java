@@ -42,15 +42,19 @@ public class MainGridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, parent, false);
-//            GridView.LayoutParams param = new AbsListView.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT, gridView.getHeight()/2);
-//            convertView.setLayoutParams(param);
         }
         TextView tv = BaseViewHolder.get(convertView, R.id.grid_view_text);
         ImageView iv = BaseViewHolder.get(convertView, R.id.grid_view_image);
 
         iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
+        //添加徽章提示信息
+        if (position == 1) {
+            BadgeView badge = new BadgeView(mContext, iv);
+            badge.setText("3");
+            badge.setBadgeMargin(0);
+            badge.show();
+        }
 
         return convertView;
     }
