@@ -30,10 +30,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.http.client.HttpClient;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -64,8 +72,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
-    HttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,8 +322,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             // Simulate network access.
             try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                URL url = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
+                connection.setRequestMethod("POST");
+                //向服务器输入数据
+                OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream(), "utf-8");
+                BufferedWriter bw = new BufferedWriter(osw);
+                bw.write("keyfrom=buoyantec&key=737944&type=data&doctype=xml&version=1.1&q=good");
+                bw.flush();
+                //服务器数据输入到本地
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is, "utf-8");
+                BufferedReader br = new BufferedReader(isr);
+                String line;
+                while ((line = br.readLine()) != null){
+                    System.out.println(line);
+                }
+                br.close();
+                isr.close();
+                is.close();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

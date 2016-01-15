@@ -33,6 +33,4 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     //字体图标
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
-    // (v4.5)
-    compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 }
