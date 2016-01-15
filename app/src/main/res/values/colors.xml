@@ -7,7 +7,7 @@
     <!--状态条-->
     <color name="colorPrimaryDark">#353535</color>
     <!--强调-->
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#0072F8</color>
     <!--窗口背景色-->
     <color name="colorWindowBackgroundColor">#E4E4E4</color>
     <!--底部导航条背景色-->
@@ -20,6 +20,13 @@
     <color name="gridBackgroundColor">#E4E4E4</color>
     <!--侧边菜单栏背景色-->
     <color name="drawerBackgroundColor">#3F3F3F</color>
+
+    <!--登录页border-->
+    <color name="loginBorderColor">#0072F8</color>
+    <!--登录按钮-->
+    <color name="signInBackgroundColor">#157DF7</color>
+    <!--登陆页背景色-->
+    <color name="loginWindowColor">#EEEEEE</color>
 
     <!--通用颜色-->
     <color name="white">#ffffff</color>

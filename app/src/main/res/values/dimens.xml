@@ -17,4 +17,7 @@
     <dimen name="action_bar_auto_hide_min_y">152dp</dimen>
     <dimen name="action_bar_auto_hide_sensivity">48dp</dimen>
 
+    <!--loginActivity padding-->
+    <dimen name="loginPaddingLeft">56dp</dimen>
+    <dimen name="loginPaddingRight">56dp</dimen>
 </resources>

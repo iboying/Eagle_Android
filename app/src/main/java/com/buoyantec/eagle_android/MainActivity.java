@@ -121,11 +121,16 @@ public class MainActivity extends AppCompatActivity
     //初始化轮播控件
     private void initCarousel() {
         SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
-        TextSliderView textSliderView = new TextSliderView(this);
-        textSliderView
-                .description("数据主机房")
-                .image(R.drawable.image_room);
-        sliderShow.addSlider(textSliderView);
+
+        String[] description = {"数据主机房", "上海机房"};
+        for (int i = 0; i<2; i++){
+            TextSliderView textSliderView = new TextSliderView(this);
+
+            textSliderView
+                    .description(description[i])
+                    .image(R.drawable.image_room);
+            sliderShow.addSlider(textSliderView);
+        }
         sliderShow.setDuration(8000);
     }
 }

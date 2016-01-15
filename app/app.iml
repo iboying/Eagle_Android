@@ -100,9 +100,9 @@
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="android-iconify-2.1.1" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.3.2" level="project" />
-    <orderEntry type="library" exported="" name="android-viewbadger" level="project" />
     <orderEntry type="library" exported="" name="circleimageview-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="android-iconify-fontawesome-2.1.1" level="project" />
+    <orderEntry type="library" exported="" name="org.jbundle.util.osgi.wrapped.org.apache.http.client-4.1.2" level="project" />
     <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="ldrawer-0.1" level="project" />
