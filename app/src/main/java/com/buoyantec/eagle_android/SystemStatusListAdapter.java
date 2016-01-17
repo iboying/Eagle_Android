@@ -46,9 +46,11 @@ public class SystemStatusListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_system_status, parent, false);
         }
-        TextView tv = BaseViewHolder.get(convertView, R.id.power_distribution_text);
+        TextView tv = BaseViewHolder.get(convertView, R.id.system_status_listView_text);
+        ImageView iv = BaseViewHolder.get(convertView, R.id.system_status_listView_image);
 
         tv.setText(texts[position]);
+        iv.setImageResource(image);
         return convertView;
     }
 }

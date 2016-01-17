@@ -18,11 +18,11 @@
             android:paddingTop="20dp">
 
             <ImageView
+                android:id="@+id/system_status_listView_image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
-                android:layout_gravity="center"
-                android:src="@drawable/power_distribution"/>
+                android:layout_gravity="center"/>
         </TableRow>
         <TableRow
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:paddingTop="19dp">
 
             <TextView
-                android:id="@+id/power_distribution_text"
+                android:id="@+id/system_status_listView_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -67,8 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="75"
-                    android:textSize="12sp" />
+                    android:text="75%"
+                    android:textSize="@dimen/text_tiny" />
             </FrameLayout>
             <FrameLayout
                 android:layout_height="wrap_content"
@@ -90,8 +90,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="75"
-                    android:textSize="12sp" />
+                    android:text="75%"
+                    android:textSize="@dimen/text_tiny" />
             </FrameLayout>
         </TableRow>
         <TableRow
@@ -135,8 +135,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="75"
-                    android:textSize="12sp" />
+                    android:text="75%"
+                    android:textSize="@dimen/text_tiny" />
             </FrameLayout>
             <FrameLayout
                 android:layout_height="wrap_content"
@@ -158,8 +158,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="75"
-                    android:textSize="12sp" />
+                    android:text="75%"
+                    android:textSize="@dimen/text_tiny" />
             </FrameLayout>
         </TableRow>
         <TableRow
