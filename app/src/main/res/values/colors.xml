@@ -27,8 +27,12 @@
     <color name="signInBackgroundColor">#157DF7</color>
     <!--登陆页背景色-->
     <color name="loginWindowColor">#EEEEEE</color>
-
+    
+    <!--机柜温度,空调,列头柜ListView灰色背景色-->
+    <color name="stripListViewGrayColor">#FAFAFA</color>
+    
     <!--通用颜色-->
     <color name="white">#ffffff</color>
     <color name="gray">#C1C1C1</color>
+    <color name="list_dot_green">#34E8A3</color>
 </resources>

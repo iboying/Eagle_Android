@@ -92,7 +92,8 @@ public class SystemStatus extends AppCompatActivity {
                 } else if (position == 2) {
 
                 } else if (position == 3) {
-
+                    Intent i = new Intent(SystemStatus.this, Cabinet.class);
+                    startActivity(i);
                 } else if (position == 4) {
 
                 } else if (position == 5) {
