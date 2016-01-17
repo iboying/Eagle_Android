@@ -9,7 +9,7 @@
     <!--强调-->
     <color name="colorAccent">#0072F8</color>
     <!--窗口背景色-->
-    <color name="colorWindowBackgroundColor">#E4E4E4</color>
+    <color name="windowBackgroundColor">#E4E4E4</color>
     <!--底部导航条背景色-->
     <color name="colorNavigationBarColor">#353535</color>
     <!--轮播图背景色-->

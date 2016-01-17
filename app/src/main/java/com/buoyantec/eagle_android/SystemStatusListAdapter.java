@@ -10,29 +10,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * Created by kang on 16/1/12.
- * 能效管理页面的ListView适配器, 含有第二级跳转
+ * Created by kang on 16/1/15.
+ * 系统状态子页list适配器( UPS系统, 配电系统 )
  */
-public class LinkListAdapter extends BaseAdapter {
+public class SystemStatusListAdapter extends BaseAdapter {
     private Context mContext;
-    private Integer[] images;
+    private Integer image;
     private String[] texts;
     private ListView listView;
 
-    public LinkListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
+    public SystemStatusListAdapter(ListView listView, Context c, Integer image, String[] texts) {
         this.listView = listView;
         this.mContext = c;
-        this.images = images;
+        this.image = image;
         this.texts = texts;
     }
 
     @Override
     public int getCount() {
-        return images.length;
+        return texts.length;
     }
 
     @Override
-
     public Object getItem(int position) {
         return position;
     }
@@ -45,14 +44,11 @@ public class LinkListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_to, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_system_status, parent, false);
         }
-        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_to_image);
-        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_to_text);
+        TextView tv = BaseViewHolder.get(convertView, R.id.power_distribution_text);
 
-        iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
-
         return convertView;
     }
 }

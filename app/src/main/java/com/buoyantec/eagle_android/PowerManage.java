@@ -35,7 +35,7 @@ public class PowerManage extends AppCompatActivity {
         String[] texts = { "P U E", "能 效 分 析", "用 电 数 据" };
 
         ListView listView = (ListView) findViewById(R.id.power_manage_listView);
-        listView.setAdapter(new LinkListAdapter(listView, this, images, texts));
+        listView.setAdapter(new PowerManageListAdapter(listView, this, images, texts));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
