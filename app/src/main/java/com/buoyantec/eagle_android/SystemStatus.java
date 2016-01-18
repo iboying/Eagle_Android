@@ -63,7 +63,8 @@ public class SystemStatus extends AppCompatActivity {
                 Intent i = new Intent(SystemStatus.this, Box.class);
                 startActivity(i);
             } else if (position == 4) {
-
+                Intent i = new Intent(SystemStatus.this, Battery.class);
+                startActivity(i);
             } else if (position == 5) {
                 Intent i = new Intent(SystemStatus.this, UpsSystem.class);
                 startActivity(i);
