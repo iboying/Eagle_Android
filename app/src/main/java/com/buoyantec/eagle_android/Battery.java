@@ -1,9 +1,12 @@
 package com.buoyantec.eagle_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,5 +46,14 @@ public class Battery extends AppCompatActivity {
         Integer[][] data = {{400,100,26,30}, {400,100,26,30}};
         ListView listView = (ListView) findViewById(R.id.battery_listView);
         listView.setAdapter(new BatteryListAdapter(listView, this, image, texts, data));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView title = (TextView) view.findViewById(R.id.list_item_battery_text);
+                Intent i = new Intent(Battery.this, BatteryShow.class);
+                i.putExtra("title", title.getText());
+                startActivity(i);
+            }
+        });
     }
 }

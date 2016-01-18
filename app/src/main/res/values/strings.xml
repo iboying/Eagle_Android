@@ -32,4 +32,5 @@
     <string name="title_activity_precision_air">PrecisionAir</string>
     <string name="title_activity_box">Box</string>
     <string name="title_activity_battery">Battery</string>
+    <string name="title_activity_battery_show">BatteryShow</string>
 </resources>

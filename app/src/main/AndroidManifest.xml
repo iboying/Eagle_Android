@@ -140,6 +140,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.SystemStatus" />
         </activity>
+        <activity
+            android:name=".BatteryShow"
+            android:label="@string/title_activity_battery_show"
+            android:parentActivityName=".Battery"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.Battery" />
+        </activity>
     </application>
 
 </manifest>

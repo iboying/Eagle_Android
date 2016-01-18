@@ -41,12 +41,12 @@ public class SystemStatus extends AppCompatActivity {
     private void initPowerSystemGrid(){
         // references to our images
         Integer[] images = {
-                R.drawable.system_status_power, R.drawable.system_status_ats,
-                R.drawable.system_status_engine, R.drawable.system_status_box,
-                R.drawable.system_status_battery, R.drawable.system_status_ups
+                R.drawable.system_status_power, R.drawable.system_status_ups,
+                R.drawable.system_status_box, R.drawable.system_status_ats,
+                R.drawable.system_status_battery, R.drawable.system_status_engine,
         };
         // texts of images
-        String[] texts = { "配电", "ATS", "柴油机", "列头柜", "蓄电池", "UPS" };
+        String[] texts = { "配电", "UPS", "列头柜", "ATS", "蓄电池", "柴油机" };
 
         GridView gridview = (GridView) findViewById(R.id.grid_power_system);
         gridview.setAdapter(new SubGridAdapter(gridview, this, images, texts));
@@ -56,18 +56,18 @@ public class SystemStatus extends AppCompatActivity {
                 Intent i = new Intent(SystemStatus.this, PowerDistribution.class);
                 startActivity(i);
             } else if (position == 1) {
-
+                Intent i = new Intent(SystemStatus.this, UpsSystem.class);
+                startActivity(i);
             } else if (position == 2) {
-
-            } else if (position == 3) {
                 Intent i = new Intent(SystemStatus.this, Box.class);
                 startActivity(i);
+            } else if (position == 3) {
+
             } else if (position == 4) {
                 Intent i = new Intent(SystemStatus.this, Battery.class);
                 startActivity(i);
             } else if (position == 5) {
-                Intent i = new Intent(SystemStatus.this, UpsSystem.class);
-                startActivity(i);
+
             }
             }
         });
@@ -76,12 +76,12 @@ public class SystemStatus extends AppCompatActivity {
     private void initEnvSystemGrid(){
         // references to our images
         Integer[] images = {
-                R.drawable.system_status_temperature, R.drawable.system_status_air,
-                R.drawable.system_status_water, R.drawable.system_status_cabinet,
+                R.drawable.system_status_temperature, R.drawable.system_status_water,
+                R.drawable.system_status_air, R.drawable.system_status_cabinet,
                 R.drawable.system_status_empty, R.drawable.system_status_empty
         };
         // texts of images
-        String[] texts = { "温湿度", "精密空调", "漏水", "机柜温度", "", "" };
+        String[] texts = { "温湿度", "漏水", "精密空调", "机柜温度", "", "" };
 
         GridView gridview = (GridView) findViewById(R.id.grid_env_system);
         gridview.setAdapter(new SubGridAdapter(gridview, this, images, texts));
@@ -90,10 +90,10 @@ public class SystemStatus extends AppCompatActivity {
                 if (position == 0) {
 
                 } else if (position == 1) {
+
+                } else if (position == 2) {
                     Intent i = new Intent(SystemStatus.this, PrecisionAir.class);
                     startActivity(i);
-                } else if (position == 2) {
-
                 } else if (position == 3) {
                     Intent i = new Intent(SystemStatus.this, Cabinet.class);
                     startActivity(i);
