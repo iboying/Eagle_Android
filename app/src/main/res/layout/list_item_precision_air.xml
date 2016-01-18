@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="5dp">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2">
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:paddingTop="20dp">
+
+            <ImageView
+                android:id="@+id/list_item_precision_air_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingTop="19dp">
+
+            <TextView
+                android:id="@+id/list_item_precision_air_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="@dimen/text_tiny"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:layout_weight="1">
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+            <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/list_item_precision_air_degree"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/orange_percent"
+                    android:text="75%"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_tiny" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/list_item_precision_air_humidity"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/green_percent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="75%"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_tiny" />
+            </FrameLayout>
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingTop="5dp">
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="{fa-square #FF987E} 实时温度"
+                android:textSize="@dimen/text_tiny"/>
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="{fa-square #00BDFF} 实时湿度"
+                android:textSize="@dimen/text_tiny"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="{fa-angle-right}"
+        android:textSize="20sp"
+        android:textColor="@color/gray"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:singleLine="true"/>
+</LinearLayout>

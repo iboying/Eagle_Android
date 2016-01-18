@@ -3,14 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_cabinet"
+    tools:showIn="@layout/activity_box"
     android:background="@color/windowBackgroundColor"
-    tools:context="com.buoyantec.eagle_android.Cabinet">
-
+    tools:context="com.buoyantec.eagle_android.Box">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -27,25 +26,25 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="设备名"/>
+            android:text="机柜名"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="电压"/>
+            android:text="温度"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="电流"/>
+            android:text="湿度"/>
     </LinearLayout>
 
     <ListView
-        android:id="@+id/cabinet_listView"
+        android:id="@+id/box_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="0dp"

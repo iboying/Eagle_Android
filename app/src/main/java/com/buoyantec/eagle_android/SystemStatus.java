@@ -60,7 +60,8 @@ public class SystemStatus extends AppCompatActivity {
             } else if (position == 2) {
 
             } else if (position == 3) {
-
+                Intent i = new Intent(SystemStatus.this, Box.class);
+                startActivity(i);
             } else if (position == 4) {
 
             } else if (position == 5) {
@@ -88,7 +89,8 @@ public class SystemStatus extends AppCompatActivity {
                 if (position == 0) {
 
                 } else if (position == 1) {
-
+                    Intent i = new Intent(SystemStatus.this, PrecisionAir.class);
+                    startActivity(i);
                 } else if (position == 2) {
 
                 } else if (position == 3) {

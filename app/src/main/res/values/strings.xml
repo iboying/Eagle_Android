@@ -29,4 +29,6 @@
         completions."
     </string>
     <string name="title_activity_cabinet">Cabinet</string>
+    <string name="title_activity_precision_air">PrecisionAir</string>
+    <string name="title_activity_box">Box</string>
 </resources>
