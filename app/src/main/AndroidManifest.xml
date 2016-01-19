@@ -167,6 +167,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.PrecisionAir" />
         </activity>
+        <activity
+            android:name=".BoxDetail"
+            android:label="@string/title_activity_box_detail"
+            android:parentActivityName=".Box"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.Box" />
+        </activity>
     </application>
 
 </manifest>

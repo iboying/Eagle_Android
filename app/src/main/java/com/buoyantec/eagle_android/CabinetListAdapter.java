@@ -66,8 +66,8 @@ public class CabinetListAdapter extends BaseAdapter {
             TextView humidity = BaseViewHolder.get(convertView, R.id.list_item_cabinet_humidity);
 
             name.setText(names[position]);
-            temperature.setText(datas[position][0].toString()+"度");
-            humidity.setText(datas[position][1].toString()+"%");
+            temperature.setText(datas[position][0].toString());
+            humidity.setText(datas[position][1].toString());
             if((position % 2) == 0) {
                 item.setBackgroundResource(R.color.white);
             }

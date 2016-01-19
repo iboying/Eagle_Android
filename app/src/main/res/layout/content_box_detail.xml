@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_cabinet"
     android:background="@color/windowBackgroundColor"
-    tools:context="com.buoyantec.eagle_android.Cabinet">
-
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_box_detail"
+    tools:context="com.buoyantec.eagle_android.BoxDetail">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -27,25 +26,25 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="机柜名"/>
+            android:text="设备名"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="温度(℃)"/>
+            android:text="电压(v)"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="湿度(%)"/>
+            android:text="电流(a)"/>
     </LinearLayout>
 
     <ListView
-        android:id="@+id/cabinet_listView"
+        android:id="@+id/box_detail_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="0dp"

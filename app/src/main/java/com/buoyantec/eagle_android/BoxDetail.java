@@ -2,6 +2,8 @@ package com.buoyantec.eagle_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,14 +15,14 @@ import android.widget.TextView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
-public class Box extends AppCompatActivity {
+public class BoxDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //加载字体图标
         Iconify.with(new FontAwesomeModule());
-        setContentView(R.layout.activity_box);
+        setContentView(R.layout.activity_box_detail);
         //初始化toolbar
         initToolbar();
         //初始化list
@@ -29,20 +31,10 @@ public class Box extends AppCompatActivity {
 
     private void initListView() {
         // item数据
-        Integer image = R.drawable.power_distribution;
-        String[] texts = {"列头柜1", "列头柜2"};
-        Integer[] data = {1,0};
-        ListView listView = (ListView) findViewById(R.id.box_listView);
-        listView.setAdapter(new BoxListAdapter(listView, this, image, texts, data));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView title = (TextView) view.findViewById(R.id.list_item_box_text);
-                Intent i = new Intent(Box.this, BoxDetail.class);
-                i.putExtra("title", title.getText());
-                startActivity(i);
-            }
-        });
+        String[] names = {"d2", "d3"};
+        Integer[][] data = {{220, 12}, {220, 15}};
+        ListView listView = (ListView) findViewById(R.id.box_detail_listView);
+        listView.setAdapter(new CabinetListAdapter(listView, this, names, data));
     }
 
     private void initToolbar() {
@@ -54,6 +46,9 @@ public class Box extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText("列头柜");
+        Intent i = getIntent();
+        String title = i.getStringExtra("title");
+        subToolbarTitle.setText(title);
     }
+
 }
