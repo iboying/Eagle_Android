@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:textSize="@dimen/text_large"
         android:text="告警信息"/>
 
     <LinearLayout

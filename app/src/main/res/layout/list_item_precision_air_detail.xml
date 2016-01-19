@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cabinet_listView_item"
+    android:id="@+id/precision_air_detail_listView_item"
     android:orientation="horizontal"
     android:gravity="center"
     android:background="@color/stripListViewGrayColor"
     android:paddingLeft="48dp"
+    android:paddingRight="48dp"
     android:layout_width="match_parent"
     android:layout_height="30dp">
 
@@ -20,23 +21,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
         android:textColor="@color/gray"
-        android:id="@+id/list_item_cabinet_name"/>
+        android:gravity="left"
+        android:id="@+id/list_item_precision_air_detail_name"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="right"
         android:textColor="@color/gray"
-        android:id="@+id/list_item_cabinet_temperature"/>
+        android:id="@+id/list_item_precision_air_detail_status"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textColor="@color/gray"
-        android:id="@+id/list_item_cabinet_humidity"/>
 </LinearLayout>

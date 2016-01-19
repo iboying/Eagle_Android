@@ -15,15 +15,26 @@ import android.widget.TextView;
  */
 public class CabinetListAdapter extends BaseAdapter {
     private Context mContext;
-    private String[] names;
-    private Integer[][] datas;
     private ListView listView;
+    private String[] names;
+    //(机柜温度,列头柜)数据
+    private Integer[][] datas;
+    //(空调详情)数据
+    private String[] status;
 
+    //(机柜温度,列头柜)构造函数
     public CabinetListAdapter(ListView listView, Context c, String[] names, Integer[][] datas) {
         this.listView = listView;
         this.mContext = c;
         this.names = names;
         this.datas = datas;
+    }
+    //(空调详情)构造函数
+    public CabinetListAdapter(ListView listView, Context c, String[] names, String[] status) {
+        this.listView = listView;
+        this.mContext = c;
+        this.names = names;
+        this.status = status;
     }
 
     @Override
@@ -43,22 +54,38 @@ public class CabinetListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext)
-                    .inflate(R.layout.list_item_cabinet, parent, false);
-        }
+        if (status == null) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(mContext)
+                        .inflate(R.layout.list_item_cabinet, parent, false);
+            }
 
-        LinearLayout item = BaseViewHolder.get(convertView, R.id.cabinet_listView_item);
-        TextView name = BaseViewHolder.get(convertView, R.id.list_item_cabinet_name);
-        TextView temperature = BaseViewHolder.get(convertView, R.id.list_item_cabinet_temperature);
-        TextView humidity = BaseViewHolder.get(convertView, R.id.list_item_cabinet_humidity);
+            LinearLayout item = BaseViewHolder.get(convertView, R.id.cabinet_listView_item);
+            TextView name = BaseViewHolder.get(convertView, R.id.list_item_cabinet_name);
+            TextView temperature = BaseViewHolder.get(convertView, R.id.list_item_cabinet_temperature);
+            TextView humidity = BaseViewHolder.get(convertView, R.id.list_item_cabinet_humidity);
 
-        name.setText(names[position]);
-        temperature.setText(datas[position][0].toString()+"度");
-        humidity.setText(datas[position][1].toString()+"%");
+            name.setText(names[position]);
+            temperature.setText(datas[position][0].toString()+"度");
+            humidity.setText(datas[position][1].toString()+"%");
+            if((position % 2) == 0) {
+                item.setBackgroundResource(R.color.white);
+            }
+        }else{
+            if (convertView == null) {
+                convertView = LayoutInflater.from(mContext)
+                        .inflate(R.layout.list_item_precision_air_detail, parent, false);
+            }
 
-        if((position % 2) == 0) {
-            item.setBackgroundResource(R.color.white);
+            LinearLayout item = BaseViewHolder.get(convertView, R.id.precision_air_detail_listView_item);
+            TextView name = BaseViewHolder.get(convertView, R.id.list_item_precision_air_detail_name);
+            TextView st = BaseViewHolder.get(convertView, R.id.list_item_precision_air_detail_status);
+
+            name.setText(names[position]);
+            st.setText(status[position]);
+            if((position % 2) == 0) {
+                item.setBackgroundResource(R.color.white);
+            }
         }
 
         return convertView;

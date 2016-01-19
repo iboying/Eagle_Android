@@ -8,25 +8,33 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
-public class PrecisionAir extends AppCompatActivity {
+public class PrecisionAirDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //加载字体图标
         Iconify.with(new FontAwesomeModule());
-        setContentView(R.layout.activity_precision_air);
+        setContentView(R.layout.activity_precision_air_detail);
         //初始化toolbar
         initToolbar();
         //初始化list
         initListView();
+    }
+
+    private void initListView() {
+        // item数据
+        String[] names = {"内风机1输出", "内风机2输出", "内风机3输出", "内风机4输出",
+                        "内风机5输出", "内风机6输出", "内风机7输出", "内风机8输出"};
+        String[] status = {"关闭","关闭","关闭","关闭","关闭","关闭","关闭","关闭"};
+        ListView listView = (ListView) findViewById(R.id.precision_air_detail_listView);
+        listView.setAdapter(new CabinetListAdapter(listView, this, names, status));
     }
 
     private void initToolbar() {
@@ -38,26 +46,8 @@ public class PrecisionAir extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText("精密空调");
+        Intent i = getIntent();
+        String title = i.getStringExtra("title");
+        subToolbarTitle.setText(title);
     }
-
-    private void initListView() {
-        // references to our images
-        Integer image = R.drawable.air;
-        // texts of images
-        String[] texts = { "空调1", "空调2" };
-        //数据
-        Integer[][] data = {{25, 40}, {30, 35}};
-        final ListView listView = (ListView) findViewById(R.id.precision_air_listView);
-        listView.setAdapter(new PrecisionAirListAdapter(listView, this, image, texts, data));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                TextView title = (TextView) v.findViewById(R.id.list_item_precision_air_text);
-                Intent i = new Intent(PrecisionAir.this, PrecisionAirDetail.class);
-                i.putExtra("title", title.getText());
-                startActivity(i);
-            }
-        });
-    }
-
 }

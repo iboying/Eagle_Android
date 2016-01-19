@@ -34,4 +34,5 @@
     <string name="title_activity_battery">Battery</string>
     <string name="title_activity_battery_show">BatteryShow</string>
     <string name="title_activity_warn_detail">WarnDetail</string>
+    <string name="title_activity_precision_air_detail">PrecisionAirDetail</string>
 </resources>
