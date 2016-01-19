@@ -25,23 +25,19 @@ public class WarnMessages extends AppCompatActivity {
     private void initListView() {
         // references to our images
         Integer[] images = {
-                R.drawable.system_status_power, R.drawable.system_status_ups,
+                R.drawable.system_status_air, R.drawable.system_status_air,
                 R.drawable.system_status_temperature
         };
         // texts of images
-        String[] texts = { "配电系统", "UPS系统", "温湿度系统" };
+        final String[] texts = { "空调1告警", "空调2告警", "温湿度系统" };
 
         ListView listView = (ListView) findViewById(R.id.warn_messages_listView);
         listView.setAdapter(new MainListAdapter(listView, this, images, texts));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            if (position == 0) {
-
-            } else if (position == 1) {
-
-            } else if (position == 2) {
-
-            }
+                Intent i = new Intent(WarnMessages.this, WarnDetail.class);
+                i.putExtra("title", texts[position]);
+                startActivity(i);
             }
         });
     }

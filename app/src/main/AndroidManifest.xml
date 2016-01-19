@@ -149,6 +149,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.Battery" />
         </activity>
+        <activity
+            android:name=".WarnDetail"
+            android:label="@string/title_activity_warn_detail"
+            android:parentActivityName=".WarnMessages"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.WarnMessages" />
+        </activity>
     </application>
 
 </manifest>
