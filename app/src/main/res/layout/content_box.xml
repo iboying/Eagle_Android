@@ -11,43 +11,11 @@
     android:background="@color/windowBackgroundColor"
     tools:context="com.buoyantec.eagle_android.Box">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:background="@color/windowBackgroundColor"
-        android:gravity="center"
-        android:paddingLeft="48dp"
-        android:layout_height="30dp">
-        <TextView
-            android:layout_width="28dp"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="设备名"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="电压"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="电流"/>
-    </LinearLayout>
-
     <ListView
         android:id="@+id/box_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="0dp"
-        android:divider="@color/white">
+        android:dividerHeight="1dp"
+        android:divider="@color/windowBackgroundColor">
     </ListView>
 </LinearLayout>

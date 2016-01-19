@@ -57,7 +57,7 @@ public class CabinetListAdapter extends BaseAdapter {
         if (status == null) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext)
-                        .inflate(R.layout.list_item_cabinet, parent, false);
+                        .inflate(R.layout.list_item_cabinet_detail, parent, false);
             }
 
             LinearLayout item = BaseViewHolder.get(convertView, R.id.cabinet_listView_item);

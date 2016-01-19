@@ -1,12 +1,11 @@
 package com.buoyantec.eagle_android;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,10 +28,18 @@ public class Box extends AppCompatActivity {
 
     private void initListView() {
         // item数据
-        String[] names = {"d2", "d3", "d4"};
-        Integer[][] data = {{220, 12}, {240, 12}, {220, 13}};
+        Integer image = R.drawable.power_distribution;
+        String[] texts = {"列头柜1", "列头柜2"};
+        Integer[] data = {1,0};
         ListView listView = (ListView) findViewById(R.id.box_listView);
-        listView.setAdapter(new CabinetListAdapter(listView, this, names, data));
+        listView.setAdapter(new BoxListAdapter(listView, this, image, texts, data));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                View title = view.findViewById(R.id.list_item_box_text);
+//                Intent i = new Intent(Box.this, BoxDetail.class);
+            }
+        });
     }
 
     private void initToolbar() {
@@ -44,6 +51,6 @@ public class Box extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText("列头柜1");
+        subToolbarTitle.setText("列头柜");
     }
 }
