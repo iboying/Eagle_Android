@@ -88,9 +88,11 @@ public class SystemStatus extends AppCompatActivity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
-
+                    Intent i = new Intent(SystemStatus.this, Temperature.class);
+                    startActivity(i);
                 } else if (position == 1) {
-
+                    Intent i = new Intent(SystemStatus.this, Water.class);
+                    startActivity(i);
                 } else if (position == 2) {
                     Intent i = new Intent(SystemStatus.this, PrecisionAir.class);
                     startActivity(i);

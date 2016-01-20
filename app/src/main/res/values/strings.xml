@@ -36,4 +36,6 @@
     <string name="title_activity_warn_detail">WarnDetail</string>
     <string name="title_activity_precision_air_detail">PrecisionAirDetail</string>
     <string name="title_activity_box_detail">BoxDetail</string>
+    <string name="title_activity_water">Water</string>
+    <string name="title_activity_temperature">Temperature</string>
 </resources>
