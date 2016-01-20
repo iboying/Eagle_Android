@@ -18,6 +18,5 @@
         android:textColor="@color/textColorPrimary"
         android:layout_gravity="center"
         android:textSize="18sp"
-        android:text="告警信息"
         android:textStyle="bold"/>
 </android.support.v7.widget.Toolbar>

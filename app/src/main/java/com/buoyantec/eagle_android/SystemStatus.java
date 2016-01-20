@@ -122,17 +122,13 @@ public class SystemStatus extends AppCompatActivity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
-
+                    Intent i = new Intent(SystemStatus.this, VideoSystem.class);
+                    startActivity(i);
                 } else if (position == 1) {
 
                 } else if (position == 2) {
-
-                } else if (position == 3) {
-
-                } else if (position == 4) {
-
-                } else if (position == 5) {
-
+                    Intent i = new Intent(SystemStatus.this, Smoke.class);
+                    startActivity(i);
                 }
             }
         });

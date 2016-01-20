@@ -38,4 +38,6 @@
     <string name="title_activity_box_detail">BoxDetail</string>
     <string name="title_activity_water">Water</string>
     <string name="title_activity_temperature">Temperature</string>
+    <string name="title_activity_video_system">VideoSystem</string>
+    <string name="title_activity_smoke">Smoke</string>
 </resources>
