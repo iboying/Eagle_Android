@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +40,14 @@ public class PowerManage extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
-
+                    Intent i = new Intent(PowerManage.this, Pue.class);
+                    startActivity(i);
                 } else if (position == 1) {
-
+                    Intent i = new Intent(PowerManage.this, PowerAnalyse.class);
+                    startActivity(i);
                 } else if (position == 2) {
-
+                    Intent i = new Intent(PowerManage.this, PowerData.class);
+                    startActivity(i);
                 }
             }
         });

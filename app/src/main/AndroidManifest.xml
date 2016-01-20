@@ -208,6 +208,33 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.SystemStatus" />
         </activity>
+        <activity
+            android:name=".Pue"
+            android:label="@string/title_activity_pue"
+            android:parentActivityName=".PowerManage"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.PowerManage" />
+        </activity>
+        <activity
+            android:name=".PowerAnalyse"
+            android:label="@string/title_activity_power_analyse"
+            android:parentActivityName=".PowerManage"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.PowerManage" />
+        </activity>
+        <activity
+            android:name=".PowerData"
+            android:label="@string/title_activity_power_data"
+            android:parentActivityName=".PowerManage"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.PowerManage" />
+        </activity>
     </application>
 
 </manifest>

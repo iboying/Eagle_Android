@@ -40,4 +40,7 @@
     <string name="title_activity_temperature">Temperature</string>
     <string name="title_activity_video_system">VideoSystem</string>
     <string name="title_activity_smoke">Smoke</string>
+    <string name="title_activity_pue">Pue</string>
+    <string name="title_activity_power_analyse">PowerAnalyse</string>
+    <string name="title_activity_power_data">PowerData</string>
 </resources>
