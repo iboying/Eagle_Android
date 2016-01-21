@@ -2,6 +2,9 @@ package com.buoyantec.eagle_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,9 +16,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,12 +29,29 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //加载字体图标
+        Iconify.with(new FontAwesomeModule());
+        //加载布局文件
         setContentView(R.layout.activity_main);
-        //home_toolbar
+        //初始化toolbar
+        initToolBar();
+        //图片轮播
+        initCarousel();
+        //初始化GridView
+        initGridView();
+    }
+
+    public void initToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        //侧边菜单
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+
+        TextView subToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+        subToolbarTitle.setText("中国地质大学");
+
+        //添加侧边菜单,并绑定ToolBar菜单按钮
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -36,12 +59,9 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //图片轮播
-        initCarousel();
-        //GridView
-        initGridView();
     }
 
+    //为后退键绑定关闭侧边菜单功能
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -52,13 +72,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //为物理菜单键绑定折叠侧边菜单功能
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_MENU) {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
+    //侧边菜单响应函数
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

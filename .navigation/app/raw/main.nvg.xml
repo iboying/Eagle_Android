@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigationModel
+  ns = "http://schemas.android.com?import=com.android.tools.idea.editors.navigation.model.*">
+  <locations  
+    class = "java.util.ArrayList">
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.PrecisionAirDetail"/>
+      <point      
+        x = "3504"      
+        y = "196"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.UpsDetail"/>
+      <point      
+        x = "3768"      
+        y = "1652"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.BoxDetail"/>
+      <point      
+        x = "108"      
+        y = "1500"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.PrecisionAir"/>
+      <point      
+        x = "2152"      
+        y = "212"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.ElectricityData"/>
+      <point      
+        x = "2848"      
+        y = "2504"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.Smoke"/>
+      <point      
+        x = "76"      
+        y = "12"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.MainActivity"/>
+      <point      
+        x = "1616"      
+        y = "2956"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.PowerManage"/>
+      <point      
+        x = "4448"      
+        y = "168"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.PowerAnalyse"/>
+      <point      
+        x = "900"      
+        y = "500"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.Water"/>
+      <point      
+        x = "950"      
+        y = "550"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.WorkPlan"/>
+      <point      
+        x = "1000"      
+        y = "600"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.BatteryShow"/>
+      <point      
+        x = "1050"      
+        y = "650"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.WarnDetail"/>
+      <point      
+        x = "1100"      
+        y = "700"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.PowerDetail"/>
+      <point      
+        x = "1150"      
+        y = "750"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.Pue"/>
+      <point      
+        x = "1200"      
+        y = "800"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.VideoSystem"/>
+      <point      
+        x = "1250"      
+        y = "850"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.LoginActivity"/>
+      <point      
+        x = "1300"      
+        y = "900"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.UpsSystem"/>
+      <point      
+        x = "1350"      
+        y = "950"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.Cabinet"/>
+      <point      
+        x = "1400"      
+        y = "1000"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.Box"/>
+      <point      
+        x = "1450"      
+        y = "1050"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.SystemStatus"/>
+      <point      
+        x = "1500"      
+        y = "1100"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.WarnMessages"/>
+      <point      
+        x = "1550"      
+        y = "1150"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.Other"/>
+      <point      
+        x = "1600"      
+        y = "1200"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.Temperature"/>
+      <point      
+        x = "1650"      
+        y = "1250"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.ItManage"/>
+      <point      
+        x = "1700"      
+        y = "1300"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.PowerDistribution"/>
+      <point      
+        x = "1750"      
+        y = "1350"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.buoyantec.eagle_android.Battery"/>
+      <point      
+        x = "1800"      
+        y = "1400"/>
+    </statePointEntry>
+  </locations>
+</navigationModel>

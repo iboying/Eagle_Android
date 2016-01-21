@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_user_number"
             android:icon="@drawable/nav_user"
-            android:title="账号"/>
+            android:title="@string/user_number"/>
         <item
             android:id="@+id/nav_message"
             android:icon="@drawable/nav_message"
-            android:title="信息"/>
+            android:title="@string/message"/>
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/nav_setting"
-            android:title="设置"/>
+            android:title="@string/setting"/>
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/nav_about"
-            android:title="关于"/>
+            android:title="@string/about"/>
     </group>
 
 </menu>

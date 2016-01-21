@@ -13,9 +13,9 @@
     <string name="title_activity_other">其他</string>
     <string name="title_activity_power_distribution">配电系统</string>
     <string name="title_activity_ups_system">UPS系统</string>
-    <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
+    <string name="title_activity_login">Sign in</string>
     <string name="prompt_phone">Phone</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">SIGN IN</string>
@@ -26,6 +26,12 @@
     <string name="error_incorrect_password">密码不正确</string>
     <string name="error_field_required">不能为空</string>
     <string name="permission_rationale">"实现邮件功能需要读取联系人权限"</string>
+
+    <!--侧边菜单选项-->
+    <string name="user_number">账号</string>
+    <string name="message">信息</string>
+    <string name="setting">设置</string>
+    <string name="about">关于</string>
 
     <string name="title_activity_cabinet">机柜温度</string>
     <string name="title_activity_precision_air">精密空调</string>
@@ -43,5 +49,6 @@
     <string name="title_activity_power_analyse">能效分析</string>
     <string name="title_activity_power_data">用电数据</string>
     <string name="title_activity_ups_detail">UPS详情</string>
-    <string name="title_activity_power_detail">PowerDetail</string>
+    <string name="title_activity_power_detail">配电柜详情</string>
+
 </resources>
