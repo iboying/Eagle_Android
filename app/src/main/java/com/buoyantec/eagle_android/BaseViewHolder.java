@@ -5,6 +5,7 @@ import android.view.View;
 
 /**
  * Created by kang on 16/1/7.
+ * 通用ViewHolder
  */
 public class BaseViewHolder {
     @SuppressWarnings("unchecked")

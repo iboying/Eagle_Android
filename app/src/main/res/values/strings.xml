@@ -12,7 +12,7 @@
     <string name="title_activity_it_manage">IT管理</string>
     <string name="title_activity_other">其他</string>
     <string name="title_activity_power_distribution">配电系统</string>
-    <string name="title_activity_ups_system">UpsSystem</string>
+    <string name="title_activity_ups_system">UPS系统</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -25,22 +25,23 @@
     <string name="error_invalid_password">密码长度太短</string>
     <string name="error_incorrect_password">密码不正确</string>
     <string name="error_field_required">不能为空</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="title_activity_cabinet">Cabinet</string>
-    <string name="title_activity_precision_air">PrecisionAir</string>
-    <string name="title_activity_box">Box</string>
-    <string name="title_activity_battery">Battery</string>
-    <string name="title_activity_battery_show">BatteryShow</string>
-    <string name="title_activity_warn_detail">WarnDetail</string>
-    <string name="title_activity_precision_air_detail">PrecisionAirDetail</string>
-    <string name="title_activity_box_detail">BoxDetail</string>
-    <string name="title_activity_water">Water</string>
-    <string name="title_activity_temperature">Temperature</string>
-    <string name="title_activity_video_system">VideoSystem</string>
-    <string name="title_activity_smoke">Smoke</string>
-    <string name="title_activity_pue">Pue</string>
-    <string name="title_activity_power_analyse">PowerAnalyse</string>
-    <string name="title_activity_power_data">PowerData</string>
+    <string name="permission_rationale">"实现邮件功能需要读取联系人权限"</string>
+
+    <string name="title_activity_cabinet">机柜温度</string>
+    <string name="title_activity_precision_air">精密空调</string>
+    <string name="title_activity_box">列头柜</string>
+    <string name="title_activity_battery">蓄电池</string>
+    <string name="title_activity_battery_show">蓄电池详情</string>
+    <string name="title_activity_warn_detail">告警信息详情</string>
+    <string name="title_activity_precision_air_detail">精密空调详情</string>
+    <string name="title_activity_box_detail">列头柜详情</string>
+    <string name="title_activity_water">漏水</string>
+    <string name="title_activity_temperature">温湿度</string>
+    <string name="title_activity_video_system">视频系统</string>
+    <string name="title_activity_smoke">烟感</string>
+    <string name="title_activity_pue">PUE</string>
+    <string name="title_activity_power_analyse">能效分析</string>
+    <string name="title_activity_power_data">用电数据</string>
+    <string name="title_activity_ups_detail">UPS详情</string>
+    <string name="title_activity_power_detail">PowerDetail</string>
 </resources>

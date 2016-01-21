@@ -1,8 +1,7 @@
 package com.buoyantec.eagle_android;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,15 +44,17 @@ public class UpsSystem extends AppCompatActivity {
         Integer image = R.drawable.ups_system;
         // texts of images
         String[] texts = { "UPS1", "UPS2" };
+        // UPS数据
+        Integer[][] datas = {{75, 75, 75, 75}, {60, 40, 80, 50}};
+
         ListView listView = (ListView) findViewById(R.id.system_status_listView);
-        listView.setAdapter(new SystemStatusListAdapter(listView, this, image, texts));
+        listView.setAdapter(new SystemStatusListAdapter(listView, this, image, texts, datas));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == 0) {
-
-                } else if (position == 1) {
-
-                }
+                TextView title = (TextView) v.findViewById(R.id.list_item_power_ups_text);
+                Intent i = new Intent(UpsSystem.this, UpsDetail.class);
+                i.putExtra("title", title.getText());
+                startActivity(i);
             }
         });
     }

@@ -46,7 +46,7 @@ public class PowerManage extends AppCompatActivity {
                     Intent i = new Intent(PowerManage.this, PowerAnalyse.class);
                     startActivity(i);
                 } else if (position == 2) {
-                    Intent i = new Intent(PowerManage.this, PowerData.class);
+                    Intent i = new Intent(PowerManage.this, ElectricityData.class);
                     startActivity(i);
                 }
             }

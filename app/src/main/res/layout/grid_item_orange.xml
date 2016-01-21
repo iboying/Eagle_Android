@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:paddingTop="10dp"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/gridItemColor">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <TextView
+            android:id="@+id/grid_item_green_data"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/orange_percent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="75"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_normal" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="{fa-square #FF987E}"
+            android:textSize="10dp"/>
+
+        <TextView
+            android:id="@+id/grid_item_green_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:textSize="@dimen/text_tiny"
+            android:text="A相电压"/>
+    </LinearLayout>
+
+</LinearLayout>

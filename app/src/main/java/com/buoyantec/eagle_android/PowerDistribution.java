@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,19 +42,20 @@ public class PowerDistribution extends AppCompatActivity {
     }
 
     private void initListView() {
-        // references to our images
+        // 配电柜图片
         Integer image = R.drawable.power_distribution;
-        // texts of images
+        // 配电柜名称
         String[] texts = { "配电柜1", "配电柜2" };
+        // 配电柜数据
+        Integer[][] datas = {{60, 40, 80, 50}, {60, 40, 80, 50}};
         ListView listView = (ListView) findViewById(R.id.system_status_listView);
-        listView.setAdapter(new SystemStatusListAdapter(listView, this, image, texts));
+        listView.setAdapter(new SystemStatusListAdapter(listView, this, image, texts, datas));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == 0) {
-
-                } else if (position == 1) {
-
-                }
+                TextView title = (TextView) v.findViewById(R.id.list_item_power_ups_text);
+                Intent i = new Intent(PowerDistribution.this, PowerDetail.class);
+                i.putExtra("title", title.getText());
+                startActivity(i);
             }
         });
     }

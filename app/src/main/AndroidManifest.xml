@@ -227,13 +227,31 @@
                 android:value="com.buoyantec.eagle_android.PowerManage" />
         </activity>
         <activity
-            android:name=".PowerData"
+            android:name=".ElectricityData"
             android:label="@string/title_activity_power_data"
             android:parentActivityName=".PowerManage"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.PowerManage" />
+        </activity>
+        <activity
+            android:name=".UpsDetail"
+            android:label="@string/title_activity_ups_detail"
+            android:parentActivityName=".UpsSystem"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.UpsSystem" />
+        </activity>
+        <activity
+            android:name=".PowerDetail"
+            android:label="@string/title_activity_power_detail"
+            android:parentActivityName=".PowerDistribution"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.PowerDistribution" />
         </activity>
     </application>
 
