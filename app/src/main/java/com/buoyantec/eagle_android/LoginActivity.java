@@ -3,6 +3,7 @@ package com.buoyantec.eagle_android;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -29,6 +30,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -76,23 +80,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //加载字体图标
+        Iconify.with(new FontAwesomeModule());
+
         setContentView(R.layout.activity_login);
+
         // Set up the login form.
         mPhoneView = (AutoCompleteTextView) findViewById(R.id.phone);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
         //输入密码后点击软键盘上的回车键触发事件
+        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
+            if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                attemptLogin();
+                return true;
+            }
             return false;
             }
         });
+
         //点击登录的响应函数
         Button mPhoneSignInButton = (Button) findViewById(R.id.sign_in_button);
         mPhoneSignInButton.setOnClickListener(new OnClickListener() {
@@ -104,14 +113,48 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        //获得焦点是EditText的响应事件
+        editTextHasFocused();
+    }
+
+    private void editTextHasFocused() {
+        final TextView phoneIcon = (TextView) findViewById(R.id.login_phone_icon);
+        final TextView passwordIcon = (TextView) findViewById(R.id.login_password_icon);
+        //输入框获取焦点时,图标变蓝
+        mPhoneView.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    phoneIcon.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+                    mPhoneView.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+                } else{
+                    phoneIcon.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+                    mPhoneView.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+                }
+            }
+        });
+        //密码框获取焦点时,图标变蓝
+        mPasswordView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    passwordIcon.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+                    mPasswordView.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+                } else{
+                    passwordIcon.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+                    mPasswordView.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+                }
+            }
+        });
     }
 
     private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
+//        if (!mayRequestContacts()) {
+//            return;
+//        }
+//
+//        getLoaderManager().initLoader(0, null, this);
     }
 
     private boolean mayRequestContacts() {
@@ -316,6 +359,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPassword = password;
         }
 
+        //调用接口
         @Override
         protected Boolean doInBackground(String... params) {
             // TODO: attempt authentication against a network service.

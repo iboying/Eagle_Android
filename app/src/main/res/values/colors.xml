@@ -8,6 +8,7 @@
     <color name="colorPrimaryDark">#353535</color>
     <!--强调-->
     <color name="colorAccent">#0072F8</color>
+
     <!--窗口背景色-->
     <color name="windowBackgroundColor">#E4E4E4</color>
     <!--底部导航条背景色-->
@@ -22,7 +23,8 @@
     <color name="drawerBackgroundColor">#3F3F3F</color>
 
     <!--登录页border-->
-    <color name="loginBorderColor">#0072F8</color>
+    <color name="loginFocusedBorder">#0072F8</color>
+    <color name="loginNormalBorder">#9B9B9B</color>
     <!--登录按钮-->
     <color name="signInBackgroundColor">#157DF7</color>
     <!--登陆页背景色-->
@@ -30,7 +32,11 @@
     
     <!--机柜温度,空调,列头柜ListView灰色背景色-->
     <color name="stripListViewGrayColor">#FAFAFA</color>
-    
+
+    <!--Drawer Menu Item selected bg-->
+    <color name="drawerItemSelectedBg">#202020</color>
+    <color name="drawerItemBorder">#2EA0FF</color>
+
     <!--通用颜色-->
     <color name="white">#ffffff</color>
     <color name="gray">#aaaaaa</color>

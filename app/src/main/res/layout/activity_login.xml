@@ -30,7 +30,8 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -38,34 +39,70 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <AutoCompleteTextView
-                android:id="@+id/phone"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_phone"
-                android:inputType="phone"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:layout_height="40dp"
+                android:layout_marginBottom="16dp">
+                <com.joanzapata.iconify.widget.IconTextView
+                    android:id="@+id/login_phone_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:text="{fa-user}"
+                    android:textSize="22sp"
+                    android:textColor="@color/loginNormalBorder"/>
+                <AutoCompleteTextView
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="50dp"
+                    android:background="@drawable/edit_text_bg"
+                    android:hint="@string/prompt_phone"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    />
+            </FrameLayout>
 
-            <EditText
-                android:id="@+id/password"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true"/>
+                android:layout_height="40dp">
+                <com.joanzapata.iconify.widget.IconTextView
+                    android:id="@+id/login_password_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:text="{fa-lock}"
+                    android:textSize="22sp"
+                    android:textColor="@color/loginNormalBorder"/>
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="50dp"
+                    android:background="@drawable/edit_text_bg"
+                    android:hint="@string/prompt_password"
+                    android:imeActionId="@+id/login"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+            </FrameLayout>
 
             <Button
                 android:id="@+id/sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="22dp"
-                android:background="@drawable/base_btn_shape"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/login_btn_bg"
                 android:text="@string/action_sign_in"
                 android:textColor="@color/white"
                 android:textSize="16sp"/>

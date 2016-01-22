@@ -6,6 +6,7 @@
     android:orientation="vertical">
     <!--顶部功能条-->
     <include layout="@layout/toolbar"/>
+
     <!--抽屉布局-->
     <android.support.v4.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,8 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">
-        <!--主要内容-->
+        <!--主体内容-->
         <include layout="@layout/content_main"/>
+
         <!--左侧抽屉菜单-->
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
