@@ -9,10 +9,10 @@
 
     <!--抽屉布局-->
     <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">
@@ -22,12 +22,28 @@
         <!--左侧抽屉菜单-->
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
+            android:theme="@style/NavigationDrawerStyle"
             android:layout_width="220dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
+            app:itemTextColor="@color/white"
+            app:itemIconTint="@color/white"
+            app:itemBackground="@drawable/drawer_menu_item_bg"
+            android:background="@color/drawerBackgroundColor"
             app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/activity_main_drawer"/>
+            app:menu="@menu/activity_main_drawer">
+            <!--退出登录按钮-->
+            <Button
+                android:id="@+id/sign_out_button"
+                android:layout_width="64dp"
+                android:layout_height="26dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/sign_out_bg"
+                android:textSize="@dimen/text_normal"
+                android:textColor="@color/white"
+                android:text="退出登录"/>
+        </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>
-
 </LinearLayout>

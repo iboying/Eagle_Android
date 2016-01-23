@@ -1,14 +1,16 @@
-package com.buoyantec.eagle_android;
+package com.buoyantec.eagle_android.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.buoyantec.eagle_android.BadgeView;
+import com.buoyantec.eagle_android.R;
 
 /**
  * Created by kang on 15/12/31.

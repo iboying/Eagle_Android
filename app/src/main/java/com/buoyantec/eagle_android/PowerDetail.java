@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.adapter.PowerUpsGridViewAdapter;
+
 public class PowerDetail extends AppCompatActivity {
 
     @Override

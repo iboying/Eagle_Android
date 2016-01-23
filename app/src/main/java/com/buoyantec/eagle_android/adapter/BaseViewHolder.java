@@ -1,4 +1,4 @@
-package com.buoyantec.eagle_android;
+package com.buoyantec.eagle_android.adapter;
 
 import android.util.SparseArray;
 import android.view.View;

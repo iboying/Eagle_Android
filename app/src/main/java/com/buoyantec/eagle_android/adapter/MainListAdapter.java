@@ -1,4 +1,4 @@
-package com.buoyantec.eagle_android;
+package com.buoyantec.eagle_android.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,17 +9,20 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.BadgeView;
+import com.buoyantec.eagle_android.R;
+
 /**
- * Created by kang on 16/1/12.
- * 能效管理页面的ListView适配器, 含有第二级跳转
+ * Created by kang on 16/1/7.
+ * 告警信息页面适配器, 不含有第二级跳转, 只显示状态信息
  */
-public class PowerManageListAdapter extends BaseAdapter {
+public class MainListAdapter extends BaseAdapter{
     private Context mContext;
     private Integer[] images;
     private String[] texts;
     private ListView listView;
 
-    public PowerManageListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
+    public MainListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
         this.listView = listView;
         this.mContext = c;
         this.images = images;
@@ -32,7 +35,6 @@ public class PowerManageListAdapter extends BaseAdapter {
     }
 
     @Override
-
     public Object getItem(int position) {
         return position;
     }
@@ -45,13 +47,23 @@ public class PowerManageListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_power_manage, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false);
         }
-        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_power_manage_image);
-        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_power_manage_text);
+        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_text);
+        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_image);
+        TextView status = BaseViewHolder.get(convertView, R.id.list_item_status);
 
         iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
+
+        Integer[] num = {0,0,0};
+        //添加徽章提示信息
+        if (position == 0) {
+            status.setText("");
+            BadgeView badge = new BadgeView(mContext, status);
+            badge.setText(num[position].toString());
+            badge.show();
+        }
 
         return convertView;
     }

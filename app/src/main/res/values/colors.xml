@@ -33,10 +33,6 @@
     <!--机柜温度,空调,列头柜ListView灰色背景色-->
     <color name="stripListViewGrayColor">#FAFAFA</color>
 
-    <!--Drawer Menu Item selected bg-->
-    <color name="drawerItemSelectedBg">#202020</color>
-    <color name="drawerItemBorder">#2EA0FF</color>
-
     <!--通用颜色-->
     <color name="white">#ffffff</color>
     <color name="gray">#aaaaaa</color>

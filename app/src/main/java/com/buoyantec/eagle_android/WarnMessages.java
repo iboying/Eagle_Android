@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.adapter.MainListAdapter;
+
 public class WarnMessages extends AppCompatActivity {
 
     @Override

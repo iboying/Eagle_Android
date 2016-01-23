@@ -3,8 +3,11 @@ package com.buoyantec.eagle_android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.view.Gravity;
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.style.AlignmentSpan;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,12 +15,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.joanzapata.iconify.Iconify;
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         Iconify.with(new FontAwesomeModule());
         //加载布局文件
         setContentView(R.layout.activity_main);
-        //初始化toolbar
+        //初始化toolbar和侧边栏
         initToolBar();
         //图片轮播
         initCarousel();
@@ -47,7 +50,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-
         TextView subToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         subToolbarTitle.setText("中国地质大学");
 

@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.adapter.SubGridAdapter;
+
 public class SystemStatus extends AppCompatActivity {
 
     @Override
