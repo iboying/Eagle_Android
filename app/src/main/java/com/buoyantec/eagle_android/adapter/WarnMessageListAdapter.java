@@ -16,13 +16,13 @@ import com.buoyantec.eagle_android.R;
  * Created by kang on 16/1/7.
  * 告警信息页面适配器, 不含有第二级跳转, 只显示状态信息
  */
-public class MainListAdapter extends BaseAdapter{
+public class WarnMessageListAdapter extends BaseAdapter{
     private Context mContext;
     private Integer[] images;
     private String[] texts;
     private ListView listView;
 
-    public MainListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
+    public WarnMessageListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
         this.listView = listView;
         this.mContext = c;
         this.images = images;

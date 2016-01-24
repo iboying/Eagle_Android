@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.adapter.MainListAdapter;
+import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
 
 public class WarnMessages extends AppCompatActivity {
 
@@ -34,7 +34,7 @@ public class WarnMessages extends AppCompatActivity {
         final String[] texts = { "空调1告警", "空调2告警", "温湿度系统" };
 
         ListView listView = (ListView) findViewById(R.id.warn_messages_listView);
-        listView.setAdapter(new MainListAdapter(listView, this, images, texts));
+        listView.setAdapter(new WarnMessageListAdapter(listView, this, images, texts));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent i = new Intent(WarnMessages.this, WarnDetail.class);

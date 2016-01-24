@@ -19,9 +19,13 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
+import com.buoyantec.eagle_android.adapter.MySliderView;
+import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -151,15 +155,24 @@ public class MainActivity extends AppCompatActivity
     //初始化轮播控件
     private void initCarousel() {
         SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
+        sliderShow.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
 
-        String[] description = {"数据主机房", "上海机房"};
+        final String[] description = {"数据主机房", "上海机房"};
         for (int i = 0; i<2; i++){
-            TextSliderView textSliderView = new TextSliderView(this);
+            MySliderView mySliderView = new MySliderView(this);
 
-            textSliderView
+            final int finalI = i;
+            mySliderView
                     .description(description[i])
-                    .image(R.drawable.image_room);
-            sliderShow.addSlider(textSliderView);
+                    .image(R.drawable.image_room)
+                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(BaseSliderView slider) {
+                            Toast.makeText(MainActivity.this, description[finalI],
+                                            Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            sliderShow.addSlider(mySliderView);
         }
         sliderShow.setDuration(8000);
     }

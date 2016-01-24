@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.adapter.SubGridAdapter;
+import com.buoyantec.eagle_android.adapter.SystemStatusGridAdapter;
 
 public class SystemStatus extends AppCompatActivity {
 
@@ -51,7 +51,7 @@ public class SystemStatus extends AppCompatActivity {
         String[] texts = { "配电", "UPS", "列头柜", "ATS", "蓄电池", "柴油机" };
 
         GridView gridview = (GridView) findViewById(R.id.grid_power_system);
-        gridview.setAdapter(new SubGridAdapter(gridview, this, images, texts));
+        gridview.setAdapter(new SystemStatusGridAdapter(gridview, this, images, texts));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             if (position == 0) {
@@ -86,7 +86,7 @@ public class SystemStatus extends AppCompatActivity {
         String[] texts = { "温湿度", "漏水", "精密空调", "机柜温度", "", "" };
 
         GridView gridview = (GridView) findViewById(R.id.grid_env_system);
-        gridview.setAdapter(new SubGridAdapter(gridview, this, images, texts));
+        gridview.setAdapter(new SystemStatusGridAdapter(gridview, this, images, texts));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
@@ -120,7 +120,7 @@ public class SystemStatus extends AppCompatActivity {
         String[] texts = { "视频系统", "门禁系统", "烟感" };
 
         GridView gridview = (GridView) findViewById(R.id.grid_safe_system);
-        gridview.setAdapter(new SubGridAdapter(gridview, this, images, texts));
+        gridview.setAdapter(new SystemStatusGridAdapter(gridview, this, images, texts));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
