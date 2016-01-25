@@ -15,12 +15,13 @@ import retrofit2.http.POST;
  * header: Accept: application/json
  */
 public interface UserService {
+
     //通过注解设置请求头
     @FormUrlEncoded
     @Headers("Accept: application/json")
     @POST("/users/sign_in")
     //@Field提交的域
     Call<User> getUser(@Field("user[phone]") String phone,
-                        @Field("user[password]") String password);
+                       @Field("user[password]") String password);
 
 }

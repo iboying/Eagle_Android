@@ -3,11 +3,7 @@ package com.buoyantec.eagle_android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.text.Layout;
-import android.text.SpannableString;
-import android.text.style.AlignmentSpan;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +23,6 @@ import com.buoyantec.eagle_android.adapter.MySliderView;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
@@ -41,14 +37,14 @@ public class MainActivity extends AppCompatActivity
         //加载布局文件
         setContentView(R.layout.activity_main);
         //初始化toolbar和侧边栏
-        initToolBar();
+        initToolBarAndDrawer();
         //图片轮播
         initCarousel();
         //初始化GridView
         initGridView();
     }
 
-    public void initToolBar(){
+    public void initToolBarAndDrawer(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -65,6 +61,17 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // 退出登录功能
+        Button signOutButton = (Button) findViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     //为后退键绑定关闭侧边菜单功能

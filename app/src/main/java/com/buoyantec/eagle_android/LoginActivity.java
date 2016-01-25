@@ -3,10 +3,12 @@ package com.buoyantec.eagle_android;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -20,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +49,8 @@ import retrofit2.Retrofit;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * Created by kang on 16/1/25.
+ * 描述: 登录控制器
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -58,9 +62,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-//    private UserLoginTask mAuthTask = null;
 
-    // UI references.
+    // UI组件
     private AutoCompleteTextView mPhoneView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -69,14 +72,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //加载字体图标
+        // 加载字体图标
         Iconify.with(new FontAwesomeModule());
+        // 加载内容
         setContentView(R.layout.activity_login);
-
-        // Set up the login form.
+        // 设置账号控件自动补全
         mPhoneView = (AutoCompleteTextView) findViewById(R.id.phone);
         populateAutoComplete();
-
         //输入密码后点击软键盘上的回车键触发事件
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -91,8 +93,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         //点击登录的响应函数
-        Button mPhoneSignInButton = (Button) findViewById(R.id.sign_in_button);
-        mPhoneSignInButton.setOnClickListener(new OnClickListener() {
+        Button mLoginButton = (Button) findViewById(R.id.sign_in_button);
+        mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -109,16 +111,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void editTextHasFocused() {
         final TextView phoneIcon = (TextView) findViewById(R.id.login_phone_icon);
         final TextView passwordIcon = (TextView) findViewById(R.id.login_password_icon);
+        final Context c = LoginActivity.this;
         //输入框获取焦点时,图标变蓝
         mPhoneView.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus){
-                phoneIcon.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
-                mPhoneView.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+                phoneIcon.setTextColor(ContextCompat.getColor(c, R.color.loginFocusedBorder));
+                mPhoneView.setTextColor(ContextCompat.getColor(c, R.color.loginFocusedBorder));
             } else{
-                phoneIcon.setTextColor(getResources().getColor(R.color.loginNormalBorder));
-                mPhoneView.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+                phoneIcon.setTextColor(ContextCompat.getColor(c, R.color.loginNormalBorder));
+                mPhoneView.setTextColor(ContextCompat.getColor(c, R.color.loginNormalBorder));
             }
             }
         });
@@ -127,11 +130,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus){
-                passwordIcon.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
-                mPasswordView.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+                passwordIcon.setTextColor(ContextCompat.getColor(c, R.color.loginFocusedBorder));
+                mPasswordView.setTextColor(ContextCompat.getColor(c, R.color.loginFocusedBorder));
             } else{
-                passwordIcon.setTextColor(getResources().getColor(R.color.loginNormalBorder));
-                mPasswordView.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+                passwordIcon.setTextColor(ContextCompat.getColor(c, R.color.loginNormalBorder));
+                mPasswordView.setTextColor(ContextCompat.getColor(c, R.color.loginNormalBorder));
             }
             }
         });
@@ -156,24 +159,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * 开始登录
      */
     private void attemptLogin() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
-
-        // Reset errors.
+        // 初始化错误信息
         mPhoneView.setError(null);
         mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
+        // 保存表单数据
         String phone = mPhoneView.getText().toString();
         String password = mPasswordView.getText().toString();
-
+        // 登录状态标识: true:无效登录, false: 有效登录
         boolean cancel = false;
+        // 焦点控件
         View focusView = null;
 
         // 验证: 密码是否为空/密码是否符合自定义规则
@@ -191,34 +188,45 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+            // 无效的数据, 返回焦点控件
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+            // 有效的数据, 开始登录
             showProgress(true);
-//            mAuthTask = new UserLoginTask(phone, password);
+            //调用接口,处理回调
+            loginTask(phone, password);
+        }
+    }
 
-            Call<User> call = User.userService().getUser(phone, password);
-            call.enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Response<User> response) {
-                    int statusCode = response.code();
+    /**
+     * 调用接口,处理数据
+     * @param phone
+     * @param password
+     */
+    private void loginTask(String phone, String password) {
+        Call<User> call = User.userService().getUser(phone, password);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Response<User> response) {
+                int statusCode = response.code();
+                if (statusCode == 201) {
                     User user = response.body();
-                    System.out.println(statusCode);
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    Bundle mBundle = new Bundle();
                     startActivity(i);
                     finish();
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
+                }else {
+                    showProgress(false);
                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                     mPasswordView.requestFocus();
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
     private boolean isPhoneValid(String phone) {
@@ -312,7 +320,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
-     *
      * 描述: 添加手机号码到自动完成列表
      * @param phoneNumberCollection
      */
@@ -324,68 +331,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mPhoneView.setAdapter(adapter);
     }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-//    public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
-//
-//        private final String mPhone;
-//        private final String mPassword;
-//        private int statusCode;
-//
-//        UserLoginTask(String phone, String password) {
-//            mPhone = phone;
-//            mPassword = password;
-//        }
-//
-//        //--------------------------调用接口----------------------------
-//        @Override
-//        protected Boolean doInBackground(String... params) {
-//            // TODO: attempt authentication against a network service.
-//
-//            Call<User> call = User.userService().getUser(mPhone, mPassword);
-//            call.enqueue(new Callback<User>() {
-//                @Override
-//                public void onResponse(Response<User> response) {
-//                    statusCode = response.code();
-//                    User user = response.body();
-//                    System.out.println(statusCode);
-//                }
-//
-//                @Override
-//                public void onFailure(Throwable t) {
-//
-//                }
-//            });
-//
-//            // TODO: register the new account here.
-//            return true;
-//        }
-//
-//        //登录响应
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            mAuthTask = null;
-//            showProgress(false);
-//
-//            if (success) {
-//                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-//                startActivity(i);
-//                finish();
-//            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//            }
-//        }
-//
-//        //取消
-//        @Override
-//        protected void onCancelled() {
-//            mAuthTask = null;
-//            showProgress(false);
-//        }
-//    }
 }
 
