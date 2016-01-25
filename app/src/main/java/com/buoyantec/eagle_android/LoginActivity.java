@@ -3,7 +3,6 @@ package com.buoyantec.eagle_android;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -31,21 +30,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.API.UserService;
+import com.buoyantec.eagle_android.model.User;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -60,16 +56,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "13866013196:123456", "18516512221:123456"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+//    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mPhoneView;
@@ -82,7 +71,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         //加载字体图标
         Iconify.with(new FontAwesomeModule());
-
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
@@ -125,58 +113,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPhoneView.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    phoneIcon.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
-                    mPhoneView.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
-                } else{
-                    phoneIcon.setTextColor(getResources().getColor(R.color.loginNormalBorder));
-                    mPhoneView.setTextColor(getResources().getColor(R.color.loginNormalBorder));
-                }
+            if (hasFocus){
+                phoneIcon.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+                mPhoneView.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+            } else{
+                phoneIcon.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+                mPhoneView.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+            }
             }
         });
         //密码框获取焦点时,图标变蓝
         mPasswordView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    passwordIcon.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
-                    mPasswordView.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
-                } else{
-                    passwordIcon.setTextColor(getResources().getColor(R.color.loginNormalBorder));
-                    mPasswordView.setTextColor(getResources().getColor(R.color.loginNormalBorder));
-                }
+            if (hasFocus){
+                passwordIcon.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+                mPasswordView.setTextColor(getResources().getColor(R.color.loginFocusedBorder));
+            } else{
+                passwordIcon.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+                mPasswordView.setTextColor(getResources().getColor(R.color.loginNormalBorder));
+            }
             }
         });
     }
 
     private void populateAutoComplete() {
-//        if (!mayRequestContacts()) {
-//            return;
-//        }
-//
-//        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mPhoneView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                .setAction(android.R.string.ok, new View.OnClickListener() {
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.M)
-                    public void onClick(View v) {
-                        requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                    }
-                });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
+        //自动补全表单
     }
 
     /**
@@ -199,9 +161,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+//        if (mAuthTask != null) {
+//            return;
+//        }
 
         // Reset errors.
         mPhoneView.setError(null);
@@ -214,20 +176,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
+        // 验证: 密码是否为空/密码是否符合自定义规则
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(phone)) {
+        // 验证: 手机号是否为空/手机号是否符合自定义规则
+        if (TextUtils.isEmpty(phone) && !isPhoneValid(phone)) {
             mPhoneView.setError(getString(R.string.error_field_required));
-            focusView = mPhoneView;
-            cancel = true;
-        } else if (!isPhoneValid(phone)) {
-            mPhoneView.setError(getString(R.string.error_invalid_phone));
             focusView = mPhoneView;
             cancel = true;
         }
@@ -240,8 +198,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(phone, password);
-            mAuthTask.execute("http://fanyi.youdao.com/openapi.do");
+//            mAuthTask = new UserLoginTask(phone, password);
+
+            Call<User> call = User.userService().getUser(phone, password);
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Response<User> response) {
+                    int statusCode = response.code();
+                    User user = response.body();
+                    System.out.println(statusCode);
+                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }
+            });
         }
     }
 
@@ -252,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() >= 6;
     }
 
     /**
@@ -335,7 +311,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-
+    /**
+     *
+     * 描述: 添加手机号码到自动完成列表
+     * @param phoneNumberCollection
+     */
     private void addPhonesToAutoComplete(List<String> phoneNumberCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -349,85 +329,63 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
-
-        private final String mPhone;
-        private final String mPassword;
-
-        UserLoginTask(String phone, String password) {
-            mPhone = phone;
-            mPassword = password;
-        }
-
-        //调用接口
-        @Override
-        protected Boolean doInBackground(String... params) {
-            // TODO: attempt authentication against a network service.
-
-            // Simulate network access.
-            try {
-                URL url = new URL(params[0]);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-                connection.setDoInput(true);
-                connection.setDoOutput(true);
-                connection.setRequestMethod("POST");
-                //向服务器输入数据
-                OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream(), "utf-8");
-                BufferedWriter bw = new BufferedWriter(osw);
-                bw.write("keyfrom=buoyantec&key=737944&type=data&doctype=xml&version=1.1&q=good");
-                bw.flush();
-                //服务器数据输入到本地
-                InputStream is = connection.getInputStream();
-                InputStreamReader isr = new InputStreamReader(is, "utf-8");
-                BufferedReader br = new BufferedReader(isr);
-                String line;
-                while ((line = br.readLine()) != null){
-                    System.out.println(line);
-                }
-                br.close();
-                isr.close();
-                is.close();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mPhone)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        //登录响应
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        //取消
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
+//    public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
+//
+//        private final String mPhone;
+//        private final String mPassword;
+//        private int statusCode;
+//
+//        UserLoginTask(String phone, String password) {
+//            mPhone = phone;
+//            mPassword = password;
+//        }
+//
+//        //--------------------------调用接口----------------------------
+//        @Override
+//        protected Boolean doInBackground(String... params) {
+//            // TODO: attempt authentication against a network service.
+//
+//            Call<User> call = User.userService().getUser(mPhone, mPassword);
+//            call.enqueue(new Callback<User>() {
+//                @Override
+//                public void onResponse(Response<User> response) {
+//                    statusCode = response.code();
+//                    User user = response.body();
+//                    System.out.println(statusCode);
+//                }
+//
+//                @Override
+//                public void onFailure(Throwable t) {
+//
+//                }
+//            });
+//
+//            // TODO: register the new account here.
+//            return true;
+//        }
+//
+//        //登录响应
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mAuthTask = null;
+//            showProgress(false);
+//
+//            if (success) {
+//                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+//                startActivity(i);
+//                finish();
+//            } else {
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.requestFocus();
+//            }
+//        }
+//
+//        //取消
+//        @Override
+//        protected void onCancelled() {
+//            mAuthTask = null;
+//            showProgress(false);
+//        }
+//    }
 }
 

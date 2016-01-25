@@ -34,6 +34,13 @@ dependencies {
     //字体图标
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
     //网络通信
-    compile 'com.squareup.okhttp3:okhttp:3.0.1'
+    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
+    compile 'com.google.code.gson:gson:2.5'
+    //以下两个版本要一致,不然编译出错
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-SNAPSHOT'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+
 }
