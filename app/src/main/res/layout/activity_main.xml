@@ -31,7 +31,6 @@
             app:itemIconTint="@color/white"
             app:itemBackground="@drawable/drawer_menu_item_bg"
             android:background="@color/drawerBackgroundColor"
-            app:headerLayout="@layout/nav_header_main"
             app:menu="@menu/activity_main_drawer">
             <!--退出登录按钮-->
             <Button

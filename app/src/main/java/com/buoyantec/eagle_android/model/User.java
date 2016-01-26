@@ -1,9 +1,10 @@
 package com.buoyantec.eagle_android.model;
 
 import com.buoyantec.eagle_android.API.UserService;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
@@ -13,22 +14,166 @@ import retrofit2.Retrofit;
  * 模型: User
  * 用途: 登录,用户信息
  */
-public class User {
 
-    private static final String BASE_URL = "http://139.196.190.201";
+public class User implements Serializable{
 
-    // 让 Gson 自动将 API 中的下划线全小写式变量名转换成 Java 的小写开头驼峰式
-    private static final Gson gson = new GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .create();
+    @SerializedName("id")
+    @Expose
+    private int id;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
+    @SerializedName("authentication_token")
+    @Expose
+    private String authenticationToken;
 
+    /**
+     *
+     * @return
+     * The id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     * The id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     *
+     * @return
+     * The email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     *
+     * @param email
+     * The email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     *
+     * @return
+     * The createdAt
+     */
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     *
+     * @param createdAt
+     * The created_at
+     */
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     *
+     * @return
+     * The updatedAt
+     */
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     *
+     * @param updatedAt
+     * The updated_at
+     */
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    /**
+     *
+     * @return
+     * The name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     *
+     * @param name
+     * The name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *
+     * @return
+     * The phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     *
+     * @param phone
+     * The phone
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     *
+     * @return
+     * The authenticationToken
+     */
+    public String getAuthenticationToken() {
+        return authenticationToken;
+    }
+
+    /**
+     *
+     * @param authenticationToken
+     * The authentication_token
+     */
+    public void setAuthenticationToken(String authenticationToken) {
+        this.authenticationToken = authenticationToken;
+    }
+
+    // 实例化一次请求
     private static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .baseUrl("http://139.196.190.201")
+            .addConverterFactory(GsonConverterFactory.create())
             .build();
-
+    // 发送指定请求
     private static final UserService USER_SERVICE = retrofit.create(UserService.class);
 
+    // 返回本次请求对象
     public static UserService userService() {
         return USER_SERVICE;
     }

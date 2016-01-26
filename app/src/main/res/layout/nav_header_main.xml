@@ -52,8 +52,7 @@
             android:textStyle="bold"
             android:lineSpacingExtra="5dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_large"
-            android:text="Ben"/>
+            android:textSize="@dimen/text_large"/>
     </LinearLayout>
 
 </LinearLayout>

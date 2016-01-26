@@ -1,6 +1,9 @@
 package com.buoyantec.eagle_android;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
@@ -20,18 +23,27 @@ import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.adapter.MySliderView;
+import com.buoyantec.eagle_android.model.User;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private TextView name;
+    private TextView room;
+    private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //判断用户
+        isPresentUser();
         //加载字体图标
         Iconify.with(new FontAwesomeModule());
         //加载布局文件
@@ -42,6 +54,21 @@ public class MainActivity extends AppCompatActivity
         initCarousel();
         //初始化GridView
         initGridView();
+    }
+
+    /**
+     * 用户信息是否存在
+     * 是: 加载主页面
+     * 否: 加载登陆页
+     */
+    private void isPresentUser() {
+        mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        String pwd = mPreferences.getString("password", "");
+        if (pwd.isEmpty()) {
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     public void initToolBarAndDrawer(){
@@ -62,11 +89,20 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // 更新数据
+        View headLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        this.name = (TextView)headLayout.findViewById(R.id.user_name);
+        String mName = mPreferences.getString("name", null);
+        name.setText(mName);
+
         // 退出登录功能
         Button signOutButton = (Button) findViewById(R.id.sign_out_button);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putString("password", "");
+                editor.commit();
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
