@@ -1,6 +1,6 @@
 package com.buoyantec.eagle_android.model;
 
-import com.buoyantec.eagle_android.API.UserService;
+import com.buoyantec.eagle_android.API.MyService;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -164,18 +164,4 @@ public class User implements Serializable{
     public void setAuthenticationToken(String authenticationToken) {
         this.authenticationToken = authenticationToken;
     }
-
-    // 实例化一次请求
-    private static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://139.196.190.201")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    // 发送指定请求
-    private static final UserService USER_SERVICE = retrofit.create(UserService.class);
-
-    // 返回本次请求对象
-    public static UserService userService() {
-        return USER_SERVICE;
-    }
-
 }
