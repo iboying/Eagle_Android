@@ -3,6 +3,7 @@ package com.buoyantec.eagle_android;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,18 +45,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //判断用户
+        // 判断用户
         isPresentUser();
-        //加载字体图标
+        // 加载字体图标
         Iconify.with(new FontAwesomeModule());
-        //加载布局文件
+        // 加载布局文件
         setContentView(R.layout.activity_main);
-        //初始化toolbar和侧边栏
+        // 初始化toolbar和侧边栏
         initToolBarAndDrawer();
-        //图片轮播
+        // 图片轮播
         initCarousel();
-        //初始化GridView
+        // 初始化GridView
         initGridView();
+        // 异步任务
+        new mainAsynTask().execute();
     }
 
     /**
@@ -85,8 +89,11 @@ public class MainActivity extends AppCompatActivity
             String[] rooms = sp_room.split("#");
             room_id = Integer.parseInt(rooms[0]);
             room = rooms[1];
+            subToolbarTitle.setText(room);
+        } else{
+            subToolbarTitle.setText("无可管理机房");
         }
-        subToolbarTitle.setText(room);
+
 
         //添加侧边菜单,并绑定ToolBar菜单按钮
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -181,25 +188,25 @@ public class MainActivity extends AppCompatActivity
         gridview.setAdapter(new MainGridAdapter(gridview, this, images, texts));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            if (position == 0) {
-                Intent i = new Intent(MainActivity.this, SystemStatus.class);
-                startActivity(i);
-            } else if (position == 1) {
-                Intent i = new Intent(MainActivity.this, WarnMessages.class);
-                startActivity(i);
-            } else if (position == 2) {
-                Intent i = new Intent(MainActivity.this, WorkPlan.class);
-                startActivity(i);
-            } else if (position == 3) {
-                Intent i = new Intent(MainActivity.this, PowerManage.class);
-                startActivity(i);
-            } else if (position == 4) {
-                Intent i = new Intent(MainActivity.this, ItManage.class);
-                startActivity(i);
-            } else if (position == 5) {
-                Intent i = new Intent(MainActivity.this, Other.class);
-                startActivity(i);
-            }
+                if (position == 0) {
+                    Intent i = new Intent(MainActivity.this, SystemStatus.class);
+                    startActivity(i);
+                } else if (position == 1) {
+                    Intent i = new Intent(MainActivity.this, WarnMessages.class);
+                    startActivity(i);
+                } else if (position == 2) {
+                    Intent i = new Intent(MainActivity.this, WorkPlan.class);
+                    startActivity(i);
+                } else if (position == 3) {
+                    Intent i = new Intent(MainActivity.this, PowerManage.class);
+                    startActivity(i);
+                } else if (position == 4) {
+                    Intent i = new Intent(MainActivity.this, ItManage.class);
+                    startActivity(i);
+                } else if (position == 5) {
+                    Intent i = new Intent(MainActivity.this, Other.class);
+                    startActivity(i);
+                }
             }
         });
     }
@@ -226,5 +233,35 @@ public class MainActivity extends AppCompatActivity
             sliderShow.addSlider(mySliderView);
         }
         sliderShow.setDuration(8000);
+    }
+
+    /**
+     * 异步任务: 后台检测告警信息
+     */
+    class mainAsynTask extends AsyncTask<TextView, Integer, Integer> {
+        // 耗时的后台操作
+        @Override
+        protected Integer doInBackground(TextView... params) {
+            // 异步获取告警信息数量
+            return 53;
+        }
+
+        // doInBackground之前调用,可用于实例化等操作
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        // doInBackground之后调用,用于处理doInBackground的返回结果
+        // 输入 == doInBackground的输出
+        @Override
+        protected void onPostExecute(Integer count) {
+            super.onPostExecute(count);
+            ImageView warnMessage = (ImageView) findViewById(R.id.grid_warn_message_image);
+            BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
+            badge.setText(count.toString());
+            badge.setBadgeMargin(0);
+            badge.show();
+        }
     }
 }

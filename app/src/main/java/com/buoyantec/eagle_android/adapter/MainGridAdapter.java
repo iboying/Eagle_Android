@@ -50,13 +50,9 @@ public class MainGridAdapter extends BaseAdapter {
 
         iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
-        //添加徽章提示信息
-        if (position == 1) {
-            BadgeView badge = new BadgeView(mContext, iv);
-            badge.setText("3");
-            badge.setBadgeMargin(0);
-            badge.show();
-        }
+        // 添加id
+        if (position == 1)
+            iv.setId(R.id.grid_warn_message_image);
 
         return convertView;
     }

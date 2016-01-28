@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--自定义告警信息图标id-->
+    <item name="grid_warn_message_image" type="id"/>
+</resources>

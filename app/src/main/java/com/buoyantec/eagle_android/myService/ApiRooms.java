@@ -26,18 +26,20 @@ import retrofit2.Retrofit;
  * 获取所有机房
  * 参数: token, phone
  * 用户身份验证成功后调用
- * 返回值: 机房名称
+ * 返回值:
+ *      链接成功: 状态码
+ *      连接失败: 2222
  */
-public class GetRooms {
+public class ApiRooms {
     private String phone;
     private String token;
-    private Context context;
-
+    private SharedPreferences sp;
     //初始化
-    public GetRooms(Context c, String phone, String token){
+    public ApiRooms(Context context, String phone, String token){
         this.phone = phone;
         this.token = token;
-        this.context = c;
+        sp = context.getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+
     }
 
     /**
@@ -66,34 +68,38 @@ public class GetRooms {
         // 建立http请求
         MyService myService = retrofit.create(MyService.class);
         Call<Rooms> call = myService.getRooms();
-        // 发送请求(默认为异步加载)
+        // 发送请求(使用同步加载)
         call.enqueue(new Callback<Rooms>() {
             @Override
             public void onResponse(Response<Rooms> response) {
-                if (response.body() != null && response.code() == 200){
+                if (response.body() != null && response.code() == 200) {
                     String result = "";
                     // 获得机房List
                     List<Room> roomList = response.body().getRooms();
                     // 遍历机房
                     Iterator<Room> rooms = roomList.iterator();
-                    while(rooms.hasNext()) {
+                    while (rooms.hasNext()) {
                         Room room = rooms.next();
-                        result += (room.getId()+"");
+                        result += (room.getId() + "");
                         result += '#';
                         result += room.getName();
                     }
-                    SharedPreferences sp = context
-                            .getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+                    // 机房信息存入SharePreferences
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("room", result);
+                    editor.putInt("room_status_code", response.code());
                     editor.apply();
                     System.out.println(">>>>>>>>>>获取机房成功>>>>>>>>>>>>");
                 } else {
                     try {
                         String error = response.errorBody().string();
+                        System.out.println(error);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putInt("room_status_code", response.code());
+                    editor.apply();
                     System.out.println(">>>>>>>>>>获取机房失败>>>>>>>>>>>>");
                 }
             }
@@ -101,6 +107,9 @@ public class GetRooms {
             @Override
             public void onFailure(Throwable t) {
                 System.out.println(">>>>>>>>>>机房接口链接失败>>>>>>>>>>>>");
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt("room_status_code", 2222);
+                editor.apply();
             }
         });
         System.out.println(">>>>>>>>>>获取机房执行完成>>>>>>>>>>>>");

@@ -1,6 +1,7 @@
 package com.buoyantec.eagle_android.API;
 
 import com.buoyantec.eagle_android.model.Rooms;
+import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.User;
 
 import retrofit2.Call;
@@ -15,7 +16,7 @@ import retrofit2.http.POST;
  * service: http://139.196.190.201
  */
 public interface MyService {
-    // 获取用户信息
+    // 获取用户信息 status: 201
     @FormUrlEncoded
     @Headers("Accept: application/json")
     @POST("users/sign_in")
@@ -23,10 +24,14 @@ public interface MyService {
     Call<User> getUser(@Field("user[phone]") String phone,
                        @Field("user[password]") String password);
 
-    // 获取机房列表
+    // 获取机房列表 status: 200
     @Headers("Accept: application/json")
     @GET("rooms")
     Call<Rooms> getRooms();
 
+    // 获取系统列表 status: 200
+    @Headers("Accept: application/json")
+    @GET("systems")
+    Call<MySystems> getSystems();
 
 }

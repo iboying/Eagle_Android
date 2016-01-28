@@ -23,18 +23,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.model.Rooms;
 import com.buoyantec.eagle_android.model.User;
-import com.buoyantec.eagle_android.myService.GetRooms;
+import com.buoyantec.eagle_android.myService.ApiRooms;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -255,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * 调用接口,处理数据
      */
-    private void loginTask(String phone, String password) {
+    private void loginTask(final String phone, final String password) {
         // 创建Retrofit实例
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://139.196.190.201/")
@@ -274,21 +267,18 @@ public class LoginActivity extends AppCompatActivity {
                 if (statusCode == 201) {
                     // 获取用户
                     User user = response.body();
-                    // 获取用户列表
-                    GetRooms getRooms = new GetRooms(
-                            getApplicationContext(),
-                            user.getPhone(),
-                            user.getAuthenticationToken()
-                    );
-                    getRooms.getUserRooms();
+                    // 获取用户机房列表
+                    ApiRooms apiRooms = new ApiRooms(
+                            getApplicationContext(), phone, user.getAuthenticationToken());
+                    apiRooms.getUserRooms();
                     // 写入SharePreferences
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putInt("id", user.getId());
                     editor.putString("name", user.getName());
                     editor.putString("email", user.getEmail());
                     editor.putString("token", user.getAuthenticationToken());
-                    editor.putString("phone", user.getPhone());
-                    editor.putString("password", mPasswordView.getText().toString());
+                    editor.putString("phone", phone);
+                    editor.putString("password", password);
                     editor.apply();
                     Log.v("user", getResources().getString(R.string.apiSuccess));
                     // 加载主页面
