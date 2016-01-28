@@ -23,8 +23,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.model.AllRoom;
+import com.buoyantec.eagle_android.model.Rooms;
 import com.buoyantec.eagle_android.model.User;
+import com.buoyantec.eagle_android.myService.GetRooms;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
@@ -257,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
     private void loginTask(String phone, String password) {
         // 创建Retrofit实例
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201")
+                .baseUrl("http://139.196.190.201/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -274,8 +275,13 @@ public class LoginActivity extends AppCompatActivity {
                     // 获取用户
                     User user = response.body();
                     // 获取用户列表
-                    getUserRooms(user.getPhone(), user.getAuthenticationToken());
-                    // 暂时使用SharedPreference进行应用信息持久化
+                    GetRooms getRooms = new GetRooms(
+                            getApplicationContext(),
+                            user.getPhone(),
+                            user.getAuthenticationToken()
+                    );
+                    getRooms.getUserRooms();
+                    // 写入SharePreferences
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putInt("id", user.getId());
                     editor.putString("name", user.getName());
@@ -284,70 +290,24 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("phone", user.getPhone());
                     editor.putString("password", mPasswordView.getText().toString());
                     editor.apply();
+                    Log.v("user", getResources().getString(R.string.apiSuccess));
                     // 加载主页面
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
                     finish();
-                    Log.v("user_info", "Success api client.");
                 } else {
                     showProgress(false);
                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                     mPasswordView.requestFocus();
-                    Log.v("user_info", "Failed api client.");
+                    Log.v("user", getResources().getString(R.string.apiFailed));
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                System.out.println(">>>>>>>>>>用户接口连接失败>>>>>>>>>>>>");
             }
         });
-    }
-
-    /**
-     * 如果用户身份合法,获取用户机房列表
-     */
-    private void getUserRooms(final String phone, final String token) {
-        // 定义拦截器,添加headers
-//        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-//            @Override
-//            public okhttp3.Response intercept(Chain chain) throws IOException {
-//                Request newRequest = chain.request().newBuilder()
-//                        .addHeader("X-User-Token", token)
-//                        .addHeader("X-User-Phone", phone)
-//                        .build();
-//                return chain.proceed(newRequest);
-//            }
-//        }).build();
-//
-//        // 创建Retrofit实例
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://139.196.190.201")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .client(client)
-//                .build();
-//
-//        // 创建所有链接
-//        MyService myService = retrofit.create(MyService.class);
-//        // 获取指定链接数据
-//        Call<AllRoom> call = myService.getRooms();
-//        call.enqueue(new Callback<AllRoom>() {
-//            @Override
-//            public void onResponse(Response<AllRoom> response) {
-//                AllRoom room = response.body();
-//                System.out.println("=========================");
-//                System.out.println(room.toString());
-//                System.out.println("=========================");
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                showProgress(false);
-//                mPhoneView.setError("您没有可管理的机房");
-//                mPhoneView.requestFocus();
-//                Log.v("AllRoom", "Failed api client.");
-//            }
-//        });
     }
 }
 

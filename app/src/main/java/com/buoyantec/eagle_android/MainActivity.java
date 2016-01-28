@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView name;
-    private TextView room;
+    private String room;
+    private Integer room_id;
     private SharedPreferences mPreferences;
 
     @Override
@@ -78,7 +79,14 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         TextView subToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        subToolbarTitle.setText("中国地质大学");
+        // 获取所有机房([id1, room1, id2, room2, ...])
+        String sp_room = mPreferences.getString("room", null);
+        if (sp_room != null){
+            String[] rooms = sp_room.split("#");
+            room_id = Integer.parseInt(rooms[0]);
+            room = rooms[1];
+        }
+        subToolbarTitle.setText(room);
 
         //添加侧边菜单,并绑定ToolBar菜单按钮
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -102,7 +110,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString("password", "");
-                editor.commit();
+                editor.apply();
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();

@@ -51,4 +51,8 @@
     <string name="title_activity_ups_detail">UPS详情</string>
     <string name="title_activity_power_detail">配电柜详情</string>
 
+    <!--api status-->
+    <string name="apiFailed">==========调用接口失败==========</string>
+    <string name="apiSuccess">==========调用接口成功==========</string>
+
 </resources>

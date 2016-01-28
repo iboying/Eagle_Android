@@ -1,6 +1,6 @@
 package com.buoyantec.eagle_android.API;
 
-import com.buoyantec.eagle_android.model.AllRoom;
+import com.buoyantec.eagle_android.model.Rooms;
 import com.buoyantec.eagle_android.model.User;
 
 import retrofit2.Call;
@@ -18,14 +18,15 @@ public interface MyService {
     // 获取用户信息
     @FormUrlEncoded
     @Headers("Accept: application/json")
-    @POST("/users/sign_in")
+    @POST("users/sign_in")
     //@Field提交的域
     Call<User> getUser(@Field("user[phone]") String phone,
                        @Field("user[password]") String password);
 
     // 获取机房列表
-//    @GET("/rooms")
-//    Call<AllRoom> getRooms();
+    @Headers("Accept: application/json")
+    @GET("rooms")
+    Call<Rooms> getRooms();
 
 
 }
