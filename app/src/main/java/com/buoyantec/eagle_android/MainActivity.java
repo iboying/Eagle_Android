@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Integer doInBackground(TextView... params) {
             // 异步获取告警信息数量
-            return 53;
+            return 15;
         }
 
         // doInBackground之前调用,可用于实例化等操作

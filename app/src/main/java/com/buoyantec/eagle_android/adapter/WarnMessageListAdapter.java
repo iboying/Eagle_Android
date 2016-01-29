@@ -56,14 +56,12 @@ public class WarnMessageListAdapter extends BaseAdapter{
         iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
 
-        Integer[] num = {0,0,0};
+        Integer[] num = {5,5,5};
         //添加徽章提示信息
-        if (position == 0) {
-            status.setText("");
-            BadgeView badge = new BadgeView(mContext, status);
-            badge.setText(num[position].toString());
-            badge.show();
-        }
+        status.setText("");
+        BadgeView badge = new BadgeView(mContext, status);
+        badge.setText(num[position].toString());
+        badge.show();
 
         return convertView;
     }
