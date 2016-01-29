@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/system_status_grid_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="165dp">
+    <GridView
+        android:id="@+id/system_status_grid"
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:horizontalSpacing="1dp"
+        android:verticalSpacing="1dp"
+        android:numColumns="3"
+        android:gravity="center"
+        android:background="@color/gridBackgroundColor"
+        android:scrollbars="none"
+        android:clickable="true"/>
+</LinearLayout>
+<!--LinearLayout的高度需要和GridView保持一致,为固定值,否则动态加载高度无效,待解决-->
