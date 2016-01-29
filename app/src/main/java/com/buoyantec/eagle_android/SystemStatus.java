@@ -37,7 +37,7 @@ import retrofit2.Retrofit;
 
 public class SystemStatus extends AppCompatActivity {
     private HashMap<String, Integer> systemIcon;
-    private HashMap<String, ArrayList<String>> kindSystems;
+    private HashMap<String, String[]> kindSystems;
     private Integer statusCode;
     private Context context;
 
@@ -49,10 +49,12 @@ public class SystemStatus extends AppCompatActivity {
         init();
         // sub_toolbar
         initToolbar();
+        // 获取接口,刷新UI
+        initSystems();
         //GridView
-        initPowerSystemGrid();
-        initEnvSystemGrid();
-        initSafeSystemGrid();
+//        initPowerSystemGrid();
+//        initEnvSystemGrid();
+//        initSafeSystemGrid();
     }
 
     //-------------------私有方法--------------------
@@ -93,99 +95,250 @@ public class SystemStatus extends AppCompatActivity {
     }
 
     //初始化动力系统GridView
-    private void initPowerSystemGrid(){
-        // references to our images
-        Integer[] images = {
-                R.drawable.system_status_power, R.drawable.system_status_ups,
-                R.drawable.system_status_box, R.drawable.system_status_ats,
-                R.drawable.system_status_battery, R.drawable.system_status_engine,
-        };
-        // texts of images
-        String[] texts = { "配电", "UPS", "列头柜", "ATS", "蓄电池", "柴油机" };
+//    private void initPowerSystemGrid(){
+//        // references to our images
+//        Integer[] images = {
+//                R.drawable.system_status_power, R.drawable.system_status_ups,
+//                R.drawable.system_status_box, R.drawable.system_status_ats,
+//                R.drawable.system_status_battery, R.drawable.system_status_engine,
+//        };
+//        // texts of images
+//        String[] texts = { "配电", "UPS", "列头柜", "ATS", "蓄电池", "柴油机" };
+//
+//        GridView gridView = (GridView) findViewById(R.id.grid_power_system);
+//        gridView.setAdapter(new SystemStatusGridAdapter(gridView, this, images, texts));
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//            if (position == 0) {
+//                Intent i = new Intent(context, PowerDistribution.class);
+//                startActivity(i);
+//            } else if (position == 1) {
+//                Intent i = new Intent(context, UpsSystem.class);
+//                startActivity(i);
+//            } else if (position == 2) {
+//                Intent i = new Intent(context, Box.class);
+//                startActivity(i);
+//            } else if (position == 3) {
+//
+//            } else if (position == 4) {
+//                Intent i = new Intent(context, Battery.class);
+//                startActivity(i);
+//            } else if (position == 5) {
+//
+//            }
+//            }
+//        });
+//    }
+//    //初始化环境系统GridView
+//    private void initEnvSystemGrid(){
+//        // references to our images
+//        Integer[] images = {
+//                R.drawable.system_status_temperature, R.drawable.system_status_water,
+//                R.drawable.system_status_air, R.drawable.system_status_cabinet,
+//                R.drawable.system_status_empty, R.drawable.system_status_empty
+//        };
+//        // texts of images
+//        String[] texts = { "温湿度", "漏水", "精密空调", "机柜温度", "", "" };
+//
+//        GridView gridView = (GridView) findViewById(R.id.grid_env_system);
+//        gridView.setAdapter(new SystemStatusGridAdapter(gridView, this, images, texts));
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                if (position == 0) {
+//                    Intent i = new Intent(context, Temperature.class);
+//                    startActivity(i);
+//                } else if (position == 1) {
+//                    Intent i = new Intent(context, Water.class);
+//                    startActivity(i);
+//                } else if (position == 2) {
+//                    Intent i = new Intent(context, PrecisionAir.class);
+//                    startActivity(i);
+//                } else if (position == 3) {
+//                    Intent i = new Intent(context, Cabinet.class);
+//                    startActivity(i);
+//                } else if (position == 4) {
+//
+//                } else if (position == 5) {
+//
+//                }
+//            }
+//        });
+//    }
+//    //初始化安防系统GridView
+//    private void initSafeSystemGrid(){
+//        // references to our images
+//        Integer[] images = {
+//                R.drawable.system_status_video, R.drawable.system_status_door,
+//                R.drawable.system_status_smoke
+//        };
+//        // texts of images
+//        String[] texts = { "视频系统", "门禁系统", "烟感" };
+//
+//        GridView gridView = (GridView) findViewById(R.id.grid_safe_system);
+//        gridView.setAdapter(new SystemStatusGridAdapter(gridView, this, images, texts));
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                if (position == 0) {
+//                    Intent i = new Intent(context, VideoSystem.class);
+//                    startActivity(i);
+//                } else if (position == 1) {
+//
+//                } else if (position == 2) {
+//                    Intent i = new Intent(context, Smoke.class);
+//                    startActivity(i);
+//                }
+//            }
+//        });
+//    }
 
-        GridView gridView = (GridView) findViewById(R.id.grid_power_system);
-        gridView.setAdapter(new SystemStatusGridAdapter(gridView, this, images, texts));
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            if (position == 0) {
-                Intent i = new Intent(context, PowerDistribution.class);
-                startActivity(i);
-            } else if (position == 1) {
-                Intent i = new Intent(context, UpsSystem.class);
-                startActivity(i);
-            } else if (position == 2) {
-                Intent i = new Intent(context, Box.class);
-                startActivity(i);
-            } else if (position == 3) {
-
-            } else if (position == 4) {
-                Intent i = new Intent(context, Battery.class);
-                startActivity(i);
-            } else if (position == 5) {
-
+    /**
+     * 如果用户身份合法,获取用户机房列表
+     */
+    private void initSystems() {
+        final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
+        final String token = sp.getString("token", null);
+        final String phone = sp.getString("phone", null);
+        //定义拦截器,添加headers
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder()
+                        .addHeader("X-User-Token", token)
+                        .addHeader("X-User-Phone", phone)
+                        .build();
+                return chain.proceed(newRequest);
             }
-            }
-        });
-    }
-    //初始化环境系统GridView
-    private void initEnvSystemGrid(){
-        // references to our images
-        Integer[] images = {
-                R.drawable.system_status_temperature, R.drawable.system_status_water,
-                R.drawable.system_status_air, R.drawable.system_status_cabinet,
-                R.drawable.system_status_empty, R.drawable.system_status_empty
-        };
-        // texts of images
-        String[] texts = { "温湿度", "漏水", "精密空调", "机柜温度", "", "" };
+        }).build();
 
-        GridView gridView = (GridView) findViewById(R.id.grid_env_system);
-        gridView.setAdapter(new SystemStatusGridAdapter(gridView, this, images, texts));
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == 0) {
-                    Intent i = new Intent(context, Temperature.class);
-                    startActivity(i);
-                } else if (position == 1) {
-                    Intent i = new Intent(context, Water.class);
-                    startActivity(i);
-                } else if (position == 2) {
-                    Intent i = new Intent(context, PrecisionAir.class);
-                    startActivity(i);
-                } else if (position == 3) {
-                    Intent i = new Intent(context, Cabinet.class);
-                    startActivity(i);
-                } else if (position == 4) {
+        // 创建Retrofit实例
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://139.196.190.201/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
 
-                } else if (position == 5) {
+        // 建立http请求
+        MyService myService = retrofit.create(MyService.class);
+        Call<MySystems> call = myService.getSystems();
+        // 发送请求(使用同步加载)
+        call.enqueue(new Callback<MySystems>() {
+            @Override
+            public void onResponse(Response<MySystems> response) {
+                statusCode = response.code();
+                if (response.body() != null && statusCode == 200) {
+                    // 定义动态数组,用于保存子系统
+                    ArrayList<String> subSystemList = new ArrayList<>();
 
+                    //  获取所有的分类系统(比如: 动力,环境..)
+                    List<MySystem> mySystems = response.body().getMySystems();
+                    Iterator<MySystem> itr = mySystems.iterator();
+                    while (itr.hasNext()) {
+                        MySystem mySystem = itr.next();
+                        String systemName = mySystem.getName();
+                        System.out.println(systemName + "---------------------------");
+                        subSystemList.clear();
+                        // 获取所有的子系统( 比如: ups, 配电..)
+                        Iterator<SubSystem> subItr = mySystem.getSubSystem().iterator();
+                        while (subItr.hasNext()) {
+                            SubSystem subSystem = subItr.next();
+                            String subName = subSystem.getSubSystemName();
+                            System.out.println(subName+"2222");
+                            subSystemList.add(subName);
+                        }
+                        System.out.println(subSystemList.size()+"========size");
+                        // 把分类名和对应的子系统列表写入HashMap
+                        if (subSystemList.size() > 0){
+                            System.out.println("已经存储");
+                            kindSystems.put(systemName, subSystemList.toArray(new String[subSystemList.size()]));
+                            System.out.println(kindSystems.get(systemName).length + "=====================");
+                        }
+                    }
+                    System.out.println(kindSystems.get("动力").length+"***************************");
+                    // 按照kindSystems加载UI
+                    LinearLayout container = (LinearLayout)
+                            findViewById(R.id.system_status_linearLayout);
+                    for (HashMap.Entry<String, String[]> entry : kindSystems.entrySet()) {
+                        // 加载分类标题
+                        View titleLayout = View.inflate(context, R.layout.system_status_text_view, null);
+                        container.addView(titleLayout);
+                        TextView title = (TextView) titleLayout.findViewById(R.id.system_status_title);
+                        title.setText(entry.getKey());
+                        // 加载GridView
+                        String[] systems = entry.getValue();
+                        System.out.println(kindSystems.get(entry.getKey()).length+"6666666666666666666666");
+                        ArrayList<String> texts = new ArrayList<>();
+                        ArrayList<Integer> images = new ArrayList<>();
+                        for (int i = 0; i<systems.length; i++) {
+                            System.out.println(systems[i]+"7777777777777777777777777");
+                            texts.add(systems[i]);
+                            images.add(systemIcon.get(systems[i]));
+                        }
+                        String[] grid_texts = texts.toArray(new String[texts.size()]);
+                        Integer[] grid_images = images.toArray(new Integer[images.size()]);
+
+                        System.out.println(grid_images.length+"?????????????????????");
+                        // 动态加载gridView
+                        View gridLayout = View.inflate(context, R.layout.system_status_grid_view, null);
+                        container.addView(gridLayout);
+                        GridView gridView = (GridView) gridLayout.findViewById(R.id.system_status_grid);
+
+                        gridView.setAdapter(new SystemStatusGridAdapter(gridView, context, grid_images, grid_texts));
+                    }
+
+                } else {
+                    try {
+                        String error = response.errorBody().string();
+                        System.out.println(error+"8888888888888888888888888888888");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putInt("system_status_status_code", statusCode);
+                    editor.apply();
+                    System.out.println(">>>>>>>>>>获取系统状态列表失败>>>>>>>>>>>>");
                 }
             }
-        });
-    }
-    //初始化安防系统GridView
-    private void initSafeSystemGrid(){
-        // references to our images
-        Integer[] images = {
-                R.drawable.system_status_video, R.drawable.system_status_door,
-                R.drawable.system_status_smoke
-        };
-        // texts of images
-        String[] texts = { "视频系统", "门禁系统", "烟感" };
 
-        GridView gridView = (GridView) findViewById(R.id.grid_safe_system);
-        gridView.setAdapter(new SystemStatusGridAdapter(gridView, this, images, texts));
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == 0) {
-                    Intent i = new Intent(context, VideoSystem.class);
-                    startActivity(i);
-                } else if (position == 1) {
-
-                } else if (position == 2) {
-                    Intent i = new Intent(context, Smoke.class);
-                    startActivity(i);
-                }
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println(">>>>>>>>>>系统状态接口链接失败>>>>>>>>>>>>");
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt("system_status_status_code", 2222);
+                editor.apply();
             }
         });
+        System.out.println(">>>>>>>>>>获取系统状态列表执行完成>>>>>>>>>>>>");
+    }
+
+    private void intGridView(Integer[] img, String[] tt, LinearLayout container) {
+        Integer[] images = img;
+        String[] texts = tt;
+        // 动态加载gridView
+        View gridLayout = View.inflate(context, R.layout.system_status_grid_view, null);
+        container.addView(gridLayout);
+        GridView gridView = (GridView) gridLayout.findViewById(R.id.system_status_grid);
+
+        gridView.setAdapter(new SystemStatusGridAdapter(gridView, context, images, texts));
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                if (position == 0) {
+//                    Intent i = new Intent(context, PowerDistribution.class);
+//                    startActivity(i);
+//                } else if (position == 1) {
+//                    Intent i = new Intent(context, UpsSystem.class);
+//                    startActivity(i);
+//                } else if (position == 2) {
+//                    Intent i = new Intent(context, Box.class);
+//                    startActivity(i);
+//                } else if (position == 3) {
+//
+//                } else if (position == 4) {
+//                    Intent i = new Intent(context, Battery.class);
+//                    startActivity(i);
+//                } else if (position == 5) {
+//
+//                }
+//            }
+//        });
     }
 }
