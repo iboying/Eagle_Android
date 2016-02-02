@@ -29,7 +29,17 @@ public class SystemStatusGridAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return images.length;
+        int count = images.length;
+        int remainder = count%3;
+        int value = 0;
+        if (count<=3) {
+            value = 3;
+        } else if (count>3 && remainder==0) {
+            value = count;
+        } else if (count>3 && remainder!=0) {
+            value = 3-remainder+count;
+        }
+        return value;
     }
 
     public Object getItem(int position) {
@@ -47,8 +57,13 @@ public class SystemStatusGridAdapter extends BaseAdapter {
         TextView tv = BaseViewHolder.get(convertView, R.id.sub_grid_view_text);
         ImageView iv = BaseViewHolder.get(convertView, R.id.sub_grid_view_image);
 
-        iv.setBackgroundResource(images[position]);
-        tv.setText(texts[position]);
+        if (position+1 <= images.length) {
+            iv.setBackgroundResource(images[position]);
+            tv.setText(texts[position]);
+        } else {
+            iv.setBackgroundResource(R.drawable.system_status_empty);
+            tv.setText("");
+        }
 
         return convertView;
     }
