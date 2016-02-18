@@ -188,6 +188,9 @@
             android:name=".Temperature"
             android:label="@string/title_activity_temperature"
             android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.SystemStatus" />
         </activity>
         <activity
             android:name=".VideoSystem"

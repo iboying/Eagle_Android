@@ -59,13 +59,13 @@ public class BoxListAdapter extends BaseAdapter {
 
         iv.setBackgroundResource(image);
         tv.setText(texts[position]);
-        if (data[position] == 0){
-            st_text.setText("工作失常");
-            st_img.setImageResource(R.drawable.box_false);
-        }else {
+//        if (data[position] == 0){
+//            st_text.setText("工作失常");
+//            st_img.setImageResource(R.drawable.box_false);
+//        }else {
             st_text.setText("工作正常");
             st_img.setImageResource(R.drawable.box_true);
-        }
+//        }
 
         return convertView;
     }

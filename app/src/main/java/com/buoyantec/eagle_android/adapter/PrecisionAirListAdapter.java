@@ -59,8 +59,8 @@ public class PrecisionAirListAdapter extends BaseAdapter {
 
         iv.setBackgroundResource(image);
         tv.setText(texts[position]);
-        degree.setText(data[position][0].toString()+"℃");
-        humidity.setText(data[position][1].toString()+"%");
+        degree.setText(data[1][0].toString()+"℃");
+        humidity.setText(data[1][1].toString()+"%");
 
         return convertView;
     }

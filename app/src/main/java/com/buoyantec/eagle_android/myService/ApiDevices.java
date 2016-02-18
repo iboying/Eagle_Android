@@ -1,24 +1,13 @@
-package com.buoyantec.eagle_android;
+package com.buoyantec.eagle_android.myService;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
+import com.buoyantec.eagle_android.R;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,49 +23,28 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PowerDistribution extends AppCompatActivity {
+/**
+ * Created by kang on 16/2/7.
+ * 根据子系统名称获取设备列表
+ */
+public class ApiDevices {
     private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        init();
-        //加载字体图标
-        Iconify.with(new FontAwesomeModule());
-        //加载布局文件
-        setContentView(R.layout.activity_power_distribution);
-        //初始化toolbar
-        initToolbar();
-        //初始化list
-        initListView();
+    private String[] texts;
+    private Integer[][] datas;
 
+    public ApiDevices(Context c, Integer room_id, String sub_sys_name) {
+        this.room_id = room_id;
+        this.sub_sys_name = sub_sys_name;
+        this.context = c;
+        sp = context.getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        getDevices();
     }
 
-    private void init() {
-        Intent i = getIntent();
-        // TODO: 16/2/7 默认值的问题
-        room_id = i.getIntExtra("room_id", 1);
-        sub_sys_name = i.getStringExtra("sub_sys_name");
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        context = getApplicationContext();
-    }
-
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText(sub_sys_name);
-    }
-
-    private void initListView() {
+    private void getDevices(){
         //定义拦截器,添加headers
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
@@ -113,24 +81,10 @@ public class PowerDistribution extends AppCompatActivity {
                         Device device = itr.next();
                         device_name.add(device.getName());
                     }
-                    // references to our images
-                    Integer image = R.drawable.power_distribution;
                     // texts of images
-                    String[] texts = device_name.toArray(new String[device_name.size()]);
+                    texts = device_name.toArray(new String[device_name.size()]);
                     // UPS数据
-                    Integer[][] datas = {{75, 75, 75, 75}, {60, 40, 80, 50}};
-
-                    ListView listView = (ListView) findViewById(R.id.system_status_listView);
-                    listView.setAdapter(new SystemStatusListAdapter(listView, context, image, texts, datas));
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                            TextView title = (TextView) v.findViewById(R.id.list_item_power_ups_text);
-                            Intent i = new Intent(PowerDistribution.this, PowerDetail.class);
-                            i.putExtra("title", title.getText());
-                            startActivity(i);
-                        }
-                    });
-                    System.out.println("Devices接口调用完成");
+                    datas = new Integer[][]{{75, 75, 75, 75}, {60, 40, 80, 50}};
                 } else {
                     // 输出非201时的错误信息
                     System.out.println(">>>>>>>>>>Devices接口状态错误>>>>>>>>>>>>");
@@ -149,5 +103,13 @@ public class PowerDistribution extends AppCompatActivity {
             }
         });
         System.out.println(">>>>>>>>>>Devices接口调用完成>>>>>>>>>>>>");
+    }
+
+    public String[] getTexts(){
+        return texts;
+    }
+
+    public Integer[][] getDatas(){
+        return datas;
     }
 }

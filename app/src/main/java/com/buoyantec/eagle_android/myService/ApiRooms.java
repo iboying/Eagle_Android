@@ -87,7 +87,6 @@ public class ApiRooms {
                     // 机房信息存入SharePreferences
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("room", result);
-                    editor.putInt("room_status_code", response.code());
                     editor.apply();
                     System.out.println(">>>>>>>>>>获取机房成功>>>>>>>>>>>>");
                 } else {
@@ -98,7 +97,8 @@ public class ApiRooms {
                         e.printStackTrace();
                     }
                     SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("room_status_code", response.code());
+                    editor.putInt("error_status_code", response.code());
+                    editor.putString("error_msg", response.errorBody().toString());
                     editor.apply();
                     System.out.println(">>>>>>>>>>获取机房失败>>>>>>>>>>>>");
                 }

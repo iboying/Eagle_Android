@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -189,9 +190,6 @@ public class SystemStatus extends AppCompatActivity {
                         final ArrayList<String> texts = new ArrayList<>();
                         final ArrayList<Integer> images = new ArrayList<>();
                         for (int i = 0; i<systems.length; i++) {
-                            System.out.println(systems[i]);
-                        }
-                        for (int i = 0; i<systems.length; i++) {
                             texts.add(systems[i]);
                             images.add(systemIcon.get(systems[i]));
                         }
@@ -203,16 +201,26 @@ public class SystemStatus extends AppCompatActivity {
                         container.addView(gridLayout);
                         GridView gridView = (GridView) gridLayout.findViewById(R.id.system_status_grid);
                         gridView.setAdapter(new SystemStatusGridAdapter(gridView, context, grid_images, grid_texts));
-                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                                    for (int j = 0;j < grid_texts.length; j++) {
-                                        if (position == j) {
-                                            Intent i = new Intent(context, systemClass.get(grid_texts[j]));
-                                            startActivity(i);
-                                        }
+                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                                for (int j = 0;j < grid_texts.length; j++) {
+                                    if (position == j) {
+                                        Intent i = new Intent(context, systemClass.get(grid_texts[j]));
+                                        // 机房id
+                                        SharedPreferences mPreferences =
+                                                getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+                                        Integer room_id = mPreferences.getInt("current_room_id", 1);
+                                        // 获取子系统名称
+                                        TextView tv = (TextView) v.findViewById(R.id.sub_grid_view_text);
+                                        String sub_sys_name = (String) tv.getText();
+                                        // 传递
+                                        i.putExtra("room_id", room_id);
+                                        i.putExtra("sub_sys_name", sub_sys_name);
+                                        startActivity(i);
                                     }
                                 }
-                            });
+                            }
+                        });
                     }
 
                 } else {

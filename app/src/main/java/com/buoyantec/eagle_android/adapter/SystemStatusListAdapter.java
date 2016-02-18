@@ -60,10 +60,17 @@ public class SystemStatusListAdapter extends BaseAdapter {
 
         tv.setText(texts[position]);
         iv.setImageResource(image);
-        av.setText(datas[position][0].toString()+"%");
-        bv.setText(datas[position][1].toString()+"%");
-        cv.setText(datas[position][2].toString()+"%");
-        a.setText(datas[position][3].toString()+"%");
+//        if (datas.length > 0) {
+//            av.setText(datas[position][0].toString()+"%");
+//            bv.setText(datas[position][1].toString()+"%");
+//            cv.setText(datas[position][2].toString()+"%");
+//            a.setText(datas[position][3].toString()+"%");
+//        } else {
+            av.setText("0.0");
+            bv.setText("0.0");
+            cv.setText("0.0");
+            a.setText("0.0");
+//        }
 
         return convertView;
     }

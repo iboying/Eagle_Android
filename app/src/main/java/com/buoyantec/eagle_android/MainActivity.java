@@ -37,14 +37,12 @@ import org.w3c.dom.Text;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView name;
-    private String room;
-    private Integer room_id;
     private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         // 判断用户
         isPresentUser();
         // 加载字体图标
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         initCarousel();
         // 初始化GridView
         initGridView();
-        // 异步任务
+        // 异步任务: 检测告警信息
         new mainAsynTask().execute();
     }
 
@@ -87,9 +85,14 @@ public class MainActivity extends AppCompatActivity
         String sp_room = mPreferences.getString("room", null);
         if (sp_room != null){
             String[] rooms = sp_room.split("#");
-            room_id = Integer.parseInt(rooms[0]);
-            room = rooms[1];
+            Integer room_id = Integer.parseInt(rooms[0]);
+            String room = rooms[1];
             subToolbarTitle.setText(room);
+            // 保存当前机房信息
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putString("current_room", room);
+            editor.putInt("current_room_id", room_id);
+            editor.apply();
         } else{
             subToolbarTitle.setText("无可管理机房");
         }
@@ -106,7 +109,7 @@ public class MainActivity extends AppCompatActivity
 
         // 更新数据
         View headLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        this.name = (TextView)headLayout.findViewById(R.id.user_name);
+        TextView name = (TextView) headLayout.findViewById(R.id.user_name);
         String mName = mPreferences.getString("name", null);
         name.setText(mName);
 

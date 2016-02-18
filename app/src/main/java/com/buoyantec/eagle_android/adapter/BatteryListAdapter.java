@@ -19,16 +19,16 @@ public class BatteryListAdapter extends BaseAdapter{
     private Context mContext;
     private Integer image;
     private String[] texts;
-    private Integer[][] data;
+    private Integer[][] datas;
     private ListView listView;
 
     public BatteryListAdapter(ListView listView, Context c, Integer image,
-                                   String[] texts, Integer[][] data) {
+                                   String[] texts, Integer[][] datas) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
         this.texts = texts;
-        this.data = data;
+        this.datas = datas;
     }
 
     @Override
@@ -61,10 +61,10 @@ public class BatteryListAdapter extends BaseAdapter{
 
         iv.setBackgroundResource(image);
         tv.setText(texts[position]);
-        v.setText(data[position][0].toString()+"v");
-        a.setText(data[position][1].toString()+"a");
-        t1.setText(data[position][2].toString()+"度");
-        t2.setText(data[position][3].toString()+"度");
+        v.setText(datas[1][0].toString()+"v");
+        a.setText(datas[1][1].toString()+"a");
+        t1.setText(datas[1][2].toString()+"度");
+        t2.setText(datas[1][3].toString()+"度");
 
         return convertView;
     }
