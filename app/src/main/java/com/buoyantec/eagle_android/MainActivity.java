@@ -3,7 +3,6 @@ package com.buoyantec.eagle_android;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -23,21 +22,35 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.adapter.MySliderView;
-import com.buoyantec.eagle_android.model.User;
+import com.buoyantec.eagle_android.model.Result;
+import com.buoyantec.eagle_android.model.Results;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
-import org.w3c.dom.Text;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences mPreferences;
+    private String[] rooms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         // 初始化GridView
         initGridView();
         // 异步任务: 检测告警信息
-        new mainAsynTask().execute();
+        getSubSystemAlarmCount();
     }
 
     /**
@@ -83,8 +96,9 @@ public class MainActivity extends AppCompatActivity
         TextView subToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         // 获取所有机房([id1, room1, id2, room2, ...])
         String sp_room = mPreferences.getString("room", null);
+        System.out.println(sp_room);
         if (sp_room != null){
-            String[] rooms = sp_room.split("#");
+            rooms = sp_room.split("#");
             Integer room_id = Integer.parseInt(rooms[0]);
             String room = rooms[1];
             subToolbarTitle.setText(room);
@@ -195,7 +209,7 @@ public class MainActivity extends AppCompatActivity
                     Intent i = new Intent(MainActivity.this, SystemStatus.class);
                     startActivity(i);
                 } else if (position == 1) {
-                    Intent i = new Intent(MainActivity.this, WarnMessages.class);
+                    Intent i = new Intent(MainActivity.this, WarnSystems.class);
                     startActivity(i);
                 } else if (position == 2) {
                     Intent i = new Intent(MainActivity.this, WorkPlan.class);
@@ -218,18 +232,17 @@ public class MainActivity extends AppCompatActivity
         SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
         sliderShow.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
 
-        final String[] description = {"数据主机房", "上海机房"};
-        for (int i = 0; i<2; i++){
+        for (int i = 1; i<rooms.length; i+=2){
             MySliderView mySliderView = new MySliderView(this);
 
             final int finalI = i;
             mySliderView
-                    .description(description[i])
+                    .description(rooms[i])
                     .image(R.drawable.image_room)
                     .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                         @Override
                         public void onSliderClick(BaseSliderView slider) {
-                            Toast.makeText(MainActivity.this, description[finalI],
+                            Toast.makeText(MainActivity.this, rooms[finalI],
                                             Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -238,33 +251,71 @@ public class MainActivity extends AppCompatActivity
         sliderShow.setDuration(8000);
     }
 
-    /**
-     * 异步任务: 后台检测告警信息
-     */
-    class mainAsynTask extends AsyncTask<TextView, Integer, Integer> {
-        // 耗时的后台操作
-        @Override
-        protected Integer doInBackground(TextView... params) {
-            // 异步获取告警信息数量
-            return 15;
-        }
+    public void getSubSystemAlarmCount() {
+        final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
+        final String token = sp.getString("token", null);
+        final String phone = sp.getString("phone", null);
+        Integer room_id = sp.getInt("current_room_id", 1);
 
-        // doInBackground之前调用,可用于实例化等操作
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+        // 定义拦截器,添加headers
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder()
+                        .addHeader("X-User-Token", token)
+                        .addHeader("X-User-Phone", phone)
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
 
-        // doInBackground之后调用,用于处理doInBackground的返回结果
-        // 输入 == doInBackground的输出
-        @Override
-        protected void onPostExecute(Integer count) {
-            super.onPostExecute(count);
-            ImageView warnMessage = (ImageView) findViewById(R.id.grid_warn_message_image);
-            BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
-            badge.setText(count.toString());
-            badge.setBadgeMargin(0);
-            badge.show();
-        }
+        // 创建Retrofit实例
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://139.196.190.201/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        // 建立http请求
+        MyService myService = retrofit.create(MyService.class);
+        Call<Results> call = myService.getSystemAlarmCount(room_id);
+        call.enqueue(new Callback<Results>() {
+            @Override
+            public void onResponse(Response<Results> response) {
+                if (response.code() == 200) {
+                    // 计数
+                    Integer count = 0;
+
+                    List<Result> results = response.body().getResults();
+                    Iterator<Result> itr = results.iterator();
+                    while(itr.hasNext()) {
+                        Result result = itr.next();
+                        count += result.getSize();
+                    }
+                    ImageView warnMessage = (ImageView) findViewById(R.id.grid_warn_message_image);
+                    BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
+                    if (count>=1000) {
+                        badge.setText("...");
+                    } else{
+                        badge.setText(count.toString());
+                    }
+                    badge.setBadgeMargin(0);
+                    badge.show();
+                } else {
+                    // 输出非201时的错误信息
+                    System.out.println(">>>>>>>>>>系统告警数量接口状态错误>>>>>>>>>>>>");
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putInt("error_status_code", response.code());
+                    editor.putString("error_msg", response.errorBody().toString());
+                    editor.apply();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println("系统告警数量接口,链接错误");
+                // TODO: 16/2/19 错误处理
+            }
+        });
     }
 }

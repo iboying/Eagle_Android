@@ -55,11 +55,13 @@ public class PrecisionAir extends AppCompatActivity {
     }
 
     private void init() {
-        Intent i = getIntent();
-        // TODO: 16/2/7 默认值的问题
-        room_id = i.getIntExtra("room_id", 1);
-        sub_sys_name = i.getStringExtra("sub_sys_name");
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        // TODO: 16/2/7 默认值的问题
+        room_id = sp.getInt("current_room_id", 1);
+
+        Intent i = getIntent();
+        sub_sys_name = i.getStringExtra("sub_sys_name");
+
         context = getApplicationContext();
     }
 
@@ -105,17 +107,20 @@ public class PrecisionAir extends AppCompatActivity {
             public void onResponse(Response<Devices> response) {
                 if (response.code() == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
-                    // 获取用户
+                    ArrayList<Integer> device_id = new ArrayList<>();
+
                     List<Device> devices = response.body().getDevices();
                     Iterator<Device> itr = devices.iterator();
                     while (itr.hasNext()) {
                         Device device = itr.next();
                         device_name.add(device.getName());
+                        device_id.add(device.getId());
                     }
                     // references to our images
                     Integer image = R.drawable.air;
                     // texts of images
                     String[] texts = device_name.toArray(new String[device_name.size()]);
+                    final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
                     // UPS数据
                     Integer[][] datas = {{30, 40}, {30, 40}};
 
@@ -126,6 +131,7 @@ public class PrecisionAir extends AppCompatActivity {
                             TextView title = (TextView) v.findViewById(R.id.list_item_precision_air_text);
                             Intent i = new Intent(PrecisionAir.this, PrecisionAirDetail.class);
                             i.putExtra("title", title.getText());
+                            i.putExtra("id", ids[position]);
                             startActivity(i);
                         }
                     });

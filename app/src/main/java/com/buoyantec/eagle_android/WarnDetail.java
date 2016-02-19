@@ -1,6 +1,8 @@
 package com.buoyantec.eagle_android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,25 +10,47 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
+import com.buoyantec.eagle_android.model.Alarm;
+import com.buoyantec.eagle_android.model.PointAlarm;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class WarnDetail extends AppCompatActivity {
+    private String title;
+    private Integer device_id;
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warn_detail);
+        //初始化
+        init();
+        // 加载工具条
         initToolbar();
         //加载告警信息列表
         initListView();
     }
 
-    private void initListView() {
-        String[] texts = {"低温告警状态","冷凝水泵输出","冷冻水进水故障状态",
-                "机架进风温度1故障状态","气流丢失告警状态"};
-        Integer[] data = {40, 50, 60, 70, 80};
-
-        ListView listView = (ListView) findViewById(R.id.warn_detail_listView);
-        listView.setAdapter(new WarnDetailListAdapter(listView, this, texts, data));
+    private void init() {
+        Intent i = getIntent();
+        device_id = i.getIntExtra("device_id", 1);
+        title = i.getStringExtra("title");
+        context = this;
     }
 
     private void initToolbar() {
@@ -38,9 +62,75 @@ public class WarnDetail extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        String title = i.getStringExtra("title");
         subToolbarTitle.setText(title);
     }
 
+    private void initListView() {
+        final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
+        final String token = sp.getString("token", null);
+        final String phone = sp.getString("phone", null);
+
+        // 定义拦截器,添加headers
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder()
+                        .addHeader("X-User-Token", token)
+                        .addHeader("X-User-Phone", phone)
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
+
+        // 创建Retrofit实例
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://139.196.190.201/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        // 建立http请求
+        MyService myService = retrofit.create(MyService.class);
+        // 告警是否已经解除(0:全部，1:已经确认, 2:未结束。默认为2)
+        Call<Alarm> call = myService.getWarnMessages(device_id, 2);
+        // 发送请求
+        call.enqueue(new Callback<Alarm>() {
+            @Override
+            public void onResponse(Response<Alarm> response) {
+                if (response.code() == 200) {
+                    ArrayList<String> comment = new ArrayList<>();
+                    ArrayList<Integer> state = new ArrayList<>();
+                    // 获取数据
+                    List<PointAlarm> pointAlarms = response.body().getPointAlarms();
+                    Iterator<PointAlarm> itr = pointAlarms.iterator();
+                    while (itr.hasNext()) {
+                        PointAlarm pointAlarm = itr.next();
+                        comment.add(pointAlarm.getComment());
+                        state.add(pointAlarm.getState());
+                    }
+
+                    String[] texts = comment.toArray(new String[comment.size()]);
+                    Integer[] data = state.toArray(new Integer[state.size()]);
+
+                    ListView listView = (ListView) findViewById(R.id.warn_detail_listView);
+                    listView.setAdapter(new WarnDetailListAdapter(listView, context, texts, data));
+                } else {
+                    // 输出非201时的错误信息
+                    System.out.println(">>>>>>>>>>设备告警接口状态错误>>>>>>>>>>>>");
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putInt("error_status_code", response.code());
+                    editor.putString("error_msg", response.errorBody().toString());
+                    editor.apply();
+                    System.out.println(">>>>>>>>>>设备告警接口状态错误>>>>>>>>>>>>");
+                }
+                System.out.println("设备告警列表接口调用完成");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println(">>>>>>>>>>设备告警接口未成功链接>>>>>>>>>>>>");
+                // TODO: 16/2/19 错误处理
+            }
+        });
+    }
 }

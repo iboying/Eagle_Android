@@ -50,6 +50,8 @@
     <string name="title_activity_power_data">用电数据</string>
     <string name="title_activity_ups_detail">UPS详情</string>
     <string name="title_activity_power_detail">配电柜详情</string>
+    <string name="title_activity_warn_devices">告警设备</string>
+
 
     <!--api status-->
     <string name="apiFailed">==========调用接口失败==========</string>

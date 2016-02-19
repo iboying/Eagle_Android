@@ -53,15 +53,19 @@ public class WarnMessageListAdapter extends BaseAdapter{
         ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_image);
         TextView status = BaseViewHolder.get(convertView, R.id.list_item_status);
 
-        iv.setBackgroundResource(images[position]);
+        if (images[position] != null) {
+            iv.setBackgroundResource(images[position]);
+        } else {
+            iv.setBackgroundResource(R.drawable.system_status_air);
+        }
         tv.setText(texts[position]);
 
         Integer[] num = {5,5,5};
         //添加徽章提示信息
-        status.setText("");
-        BadgeView badge = new BadgeView(mContext, status);
-        badge.setText(num[position].toString());
-        badge.show();
+//        status.setText("");
+//        BadgeView badge = new BadgeView(mContext, status);
+//        badge.setText(num[position].toString());
+//        badge.show();
 
         return convertView;
     }

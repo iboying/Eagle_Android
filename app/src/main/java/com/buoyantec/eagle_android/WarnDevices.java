@@ -1,10 +1,10 @@
 package com.buoyantec.eagle_android;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,16 +14,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.BoxListAdapter;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
+import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
-import com.buoyantec.eagle_android.myService.ApiDevices;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.buoyantec.eagle_android.model.MySystem;
+import com.buoyantec.eagle_android.model.MySystems;
+import com.buoyantec.eagle_android.model.SubSystem;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,34 +37,32 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class Box extends AppCompatActivity {
+public class WarnDevices extends AppCompatActivity {
     private SharedPreferences sp;
+    private String token;
+    private String phone;
     private Integer room_id;
-    private String sub_sys_name;
+    private String subSystemName;
     private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //加载字体图标
-        Iconify.with(new FontAwesomeModule());
+        setContentView(R.layout.activity_warn_devices);
+        // 初始化
         init();
-        setContentView(R.layout.activity_box);
-        //初始化toolbar
+        // sub_toolbar
         initToolbar();
-        //初始化list
+        // ListView
         initListView();
     }
 
-    private void init() {
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        // TODO: 16/2/7 默认值的问题
+    private void init(){
+        sp = getSharedPreferences("foobar", MODE_PRIVATE);
+        token = sp.getString("token", null);
+        phone = sp.getString("phone", null);
         room_id = sp.getInt("current_room_id", 1);
-
-        Intent i = getIntent();
-        sub_sys_name = i.getStringExtra("sub_sys_name");
-
-        context = getApplicationContext();
+        context = this;
     }
 
     private void initToolbar() {
@@ -75,17 +74,19 @@ public class Box extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText(sub_sys_name);
+        Intent i = getIntent();
+        subSystemName = i.getStringExtra("title");
+        subToolbarTitle.setText(subSystemName);
     }
 
     private void initListView() {
-        //定义拦截器,添加headers
+        // 定义拦截器,添加headers
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request newRequest = chain.request().newBuilder()
-                        .addHeader("X-User-Token", sp.getString("token", ""))
-                        .addHeader("X-User-Phone", sp.getString("phone", ""))
+                        .addHeader("X-User-Token", token)
+                        .addHeader("X-User-Phone", phone)
                         .build();
                 return chain.proceed(newRequest);
             }
@@ -98,38 +99,36 @@ public class Box extends AppCompatActivity {
                 .client(client)
                 .build();
 
-        // 创建所有链接
+        // 建立http请求
         MyService myService = retrofit.create(MyService.class);
-
-        // 获取指定链接数据
-        Call<Devices> call = myService.getDevices(room_id, sub_sys_name);
+        Call<Devices> call = myService.getDevices(room_id, subSystemName);
+        // 发送请求
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
                 if (response.code() == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
-                    // 获取用户
+                    ArrayList<Integer> device_id = new ArrayList<>();
+                    // 读取数据
                     List<Device> devices = response.body().getDevices();
                     Iterator<Device> itr = devices.iterator();
                     while (itr.hasNext()) {
                         Device device = itr.next();
                         device_name.add(device.getName());
+                        device_id.add(device.getId());
                     }
                     // references to our images
-                    Integer image = R.drawable.power_distribution;
-                    // texts of images
-                    String[] texts = device_name.toArray(new String[device_name.size()]);
-                    // UPS数据
-                    Integer[] data = {1,0};
+                    Integer[] images = new Integer[device_name.size()];
+                    final String[] texts = device_name.toArray(new String[device_name.size()]);
+                    final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
-                    ListView listView = (ListView) findViewById(R.id.box_listView);
-                    listView.setAdapter(new BoxListAdapter(listView, context, image, texts, data));
+                    ListView listView = (ListView) findViewById(R.id.warn_devices_listView);
+                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, texts));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            TextView title = (TextView) view.findViewById(R.id.list_item_box_text);
-                            Intent i = new Intent(Box.this, BoxDetail.class);
-                            i.putExtra("title", title.getText());
+                        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                            Intent i = new Intent(WarnDevices.this, WarnDetail.class);
+                            i.putExtra("title", texts[position]);
+                            i.putExtra("device_id", ids[position]);
                             startActivity(i);
                         }
                     });
@@ -151,6 +150,5 @@ public class Box extends AppCompatActivity {
                 //// TODO: 16/1/28  错误处理
             }
         });
-        System.out.println(">>>>>>>>>>Devices接口调用完成>>>>>>>>>>>>");
     }
 }

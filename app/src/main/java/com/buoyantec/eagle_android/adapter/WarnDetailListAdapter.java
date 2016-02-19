@@ -52,7 +52,7 @@ public class WarnDetailListAdapter extends BaseAdapter {
         TextView data_textView = BaseViewHolder.get(convertView, R.id.list_item_warn_detail_data);
 
         text_textView.setText(texts[position]);
-        data_textView.setText(data[position].toString()+"%");
+        data_textView.setText(data[position].toString());
 
         return convertView;
     }

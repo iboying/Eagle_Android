@@ -55,11 +55,13 @@ public class Battery extends AppCompatActivity {
     }
 
     private void init() {
-        Intent i = getIntent();
-        // TODO: 16/2/7 默认值的问题
-        room_id = i.getIntExtra("room_id", 1);
-        sub_sys_name = i.getStringExtra("sub_sys_name");
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        // TODO: 16/2/7 默认值的问题
+        room_id = sp.getInt("current_room_id", 1);
+
+        Intent i = getIntent();
+        sub_sys_name = i.getStringExtra("sub_sys_name");
+
         context = getApplicationContext();
     }
 

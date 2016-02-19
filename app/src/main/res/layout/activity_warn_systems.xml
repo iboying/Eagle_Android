@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.buoyantec.eagle_android.WarnMessages">
+    tools:context="com.buoyantec.eagle_android.WarnSystems">
 
     <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"
@@ -15,6 +15,6 @@
         <include layout="@layout/sub_toolbar"/>
     </android.support.design.widget.AppBarLayout>
     <!--主体内容-->
-    <include layout="@layout/content_warn_messages"/>
+    <include layout="@layout/content_warn_systems"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     android:background="@color/windowBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_warn_messages"
-    tools:context="com.buoyantec.eagle_android.WarnMessages">
+    tools:showIn="@layout/activity_warn_devices"
+    tools:context="com.buoyantec.eagle_android.WarnDevices">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/warn_messages_listView"
+        android:id="@+id/warn_devices_listView"
         android:layout_weight="1"
         android:clickable="true"
         android:dividerHeight="1dp"

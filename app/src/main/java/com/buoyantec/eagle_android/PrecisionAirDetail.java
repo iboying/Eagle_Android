@@ -1,6 +1,9 @@
 package com.buoyantec.eagle_android;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +16,15 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 public class PrecisionAirDetail extends AppCompatActivity {
+    private SharedPreferences sp;
+    private Integer room_id;
+    private Integer id;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
         //加载字体图标
         Iconify.with(new FontAwesomeModule());
         setContentView(R.layout.activity_precision_air_detail);
@@ -24,6 +32,15 @@ public class PrecisionAirDetail extends AppCompatActivity {
         initToolbar();
         //初始化list
         initListView();
+    }
+
+    private void init() {
+        Intent i = getIntent();
+        // TODO: 16/2/7 默认值的问题
+        room_id = i.getIntExtra("room_id", 1);
+        id = i.getIntExtra("id", 1);
+        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        context = getApplicationContext();
     }
 
     private void initListView() {

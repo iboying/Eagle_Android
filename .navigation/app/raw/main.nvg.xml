@@ -174,7 +174,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.WarnMessages"/>
+        className = "com.buoyantec.eagle_android.WarnSystems"/>
       <point      
         x = "1550"      
         y = "1150"/>

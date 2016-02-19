@@ -83,6 +83,7 @@ public class ApiRooms {
                         result += (room.getId() + "");
                         result += '#';
                         result += room.getName();
+                        result += '#';
                     }
                     // 机房信息存入SharePreferences
                     SharedPreferences.Editor editor = sp.edit();
