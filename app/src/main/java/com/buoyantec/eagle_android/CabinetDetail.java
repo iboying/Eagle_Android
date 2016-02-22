@@ -1,12 +1,12 @@
 package com.buoyantec.eagle_android;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.CabinetListAdapter;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,18 +31,29 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BoxDetail extends AppCompatActivity {
+public class CabinetDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //加载字体图标
-        Iconify.with(new FontAwesomeModule());
-        setContentView(R.layout.activity_box_detail);
-        //初始化toolbar
+        setContentView(R.layout.activity_cabinet_detail);
+        // sub_toolbar
         initToolbar();
-        //初始化list
         initListView();
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
+        Intent i = getIntent();
+        String subSystemName = i.getStringExtra("title");
+        subToolbarTitle.setText(subSystemName);
     }
 
     private void initListView() {
@@ -103,7 +112,7 @@ public class BoxDetail extends AppCompatActivity {
                         String[] status = statusArray.toArray(new String[statusArray.size()]);
 
                         // 加载列表
-                        ListView listView = (ListView) findViewById(R.id.box_detail_listView);
+                        ListView listView = (ListView) findViewById(R.id.cabinet_detail_listView);
                         listView.setAdapter(new CabinetListAdapter(listView, context, names, status));
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -120,19 +129,4 @@ public class BoxDetail extends AppCompatActivity {
             }
         });
     }
-
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        String title = i.getStringExtra("title");
-        subToolbarTitle.setText(title);
-    }
-
 }

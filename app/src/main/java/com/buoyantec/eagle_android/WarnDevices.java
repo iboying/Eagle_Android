@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +21,8 @@ import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
+import com.buoyantec.eagle_android.model.Result;
+import com.buoyantec.eagle_android.model.Results;
 import com.buoyantec.eagle_android.model.SubSystem;
 
 import java.io.IOException;
@@ -53,8 +56,8 @@ public class WarnDevices extends AppCompatActivity {
         init();
         // sub_toolbar
         initToolbar();
-        // ListView
-        initListView();
+        // 获得数据
+        getDeviceAlarmCount();
     }
 
     private void init(){
@@ -79,7 +82,13 @@ public class WarnDevices extends AppCompatActivity {
         subToolbarTitle.setText(subSystemName);
     }
 
-    private void initListView() {
+    // 获取设备告警数量
+    private void getDeviceAlarmCount() {
+        // 初始化
+        Intent i = getIntent();
+        Integer sub_system_id = i.getIntExtra("subSystem_id", 1);
+        final HashMap<String, Integer> deviceCount = new HashMap<>();
+
         // 定义拦截器,添加headers
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
@@ -100,30 +109,75 @@ public class WarnDevices extends AppCompatActivity {
                 .build();
 
         // 建立http请求
-        MyService myService = retrofit.create(MyService.class);
+        final MyService myService = retrofit.create(MyService.class);
+        Call<Results> call = myService.getDeviceAlarmCount(room_id, sub_system_id);
+        // 获取数据
+        call.enqueue(new Callback<Results>() {
+            @Override
+            public void onResponse(Response<Results> response) {
+                if (response.code() == 200) {
+                    // 计数
+                    List<Result> results = response.body().getResults();
+                    for (Result result : results) {
+                        deviceCount.put(result.getName(), result.getSize());
+                    }
+
+                    // 获得告警数,加载listView
+                    initListView(myService, deviceCount);
+                } else {
+                    // 输出非201时的错误信息
+                    System.out.println(">>>>>>>>>>设备告警数量接口状态错误>>>>>>>>>>>>");
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putInt("error_status_code", response.code());
+                    editor.putString("error_msg", response.errorBody().toString());
+                    editor.apply();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println("设备告警数量接口,链接错误");
+                // TODO: 16/2/19 错误处理
+            }
+        });
+    }
+
+    private void initListView(MyService myService, final HashMap<String, Integer> countMap) {
         Call<Devices> call = myService.getDevices(room_id, subSystemName);
         // 发送请求
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
                 if (response.code() == 200) {
+                    // 载入设备列表
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
+                    ArrayList<Integer> deviceAlarmCount = new ArrayList<>();
                     // 读取数据
                     List<Device> devices = response.body().getDevices();
                     Iterator<Device> itr = devices.iterator();
                     while (itr.hasNext()) {
                         Device device = itr.next();
-                        device_name.add(device.getName());
-                        device_id.add(device.getId());
+                        String deviceName = device.getName();
+                        Integer id = device.getId();
+
+                        device_name.add(deviceName);
+                        device_id.add(id);
+                        if (countMap.get(deviceName) != null) {
+                            deviceAlarmCount.add(countMap.get(deviceName));
+                        } else {
+                            deviceAlarmCount.add(0);
+                        }
+                        System.out.println(countMap.get(deviceName)+"===============");
                     }
                     // references to our images
                     Integer[] images = new Integer[device_name.size()];
                     final String[] texts = device_name.toArray(new String[device_name.size()]);
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
+                    Integer[] count = deviceAlarmCount.toArray(new Integer[deviceAlarmCount.size()]);
 
                     ListView listView = (ListView) findViewById(R.id.warn_devices_listView);
-                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, texts));
+                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, texts, count));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             Intent i = new Intent(WarnDevices.this, WarnDetail.class);

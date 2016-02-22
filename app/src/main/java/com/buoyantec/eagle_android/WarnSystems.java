@@ -33,7 +33,7 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class WarnSystems extends AppCompatActivity {
+public class WarnSystems extends AppCompatActivity{
     private SharedPreferences sp;
     private String token;
     private String phone;
@@ -124,31 +124,46 @@ public class WarnSystems extends AppCompatActivity {
                     // 定义动态数组,用于保存子系统及图标
                     ArrayList<String> subSystemList = new ArrayList<>();
                     ArrayList<Integer> subSystemIcon = new ArrayList<>();
+                    ArrayList<Integer> subSystemAlarmCount = new ArrayList<>();
+                    ArrayList<Integer> subSystemId = new ArrayList<>();
+
+                    // 读取子系统告警数量
+                    Bundle bundle = getIntent().getExtras();
+                    HashMap<String, Integer> map = (HashMap<String, Integer>) bundle.getSerializable("systemAlarmCount");
 
                     //  获取所有的分类系统(比如: 动力,环境..)
                     List<MySystem> mySystems = response.body().getMySystems();
-                    final Iterator<MySystem> itr = mySystems.iterator();
-                    while (itr.hasNext()) {
-                        MySystem mySystem = itr.next();
+                    for (MySystem mySystem : mySystems) {
                         // 获取所有的子系统( 比如: ups, 配电..)
-                        Iterator<SubSystem> subItr = mySystem.getSubSystem().iterator();
-                        while (subItr.hasNext()) {
-                            SubSystem subSystem = subItr.next();
+                        for (SubSystem subSystem : mySystem.getSubSystem()) {
                             String subName = subSystem.getSubSystemName();
                             subSystemList.add(subName);
                             subSystemIcon.add(systemIcon.get(subName));
+                            subSystemId.add(subSystem.getId());
+                            if (map != null) {
+                                if (map.get(subName) != null) {
+                                    subSystemAlarmCount.add(map.get(subName));
+                                } else {
+                                    subSystemAlarmCount.add(0);
+                                }
+                            } else {
+                                subSystemAlarmCount.add(0);
+                            }
                         }
                     }
                     // 加载listView
                     final String[] texts = subSystemList.toArray(new String[subSystemList.size()]);
                     final Integer[] images = subSystemIcon.toArray(new Integer[subSystemIcon.size()]);
+                    Integer[] count = subSystemAlarmCount.toArray(new Integer[subSystemAlarmCount.size()]);
+                    final Integer[] ids = subSystemId.toArray(new Integer[subSystemId.size()]);
 
                     ListView listView = (ListView) findViewById(R.id.warn_systems_listView);
-                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, texts));
+                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, texts, count));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             Intent i = new Intent(WarnSystems.this, WarnDevices.class);
                             i.putExtra("title", texts[position]);
+                            i.putExtra("subSystem_id", ids[position]);
                             startActivity(i);
                         }
                     });

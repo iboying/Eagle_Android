@@ -7,24 +7,31 @@ import com.google.gson.annotations.SerializedName;
 @Generated("org.jsonschema2pojo")
 public class SubSystem {
 
+    @SerializedName("id")
+    private Integer id;
+
     @SerializedName("sub_system_name")
     @Expose
     private String subSystemName;
 
     /**
-     * No args constructor for use in serialization
      *
+     * @return
+     * The id
      */
-    public SubSystem() {
+    public Integer getId() {
+        return id;
     }
 
     /**
      *
-     * @param subSystemName
+     * @param id
+     * The id
      */
-    public SubSystem(String subSystemName) {
-        this.subSystemName = subSystemName;
+    public void setId(Integer id) {
+        this.id = id;
     }
+
 
     /**
      *

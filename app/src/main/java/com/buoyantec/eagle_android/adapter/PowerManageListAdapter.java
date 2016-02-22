@@ -18,9 +18,11 @@ import com.buoyantec.eagle_android.R;
 public class PowerManageListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer[] images;
+    private Integer image;
     private String[] texts;
     private ListView listView;
 
+    // 动态图标
     public PowerManageListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
         this.listView = listView;
         this.mContext = c;
@@ -28,9 +30,17 @@ public class PowerManageListAdapter extends BaseAdapter {
         this.texts = texts;
     }
 
+    // 静态图标
+    public PowerManageListAdapter(ListView listView, Context c, Integer image, String[] texts) {
+        this.listView = listView;
+        this.mContext = c;
+        this.image = image;
+        this.texts = texts;
+    }
+
     @Override
     public int getCount() {
-        return images.length;
+        return texts.length;
     }
 
     @Override
@@ -52,7 +62,11 @@ public class PowerManageListAdapter extends BaseAdapter {
         ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_power_manage_image);
         TextView tv = BaseViewHolder.get(convertView, R.id.list_item_power_manage_text);
 
-        iv.setBackgroundResource(images[position]);
+        if (image != null) {
+            iv.setBackgroundResource(image);
+        } else {
+            iv.setBackgroundResource(images[position]);
+        }
         tv.setText(texts[position]);
 
         return convertView;

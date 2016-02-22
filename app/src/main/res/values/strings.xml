@@ -56,5 +56,6 @@
     <!--api status-->
     <string name="apiFailed">==========调用接口失败==========</string>
     <string name="apiSuccess">==========调用接口成功==========</string>
+    <string name="title_activity_cabinet_detail">CabinetDetail</string>
 
 </resources>

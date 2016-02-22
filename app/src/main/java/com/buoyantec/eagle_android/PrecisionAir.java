@@ -131,7 +131,7 @@ public class PrecisionAir extends AppCompatActivity {
                             TextView title = (TextView) v.findViewById(R.id.list_item_precision_air_text);
                             Intent i = new Intent(PrecisionAir.this, PrecisionAirDetail.class);
                             i.putExtra("title", title.getText());
-                            i.putExtra("id", ids[position]);
+                            i.putExtra("device_id", ids[position]);
                             startActivity(i);
                         }
                     });

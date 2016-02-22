@@ -1,6 +1,5 @@
 package com.buoyantec.eagle_android;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -121,7 +120,6 @@ public class SystemStatus extends AppCompatActivity {
         final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
         final String token = sp.getString("token", null);
         final String phone = sp.getString("phone", null);
-        System.out.println(sp.getInt("current_room_id", 2) + "()()()()()()()");
         // 定义拦截器,添加headers
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
@@ -155,27 +153,23 @@ public class SystemStatus extends AppCompatActivity {
 
                     //  获取所有的分类系统(比如: 动力,环境..)
                     List<MySystem> mySystems = response.body().getMySystems();
-                    Iterator<MySystem> itr = mySystems.iterator();
-                    while (itr.hasNext()) {
-                        MySystem mySystem = itr.next();
+                    for (MySystem mySystem : mySystems) {
                         String systemName = mySystem.getName();
                         System.out.println(systemName + "---------------------------");
                         subSystemList.clear();
                         // 获取所有的子系统( 比如: ups, 配电..)
-                        Iterator<SubSystem> subItr = mySystem.getSubSystem().iterator();
-                        while (subItr.hasNext()) {
-                            SubSystem subSystem = subItr.next();
+                        for (SubSystem subSystem : mySystem.getSubSystem()) {
                             String subName = subSystem.getSubSystemName();
-                            System.out.println("-->"+subName);
+                            System.out.println("-->" + subName);
                             subSystemList.add(subName);
                         }
                         // 把分类名和对应的子系统列表写入HashMap
-                        if (subSystemList.size() > 0){
+                        if (subSystemList.size() > 0) {
                             kindSystems.put(systemName,
                                     subSystemList.toArray(new String[subSystemList.size()]));
                         }
                     }
-                    System.out.println(kindSystems.toString());
+
                     // 按照kindSystems加载UI
                     LinearLayout container = (LinearLayout)
                             findViewById(R.id.system_status_linearLayout);
@@ -185,6 +179,7 @@ public class SystemStatus extends AppCompatActivity {
                         container.addView(titleLayout);
                         TextView title = (TextView) titleLayout.findViewById(R.id.system_status_title);
                         title.setText(entry.getKey());
+
                         // 加载GridView
                         String[] systems = entry.getValue();
                         System.out.println("读取>>>>>>>>>>>>>>>>>"+entry.getKey());
@@ -196,6 +191,7 @@ public class SystemStatus extends AppCompatActivity {
                         }
                         final String[] grid_texts = texts.toArray(new String[texts.size()]);
                         Integer[] grid_images = images.toArray(new Integer[images.size()]);
+
                         // 动态加载gridView
                         View gridLayout = View.inflate(context, R.layout.system_status_grid_view, null);
                         container.addView(gridLayout);
@@ -239,6 +235,5 @@ public class SystemStatus extends AppCompatActivity {
                 editor.apply();
             }
         });
-        System.out.println(">>>>>>>>>>获取系统状态列表执行完成>>>>>>>>>>>>");
     }
 }

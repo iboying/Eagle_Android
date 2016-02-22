@@ -34,6 +34,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,40 +52,39 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences mPreferences;
     private String[] rooms;
+    private HashMap<String, Integer> systemAlarmCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        // 判断用户
-        isPresentUser();
-        // 加载字体图标
-        Iconify.with(new FontAwesomeModule());
-        // 加载布局文件
-        setContentView(R.layout.activity_main);
-        // 初始化toolbar和侧边栏
-        initToolBarAndDrawer();
-        // 图片轮播
-        initCarousel();
-        // 初始化GridView
-        initGridView();
-        // 异步任务: 检测告警信息
-        getSubSystemAlarmCount();
-    }
-
-    /**
-     * 用户信息是否存在
-     * 是: 加载主页面
-     * 否: 加载登陆页
-     */
-    private void isPresentUser() {
+        /**
+         * 用户信息是否存在
+         * 是: 加载主页面
+         * 否: 加载登陆页
+         */
         mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         String pwd = mPreferences.getString("password", "");
-        if (pwd.isEmpty()) {
-            Intent i = new Intent(this, LoginActivity.class);
-            startActivity(i);
+        Integer current_room_id = mPreferences.getInt("current_room_id", 0);
+        String rooms = mPreferences.getString("rooms", null);
+        String current_room = mPreferences.getString("current_room", null);
+
+        if (pwd.isEmpty() || current_room_id==0 || rooms==null || current_room==null) {
             finish();
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
         }
+            // 加载字体图标
+            Iconify.with(new FontAwesomeModule());
+            // 加载布局文件
+            setContentView(R.layout.activity_main);
+            // 初始化toolbar和侧边栏
+            initToolBarAndDrawer();
+            // 图片轮播
+            initCarousel();
+            // 初始化GridView
+            initGridView();
+            // 异步任务: 检测告警信息
+            getSubSystemAlarmCount();
     }
 
     public void initToolBarAndDrawer(){
@@ -94,22 +94,17 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         TextView subToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+
         // 获取所有机房([id1, room1, id2, room2, ...])
-        String sp_room = mPreferences.getString("room", null);
-        System.out.println(sp_room);
-        if (sp_room != null){
-            rooms = sp_room.split("#");
-            Integer room_id = Integer.parseInt(rooms[0]);
-            String room = rooms[1];
-            subToolbarTitle.setText(room);
-            // 保存当前机房信息
-            SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putString("current_room", room);
-            editor.putInt("current_room_id", room_id);
-            editor.apply();
-        } else{
+        String sp_rooms = mPreferences.getString("rooms", null);
+        if (sp_rooms != null) {
+            rooms = sp_rooms.split("#");
+            String current_room = mPreferences.getString("current_room", null);
+            subToolbarTitle.setText(current_room);
+        } else {
             subToolbarTitle.setText("无可管理机房");
         }
+
 
 
         //添加侧边菜单,并绑定ToolBar菜单按钮
@@ -135,9 +130,9 @@ public class MainActivity extends AppCompatActivity
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString("password", "");
                 editor.apply();
+                finish();
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
-                finish();
             }
         });
     }
@@ -209,7 +204,10 @@ public class MainActivity extends AppCompatActivity
                     Intent i = new Intent(MainActivity.this, SystemStatus.class);
                     startActivity(i);
                 } else if (position == 1) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("systemAlarmCount", systemAlarmCount);
                     Intent i = new Intent(MainActivity.this, WarnSystems.class);
+                    i.putExtras(bundle);
                     startActivity(i);
                 } else if (position == 2) {
                     Intent i = new Intent(MainActivity.this, WorkPlan.class);
@@ -232,18 +230,23 @@ public class MainActivity extends AppCompatActivity
         SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
         sliderShow.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
 
-        for (int i = 1; i<rooms.length; i+=2){
+        for (int i = 0; i<rooms.length; i+=2){
             MySliderView mySliderView = new MySliderView(this);
 
             final int finalI = i;
             mySliderView
-                    .description(rooms[i])
+                    .description(rooms[i+1])
                     .image(R.drawable.image_room)
                     .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                         @Override
                         public void onSliderClick(BaseSliderView slider) {
-                            Toast.makeText(MainActivity.this, rooms[finalI],
-                                            Toast.LENGTH_SHORT).show();
+                            SharedPreferences.Editor editor = mPreferences.edit();
+                            editor.putInt("current_room_id", Integer.parseInt(rooms[finalI]));
+                            editor.putString("current_room", rooms[finalI + 1]);
+                            editor.apply();
+                            finish();
+                            Intent i = new Intent(MainActivity.this, MainActivity.class);
+                            startActivity(i);
                         }
                     });
             sliderShow.addSlider(mySliderView);
@@ -285,22 +288,28 @@ public class MainActivity extends AppCompatActivity
                 if (response.code() == 200) {
                     // 计数
                     Integer count = 0;
+                    systemAlarmCount = new HashMap<>();
 
                     List<Result> results = response.body().getResults();
                     Iterator<Result> itr = results.iterator();
                     while(itr.hasNext()) {
                         Result result = itr.next();
                         count += result.getSize();
+                        systemAlarmCount.put(result.getName(), result.getSize());
                     }
                     ImageView warnMessage = (ImageView) findViewById(R.id.grid_warn_message_image);
                     BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
-                    if (count>=1000) {
-                        badge.setText("...");
-                    } else{
-                        badge.setText(count.toString());
-                    }
                     badge.setBadgeMargin(0);
-                    badge.show();
+                    if (count == 0) {
+                        badge.hide();
+                    } else {
+                        if (count>=1000) {
+                            badge.setText("···");
+                        } else{
+                            badge.setText(count.toString());
+                        }
+                        badge.show();
+                    }
                 } else {
                     // 输出非201时的错误信息
                     System.out.println(">>>>>>>>>>系统告警数量接口状态错误>>>>>>>>>>>>");

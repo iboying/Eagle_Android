@@ -23,4 +23,13 @@
             android:gravity="center"
             android:src="@drawable/temperature"/>
     </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:id="@+id/temperature_listView"
+        android:clickable="true"
+        android:dividerHeight="1dp"
+        android:background="@color/white"/>
 </LinearLayout>

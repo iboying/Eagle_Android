@@ -1,14 +1,37 @@
 package com.buoyantec.eagle_android;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.API.MyService;
+import com.buoyantec.eagle_android.adapter.CabinetListAdapter;
 import com.buoyantec.eagle_android.adapter.PowerUpsGridViewAdapter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class UpsDetail extends AppCompatActivity {
 
@@ -17,10 +40,7 @@ public class UpsDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ups_detail);
         initToolbar();
-        //初始化GridView
-        initInputGridView();
-        initOutputGridView();
-        initBatteryGridView();
+        initListView();
     }
 
     private void initToolbar() {
@@ -37,32 +57,78 @@ public class UpsDetail extends AppCompatActivity {
         subToolbarTitle.setText(title);
     }
 
+    private void initListView() {
+        // 获取device_id 和 room_id
+        final SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        Intent i = getIntent();
+        Integer device_id = i.getIntExtra("device_id", 1);
+        Integer room_id = sp.getInt("current_room_id", 1);
+        final Context context = this;
 
-    private void initInputGridView() {
-        int item_layout = R.layout.grid_item_orange;
-        String[] texts = { "A相电压", "B相电压", "C相电压", "A相电流", "B相电流", "C相电流" };
-        Integer[] data = {556,556,556,556,556,556};
+        // 调用接口,获取设备状态
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder()
+                        .addHeader("X-User-Token", sp.getString("token", ""))
+                        .addHeader("X-User-Phone", sp.getString("phone", ""))
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
 
-        GridView gridview = (GridView) findViewById(R.id.ups_input_gridView);
-        gridview.setAdapter(new PowerUpsGridViewAdapter(gridview, this, item_layout, texts, data));
-    }
+        // 创建Retrofit实例
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://139.196.190.201/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
 
-    private void initOutputGridView() {
-        int item_layout = R.layout.grid_item_purple;
-        String[] texts = { "A相电压", "B相电压", "C相电压", "A相电流", "B相电流", "C相电流" };
-        Integer[] data = {556,556,556,556,556,556};
+        // 创建所有链接
+        MyService myService = retrofit.create(MyService.class);
 
-        GridView gridview = (GridView) findViewById(R.id.ups_output_gridView);
-        gridview.setAdapter(new PowerUpsGridViewAdapter(gridview, this, item_layout, texts, data));
-    }
+        // 获取指定链接数据
+        Call<ResponseBody> call = myService.getDeviceData(room_id, device_id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    // 数据变量
+                    ArrayList<String> nameArray = new ArrayList<>();
+                    ArrayList<String> statusArray = new ArrayList<>();
+                    try {
+                        String jsonString = response.body().string();
+                        ApplicationHelper helper = new ApplicationHelper();
+                        HashMap<String, String> datas = helper.jsonToHash(jsonString);
 
-    private void initBatteryGridView() {
-        int item_layout = R.layout.grid_item_green;
-        String[] texts = { "容量", "温度", "电压", "电流" };
-        Integer[] data = {556,556,556,556};
+                        // 循环hash,存入数组
+                        for (Map.Entry<String, String> entry : datas.entrySet()) {
+                            nameArray.add(entry.getKey());
+                            statusArray.add(entry.getValue());
+                        }
 
-        GridView gridview = (GridView) findViewById(R.id.ups_battery_gridView);
-        gridview.setAdapter(new PowerUpsGridViewAdapter(gridview, this, item_layout, texts, data));
+                        // item数据
+                        String[] names = nameArray.toArray(new String[nameArray.size()]);
+                        String[] status = statusArray.toArray(new String[statusArray.size()]);
+
+                        // 加载列表
+                        ListView listView = (ListView) findViewById(R.id.ups_detail_listView);
+                        listView.setAdapter(new CabinetListAdapter(listView, context, names, status));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("========设备数据获取失败========");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println("设备数据链接失败");
+                // TODO: 16/2/22 错误处理
+            }
+        });
     }
 
 }

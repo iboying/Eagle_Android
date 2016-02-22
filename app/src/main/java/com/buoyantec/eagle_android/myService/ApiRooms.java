@@ -77,18 +77,33 @@ public class ApiRooms {
                     // 获得机房List
                     List<Room> roomList = response.body().getRooms();
                     // 遍历机房
-                    Iterator<Room> rooms = roomList.iterator();
-                    while (rooms.hasNext()) {
-                        Room room = rooms.next();
+                    for (Room room : roomList) {
                         result += (room.getId() + "");
                         result += '#';
                         result += room.getName();
                         result += '#';
+                        System.out.println(room.getId()+"<<<<<<<<<");
                     }
-                    // 机房信息存入SharePreferences
+
+                    Integer current_room_id = sp.getInt("current_room_id", 0);
                     SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("room", result);
+
+                    if (current_room_id == 0) {
+                        if (result.equals("")){
+                            editor.putString("rooms", null);
+                        } else{
+                            String[] rooms = result.split("#");
+                            System.out.println(rooms[0]+"()()()()()");
+                            Integer room_id = Integer.parseInt(rooms[0]);
+                            String room = rooms[1];
+                            // 保存当前机房信息
+                            editor.putString("rooms", result);
+                            editor.putString("current_room", room);
+                            editor.putInt("current_room_id", room_id);
+                        }
+                    }
                     editor.apply();
+
                     System.out.println(">>>>>>>>>>获取机房成功>>>>>>>>>>>>");
                 } else {
                     try {

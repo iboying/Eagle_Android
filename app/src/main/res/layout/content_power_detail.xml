@@ -1,105 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/windowBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.buoyantec.eagle_android.PowerDetail"
     tools:showIn="@layout/activity_power_detail">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="元件状态"/>
+
+    <ListView
+        android:id="@+id/power_detail_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:dividerHeight="0dp"
+        android:divider="@color/white"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingBottom="15dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:paddingTop="15dp">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
 
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/power_ups_detail_text_bg"
-                android:gravity="center"
-                android:text="功率"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_tiny"/>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="1dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingBottom="15dp"-->
+            <!--android:paddingLeft="30dp"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:paddingTop="15dp">-->
 
-            <GridView
-                android:id="@+id/power_detail_power_gridView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:numColumns="3"/>
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="18dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="@drawable/power_ups_detail_text_bg"-->
+                <!--android:gravity="center"-->
+                <!--android:text="功率"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:textSize="@dimen/text_tiny"/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingBottom="15dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:paddingTop="15dp">
+            <!--<GridView-->
+                <!--android:id="@+id/power_detail_power_gridView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="200dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:numColumns="3"/>-->
+        <!--</LinearLayout>-->
 
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/power_ups_detail_text_bg"
-                android:gravity="center"
-                android:text="电压"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_tiny"/>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="1dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingBottom="15dp"-->
+            <!--android:paddingLeft="30dp"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:paddingTop="15dp">-->
 
-            <GridView
-                android:id="@+id/power_detail_voltage_gridView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:numColumns="3"/>
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="18dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="@drawable/power_ups_detail_text_bg"-->
+                <!--android:gravity="center"-->
+                <!--android:text="电压"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:textSize="@dimen/text_tiny"/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingBottom="15dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:paddingTop="15dp">
+            <!--<GridView-->
+                <!--android:id="@+id/power_detail_voltage_gridView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="200dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:numColumns="3"/>-->
+        <!--</LinearLayout>-->
 
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/power_ups_detail_text_bg"
-                android:gravity="center"
-                android:text="电流"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_tiny"/>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="1dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingBottom="15dp"-->
+            <!--android:paddingLeft="30dp"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:paddingTop="15dp">-->
 
-            <GridView
-                android:id="@+id/power_detail_electricity_gridView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:numColumns="3"/>
-        </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+            <!--<TextView-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="18dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="@drawable/power_ups_detail_text_bg"-->
+                <!--android:gravity="center"-->
+                <!--android:text="电流"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:textSize="@dimen/text_tiny"/>-->
+
+            <!--<GridView-->
+                <!--android:id="@+id/power_detail_electricity_gridView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="100dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:numColumns="3"/>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+</LinearLayout>

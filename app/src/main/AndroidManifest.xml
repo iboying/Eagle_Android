@@ -17,8 +17,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -34,8 +34,8 @@
         </activity>
         <activity
             android:name=".SystemStatus"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_system_status"
+            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -44,8 +44,8 @@
         </activity>
         <activity
             android:name=".WarnSystems"
-            android:launchMode="singleTask"
             android:label="@string/title_activity_warn_messages"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -63,8 +63,8 @@
         </activity>
         <activity
             android:name=".PowerManage"
-            android:launchMode="singleTask"
             android:label="@string/title_activity_power_manage"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -91,8 +91,8 @@
         </activity>
         <activity
             android:name=".PowerDistribution"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_power_distribution"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -101,8 +101,8 @@
         </activity>
         <activity
             android:name=".UpsSystem"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_ups_system"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -111,8 +111,8 @@
         </activity>
         <activity
             android:name=".Cabinet"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_cabinet"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -121,8 +121,8 @@
         </activity>
         <activity
             android:name=".PrecisionAir"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_precision_air"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -131,8 +131,8 @@
         </activity>
         <activity
             android:name=".Box"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_box"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -141,8 +141,8 @@
         </activity>
         <activity
             android:name=".Battery"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_battery"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -187,8 +187,8 @@
         </activity>
         <activity
             android:name=".Water"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_water"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -197,8 +197,8 @@
         </activity>
         <activity
             android:name=".Temperature"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_temperature"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -206,8 +206,8 @@
         </activity>
         <activity
             android:name=".VideoSystem"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_video_system"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -216,8 +216,8 @@
         </activity>
         <activity
             android:name=".Smoke"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_smoke"
+            android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -235,7 +235,6 @@
         </activity>
         <activity
             android:name=".PowerAnalyse"
-
             android:label="@string/title_activity_power_analyse"
             android:parentActivityName=".PowerManage"
             android:theme="@style/AppTheme.NoActionBar" >
@@ -272,12 +271,20 @@
         </activity>
         <activity
             android:name=".WarnDevices"
-            android:launchMode="singleTop"
             android:label="@string/title_activity_warn_devices"
+            android:launchMode="singleTop"
             android:parentActivityName=".WarnSystems" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.WarnSystems" />
+        </activity>
+        <activity
+            android:name=".CabinetDetail"
+            android:label="@string/title_activity_cabinet_detail"
+            android:parentActivityName=".Cabinet" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.Cabinet" />
         </activity>
     </application>
 
