@@ -15,20 +15,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="40dp">
+        android:padding="30dp">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:gravity="center"
             android:src="@drawable/temperature"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="温度"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="湿度"/>
+    </LinearLayout>
+
     <ListView
+        android:id="@+id/temperature_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:id="@+id/temperature_listView"
         android:clickable="true"
         android:dividerHeight="1dp"
         android:background="@color/white"/>

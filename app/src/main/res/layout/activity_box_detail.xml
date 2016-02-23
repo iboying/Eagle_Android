@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.buoyantec.eagle_android.BoxDetail">
+    tools:context="com.buoyantec.eagle_android.MeterDetail">
 
     <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"
@@ -14,6 +14,6 @@
         <include layout="@layout/sub_toolbar"/>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_box_detail"/>
+    <include layout="@layout/content_meter_detail"/>
 
 </android.support.design.widget.CoordinatorLayout>

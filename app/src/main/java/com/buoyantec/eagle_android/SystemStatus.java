@@ -23,7 +23,6 @@ import com.buoyantec.eagle_android.model.SubSystem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -82,10 +81,10 @@ public class SystemStatus extends AppCompatActivity {
 
         // 动力
         systemClass.put("UPS系统", UpsSystem.class);
-        systemClass.put("电量仪系统", Box.class);
+        systemClass.put("电量仪系统", Meter.class);
         systemClass.put("配电系统", PowerDistribution.class);
         systemClass.put("电池检测", Battery.class);
-        systemClass.put("发电机系统", Box.class);//// TODO: 16/2/2  无页面
+        systemClass.put("发电机系统", Meter.class);//// TODO: 16/2/2  无页面
         // 环境
         systemClass.put("温湿度系统", Temperature.class);
         systemClass.put("机柜环境", Cabinet.class);
@@ -182,10 +181,10 @@ public class SystemStatus extends AppCompatActivity {
 
                         // 加载GridView
                         String[] systems = entry.getValue();
-                        System.out.println("读取>>>>>>>>>>>>>>>>>"+entry.getKey());
+                        System.out.println("读取>>>>>>>>>>>>>>>>>" + entry.getKey());
                         final ArrayList<String> texts = new ArrayList<>();
                         final ArrayList<Integer> images = new ArrayList<>();
-                        for (int i = 0; i<systems.length; i++) {
+                        for (int i = 0; i < systems.length; i++) {
                             texts.add(systems[i]);
                             images.add(systemIcon.get(systems[i]));
                         }
@@ -199,7 +198,7 @@ public class SystemStatus extends AppCompatActivity {
                         gridView.setAdapter(new SystemStatusGridAdapter(gridView, context, grid_images, grid_texts));
                         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                                for (int j = 0;j < grid_texts.length; j++) {
+                                for (int j = 0; j < grid_texts.length; j++) {
                                     if (position == j) {
                                         Intent i = new Intent(context, systemClass.get(grid_texts[j]));
                                         // 获取子系统名称
@@ -216,7 +215,7 @@ public class SystemStatus extends AppCompatActivity {
                 } else {
                     try {
                         String error = response.errorBody().string();
-                        System.out.println(error+"8888888888888888888888888888888");
+                        System.out.println(error + "8888888888888888888888888888888");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

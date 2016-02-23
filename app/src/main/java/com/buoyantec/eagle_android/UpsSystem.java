@@ -17,13 +17,11 @@ import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
-import com.buoyantec.eagle_android.myService.ApiDevices;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import okhttp3.Interceptor;
@@ -108,21 +106,32 @@ public class UpsSystem extends AppCompatActivity {
                 if (response.code() == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
+                    ArrayList<String[]> device_datas = new ArrayList<>();
+
                     // 获取用户
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
                         device_name.add(device.getName());
                         device_id.add(device.getId());
+                        String[] value = {
+                                device.getAv()[1],
+                                device.getBv()[1],
+                                device.getCv()[1],
+                                device.geRate()[1]
+                        };
+                        device_datas.add(value);
                     }
+
                     // references to our images
                     Integer image = R.drawable.ups_system;
                     // texts of images
                     String[] texts = device_name.toArray(new String[device_name.size()]);
                     // UPS数据
-                    Integer[][] datas = {{75, 75, 75, 75}, {60, 40, 80, 50}};
+                    String[][] datas = device_datas.toArray(new String[device_datas.size()][]);
+                    // 设备id
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
-                    ListView listView = (ListView) findViewById(R.id.system_status_listView);
+                    ListView listView = (ListView) findViewById(R.id.ups_system_listView);
                     listView.setAdapter(new SystemStatusListAdapter(listView, context, image, texts, datas));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

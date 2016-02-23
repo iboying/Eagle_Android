@@ -22,7 +22,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.BoxDetail"/>
+        className = "com.buoyantec.eagle_android.MeterDetail"/>
       <point      
         x = "108"      
         y = "1500"/>
@@ -158,7 +158,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.Box"/>
+        className = "com.buoyantec.eagle_android.eter"/>
       <point      
         x = "1450"      
         y = "1050"/>

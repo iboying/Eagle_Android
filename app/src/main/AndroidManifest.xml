@@ -130,7 +130,7 @@
                 android:value="com.buoyantec.eagle_android.SystemStatus" />
         </activity>
         <activity
-            android:name=".Box"
+            android:name=".Meter"
             android:label="@string/title_activity_box"
             android:launchMode="singleTop"
             android:parentActivityName=".SystemStatus"
@@ -177,13 +177,13 @@
                 android:value="com.buoyantec.eagle_android.PrecisionAir" />
         </activity>
         <activity
-            android:name=".BoxDetail"
+            android:name=".MeterDetail"
             android:label="@string/title_activity_box_detail"
-            android:parentActivityName=".Box"
+            android:parentActivityName=".Meter"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.Box" />
+                android:value=".Meter" />
         </activity>
         <activity
             android:name=".Water"

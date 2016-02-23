@@ -17,23 +17,31 @@ public class Device {
     @Expose
     private int id;
 
-    /**
-     *
-     * @return
-     * The name
-     */
-    public String getName() {
-        return name;
-    }
+    // UPS系统,电量仪系统,配电系统,漏水系统
+    @SerializedName("A相电压")
+    @Expose
+    private String av;
 
-    /**
-     *
-     * @param name
-     * The name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    @SerializedName("B相电压")
+    @Expose
+    private String bv;
+
+    @SerializedName("C相电压")
+    @Expose
+    private String cv;
+
+    @SerializedName("频率")
+    @Expose
+    private String rate;
+
+    // 空调系统
+    @SerializedName("温度")
+    @Expose
+    private String temperature;
+
+    @SerializedName("湿度")
+    @Expose
+    private String humidity;
 
     /**
      *
@@ -46,10 +54,42 @@ public class Device {
 
     /**
      *
-     * @param id
-     * The id
+     * @return
+     * The name
      */
-    public void setId(int id) {
-        this.id = id;
+    public String getName() {
+        return name;
+    }
+
+    // UPS系统,电量仪系统,配电系统
+    public String[] getAv() {
+        String[] cache = {"A相电压", av};
+        return cache;
+    }
+
+    public String[] getBv() {
+        String[] cache = {"B相电压", bv};
+        return cache;
+    }
+
+    public String[] getCv() {
+        String[] cache = {"C相电压", cv};
+        return cache;
+    }
+
+    public String[] geRate() {
+        String[] cache = {"频率", rate};
+        return cache;
+    }
+
+    // 空调系统
+    public String[] getTemperature() {
+        String[] cache = {"温度", temperature};
+        return cache;
+    }
+
+    public String[] geHumidity() {
+        String[] cache = {"湿度", humidity};
+        return cache;
     }
 }

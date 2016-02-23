@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--item:系统状态->电量仪系统-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -18,13 +19,13 @@
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/list_item_box_image"
+            android:id="@+id/list_item_meter_image"
             android:layout_width="103dp"
             android:layout_height="80dp"
             android:src="@drawable/power_distribution"/>
 
         <TextView
-            android:id="@+id/list_item_box_text"
+            android:id="@+id/list_item_meter_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -40,11 +41,11 @@
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/list_item_box_status_image"
+            android:id="@+id/list_item_meter_status_image"
             android:layout_width="50dp"
             android:layout_height="50dp"/>
         <TextView
-            android:id="@+id/list_item_box_status_text"
+            android:id="@+id/list_item_meter_status_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

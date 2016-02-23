@@ -18,13 +18,11 @@ import com.buoyantec.eagle_android.adapter.BoxListAdapter;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
-import com.buoyantec.eagle_android.myService.ApiDevices;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import okhttp3.Interceptor;
@@ -36,7 +34,10 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class Box extends AppCompatActivity {
+/**
+ * 当前: 系统状态 -> 电量仪系统
+ */
+public class Meter extends AppCompatActivity {
     private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
@@ -48,7 +49,7 @@ public class Box extends AppCompatActivity {
         //加载字体图标
         Iconify.with(new FontAwesomeModule());
         init();
-        setContentView(R.layout.activity_box);
+        setContentView(R.layout.activity_meter);
         //初始化toolbar
         initToolbar();
         //初始化list
@@ -109,30 +110,37 @@ public class Box extends AppCompatActivity {
                 if (response.code() == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
+                    ArrayList<String[]> device_datas = new ArrayList<>();
+
                     // 获取用户
                     List<Device> devices = response.body().getDevices();
-                    Iterator<Device> itr = devices.iterator();
-                    while (itr.hasNext()) {
-                        Device device = itr.next();
+                    for (Device device : devices) {
                         device_name.add(device.getName());
                         device_id.add(device.getId());
-                        System.out.println(device.getId()+"()()()()(");
+                        String[] value = {
+                                device.getAv()[1],
+                                device.getBv()[1],
+                                device.getCv()[1],
+                                device.geRate()[1]
+                        };
+                        device_datas.add(value);
                     }
                     // references to our images
                     Integer image = R.drawable.power_distribution;
                     // texts of images
                     String[] texts = device_name.toArray(new String[device_name.size()]);
                     // UPS数据
-                    Integer[] data = {1,0};
+                    String[][] datas = device_datas.toArray(new String[device_datas.size()][]);
+                    // 设备id
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
-                    ListView listView = (ListView) findViewById(R.id.box_listView);
-                    listView.setAdapter(new BoxListAdapter(listView, context, image, texts, data));
+                    ListView listView = (ListView) findViewById(R.id.meter_listView);
+                    listView.setAdapter(new SystemStatusListAdapter(listView, context, image, texts, datas));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            TextView title = (TextView) view.findViewById(R.id.list_item_box_text);
-                            Intent i = new Intent(Box.this, BoxDetail.class);
+                            TextView title = (TextView) view.findViewById(R.id.list_item_meter_text);
+                            Intent i = new Intent(Meter.this, MeterDetail.class);
                             i.putExtra("title", title.getText());
                             i.putExtra("device_id", ids[position]);
                             startActivity(i);

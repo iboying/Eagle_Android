@@ -50,12 +50,12 @@ public class BoxListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext)
-                    .inflate(R.layout.list_item_box, parent, false);
+                    .inflate(R.layout.list_item_meter, parent, false);
         }
-        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_box_image);
-        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_box_text);
-        ImageView st_img = BaseViewHolder.get(convertView, R.id.list_item_box_status_image);
-        TextView st_text = BaseViewHolder.get(convertView, R.id.list_item_box_status_text);
+        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_meter_image);
+        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_meter_text);
+        ImageView st_img = BaseViewHolder.get(convertView, R.id.list_item_meter_status_image);
+        TextView st_text = BaseViewHolder.get(convertView, R.id.list_item_meter_status_text);
 
         iv.setBackgroundResource(image);
         tv.setText(texts[position]);

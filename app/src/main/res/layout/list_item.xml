@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--item: 告警系统列表,告警设备列表-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

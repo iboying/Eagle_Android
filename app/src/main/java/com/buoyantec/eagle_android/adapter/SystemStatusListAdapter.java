@@ -19,11 +19,11 @@ public class SystemStatusListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer image;
     private String[] texts;
-    private Integer[][] datas;
+    private String[][] datas;
     private ListView listView;
 
     public SystemStatusListAdapter(ListView listView, Context c, Integer image,
-                                   String[] texts, Integer[][] datas) {
+                                   String[] texts, String[][] datas) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
@@ -60,17 +60,17 @@ public class SystemStatusListAdapter extends BaseAdapter {
 
         tv.setText(texts[position]);
         iv.setImageResource(image);
-//        if (datas.length > 0) {
-//            av.setText(datas[position][0].toString()+"%");
-//            bv.setText(datas[position][1].toString()+"%");
-//            cv.setText(datas[position][2].toString()+"%");
-//            a.setText(datas[position][3].toString()+"%");
-//        } else {
+        if (datas.length > 0) {
+            av.setText(datas[position][0]);
+            bv.setText(datas[position][1]);
+            cv.setText(datas[position][2]);
+            a.setText(datas[position][3]);
+        } else {
             av.setText("0.0");
             bv.setText("0.0");
             cv.setText("0.0");
             a.setText("0.0");
-//        }
+        }
 
         return convertView;
     }

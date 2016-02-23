@@ -14,7 +14,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/system_status_listView"
+        android:id="@+id/power_distribution_listView"
         android:clickable="true"
         android:dividerHeight="1dp"
         android:background="@color/white"

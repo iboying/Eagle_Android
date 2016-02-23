@@ -108,21 +108,26 @@ public class PrecisionAir extends AppCompatActivity {
                 if (response.code() == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
+                    ArrayList<String[]> device_datas = new ArrayList<>();
 
                     List<Device> devices = response.body().getDevices();
-                    Iterator<Device> itr = devices.iterator();
-                    while (itr.hasNext()) {
-                        Device device = itr.next();
+                    for (Device device : devices) {
                         device_name.add(device.getName());
                         device_id.add(device.getId());
+                        String[] value = {
+                                device.getTemperature()[1],
+                                device.geHumidity()[1]
+                        };
+                        device_datas.add(value);
                     }
                     // references to our images
                     Integer image = R.drawable.air;
                     // texts of images
                     String[] texts = device_name.toArray(new String[device_name.size()]);
+                    // 空调数据
+                    String[][] datas = device_datas.toArray(new String[device_datas.size()][]);
+                    // 设备id
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
-                    // UPS数据
-                    Integer[][] datas = {{30, 40}, {30, 40}};
 
                     ListView listView = (ListView) findViewById(R.id.precision_air_listView);
                     listView.setAdapter(new PrecisionAirListAdapter(listView, context, image, texts, datas));

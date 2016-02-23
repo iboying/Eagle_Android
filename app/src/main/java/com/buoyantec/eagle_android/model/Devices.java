@@ -12,9 +12,15 @@ import com.google.gson.annotations.SerializedName;
 
 @Generated("org.jsonschema2pojo")
 public class Devices {
+    // 转化为POJO
     @SerializedName("devices")
     @Expose
     private List<Device> devices = new ArrayList<Device>();
+
+//    // 转化为String
+//    @SerializedName("devices")
+//    @Expose
+//    private String stringDevices;
 
     /**
      *
@@ -25,12 +31,8 @@ public class Devices {
         return devices;
     }
 
-    /**
-     *
-     * @param devices
-     * The devices
-     */
-    public void setDevices(List<Device> devices) {
-        this.devices = devices;
-    }
+//    public String getStringDevices() {
+//        return stringDevices;
+//    }
+
 }

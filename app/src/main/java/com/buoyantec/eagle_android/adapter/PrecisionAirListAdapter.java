@@ -19,16 +19,16 @@ public class PrecisionAirListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer image;
     private String[] texts;
-    private Integer[][] data;
+    private String[][] datas;
     private ListView listView;
 
     public PrecisionAirListAdapter(ListView listView, Context c, Integer image,
-                                   String[] texts, Integer[][] data) {
+                                   String[] texts, String[][] datas) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
         this.texts = texts;
-        this.data = data;
+        this.datas = datas;
     }
 
     @Override
@@ -59,8 +59,14 @@ public class PrecisionAirListAdapter extends BaseAdapter {
 
         iv.setBackgroundResource(image);
         tv.setText(texts[position]);
-        degree.setText(data[1][0].toString()+"℃");
-        humidity.setText(data[1][1].toString()+"%");
+
+        if (datas.length > 0) {
+            degree.setText(datas[position][0]+"℃");
+            humidity.setText(datas[position][1]+"%");
+        } else {
+            degree.setText("0"+"℃");
+            humidity.setText("0"+"%");
+        }
 
         return convertView;
     }

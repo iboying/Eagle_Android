@@ -33,7 +33,10 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BoxDetail extends AppCompatActivity {
+/**
+ * 当前: 系统状态 -> 电量仪系统 -> 详情
+ */
+public class MeterDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

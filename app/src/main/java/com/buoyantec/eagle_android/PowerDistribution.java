@@ -109,6 +109,8 @@ public class PowerDistribution extends AppCompatActivity {
                 if (response.code() == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
+                    ArrayList<String[]> device_datas = new ArrayList<>();
+
                     // 获取用户
                     List<Device> devices = response.body().getDevices();
                     Iterator<Device> itr = devices.iterator();
@@ -116,17 +118,24 @@ public class PowerDistribution extends AppCompatActivity {
                         Device device = itr.next();
                         device_name.add(device.getName());
                         device_id.add(device.getId());
+                        String[] value = {
+                                device.getAv()[1],
+                                device.getBv()[1],
+                                device.getCv()[1],
+                                device.geRate()[1]
+                        };
+                        device_datas.add(value);
                     }
                     // references to our images
                     Integer image = R.drawable.power_distribution;
                     // texts of images
                     String[] texts = device_name.toArray(new String[device_name.size()]);
-                    // UPS数据
-                    Integer[][] datas = {{75, 75, 75, 75}, {60, 40, 80, 50}};
+                    // 配电系统数据
+                    String[][] datas = device_datas.toArray(new String[device_datas.size()][]);
                     // 设备id
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
-                    ListView listView = (ListView) findViewById(R.id.system_status_listView);
+                    ListView listView = (ListView) findViewById(R.id.power_distribution_listView);
                     listView.setAdapter(new SystemStatusListAdapter(listView, context, image, texts, datas));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

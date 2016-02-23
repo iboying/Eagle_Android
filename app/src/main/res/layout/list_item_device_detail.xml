@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--item: 系统状态->子系统->设备信息列表-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/precision_air_detail_listView_item"
+    android:id="@+id/device_detail_listView_item"
     android:orientation="horizontal"
     android:gravity="center"
     android:background="@color/stripListViewGrayColor"
@@ -18,19 +19,19 @@
         android:textColor="@color/list_dot_green"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@color/gray"
         android:gravity="left"
-        android:id="@+id/list_item_precision_air_detail_name"/>
+        android:singleLine="true"
+        android:id="@+id/list_item_device_detail_name"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:gravity="right"
         android:textColor="@color/gray"
-        android:id="@+id/list_item_precision_air_detail_status"/>
+        android:id="@+id/list_item_device_detail_status"/>
 
 </LinearLayout>

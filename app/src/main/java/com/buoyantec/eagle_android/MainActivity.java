@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
             finish();
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
-        }
+        } else {
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
             // 加载布局文件
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity
             initGridView();
             // 异步任务: 检测告警信息
             getSubSystemAlarmCount();
+        }
     }
 
     public void initToolBarAndDrawer(){
