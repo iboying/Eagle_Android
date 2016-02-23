@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--item: 温湿度系统->详情 -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/device_detail_listView_item"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:background="@color/stripListViewGrayColor"
+    android:layout_width="match_parent"
+    android:layout_height="30dp">
+
+    <!--序号-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:id="@+id/list_item_temperature_num"/>
+
+    <!--温度-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:id="@+id/list_item_temperature_temperature"/>
+
+    <!--湿度-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        android:id="@+id/list_item_temperature_humidity"/>
+
+</LinearLayout>

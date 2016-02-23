@@ -15,15 +15,15 @@ import com.buoyantec.eagle_android.R;
  * Created by kang on 16/1/19.
  * 列头柜ListView适配器
  */
-public class BoxListAdapter extends BaseAdapter {
+public class MeterListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer image;
     private String[] texts;
     private Integer[] data;
     private ListView listView;
 
-    public BoxListAdapter(ListView listView, Context c, Integer image,
-                                   String[] texts, Integer[] data) {
+    public MeterListAdapter(ListView listView, Context c, Integer image,
+                            String[] texts, Integer[] data) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
@@ -50,12 +50,12 @@ public class BoxListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext)
-                    .inflate(R.layout.list_item_meter, parent, false);
+                    .inflate(R.layout.list_item_device_status, parent, false);
         }
-        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_meter_image);
-        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_meter_text);
-        ImageView st_img = BaseViewHolder.get(convertView, R.id.list_item_meter_status_image);
-        TextView st_text = BaseViewHolder.get(convertView, R.id.list_item_meter_status_text);
+        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_device_status_image);
+        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_device_status_text);
+        ImageView st_img = BaseViewHolder.get(convertView, R.id.list_item_device_status_status_image);
+        TextView st_text = BaseViewHolder.get(convertView, R.id.list_item_device_status_status_text);
 
         iv.setBackgroundResource(image);
         tv.setText(texts[position]);

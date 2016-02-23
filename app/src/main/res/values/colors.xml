@@ -31,10 +31,11 @@
     <color name="loginWindowColor">#EEEEEE</color>
     
     <!--机柜温度,空调,列头柜ListView灰色背景色-->
-    <color name="stripListViewGrayColor">#FAFAFA</color>
+    <color name="stripListViewGrayColor">#F5F5F5</color>
 
     <!--通用颜色-->
     <color name="white">#ffffff</color>
     <color name="gray">#aaaaaa</color>
     <color name="list_dot_green">#34E8A3</color>
+    <color name="list_dot_red">#FF2600</color>
 </resources>

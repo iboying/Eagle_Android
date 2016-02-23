@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="设备状态"/>
+        android:text="元件状态"/>
 
     <ListView
         android:id="@+id/cabinet_detail_listView"

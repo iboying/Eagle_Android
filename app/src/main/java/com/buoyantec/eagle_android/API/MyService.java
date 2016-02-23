@@ -7,6 +7,8 @@ import com.buoyantec.eagle_android.model.Rooms;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.User;
 
+import java.util.HashMap;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -47,10 +49,14 @@ public interface MyService {
     @POST("rooms/{id}/devices/search")
     Call<Devices> getDevices(@Path("id") Integer room_id,
                              @Field("sub_sys_name") String sub_sys_name);
-    // 根据设备id获取设备信息 status: 200
+
+
+    // 根据设备id获取设备信息 status: 200, 返回hashMap
     @Headers("Accept: application/json")
     @GET("rooms/{room_id}/devices/{id}")
-    Call<ResponseBody> getDeviceData(@Path("room_id") Integer room_id, @Path("id") Integer id);
+    Call<HashMap<String, String>> getDeviceDataHash(@Path("room_id") Integer room_id,
+                                                    @Path("id") Integer id);
+
 
     // 根据设备id获取设备告警列表 status: 200
     @Headers("Accept: application/json")

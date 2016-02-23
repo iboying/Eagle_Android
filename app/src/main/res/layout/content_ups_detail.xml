@@ -15,10 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="设备状态"/>
+        android:text="元件状态"/>
 
     <ListView
         android:id="@+id/ups_detail_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:dividerHeight="0dp"
+        android:divider="@color/white"/>
 </LinearLayout>

@@ -25,6 +25,7 @@
         android:textColor="@color/gray"
         android:gravity="left"
         android:singleLine="true"
+        android:ellipsize="end"
         android:id="@+id/list_item_device_detail_name"/>
 
     <TextView

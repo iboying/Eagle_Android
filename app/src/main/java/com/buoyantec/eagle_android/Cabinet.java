@@ -14,9 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.CabinetListAdapter;
 import com.buoyantec.eagle_android.adapter.PowerManageListAdapter;
-import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.joanzapata.iconify.Iconify;

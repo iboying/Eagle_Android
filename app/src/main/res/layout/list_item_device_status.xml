@@ -19,13 +19,13 @@
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/list_item_meter_image"
+            android:id="@+id/list_item_device_status_image"
             android:layout_width="103dp"
             android:layout_height="80dp"
             android:src="@drawable/power_distribution"/>
 
         <TextView
-            android:id="@+id/list_item_meter_text"
+            android:id="@+id/list_item_device_status_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -41,11 +41,11 @@
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/list_item_meter_status_image"
+            android:id="@+id/list_item_device_status_status_image"
             android:layout_width="50dp"
             android:layout_height="50dp"/>
         <TextView
-            android:id="@+id/list_item_meter_status_text"
+            android:id="@+id/list_item_device_status_status_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

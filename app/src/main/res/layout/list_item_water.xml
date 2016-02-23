@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--item: 漏水系统->详情 -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/device_detail_listView_item"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:background="@color/stripListViewGrayColor"
+    android:layout_width="match_parent"
+    android:layout_height="30dp">
+
+    <!--漏水点名称-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:id="@+id/list_item_water_name"/>
+
+    <!--状态-->
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/list_item_water_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="{fa-circle}"
+        android:textSize="10sp"
+        android:textColor="@color/list_dot_red"/>
+
+</LinearLayout>

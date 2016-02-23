@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.BoxListAdapter;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
@@ -139,7 +138,7 @@ public class Meter extends AppCompatActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            TextView title = (TextView) view.findViewById(R.id.list_item_meter_text);
+                            TextView title = (TextView) view.findViewById(R.id.list_item_power_ups_text);
                             Intent i = new Intent(Meter.this, MeterDetail.class);
                             i.putExtra("title", title.getText());
                             i.putExtra("device_id", ids[position]);

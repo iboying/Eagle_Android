@@ -1,29 +1,27 @@
 package com.buoyantec.eagle_android.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kang on 16/2/7.
+ * 获取设备列表字符串
  */
 
 @Generated("org.jsonschema2pojo")
-public class Devices {
-    // 转化为POJO
+public class DevicesString {
+    // 转化为String
     @SerializedName("devices")
     @Expose
-    private List<Device> devices = new ArrayList<Device>();
+    private String devicesString;
 
     /**
      *
      * @return
      * The devices
      */
-    public List<Device> getDevices() {
-        return devices;
+    public String getDevicesString() {
+        return devicesString;
     }
-
 }

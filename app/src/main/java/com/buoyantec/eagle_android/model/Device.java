@@ -17,7 +17,12 @@ public class Device {
     @Expose
     private int id;
 
-    // UPS系统,电量仪系统,配电系统,漏水系统
+    // 配电系统
+    @SerializedName("alarm")
+    @Expose
+    private boolean alarm;
+
+    // UPS系统,电量仪系统,漏水系统
     @SerializedName("A相电压")
     @Expose
     private String av;
@@ -61,7 +66,12 @@ public class Device {
         return name;
     }
 
-    // UPS系统,电量仪系统,配电系统
+    // 配电系统
+    public boolean getAlarm() {
+        return alarm;
+    }
+
+    // UPS系统,电量仪系统
     public String[] getAv() {
         String[] cache = {"A相电压", av};
         return cache;

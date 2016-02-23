@@ -2,7 +2,6 @@ package com.buoyantec.eagle_android;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,22 +10,16 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.CabinetListAdapter;
-import com.buoyantec.eagle_android.adapter.PowerUpsGridViewAdapter;
-import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -93,38 +86,31 @@ public class PowerDetail extends AppCompatActivity {
         MyService myService = retrofit.create(MyService.class);
 
         // 获取指定链接数据
-        Call<ResponseBody> call = myService.getDeviceData(room_id, device_id);
-        call.enqueue(new Callback<ResponseBody>() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
+        Call<HashMap<String, String>> call = myService.getDeviceDataHash(room_id, device_id);
+        call.enqueue(new Callback<HashMap<String, String>>() {
             @Override
-            public void onResponse(Response<ResponseBody> response) {
+            public void onResponse(Response<HashMap<String, String>> response) {
                 if (response.code() == 200) {
-                    // 数据变量
+                    HashMap<String, String> map = response.body();
+
                     ArrayList<String> nameArray = new ArrayList<>();
                     ArrayList<String> statusArray = new ArrayList<>();
-                    try {
-                        String jsonString = response.body().string();
-                        ApplicationHelper helper = new ApplicationHelper();
-                        HashMap<String, String> datas = helper.jsonToHash(jsonString);
 
-                        // 循环hash,存入数组
-                        for (Map.Entry<String, String> entry : datas.entrySet()) {
-                            nameArray.add(entry.getKey());
-                            statusArray.add(entry.getValue());
-                        }
-
-                        // item数据
-                        String[] names = nameArray.toArray(new String[nameArray.size()]);
-                        String[] status = statusArray.toArray(new String[statusArray.size()]);
-
-                        // 加载列表
-                        ListView listView = (ListView) findViewById(R.id.power_detail_listView);
-                        listView.setAdapter(new CabinetListAdapter(listView, context, names, status));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    // 循环hash,存入数组
+                    for (Map.Entry<String, String> entry : map.entrySet()) {
+                        nameArray.add(entry.getKey());
+                        statusArray.add(entry.getValue());
                     }
+
+                    // item数据
+                    String[] names = nameArray.toArray(new String[nameArray.size()]);
+                    String[] status = statusArray.toArray(new String[statusArray.size()]);
+
+                    // 加载列表
+                    ListView listView = (ListView) findViewById(R.id.power_detail_listView);
+                    listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, status));
                 } else {
-                    System.out.println("========谁被数据获取失败========");
+                    System.out.println("========设备数据获取失败========");
                 }
             }
 

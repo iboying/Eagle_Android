@@ -13,7 +13,7 @@ import com.buoyantec.eagle_android.R;
 
 /**
  * Created by kang on 16/1/15.
- * 系统状态子页list适配器( UPS系统, 配电系统 )
+ * 系统状态子页list适配器( UPS系统, 电量仪系统 )
  */
 public class SystemStatusListAdapter extends BaseAdapter {
     private Context mContext;

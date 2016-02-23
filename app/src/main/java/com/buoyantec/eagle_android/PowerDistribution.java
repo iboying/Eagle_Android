@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
+import com.buoyantec.eagle_android.adapter.DeviceStatusListAdapter;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
@@ -109,37 +110,34 @@ public class PowerDistribution extends AppCompatActivity {
                 if (response.code() == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
-                    ArrayList<String[]> device_datas = new ArrayList<>();
+                    ArrayList<Integer> device_alarm = new ArrayList<>();
 
-                    // 获取用户
+                    // 获取配电柜数据
                     List<Device> devices = response.body().getDevices();
-                    Iterator<Device> itr = devices.iterator();
-                    while (itr.hasNext()) {
-                        Device device = itr.next();
+                    for (Device device : devices) {
                         device_name.add(device.getName());
                         device_id.add(device.getId());
-                        String[] value = {
-                                device.getAv()[1],
-                                device.getBv()[1],
-                                device.getCv()[1],
-                                device.geRate()[1]
-                        };
-                        device_datas.add(value);
+                        boolean alarm = device.getAlarm();
+                        if (alarm) {
+                            device_alarm.add(0);
+                        } else {
+                            device_alarm.add(1);
+                        }
                     }
                     // references to our images
                     Integer image = R.drawable.power_distribution;
                     // texts of images
                     String[] texts = device_name.toArray(new String[device_name.size()]);
                     // 配电系统数据
-                    String[][] datas = device_datas.toArray(new String[device_datas.size()][]);
+                    Integer[] datas = device_alarm.toArray(new Integer[device_alarm.size()]);
                     // 设备id
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
                     ListView listView = (ListView) findViewById(R.id.power_distribution_listView);
-                    listView.setAdapter(new SystemStatusListAdapter(listView, context, image, texts, datas));
+                    listView.setAdapter(new DeviceStatusListAdapter(listView, context, image, texts, datas));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                            TextView title = (TextView) v.findViewById(R.id.list_item_power_ups_text);
+                            TextView title = (TextView) v.findViewById(R.id.list_item_device_status_text);
                             Intent i = new Intent(PowerDistribution.this, PowerDetail.class);
                             i.putExtra("title", title.getText());
                             i.putExtra("device_id", ids[position]);
