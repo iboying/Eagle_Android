@@ -1,11 +1,9 @@
 package com.buoyantec.eagle_android;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,13 +16,12 @@ import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -86,16 +83,18 @@ public class PowerDetail extends AppCompatActivity {
         MyService myService = retrofit.create(MyService.class);
 
         // 获取指定链接数据
-        Call<HashMap<String, String>> call = myService.getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<HashMap<String, String>>() {
+        Call<LinkedHashMap<String, String>> call = myService.getDeviceDataHash(room_id, device_id);
+        call.enqueue(new Callback<LinkedHashMap<String, String>>() {
             @Override
-            public void onResponse(Response<HashMap<String, String>> response) {
+            public void onResponse(Response<LinkedHashMap<String, String>> response) {
                 if (response.code() == 200) {
-                    HashMap<String, String> map = response.body();
+                    LinkedHashMap<String, String> map = response.body();
 
                     ArrayList<String> nameArray = new ArrayList<>();
                     ArrayList<String> statusArray = new ArrayList<>();
 
+                    map.remove("id");
+                    map.remove("name");
                     // 循环hash,存入数组
                     for (Map.Entry<String, String> entry : map.entrySet()) {
                         nameArray.add(entry.getKey());

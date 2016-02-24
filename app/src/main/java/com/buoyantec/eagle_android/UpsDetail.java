@@ -17,6 +17,7 @@ import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import okhttp3.Interceptor;
@@ -81,15 +82,17 @@ public class UpsDetail extends AppCompatActivity {
 
         // 创建所有链接
         MyService myService = retrofit.create(MyService.class);
-        Call<HashMap<String, String>> call = myService.getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<HashMap<String, String>>() {
+        Call<LinkedHashMap<String, String>> call = myService.getDeviceDataHash(room_id, device_id);
+        call.enqueue(new Callback<LinkedHashMap<String, String>>() {
             @Override
-            public void onResponse(Response<HashMap<String, String>> response) {
+            public void onResponse(Response<LinkedHashMap<String, String>> response) {
                 if (response.code() == 200) {
                     ArrayList<String> nameArray = new ArrayList<>();
                     ArrayList<String> statusArray = new ArrayList<>();
-                    HashMap<String, String> map = response.body();
+                    LinkedHashMap<String, String> map = response.body();
 
+                    map.remove("id");
+                    map.remove("name");
                     // 循环hash,存入数组
                     for (Map.Entry<String, String> entry : map.entrySet()) {
                         nameArray.add(entry.getKey());

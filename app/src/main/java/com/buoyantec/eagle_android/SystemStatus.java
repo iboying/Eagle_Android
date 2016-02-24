@@ -92,8 +92,8 @@ public class SystemStatus extends AppCompatActivity {
         systemClass.put("漏水系统", Water.class);
         // 联动
         // 安全
-        systemClass.put("消防系统", VideoSystem.class);
-        systemClass.put("氢气检测", Smoke.class);
+        systemClass.put("消防系统", FireFighting.class);
+        systemClass.put("氢气检测", FireFightingDetail.class);
         // 远程
         // 能效
         // 部署
@@ -108,7 +108,8 @@ public class SystemStatus extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText("系统状态");
+        Intent i = getIntent();
+        subToolbarTitle.setText(i.getStringExtra("title"));
     }
 
     /**

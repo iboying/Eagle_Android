@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,15 +14,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
-import com.buoyantec.eagle_android.adapter.PowerManageListAdapter;
+import com.buoyantec.eagle_android.adapter.StandardListAdapter;
 import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import okhttp3.Interceptor;
@@ -37,7 +35,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
- * 温湿度系统
+ * 温湿度系统详情
  */
 public class Temperature extends AppCompatActivity {
     private SharedPreferences sp;
@@ -48,6 +46,8 @@ public class Temperature extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //加载字体图标
+        Iconify.with(new FontAwesomeModule());
         setContentView(R.layout.activity_temperature);
         init();
         //初始化toolbar
@@ -108,23 +108,32 @@ public class Temperature extends AppCompatActivity {
             @Override
             public void onResponse(Response<Devices> response) {
                 if (response.code() == 200) {
-                    ArrayList<String> temperature = new ArrayList<>();
-                    ArrayList<Integer> humidity = new ArrayList<>();
-
+                    ArrayList<String> device_name = new ArrayList<>();
+                    ArrayList<Integer> device_id = new ArrayList<>();
                     // 获取用户
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
-
+                        device_name.add(device.getName());
+                        device_id.add(device.getId());
                     }
 
-                    // 温度
-                    String[] tem = {"25", "30"};
-                    // 湿度
-                    String[] hum = {"20", "30"};
+                    // references to our images
+                    Integer image = R.drawable.system_status_temperature;
+                    // texts of images
+                    String[] texts = device_name.toArray(new String[device_name.size()]);
+                    final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
-                    // 加载列表
                     ListView listView = (ListView) findViewById(R.id.temperature_listView);
-                    listView.setAdapter(new TemperatureListAdapter(listView, context, tem, hum));
+                    listView.setAdapter(new StandardListAdapter(listView, context, image, texts));
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                            TextView title = (TextView) v.findViewById(R.id.list_item_standard_list_text);
+                            Intent i = new Intent(Temperature.this, TemperatureDetail.class);
+                            i.putExtra("title", title.getText());
+                            i.putExtra("device_id", ids[position]);
+                            startActivity(i);
+                        }
+                    });
                     System.out.println("Devices接口调用完成");
                 } else {
                     // 输出非201时的错误信息

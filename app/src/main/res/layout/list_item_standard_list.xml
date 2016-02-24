@@ -12,12 +12,12 @@
     android:background="@drawable/list_item_bg">
 
     <ImageView
-        android:id="@+id/list_item_power_manage_image"
+        android:id="@+id/list_item_standard_list_image"
         android:layout_width="32dp"
         android:layout_height="32dp"/>
 
     <TextView
-        android:id="@+id/list_item_power_manage_text"
+        android:id="@+id/list_item_standard_list_text"
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_weight="1"

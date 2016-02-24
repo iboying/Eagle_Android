@@ -54,6 +54,7 @@
     </LinearLayout>
 
     <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/list_item_device_status_right"
         android:layout_width="36dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"

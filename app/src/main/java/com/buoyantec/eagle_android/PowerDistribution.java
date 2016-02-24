@@ -117,11 +117,11 @@ public class PowerDistribution extends AppCompatActivity {
                     for (Device device : devices) {
                         device_name.add(device.getName());
                         device_id.add(device.getId());
-                        boolean alarm = device.getAlarm();
-                        if (alarm) {
-                            device_alarm.add(0);
-                        } else {
+                        String alarm = device.getAlarm();
+                        if (alarm.equals("false")) {
                             device_alarm.add(1);
+                        } else {
+                            device_alarm.add(0);
                         }
                     }
                     // references to our images

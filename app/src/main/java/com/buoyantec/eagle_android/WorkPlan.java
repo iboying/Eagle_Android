@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,8 @@ public class WorkPlan extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText("工作计划");
+        Intent i = getIntent();
+        subToolbarTitle.setText(i.getStringExtra("title"));
     }
 
 }

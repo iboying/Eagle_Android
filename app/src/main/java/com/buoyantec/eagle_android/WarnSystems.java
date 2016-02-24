@@ -89,7 +89,8 @@ public class WarnSystems extends AppCompatActivity{
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText("系统告警");
+        Intent i = getIntent();
+        subToolbarTitle.setText(i.getStringExtra("title"));
     }
 
     private void initListView() {

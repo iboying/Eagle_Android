@@ -23,6 +23,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -109,6 +110,7 @@ public class PrecisionAir extends AppCompatActivity {
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
                     ArrayList<String[]> device_datas = new ArrayList<>();
+                    ArrayList<Integer> device_status = new ArrayList<>();
 
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
@@ -119,21 +121,31 @@ public class PrecisionAir extends AppCompatActivity {
                                 device.geHumidity()[1]
                         };
                         device_datas.add(value);
+                        String alarm = device.getAlarm();
+                        if (alarm == null) {
+                            device_status.add(2);
+                        } else {
+                            if (alarm.equals("false")) {
+                                device_status.add(1);
+                            } else {
+                                device_status.add(0);
+                            }
+                        }
                     }
                     // references to our images
                     Integer image = R.drawable.air;
-                    // texts of images
-                    String[] texts = device_name.toArray(new String[device_name.size()]);
-                    // 空调数据
-                    String[][] datas = device_datas.toArray(new String[device_datas.size()][]);
                     // 设备id
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
                     ListView listView = (ListView) findViewById(R.id.precision_air_listView);
-                    listView.setAdapter(new PrecisionAirListAdapter(listView, context, image, texts, datas));
+                    listView.setAdapter(new PrecisionAirListAdapter(
+                            listView, context, image, device_name, device_datas, device_status));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             TextView title = (TextView) v.findViewById(R.id.list_item_precision_air_text);
+                            if (title == null) {
+                                title = (TextView) v.findViewById(R.id.list_item_device_status_text);
+                            }
                             Intent i = new Intent(PrecisionAir.this, PrecisionAirDetail.class);
                             i.putExtra("title", title.getText());
                             i.putExtra("device_id", ids[position]);

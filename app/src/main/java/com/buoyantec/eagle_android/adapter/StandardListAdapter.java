@@ -15,7 +15,7 @@ import com.buoyantec.eagle_android.R;
  * Created by kang on 16/1/12.
  * 能效管理页面的ListView适配器, 含有第二级跳转
  */
-public class PowerManageListAdapter extends BaseAdapter {
+public class StandardListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer[] images;
     private Integer image;
@@ -23,7 +23,7 @@ public class PowerManageListAdapter extends BaseAdapter {
     private ListView listView;
 
     // 动态图标
-    public PowerManageListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
+    public StandardListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
         this.listView = listView;
         this.mContext = c;
         this.images = images;
@@ -31,7 +31,7 @@ public class PowerManageListAdapter extends BaseAdapter {
     }
 
     // 静态图标
-    public PowerManageListAdapter(ListView listView, Context c, Integer image, String[] texts) {
+    public StandardListAdapter(ListView listView, Context c, Integer image, String[] texts) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
@@ -57,10 +57,10 @@ public class PowerManageListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_power_manage, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_standard_list, parent, false);
         }
-        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_power_manage_image);
-        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_power_manage_text);
+        ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_standard_list_image);
+        TextView tv = BaseViewHolder.get(convertView, R.id.list_item_standard_list_text);
 
         if (image != null) {
             iv.setBackgroundResource(image);

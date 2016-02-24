@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 @Generated("org.jsonschema2pojo")
 public class Device {
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -17,12 +18,12 @@ public class Device {
     @Expose
     private int id;
 
-    // 配电系统
+    // ===========配电系统,空调系统(室外机,冷水机组)==========
     @SerializedName("alarm")
     @Expose
-    private boolean alarm;
+    private String alarm;
 
-    // UPS系统,电量仪系统,漏水系统
+    // ======UPS系统,电量仪系统======
     @SerializedName("A相电压")
     @Expose
     private String av;
@@ -39,7 +40,7 @@ public class Device {
     @Expose
     private String rate;
 
-    // 空调系统
+    // ==========空调系统==========
     @SerializedName("温度")
     @Expose
     private String temperature;
@@ -66,12 +67,12 @@ public class Device {
         return name;
     }
 
-    // 配电系统
-    public boolean getAlarm() {
+    // ==========配电系统==========
+    public String getAlarm() {
         return alarm;
     }
 
-    // UPS系统,电量仪系统
+    // ======UPS系统,电量仪系统=====
     public String[] getAv() {
         String[] cache = {"A相电压", av};
         return cache;
@@ -92,7 +93,7 @@ public class Device {
         return cache;
     }
 
-    // 空调系统
+    // ==========空调系统==========
     public String[] getTemperature() {
         String[] cache = {"温度", temperature};
         return cache;
@@ -102,4 +103,5 @@ public class Device {
         String[] cache = {"湿度", humidity};
         return cache;
     }
+
 }

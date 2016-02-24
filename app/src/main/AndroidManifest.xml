@@ -215,14 +215,14 @@
                 android:value="com.buoyantec.eagle_android.SystemStatus" />
         </activity>
         <activity
-            android:name=".Smoke"
+            android:name=".FireFightingDetail"
             android:label="@string/title_activity_smoke"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName=".FireFighting"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.FireFighting" />
         </activity>
         <activity
             android:name=".Pue"
@@ -231,7 +231,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.PowerManage" />
+                android:value=".PowerManage" />
         </activity>
         <activity
             android:name=".PowerAnalyse"
@@ -240,7 +240,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.PowerManage" />
+                android:value=".PowerManage" />
         </activity>
         <activity
             android:name=".ElectricityData"
@@ -249,7 +249,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.PowerManage" />
+                android:value=".PowerManage" />
         </activity>
         <activity
             android:name=".UpsDetail"
@@ -285,6 +285,31 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.Cabinet" />
+        </activity>
+        <activity
+            android:name=".TemperatureDetail"
+            android:label="@string/title_activity_temperature_detail"
+            android:parentActivityName=".Temperature" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.Temperature" />
+        </activity>
+        <activity
+            android:name=".WaterDetail"
+            android:label="@string/title_activity_water_detail"
+            android:parentActivityName=".Water" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.Water" />
+        </activity>
+        <activity
+            android:name=".FireFighting"
+            android:label="@string/title_activity_fire_fighting"
+            android:launchMode="singleTop"
+            android:parentActivityName=".SystemStatus" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.eagle_android.SystemStatus" />
         </activity>
     </application>
 

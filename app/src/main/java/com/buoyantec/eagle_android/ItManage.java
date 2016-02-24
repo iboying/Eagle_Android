@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +26,8 @@ public class ItManage extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText("IT管理");
+        Intent i = getIntent();
+        subToolbarTitle.setText(i.getStringExtra("title"));
     }
 
 }

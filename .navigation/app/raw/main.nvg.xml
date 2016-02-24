@@ -46,7 +46,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.Smoke"/>
+        className = "com.buoyantec.eagle_android.FireFightingDetail"/>
       <point      
         x = "76"      
         y = "12"/>

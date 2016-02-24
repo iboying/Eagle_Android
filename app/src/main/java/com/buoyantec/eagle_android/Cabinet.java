@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.PowerManageListAdapter;
+import com.buoyantec.eagle_android.adapter.StandardListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.joanzapata.iconify.Iconify;
@@ -22,7 +22,6 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import okhttp3.Interceptor;
@@ -109,9 +108,7 @@ public class Cabinet extends AppCompatActivity {
                     ArrayList<Integer> device_id = new ArrayList<>();
                     // 获取用户
                     List<Device> devices = response.body().getDevices();
-                    Iterator<Device> itr = devices.iterator();
-                    while (itr.hasNext()) {
-                        Device device = itr.next();
+                    for (Device device : devices) {
                         device_name.add(device.getName());
                         device_id.add(device.getId());
                     }
@@ -123,10 +120,10 @@ public class Cabinet extends AppCompatActivity {
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
                     ListView listView = (ListView) findViewById(R.id.cabinet_listView);
-                    listView.setAdapter(new PowerManageListAdapter(listView, context, image, texts));
+                    listView.setAdapter(new StandardListAdapter(listView, context, image, texts));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                            TextView title = (TextView) v.findViewById(R.id.list_item_power_manage_text);
+                            TextView title = (TextView) v.findViewById(R.id.list_item_standard_list_text);
                             Intent i = new Intent(Cabinet.this, CabinetDetail.class);
                             i.putExtra("title", title.getText());
                             i.putExtra("device_id", ids[position]);

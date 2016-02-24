@@ -1,12 +1,10 @@
 package com.buoyantec.eagle_android;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +15,6 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.StandardListAdapter;
-import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
-import com.buoyantec.eagle_android.adapter.WaterListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.joanzapata.iconify.Iconify;
@@ -37,7 +33,7 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class Water extends AppCompatActivity {
+public class FireFighting extends AppCompatActivity {
     private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
@@ -46,7 +42,7 @@ public class Water extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_water);
+        setContentView(R.layout.activity_fire_fighting);
         // 初始化变量
         init();
         // 加载字体图标
@@ -111,25 +107,32 @@ public class Water extends AppCompatActivity {
                 if (response.code() == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
+                    ArrayList<Integer> device_icon = new ArrayList<>();
+
                     // 获取用户
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
                         device_name.add(device.getName());
                         device_id.add(device.getId());
+                        if (device.getName().equals("烟感")) {
+                            device_icon.add(R.drawable.system_status_smoke);
+                        } else {
+                            device_icon.add(R.drawable.system_status_door);
+                        }
                     }
 
                     // references to our images
-                    Integer image = R.drawable.system_status_water;
+                    Integer[] images = device_icon.toArray(new Integer[device_icon.size()]);
                     // texts of images
                     String[] texts = device_name.toArray(new String[device_name.size()]);
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
-                    ListView listView = (ListView) findViewById(R.id.water_listView);
-                    listView.setAdapter(new StandardListAdapter(listView, context, image, texts));
+                    ListView listView = (ListView) findViewById(R.id.fire_fighting_listView);
+                    listView.setAdapter(new StandardListAdapter(listView, context, images, texts));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             TextView title = (TextView) v.findViewById(R.id.list_item_standard_list_text);
-                            Intent i = new Intent(Water.this, WaterDetail.class);
+                            Intent i = new Intent(FireFighting.this, FireFightingDetail.class);
                             i.putExtra("title", title.getText());
                             i.putExtra("device_id", ids[position]);
                             startActivity(i);
@@ -154,4 +157,5 @@ public class Water extends AppCompatActivity {
             }
         });
     }
+
 }

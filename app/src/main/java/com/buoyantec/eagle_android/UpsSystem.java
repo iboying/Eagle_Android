@@ -108,7 +108,7 @@ public class UpsSystem extends AppCompatActivity {
                     ArrayList<Integer> device_id = new ArrayList<>();
                     ArrayList<String[]> device_datas = new ArrayList<>();
 
-                    // 获取用户
+                    // 获取UPS系统的设备列表
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
                         device_name.add(device.getName());

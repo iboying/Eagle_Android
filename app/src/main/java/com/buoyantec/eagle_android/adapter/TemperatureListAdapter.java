@@ -59,7 +59,7 @@ public class TemperatureListAdapter extends BaseAdapter {
         TextView st = BaseViewHolder.get(convertView, R.id.list_item_temperature_humidity);
 
         item.setBackgroundResource(colors[position % 2]);
-        num.setText(String.valueOf(position));
+        num.setText(String.valueOf(position+1));
         name.setText(temperature[position]+"℃");
         st.setText(humidity[position]+"%");
 

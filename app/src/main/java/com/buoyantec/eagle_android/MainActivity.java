@@ -3,7 +3,6 @@ package com.buoyantec.eagle_android;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
@@ -20,7 +19,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
@@ -195,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                 R.drawable.icon_phone, R.drawable.icon_other
         };
         // texts of images
-        String[] texts = { "系统状态", "告警信息", "工作安排", "能效管理", "IT管理", "其他" };
+        final String[] texts = { "系统状态", "告警信息", "工作安排", "能效管理", "IT管理", "其他" };
 
         GridView gridview = (GridView) findViewById(R.id.grid_view);
         gridview.setAdapter(new MainGridAdapter(gridview, this, images, texts));
@@ -203,24 +201,30 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
                     Intent i = new Intent(MainActivity.this, SystemStatus.class);
+                    i.putExtra("title", texts[position]);
                     startActivity(i);
                 } else if (position == 1) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("systemAlarmCount", systemAlarmCount);
                     Intent i = new Intent(MainActivity.this, WarnSystems.class);
+                    i.putExtra("title", texts[position]);
                     i.putExtras(bundle);
                     startActivity(i);
                 } else if (position == 2) {
                     Intent i = new Intent(MainActivity.this, WorkPlan.class);
+                    i.putExtra("title", texts[position]);
                     startActivity(i);
                 } else if (position == 3) {
                     Intent i = new Intent(MainActivity.this, PowerManage.class);
+                    i.putExtra("title", texts[position]);
                     startActivity(i);
                 } else if (position == 4) {
                     Intent i = new Intent(MainActivity.this, ItManage.class);
+                    i.putExtra("title", texts[position]);
                     startActivity(i);
                 } else if (position == 5) {
                     Intent i = new Intent(MainActivity.this, Other.class);
+                    i.putExtra("title", texts[position]);
                     startActivity(i);
                 }
             }

@@ -57,5 +57,8 @@
     <string name="apiFailed">==========调用接口失败==========</string>
     <string name="apiSuccess">==========调用接口成功==========</string>
     <string name="title_activity_cabinet_detail">CabinetDetail</string>
+    <string name="title_activity_temperature_detail">TemperatureDetail</string>
+    <string name="title_activity_water_detail">WaterDetail</string>
+    <string name="title_activity_fire_fighting">FireFighting</string>
 
 </resources>
