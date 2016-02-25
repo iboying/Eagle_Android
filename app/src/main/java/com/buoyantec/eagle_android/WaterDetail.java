@@ -8,12 +8,14 @@ import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
 import com.buoyantec.eagle_android.adapter.WaterListAdapter;
+import com.buoyantec.eagle_android.myService.ApiRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,51 +59,33 @@ public class WaterDetail extends AppCompatActivity {
     private void initListView() {
         // 获取device_id 和 room_id
         final SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        Integer room_id = sp.getInt("current_room_id", 1);
         Intent i = getIntent();
         Integer device_id = i.getIntExtra("device_id", 1);
-        Integer room_id = sp.getInt("current_room_id", 1);
         final Context context = this;
 
-        // 调用接口,获取设备状态
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader("X-User-Token", sp.getString("token", ""))
-                        .addHeader("X-User-Phone", sp.getString("phone", ""))
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-
-        // 创建Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        // 创建所有链接
-        MyService myService = retrofit.create(MyService.class);
-        Call<LinkedHashMap<String, String>> call = myService.getDeviceDataHash(room_id, device_id);
+        ApiRequest apiRequest = new ApiRequest(this);
+        Call<LinkedHashMap<String, String>> call = apiRequest
+                .getService()
+                .getDeviceDataHash(room_id, device_id);
         call.enqueue(new Callback<LinkedHashMap<String, String>>() {
             @Override
             public void onResponse(Response<LinkedHashMap<String, String>> response) {
-                if (response.code() == 200) {
+                int code = response.code();
+                if (code == 200) {
                     ArrayList<String> nameArray = new ArrayList<>();
                     ArrayList<Integer> statusArray = new ArrayList<>();
                     LinkedHashMap<String, String> map = response.body();;
 
+                    map.remove("id");
+                    map.remove("name");
                     // 循环hash,存入数组
                     for (Map.Entry<String, String> entry : map.entrySet()) {
-                        String key = entry.getKey();
-                        if (!(key.equals("id") || key.equals("name"))) {
-                            nameArray.add(key);
-                            if (entry.getValue() == null) {
-                                statusArray.add(1);
-                            } else {
-                                statusArray.add(0);
-                            }
+                        nameArray.add(entry.getKey());
+                        if (entry.getValue() == null) {
+                            statusArray.add(1);
+                        } else {
+                            statusArray.add(0);
                         }
                     }
 
@@ -112,14 +96,16 @@ public class WaterDetail extends AppCompatActivity {
                     // 加载列表
                     ListView listView = (ListView) findViewById(R.id.water_detail_listView);
                     listView.setAdapter(new WaterListAdapter(listView, context, names, status));
+
+                    Log.i("漏水系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
-                    System.out.println("========设备数据获取失败========");
+                    Log.i("漏水系统->详情", context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println("设备数据链接失败");
+                Log.i("漏水系统->详情", context.getString(R.string.linkFailed));
                 // TODO: 16/2/22 错误处理
             }
         });

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,6 +18,7 @@ import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
@@ -79,39 +81,19 @@ public class Meter extends AppCompatActivity {
     }
 
     private void initListView() {
-        //定义拦截器,添加headers
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader("X-User-Token", sp.getString("token", ""))
-                        .addHeader("X-User-Phone", sp.getString("phone", ""))
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-
-        // 创建Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        // 创建所有链接
-        MyService myService = retrofit.create(MyService.class);
-
         // 获取指定链接数据
-        Call<Devices> call = myService.getDevices(room_id, sub_sys_name);
+        ApiRequest apiRequest = new ApiRequest(this);
+        Call<Devices> call = apiRequest.getService().getDevices(room_id, sub_sys_name);
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
-                if (response.code() == 200) {
+                int code = response.code();
+                if (code == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
                     ArrayList<String[]> device_datas = new ArrayList<>();
 
-                    // 获取用户
+                    // 获取设备数据
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
                         device_name.add(device.getName());
@@ -124,17 +106,17 @@ public class Meter extends AppCompatActivity {
                         };
                         device_datas.add(value);
                     }
-                    // references to our images
+                    // 图标
                     Integer image = R.drawable.power_distribution;
-                    // texts of images
-                    String[] texts = device_name.toArray(new String[device_name.size()]);
-                    // UPS数据
+                    // 设备名称
+                    String[] names = device_name.toArray(new String[device_name.size()]);
+                    // 设备数据
                     String[][] datas = device_datas.toArray(new String[device_datas.size()][]);
                     // 设备id
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
-
+                    // 加载列表
                     ListView listView = (ListView) findViewById(R.id.meter_listView);
-                    listView.setAdapter(new SystemStatusListAdapter(listView, context, image, texts, datas));
+                    listView.setAdapter(new SystemStatusListAdapter(listView, context, image, names, datas));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -145,24 +127,18 @@ public class Meter extends AppCompatActivity {
                             startActivity(i);
                         }
                     });
-                    System.out.println("Devices接口调用完成");
+                    Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
-                    System.out.println(">>>>>>>>>>Devices接口状态错误>>>>>>>>>>>>");
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("error_status_code", response.code());
-                    editor.putString("error_msg", response.errorBody().toString());
-                    editor.apply();
-                    System.out.println(">>>>>>>>>>Devices接口状态错误>>>>>>>>>>>>");
+                    Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println(">>>>>>>>>>Devices接口未成功链接>>>>>>>>>>>>");
+                Log.i(sub_sys_name, context.getString(R.string.linkFailed));
                 //// TODO: 16/1/28  错误处理
             }
         });
-        System.out.println(">>>>>>>>>>Devices接口调用完成>>>>>>>>>>>>");
     }
 }

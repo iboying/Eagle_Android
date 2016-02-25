@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -18,6 +19,7 @@ import com.buoyantec.eagle_android.adapter.SystemStatusGridAdapter;
 import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.SubSystem;
+import com.buoyantec.eagle_android.myService.ApiRequest;
 
 
 import java.io.IOException;
@@ -116,32 +118,8 @@ public class SystemStatus extends AppCompatActivity {
      * 动态获取系统列表
      */
     private void initSystems() {
-        // 获取数据
-        final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
-        final String token = sp.getString("token", null);
-        final String phone = sp.getString("phone", null);
-        // 定义拦截器,添加headers
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader("X-User-Token", token)
-                        .addHeader("X-User-Phone", phone)
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-
-        // 创建Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        // 建立http请求
-        MyService myService = retrofit.create(MyService.class);
-        Call<MySystems> call = myService.getSystems();
+        ApiRequest apiRequest = new ApiRequest(this);
+        Call<MySystems> call = apiRequest.getService().getSystems();
         // 发送请求
         call.enqueue(new Callback<MySystems>() {
             @Override
@@ -212,27 +190,15 @@ public class SystemStatus extends AppCompatActivity {
                             }
                         });
                     }
-
+                    Log.i("系统状态", context.getString(R.string.getSuccess) + statusCode);
                 } else {
-                    try {
-                        String error = response.errorBody().string();
-                        System.out.println(error + "8888888888888888888888888888888");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("system_status_status_code", statusCode);
-                    editor.apply();
-                    System.out.println(">>>>>>>>>>获取系统状态列表失败>>>>>>>>>>>>");
+                    Log.i("系统状态", context.getString(R.string.getFailed) + statusCode);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println(">>>>>>>>>>系统状态接口链接失败>>>>>>>>>>>>");
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putInt("system_status_status_code", 2222);
-                editor.apply();
+                Log.i("系统状态", context.getString(R.string.linkFailed));
             }
         });
     }

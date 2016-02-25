@@ -13,7 +13,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.2">
+        android:layout_weight="1">
         <TableRow
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -44,19 +44,20 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingTop="30dp">
         <TableRow
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_weight="1">
             <FrameLayout
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
                     android:id="@+id/list_item_precision_air_degree"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:background="@drawable/orange_percent"
@@ -71,8 +72,8 @@
                 android:gravity="center">
                 <TextView
                     android:id="@+id/list_item_precision_air_humidity"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:background="@drawable/green_percent"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -106,8 +107,9 @@
     </TableLayout>
 
     <com.joanzapata.iconify.widget.IconTextView
-        android:layout_width="wrap_content"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_gravity="center_vertical"
         android:text="{fa-angle-right}"
         android:textSize="20sp"

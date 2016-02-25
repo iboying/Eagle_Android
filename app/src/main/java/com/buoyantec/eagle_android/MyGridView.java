@@ -7,6 +7,7 @@ import android.widget.GridView;
 /**
  * Created by kang on 16/2/2.
  * 自定义自适应高度的GridView
+ * 使用: 系统状态页
  */
 public class MyGridView extends GridView{
     public MyGridView(Context context) {

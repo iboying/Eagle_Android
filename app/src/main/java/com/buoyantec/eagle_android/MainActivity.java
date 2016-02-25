@@ -1,10 +1,12 @@
 package com.buoyantec.eagle_android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -25,6 +27,7 @@ import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.adapter.MySliderView;
 import com.buoyantec.eagle_android.model.Result;
 import com.buoyantec.eagle_android.model.Results;
+import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -260,51 +263,33 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getSubSystemAlarmCount() {
+        // 获取机房id
         final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
-        final String token = sp.getString("token", null);
-        final String phone = sp.getString("phone", null);
         Integer room_id = sp.getInt("current_room_id", 1);
+        final Context context = this;
 
-        // 定义拦截器,添加headers
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader("X-User-Token", token)
-                        .addHeader("X-User-Phone", phone)
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-
-        // 创建Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        // 建立http请求
-        MyService myService = retrofit.create(MyService.class);
-        Call<Results> call = myService.getSystemAlarmCount(room_id);
+        // 请求服务
+        final ApiRequest apiRequest = new ApiRequest(this);
+        Call<Results> call = apiRequest.getService().getSystemAlarmCount(room_id);
         call.enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {
-                if (response.code() == 200) {
+                int code = response.code();
+                if (code == 200) {
                     // 计数
                     Integer count = 0;
                     systemAlarmCount = new HashMap<>();
 
                     List<Result> results = response.body().getResults();
-                    Iterator<Result> itr = results.iterator();
-                    while(itr.hasNext()) {
-                        Result result = itr.next();
+                    for (Result result : results) {
                         count += result.getSize();
                         systemAlarmCount.put(result.getName(), result.getSize());
                     }
+
                     ImageView warnMessage = (ImageView) findViewById(R.id.grid_warn_message_image);
                     BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
                     badge.setBadgeMargin(0);
+
                     if (count == 0) {
                         badge.hide();
                     } else {
@@ -315,19 +300,16 @@ public class MainActivity extends AppCompatActivity
                         }
                         badge.show();
                     }
+                    Log.i("获取子系统告警数", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
-                    System.out.println(">>>>>>>>>>系统告警数量接口状态错误>>>>>>>>>>>>");
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("error_status_code", response.code());
-                    editor.putString("error_msg", response.errorBody().toString());
-                    editor.apply();
+                    Log.i("获取子系统告警数", context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println("系统告警数量接口,链接错误");
+                Log.i("获取子系统告警数", context.getString(R.string.linkFailed));
                 // TODO: 16/2/19 错误处理
             }
         });

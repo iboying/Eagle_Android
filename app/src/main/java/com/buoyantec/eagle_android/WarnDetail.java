@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
+import com.buoyantec.eagle_android.myService.ApiRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,38 +68,15 @@ public class WarnDetail extends AppCompatActivity {
     }
 
     private void initListView() {
-        final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
-        final String token = sp.getString("token", null);
-        final String phone = sp.getString("phone", null);
-
-        // 定义拦截器,添加headers
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader("X-User-Token", token)
-                        .addHeader("X-User-Phone", phone)
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-
-        // 创建Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        // 建立http请求
-        MyService myService = retrofit.create(MyService.class);
+        ApiRequest apiRequest = new ApiRequest(this);
         // 告警是否已经解除(0:全部，1:已经确认, 2:未结束。默认为2)
-        Call<Alarm> call = myService.getWarnMessages(device_id, 2);
+        Call<Alarm> call = apiRequest.getService().getWarnMessages(device_id, 2);
         // 发送请求
         call.enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
-                if (response.code() == 200) {
+                int code = response.code();
+                if (code == 200) {
                     ArrayList<String> comment = new ArrayList<>();
                     ArrayList<Integer> state = new ArrayList<>();
                     // 获取数据
@@ -114,21 +93,18 @@ public class WarnDetail extends AppCompatActivity {
 
                     ListView listView = (ListView) findViewById(R.id.warn_detail_listView);
                     listView.setAdapter(new WarnDetailListAdapter(listView, context, texts, data));
+
+                    Log.i("设备告警->详情", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
-                    System.out.println(">>>>>>>>>>设备告警接口状态错误>>>>>>>>>>>>");
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("error_status_code", response.code());
-                    editor.putString("error_msg", response.errorBody().toString());
-                    editor.apply();
-                    System.out.println(">>>>>>>>>>设备告警接口状态错误>>>>>>>>>>>>");
+                    Log.i("设备告警->详情", context.getString(R.string.getFailed) + code);
                 }
                 System.out.println("设备告警列表接口调用完成");
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println(">>>>>>>>>>设备告警接口未成功链接>>>>>>>>>>>>");
+                Log.i("设备告警->详情", context.getString(R.string.linkFailed));
                 // TODO: 16/2/19 错误处理
             }
         });

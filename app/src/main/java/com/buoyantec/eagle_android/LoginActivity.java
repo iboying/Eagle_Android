@@ -22,17 +22,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.model.User;
+import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.buoyantec.eagle_android.myService.ApiRooms;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by kang on 16/1/25.
@@ -56,12 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         // 加载内容
         setContentView(R.layout.activity_login);
         // 获取组件,数据
-        mPhoneView = (AutoCompleteTextView) findViewById(R.id.phone);
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mLoginButton = (Button) findViewById(R.id.sign_in_button);
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-        mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        init();
         // 手机号自动补全
         phoneAutoComplete();
         // 密码编辑响应
@@ -70,6 +63,18 @@ public class LoginActivity extends AppCompatActivity {
         inputFocusedStyle();
         // 点击登录
         clickLoginButton();
+    }
+
+    /**
+     * 初始化控件和变量
+     */
+    private void init() {
+        mPhoneView = (AutoCompleteTextView) findViewById(R.id.phone);
+        mPasswordView = (EditText) findViewById(R.id.password);
+        mLoginButton = (Button) findViewById(R.id.sign_in_button);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+        mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
     /**
@@ -157,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * 账号表单自动补全功能
+     * 手机号自动补全
      */
     private void phoneAutoComplete() {
         String phone = mPreferences.getString("phone", null);
@@ -249,28 +254,16 @@ public class LoginActivity extends AppCompatActivity {
      * 调用接口,处理数据
      */
     private void loginTask(final String phone, final String password) {
-        // 创建Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        // 创建所有链接
-        MyService myService = retrofit.create(MyService.class);
-
         // 获取指定链接数据
-        Call<User> call = myService.getUser(phone, password);
+        ApiRequest apiRequest = new ApiRequest();
+        Call<User> call = apiRequest.getLoginService().getUser(phone, password);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Response<User> response) {
-                int statusCode = response.code();
-                if (statusCode == 201) {
+                int code = response.code();
+                if (code == 201) {
                     // 获取用户
                     User user = response.body();
-                    // 获取用户机房列表
-                    ApiRooms apiRooms = new ApiRooms(
-                            getApplicationContext(), phone, user.getAuthenticationToken());
-                    apiRooms.getUserRooms();
                     // 写入SharePreferences
                     SharedPreferences.Editor editor = mPreferences.edit();
                     editor.putInt("id", user.getId());
@@ -280,22 +273,28 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("phone", phone);
                     editor.putString("password", password);
                     editor.apply();
-                    Log.v("user", getResources().getString(R.string.apiSuccess));
-                    // 加载主页面
+                    // 获取用户机房列表
+                    ApiRooms apiRooms = new ApiRooms(getApplicationContext());
+                    apiRooms.getUserRooms();
+                    // 跳转到主页面
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);
                     finish();
+
+                    Log.i("用户登录", getResources().getString(R.string.getSuccess) + code);
                 } else {
                     showProgress(false);
                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                     mPasswordView.requestFocus();
-                    Log.v("user", getResources().getString(R.string.apiFailed));
+
+                    Log.i("用户登录", getResources().getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println(">>>>>>>>>>用户接口连接失败>>>>>>>>>>>>");
+                // TODO: 16/2/25 网络错误处理
+                Log.i("用户登录", getResources().getString(R.string.linkFailed));
             }
         });
     }

@@ -34,6 +34,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     // 字体图标
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
+    // 圆形进度条
+    compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
 // 网络通信
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'

@@ -53,7 +53,7 @@ public interface MyService {
     @Headers("Accept: application/json")
     @GET("rooms/{room_id}/devices/{id}")
     Call<LinkedHashMap<String, String>> getDeviceDataHash(@Path("room_id") Integer room_id,
-                                                    @Path("id") Integer id);
+                                                    @Path("id") Integer device_id);
 
 
     // 根据设备id获取设备告警列表 status: 200

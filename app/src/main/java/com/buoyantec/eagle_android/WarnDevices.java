@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.Result;
 import com.buoyantec.eagle_android.model.Results;
 import com.buoyantec.eagle_android.model.SubSystem;
+import com.buoyantec.eagle_android.myService.ApiRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -89,28 +91,8 @@ public class WarnDevices extends AppCompatActivity {
         Integer sub_system_id = i.getIntExtra("subSystem_id", 1);
         final HashMap<String, Integer> deviceCount = new HashMap<>();
 
-        // 定义拦截器,添加headers
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader("X-User-Token", token)
-                        .addHeader("X-User-Phone", phone)
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-
-        // 创建Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        // 建立http请求
-        final MyService myService = retrofit.create(MyService.class);
-        Call<Results> call = myService.getDeviceAlarmCount(room_id, sub_system_id);
+        final ApiRequest apiRequest = new ApiRequest(this);
+        Call<Results> call = apiRequest.getService().getDeviceAlarmCount(room_id, sub_system_id);
         // 获取数据
         call.enqueue(new Callback<Results>() {
             @Override
@@ -123,7 +105,7 @@ public class WarnDevices extends AppCompatActivity {
                     }
 
                     // 获得告警数,加载listView
-                    initListView(myService, deviceCount);
+                    initListView(apiRequest.getService(), deviceCount);
                 } else {
                     // 输出非201时的错误信息
                     System.out.println(">>>>>>>>>>设备告警数量接口状态错误>>>>>>>>>>>>");
@@ -148,16 +130,15 @@ public class WarnDevices extends AppCompatActivity {
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
-                if (response.code() == 200) {
+                int code = response.code();
+                if (code == 200) {
                     // 载入设备列表
                     ArrayList<String> device_name = new ArrayList<>();
                     ArrayList<Integer> device_id = new ArrayList<>();
                     ArrayList<Integer> deviceAlarmCount = new ArrayList<>();
                     // 读取数据
                     List<Device> devices = response.body().getDevices();
-                    Iterator<Device> itr = devices.iterator();
-                    while (itr.hasNext()) {
-                        Device device = itr.next();
+                    for (Device device : devices) {
                         String deviceName = device.getName();
                         Integer id = device.getId();
 
@@ -168,39 +149,33 @@ public class WarnDevices extends AppCompatActivity {
                         } else {
                             deviceAlarmCount.add(0);
                         }
-                        System.out.println(countMap.get(deviceName)+"===============");
                     }
                     // references to our images
                     Integer[] images = new Integer[device_name.size()];
-                    final String[] texts = device_name.toArray(new String[device_name.size()]);
+                    final String[] names = device_name.toArray(new String[device_name.size()]);
                     final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
                     Integer[] count = deviceAlarmCount.toArray(new Integer[deviceAlarmCount.size()]);
 
                     ListView listView = (ListView) findViewById(R.id.warn_devices_listView);
-                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, texts, count));
+                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, names, count));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             Intent i = new Intent(WarnDevices.this, WarnDetail.class);
-                            i.putExtra("title", texts[position]);
+                            i.putExtra("title", names[position]);
                             i.putExtra("device_id", ids[position]);
                             startActivity(i);
                         }
                     });
-                    System.out.println("Devices接口调用完成");
+                    Log.i("设备告警", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
-                    System.out.println(">>>>>>>>>>Devices接口状态错误>>>>>>>>>>>>");
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("error_status_code", response.code());
-                    editor.putString("error_msg", response.errorBody().toString());
-                    editor.apply();
-                    System.out.println(">>>>>>>>>>Devices接口状态错误>>>>>>>>>>>>");
+                    Log.i("设备告警", context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println(">>>>>>>>>>Devices接口未成功链接>>>>>>>>>>>>");
+                Log.i("设备告警", context.getString(R.string.linkFailed));
                 //// TODO: 16/1/28  错误处理
             }
         });

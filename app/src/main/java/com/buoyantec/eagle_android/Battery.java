@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import com.buoyantec.eagle_android.adapter.BatteryListAdapter;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
@@ -78,51 +80,29 @@ public class Battery extends AppCompatActivity {
     }
 
     private void initListView() {
-        //定义拦截器,添加headers
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder()
-                        .addHeader("X-User-Token", sp.getString("token", ""))
-                        .addHeader("X-User-Phone", sp.getString("phone", ""))
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-
-        // 创建Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.196.190.201/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        // 创建所有链接
-        MyService myService = retrofit.create(MyService.class);
-
+        ApiRequest apiRequest = new ApiRequest(this);
         // 获取指定链接数据
-        Call<Devices> call = myService.getDevices(room_id, sub_sys_name);
+        Call<Devices> call = apiRequest.getService().getDevices(room_id, sub_sys_name);
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
-                if (response.code() == 200) {
+                int code = response.code();
+                if (code == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
-                    // 获取用户
+                    // 获取数据
                     List<Device> devices = response.body().getDevices();
-                    Iterator<Device> itr = devices.iterator();
-                    while (itr.hasNext()) {
-                        Device device = itr.next();
+                    for (Device device : devices) {
                         device_name.add(device.getName());
                     }
-                    // references to our images
+                    // 列表图标
                     Integer image = R.drawable.battery;
-                    // texts of images
-                    String[] texts = device_name.toArray(new String[device_name.size()]);
-                    // UPS数据
+                    // 设备名称
+                    String[] names = device_name.toArray(new String[device_name.size()]);
+                    // 设备数据
                     Integer[][] datas = {{75, 75, 75, 75}, {60, 40, 80, 50}};
-
+                    // 加载设备列表
                     ListView listView = (ListView) findViewById(R.id.battery_listView);
-                    listView.setAdapter(new BatteryListAdapter(listView, context, image, texts, datas));
+                    listView.setAdapter(new BatteryListAdapter(listView, context, image, names, datas));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -132,24 +112,18 @@ public class Battery extends AppCompatActivity {
                             startActivity(i);
                         }
                     });
-                    System.out.println("Devices接口调用完成");
+                    Log.i(sub_sys_name, context.getString(R.string.getSuccess)+ code);
                 } else {
                     // 输出非201时的错误信息
-                    System.out.println(">>>>>>>>>>Devices接口状态错误>>>>>>>>>>>>");
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("error_status_code", response.code());
-                    editor.putString("error_msg", response.errorBody().toString());
-                    editor.apply();
-                    System.out.println(">>>>>>>>>>Devices接口状态错误>>>>>>>>>>>>");
+                    Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println(">>>>>>>>>>Devices接口未成功链接>>>>>>>>>>>>");
+                Log.i(sub_sys_name, context.getString(R.string.linkFailed));
                 //// TODO: 16/1/28  错误处理
             }
         });
-        System.out.println(">>>>>>>>>>Devices接口调用完成>>>>>>>>>>>>");
     }
 }
