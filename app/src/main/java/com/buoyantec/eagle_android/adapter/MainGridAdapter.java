@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.BadgeView;
 import com.buoyantec.eagle_android.R;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 /**
  * Created by kang on 15/12/31.
@@ -45,14 +46,20 @@ public class MainGridAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, parent, false);
         }
+
+        CircleProgressBar cp = BaseViewHolder.get(convertView, R.id.progressBar);
         TextView tv = BaseViewHolder.get(convertView, R.id.grid_view_text);
         ImageView iv = BaseViewHolder.get(convertView, R.id.grid_view_image);
 
         iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
         // 添加id
-        if (position == 1)
+        if (position == 1) {
             iv.setId(R.id.grid_warn_message_image);
+            // 进度条
+            cp.setVisibility(View.VISIBLE);
+            cp.setId(R.id.grid_warn_message_progress);
+        }
 
         return convertView;
     }

@@ -20,7 +20,7 @@
         app:mlpb_progress_color="@color/loginFocusedBorder"
         android:layout_width="@dimen/progress_size"
         android:layout_height="@dimen/progress_size"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_gravity="center"/>
 
     <ImageView

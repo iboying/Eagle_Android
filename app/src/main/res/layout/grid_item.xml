@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/grid_image_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/gridItemColor">
+    android:layout_height="wrap_content"
+    android:padding="30dp"
+    android:background="@drawable/grid_item_bg"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerInParent="true"
-        android:background="@drawable/grid_item_bg"
-        android:padding="30dp">
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <ImageView
+            android:id="@+id/grid_view_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="1dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"/>
 
-        <LinearLayout
-            android:id="@+id/grid_image_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/grid_view_image"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="1dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/app_name"/>
-        </LinearLayout>
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            app:mlpb_progress_stoke_width="2dp"
+            app:mlpb_progress_color="@color/white"
+            android:background="@drawable/progress_bg"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="0dp"
+            android:visibility="gone"
+            android:layout_gravity="right"/>
+    </FrameLayout>
 
-        <TextView
-            android:id="@+id/grid_view_text"
-            android:layout_below="@+id/grid_image_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:maxLines="1"
-            android:textSize="14sp"/>
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/grid_view_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:maxLines="1"
+        android:textSize="14sp"/>
+</LinearLayout>
 
-</RelativeLayout>

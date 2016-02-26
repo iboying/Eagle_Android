@@ -34,6 +34,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences mPreferences;
     private String[] rooms;
     private HashMap<String, Integer> systemAlarmCount;
+    private CircleProgressBar circleProgressBar;
     private static Boolean isExit = false;
 
     @Override
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // 初始化toolbar和侧边栏
     public void initToolBarAndDrawer(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -151,8 +154,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    // 物理菜单键绑定折叠侧边菜单功能
-    // 两次点击返回键退出程序
+    // 物理菜单键绑定功能
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_MENU) {
@@ -168,6 +170,7 @@ public class MainActivity extends AppCompatActivity
         return super.onKeyDown(keyCode, event);
     }
 
+    // 两次点击返回键退出程序
     private void exitByDoubleClick() {
         Timer tExit = null;
         if (!isExit) {
@@ -188,7 +191,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     //侧边菜单响应函数
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -207,6 +209,35 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //初始化轮播控件
+    private void initCarousel() {
+        SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
+        sliderShow.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
+
+        for (int i = 0; i<rooms.length; i+=2){
+            MySliderView mySliderView = new MySliderView(this);
+
+            final int finalI = i;
+            mySliderView
+                    .description(rooms[i+1])
+                    .image(R.drawable.image_room)
+                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(BaseSliderView slider) {
+                            SharedPreferences.Editor editor = mPreferences.edit();
+                            editor.putInt("current_room_id", Integer.parseInt(rooms[finalI]));
+                            editor.putString("current_room", rooms[finalI + 1]);
+                            editor.apply();
+                            finish();
+                            Intent i = new Intent(MainActivity.this, MainActivity.class);
+                            startActivity(i);
+                        }
+                    });
+            sliderShow.addSlider(mySliderView);
+        }
+        sliderShow.setDuration(8000);
     }
 
     //---------------------私有方法------------------------
@@ -262,34 +293,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-    //初始化轮播控件
-    private void initCarousel() {
-        SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
-        sliderShow.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
-
-        for (int i = 0; i<rooms.length; i+=2){
-            MySliderView mySliderView = new MySliderView(this);
-
-            final int finalI = i;
-            mySliderView
-                    .description(rooms[i+1])
-                    .image(R.drawable.image_room)
-                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                        @Override
-                        public void onSliderClick(BaseSliderView slider) {
-                            SharedPreferences.Editor editor = mPreferences.edit();
-                            editor.putInt("current_room_id", Integer.parseInt(rooms[finalI]));
-                            editor.putString("current_room", rooms[finalI + 1]);
-                            editor.apply();
-                            finish();
-                            Intent i = new Intent(MainActivity.this, MainActivity.class);
-                            startActivity(i);
-                        }
-                    });
-            sliderShow.addSlider(mySliderView);
-        }
-        sliderShow.setDuration(8000);
-    }
 
     public void getSubSystemAlarmCount() {
         // 获取机房id
@@ -303,6 +306,9 @@ public class MainActivity extends AppCompatActivity
         call.enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {
+                circleProgressBar = (CircleProgressBar) findViewById(R.id.grid_warn_message_progress);
+                circleProgressBar.setVisibility(View.GONE);
+
                 int code = response.code();
                 if (code == 200) {
                     // 计数
@@ -338,6 +344,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Throwable t) {
+                circleProgressBar.setVisibility(View.GONE);
                 Log.i("获取子系统告警数", context.getString(R.string.linkFailed));
                 // TODO: 16/2/19 错误处理
             }

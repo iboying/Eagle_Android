@@ -2,4 +2,6 @@
 <resources>
     <!--自定义告警信息图标id-->
     <item name="grid_warn_message_image" type="id"/>
+    <!--自定义告警信息进度id-->
+    <item name="grid_warn_message_progress" type="id"/>
 </resources>
