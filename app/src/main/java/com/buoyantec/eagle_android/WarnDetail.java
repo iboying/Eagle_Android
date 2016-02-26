@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
 import com.buoyantec.eagle_android.myService.ApiRequest;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class WarnDetail extends AppCompatActivity {
     private String title;
     private Integer device_id;
     private Context context;
+    private CircleProgressBar circleProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,9 @@ public class WarnDetail extends AppCompatActivity {
         device_id = i.getIntExtra("device_id", 1);
         title = i.getStringExtra("title");
         context = this;
+        // 进度条
+        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initToolbar() {
@@ -75,6 +81,8 @@ public class WarnDetail extends AppCompatActivity {
         call.enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> comment = new ArrayList<>();
@@ -104,6 +112,8 @@ public class WarnDetail extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 Log.i("设备告警->详情", context.getString(R.string.linkFailed));
                 // TODO: 16/2/19 错误处理
             }

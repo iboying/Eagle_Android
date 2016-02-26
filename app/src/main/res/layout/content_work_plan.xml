@@ -8,5 +8,4 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_work_plan"
     tools:context="com.buoyantec.eagle_android.WorkPlan">
-
 </RelativeLayout>

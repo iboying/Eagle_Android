@@ -19,6 +19,7 @@ import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.SubSystem;
 import com.buoyantec.eagle_android.myService.ApiRequest;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,12 +37,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class WarnSystems extends AppCompatActivity{
-    private SharedPreferences sp;
-    private String token;
-    private String phone;
     private HashMap<String, Integer> systemIcon;
     private Integer statusCode;
     private Context context;
+    private CircleProgressBar circleProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +55,12 @@ public class WarnSystems extends AppCompatActivity{
     }
 
     private void init(){
-        sp = getSharedPreferences("foobar", MODE_PRIVATE);
-        token = sp.getString("token", null);
-        phone = sp.getString("phone", null);
         systemIcon = new HashMap<>();
         context = this;
+
+        // 进度条
+        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
 
         // 动力
         systemIcon.put("UPS系统", R.drawable.system_status_ups);
@@ -102,6 +102,8 @@ public class WarnSystems extends AppCompatActivity{
         call.enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 statusCode = response.code();
                 if (response.body() != null && statusCode == 200) {
                     // 定义动态数组,用于保存子系统及图标
@@ -158,6 +160,8 @@ public class WarnSystems extends AppCompatActivity{
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 Log.i("系统告警", context.getString(R.string.linkFailed));
             }
         });

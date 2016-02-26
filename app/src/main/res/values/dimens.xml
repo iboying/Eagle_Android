@@ -20,4 +20,8 @@
     <!--loginActivity padding-->
     <dimen name="loginPaddingLeft">56dp</dimen>
     <dimen name="loginPaddingRight">56dp</dimen>
+
+    <!--圆形进度条大小-->
+    <dimen name="progress_size">48dp</dimen>
+    <dimen name="stoke_width">3dp</dimen>
 </resources>

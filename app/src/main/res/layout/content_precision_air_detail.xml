@@ -17,6 +17,15 @@
         android:gravity="center"
         android:text="元件状态"/>
 
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:id="@+id/progressBar"
+        app:mlpb_progress_stoke_width="@dimen/stoke_width"
+        app:mlpb_progress_color="@color/loginFocusedBorder"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:visibility="invisible"
+        android:layout_gravity="center_horizontal"/>
+
     <ListView
         android:id="@+id/precision_air_detail_listView"
         android:layout_width="match_parent"

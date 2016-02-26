@@ -11,6 +11,15 @@
     tools:showIn="@layout/activity_ups_system"
     tools:context="com.buoyantec.eagle_android.UpsSystem">
 
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:id="@+id/progressBar"
+        app:mlpb_progress_stoke_width="@dimen/stoke_width"
+        app:mlpb_progress_color="@color/loginFocusedBorder"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:visibility="invisible"
+        android:layout_gravity="center_horizontal"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

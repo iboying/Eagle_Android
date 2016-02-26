@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
@@ -38,6 +39,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences mPreferences;
     private String[] rooms;
     private HashMap<String, Integer> systemAlarmCount;
+    private static Boolean isExit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +112,6 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
         //添加侧边菜单,并绑定ToolBar菜单按钮
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -145,12 +148,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
     }
 
-    //为物理菜单键绑定折叠侧边菜单功能
+    // 物理菜单键绑定折叠侧边菜单功能
+    // 两次点击返回键退出程序
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_MENU) {
@@ -160,8 +162,29 @@ public class MainActivity extends AppCompatActivity
             } else {
                 drawer.openDrawer(GravityCompat.START);
             }
+        } else if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exitByDoubleClick();      //调用双击退出函数
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void exitByDoubleClick() {
+        Timer tExit = null;
+        if (!isExit) {
+            isExit = true; // 准备退出
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            tExit = new Timer();
+            tExit.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isExit = false; // 取消退出
+                }
+            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+
+        } else {
+            finish();
+            System.exit(0);
+        }
     }
 
     //侧边菜单响应函数
@@ -189,6 +212,7 @@ public class MainActivity extends AppCompatActivity
     //---------------------私有方法------------------------
     //初始化栅格布局
     private void initGridView(){
+        final Context context = this;
         // references to our images
         Integer[] images = {
                 R.drawable.icon_system_status, R.drawable.icon_info,
@@ -214,21 +238,26 @@ public class MainActivity extends AppCompatActivity
                     i.putExtras(bundle);
                     startActivity(i);
                 } else if (position == 2) {
-                    Intent i = new Intent(MainActivity.this, WorkPlan.class);
-                    i.putExtra("title", texts[position]);
-                    startActivity(i);
+//                    Intent i = new Intent(MainActivity.this, WorkPlan.class);
+//                    i.putExtra("title", texts[position]);
+//                    startActivity(i);
+                    Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
                 } else if (position == 3) {
-                    Intent i = new Intent(MainActivity.this, PowerManage.class);
-                    i.putExtra("title", texts[position]);
-                    startActivity(i);
+//                    Intent i = new Intent(MainActivity.this, PowerManage.class);
+//                    i.putExtra("title", texts[position]);
+//                    startActivity(i);
+                    Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
+
                 } else if (position == 4) {
-                    Intent i = new Intent(MainActivity.this, ItManage.class);
-                    i.putExtra("title", texts[position]);
-                    startActivity(i);
+//                    Intent i = new Intent(MainActivity.this, ItManage.class);
+//                    i.putExtra("title", texts[position]);
+//                    startActivity(i);
+                    Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
                 } else if (position == 5) {
-                    Intent i = new Intent(MainActivity.this, Other.class);
-                    i.putExtra("title", texts[position]);
-                    startActivity(i);
+//                    Intent i = new Intent(MainActivity.this, Other.class);
+//                    i.putExtra("title", texts[position]);
+//                    startActivity(i);
+                    Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
                 }
             }
         });

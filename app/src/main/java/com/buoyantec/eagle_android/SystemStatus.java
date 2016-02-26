@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.SubSystem;
 import com.buoyantec.eagle_android.myService.ApiRequest;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 
 import java.io.IOException;
@@ -43,6 +45,8 @@ public class SystemStatus extends AppCompatActivity {
     private HashMap<String, String[]> kindSystems;
     private Integer statusCode;
     private Context context;
+    // 进度条
+    private CircleProgressBar circleProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,9 @@ public class SystemStatus extends AppCompatActivity {
         systemClass = new HashMap<>();
         kindSystems = new LinkedHashMap<>();
         context = this;
+        // 进度条
+        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 动力
         systemIcon.put("UPS系统", R.drawable.system_status_ups);
         systemIcon.put("电量仪系统", R.drawable.system_status_box);
@@ -124,6 +131,8 @@ public class SystemStatus extends AppCompatActivity {
         call.enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 statusCode = response.code();
                 if (response.body() != null && statusCode == 200) {
                     // 定义动态数组,用于保存子系统
@@ -158,16 +167,19 @@ public class SystemStatus extends AppCompatActivity {
                         TextView title = (TextView) titleLayout.findViewById(R.id.system_status_title);
                         title.setText(entry.getKey());
 
-                        // 加载GridView
+                        // 装在gridView数据
                         String[] systems = entry.getValue();
-                        System.out.println("读取>>>>>>>>>>>>>>>>>" + entry.getKey());
-                        final ArrayList<String> texts = new ArrayList<>();
+                        final ArrayList<String> names = new ArrayList<>();
                         final ArrayList<Integer> images = new ArrayList<>();
-                        for (int i = 0; i < systems.length; i++) {
-                            texts.add(systems[i]);
-                            images.add(systemIcon.get(systems[i]));
+                        for (String system : systems) {
+                            names.add(system);
+                            if (systemIcon.get(system) == null) {
+                                images.add(R.drawable.system_status_ups);
+                            } else {
+                                images.add(systemIcon.get(system));
+                            }
                         }
-                        final String[] grid_texts = texts.toArray(new String[texts.size()]);
+                        final String[] grid_texts = names.toArray(new String[names.size()]);
                         Integer[] grid_images = images.toArray(new Integer[images.size()]);
 
                         // 动态加载gridView
@@ -198,6 +210,8 @@ public class SystemStatus extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 Log.i("系统状态", context.getString(R.string.linkFailed));
             }
         });

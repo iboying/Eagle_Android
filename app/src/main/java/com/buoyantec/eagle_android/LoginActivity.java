@@ -27,10 +27,13 @@ import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.buoyantec.eagle_android.myService.ApiRooms;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.buoyantec.eagle_android.R.id.progressBar;
 
 /**
  * Created by kang on 16/1/25.
@@ -40,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     // UI组件
     private AutoCompleteTextView mPhoneView;
     private EditText mPasswordView;
-    private View mProgressView;
+    private CircleProgressBar mProgressView;
     private View mLoginFormView;
     private Button mLoginButton;
     // 数据
@@ -73,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = (EditText) findViewById(R.id.password);
         mLoginButton = (Button) findViewById(R.id.sign_in_button);
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mProgressView = (CircleProgressBar) findViewById(R.id.progressBar);
         mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
@@ -219,9 +222,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -294,6 +294,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable t) {
                 // TODO: 16/2/25 网络错误处理
+                showProgress(false);
+                mPhoneView.setError("网络连接错误");
+                mPhoneView.requestFocus();
                 Log.i("用户登录", getResources().getString(R.string.linkFailed));
             }
         });

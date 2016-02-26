@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/loginWindowColor"
     android:gravity="center_horizontal"
     android:orientation="vertical"
@@ -13,13 +14,14 @@
     tools:context="com.buoyantec.eagle_android.LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"/>
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:id="@+id/progressBar"
+        app:mlpb_progress_stoke_width="@dimen/stoke_width"
+        app:mlpb_progress_color="@color/loginFocusedBorder"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:visibility="invisible"
+        android:layout_gravity="center"/>
 
     <ImageView
         android:layout_width="105dp"

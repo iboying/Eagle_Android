@@ -26,6 +26,7 @@ import com.buoyantec.eagle_android.model.Result;
 import com.buoyantec.eagle_android.model.Results;
 import com.buoyantec.eagle_android.model.SubSystem;
 import com.buoyantec.eagle_android.myService.ApiRequest;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,11 +45,10 @@ import retrofit2.Retrofit;
 
 public class WarnDevices extends AppCompatActivity {
     private SharedPreferences sp;
-    private String token;
-    private String phone;
     private Integer room_id;
     private String subSystemName;
     private Context context;
+    private CircleProgressBar circleProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +64,11 @@ public class WarnDevices extends AppCompatActivity {
 
     private void init(){
         sp = getSharedPreferences("foobar", MODE_PRIVATE);
-        token = sp.getString("token", null);
-        phone = sp.getString("phone", null);
         room_id = sp.getInt("current_room_id", 1);
         context = this;
+        // 进度条
+        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initToolbar() {
@@ -118,6 +119,8 @@ public class WarnDevices extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 System.out.println("设备告警数量接口,链接错误");
                 // TODO: 16/2/19 错误处理
             }
@@ -130,6 +133,8 @@ public class WarnDevices extends AppCompatActivity {
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
                     // 载入设备列表
@@ -175,6 +180,8 @@ public class WarnDevices extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 Log.i("设备告警", context.getString(R.string.linkFailed));
                 //// TODO: 16/1/28  错误处理
             }

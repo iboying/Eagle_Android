@@ -14,42 +14,35 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.BatteryListAdapter;
-import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class Battery extends AppCompatActivity {
     private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
+    private CircleProgressBar circleProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
         //加载字体图标
         Iconify.with(new FontAwesomeModule());
         setContentView(R.layout.activity_battery);
+        init();
         //初始化toolbar
         initToolbar();
         //初始化list
@@ -65,6 +58,9 @@ public class Battery extends AppCompatActivity {
         sub_sys_name = i.getStringExtra("sub_sys_name");
 
         context = getApplicationContext();
+        // 进度条
+        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initToolbar() {
@@ -86,6 +82,8 @@ public class Battery extends AppCompatActivity {
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
@@ -107,12 +105,12 @@ public class Battery extends AppCompatActivity {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             TextView title = (TextView) view.findViewById(R.id.list_item_battery_text);
-                            Intent i = new Intent(Battery.this, BatteryShow.class);
+                            Intent i = new Intent(Battery.this, BatteryDetail.class);
                             i.putExtra("title", title.getText());
                             startActivity(i);
                         }
                     });
-                    Log.i(sub_sys_name, context.getString(R.string.getSuccess)+ code);
+                    Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
                     Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
@@ -121,6 +119,8 @@ public class Battery extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
                 //// TODO: 16/1/28  错误处理
             }

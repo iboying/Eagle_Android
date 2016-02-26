@@ -11,6 +11,15 @@
     android:background="@color/windowBackgroundColor"
     tools:context="com.buoyantec.eagle_android.Battery">
 
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:id="@+id/progressBar"
+        app:mlpb_progress_stoke_width="@dimen/stoke_width"
+        app:mlpb_progress_color="@color/loginFocusedBorder"
+        android:layout_width="@dimen/progress_size"
+        android:layout_height="@dimen/progress_size"
+        android:visibility="invisible"
+        android:layout_gravity="center_horizontal"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,22 +28,5 @@
         android:dividerHeight="1dp"
         android:background="@color/white"
         android:divider="@color/windowBackgroundColor"/>
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="160dp"-->
-        <!--android:layout_marginTop="1dp"-->
-        <!--android:gravity="center"-->
-        <!--android:background="@color/white">-->
-        <!--<com.joanzapata.iconify.widget.IconTextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="{fa-plus-circle}"-->
-            <!--android:textSize="32sp"-->
-            <!--android:textColor="@color/gray"-->
-            <!--android:maxLines="1"-->
-            <!--android:clickable="true"-->
-            <!--android:singleLine="true"/>-->
-    <!--</LinearLayout>-->
 
 </LinearLayout>

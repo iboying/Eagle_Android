@@ -21,6 +21,7 @@ import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class UpsSystem extends AppCompatActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
+    private CircleProgressBar circleProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,9 @@ public class UpsSystem extends AppCompatActivity {
         sub_sys_name = i.getStringExtra("sub_sys_name");
 
         context = getApplicationContext();
+        // 进度条
+        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initToolbar() {
@@ -84,6 +89,8 @@ public class UpsSystem extends AppCompatActivity {
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> device_name = new ArrayList<>();
@@ -133,6 +140,8 @@ public class UpsSystem extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
                 //// TODO: 16/1/28  错误处理
             }

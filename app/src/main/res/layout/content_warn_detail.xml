@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/windowBackgroundColor"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_warn_detail"
     tools:context="com.buoyantec.eagle_android.WarnDetail">
@@ -23,6 +23,15 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            app:mlpb_progress_stoke_width="@dimen/stoke_width"
+            app:mlpb_progress_color="@color/loginFocusedBorder"
+            android:layout_width="@dimen/progress_size"
+            android:layout_height="@dimen/progress_size"
+            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"/>
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,17 +45,17 @@
             android:divider="@color/white"/>
 
         <!--确认告警按钮-->
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_marginBottom="15dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_gravity="center"
-            android:text="确认告警"
-            android:textColor="#909090"
-            android:background="@drawable/warn_detail_btn_bg"/>
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:layout_marginBottom="15dp"-->
+            <!--android:paddingLeft="8dp"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:paddingTop="4dp"-->
+            <!--android:paddingBottom="4dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="确认告警"-->
+            <!--android:textColor="#909090"-->
+            <!--android:background="@drawable/warn_detail_btn_bg"/>-->
     </LinearLayout>
 </LinearLayout>

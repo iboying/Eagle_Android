@@ -9,12 +9,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
 import com.buoyantec.eagle_android.myService.ApiRequest;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class CabinetDetail extends AppCompatActivity {
+    private CircleProgressBar circleProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,10 @@ public class CabinetDetail extends AppCompatActivity {
     }
 
     private void initListView() {
+        // 进度条
+        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
+
         // 获取device_id 和 room_id
         final SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         Integer room_id = sp.getInt("current_room_id", 1);
@@ -71,6 +78,8 @@ public class CabinetDetail extends AppCompatActivity {
         call.enqueue(new Callback<LinkedHashMap<String, String>>() {
             @Override
             public void onResponse(Response<LinkedHashMap<String, String>> response) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
                     LinkedHashMap<String, String> map = response.body();
@@ -101,6 +110,8 @@ public class CabinetDetail extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
+                circleProgressBar.setVisibility(View.GONE);
                 Log.i("机柜环境->详情", context.getString(R.string.linkFailed));
                 // TODO: 16/2/22 错误处理
             }
