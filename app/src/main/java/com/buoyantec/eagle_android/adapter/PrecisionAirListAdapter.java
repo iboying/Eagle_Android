@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.R;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kang on 16/1/18.
@@ -21,18 +21,21 @@ import java.util.ArrayList;
 public class PrecisionAirListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer image;
-    private ArrayList<String> texts;
-    private ArrayList<String[]> datas;
-    private ArrayList<Integer> status;
+    private List<String> texts;
+    private List<List<String>> datas;
+    private List<Integer> status;
     private ListView listView;
 
-    public PrecisionAirListAdapter(ListView listView, Context c, Integer image,
-                                   ArrayList<String> texts, ArrayList<String[]> datas,
-                                    ArrayList<Integer> status) {
+    public PrecisionAirListAdapter(ListView listView,
+                                   Context c,
+                                   Integer image,
+                                   List<String> names,
+                                   List<List<String>> datas,
+                                   List<Integer> status) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
-        this.texts = texts;
+        this.texts = names;
         this.datas = datas;
         this.status = status;
     }
@@ -78,8 +81,8 @@ public class PrecisionAirListAdapter extends BaseAdapter {
             tv.setText(texts.get(position));
 
             if (datas.size() > 0) {
-                degree.setText(datas.get(position)[0]+"℃");
-                humidity.setText(datas.get(position)[1]+"%");
+                degree.setText(datas.get(position).get(0)+"℃");
+                humidity.setText(datas.get(position).get(1)+"%");
             } else {
                 degree.setText("0"+"℃");
                 humidity.setText("0"+"%");
@@ -101,12 +104,13 @@ public class PrecisionAirListAdapter extends BaseAdapter {
 
             iv.setImageResource(image);
             tv.setText(texts.get(position));
-            if (status.get(position) == 0) {
-                imageStatus.setBackgroundResource(R.drawable.box_false);
-                textStatus.setText("工作失常");
-            } else if (status.get(position) == 1){
+
+            if (status.get(position) == 0){
                 imageStatus.setBackgroundResource(R.drawable.box_true);
                 textStatus.setText("工作正常");
+            } else if (status.get(position) == 1) {
+                imageStatus.setBackgroundResource(R.drawable.box_false);
+                textStatus.setText("工作失常");
             } else {
                 imageStatus.setBackgroundResource(R.drawable.box_false);
                 textStatus.setText("暂无数据");

@@ -26,6 +26,7 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.nineoldandroids:library:2.4.0'
 // 外部组件
     // 首页轮播
@@ -36,6 +37,8 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
     // 圆形进度条
     compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
+    // 上拉刷新,下拉加载
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.1@aar'
 // 网络通信
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'

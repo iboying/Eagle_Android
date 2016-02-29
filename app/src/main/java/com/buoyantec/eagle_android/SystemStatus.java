@@ -2,20 +2,17 @@ package com.buoyantec.eagle_android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.SystemStatusGridAdapter;
 import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
@@ -24,20 +21,14 @@ import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class SystemStatus extends AppCompatActivity {
     private HashMap<String, Integer> systemIcon;
@@ -102,7 +93,7 @@ public class SystemStatus extends AppCompatActivity {
         // 联动
         // 安全
         systemClass.put("消防系统", FireFighting.class);
-        systemClass.put("氢气检测", FireFightingDetail.class);
+        systemClass.put("氢气检测", Meter.class);
         // 远程
         // 能效
         // 部署
@@ -158,8 +149,7 @@ public class SystemStatus extends AppCompatActivity {
                     }
 
                     // 按照kindSystems加载UI
-                    LinearLayout container = (LinearLayout)
-                            findViewById(R.id.system_status_linearLayout);
+                    LinearLayout container = (LinearLayout) findViewById(R.id.system_status_linearLayout);
                     for (HashMap.Entry<String, String[]> entry : kindSystems.entrySet()) {
                         // 加载分类标题
                         View titleLayout = View.inflate(context, R.layout.system_status_text_view, null);
@@ -168,9 +158,10 @@ public class SystemStatus extends AppCompatActivity {
                         title.setText(entry.getKey());
 
                         // 装在gridView数据
-                        String[] systems = entry.getValue();
                         final ArrayList<String> names = new ArrayList<>();
-                        final ArrayList<Integer> images = new ArrayList<>();
+                        ArrayList<Integer> images = new ArrayList<>();
+
+                        String[] systems = entry.getValue();
                         for (String system : systems) {
                             names.add(system);
                             if (systemIcon.get(system) == null) {
@@ -179,19 +170,17 @@ public class SystemStatus extends AppCompatActivity {
                                 images.add(systemIcon.get(system));
                             }
                         }
-                        final String[] grid_texts = names.toArray(new String[names.size()]);
-                        Integer[] grid_images = images.toArray(new Integer[images.size()]);
 
                         // 动态加载gridView
                         View gridLayout = View.inflate(context, R.layout.system_status_grid_view, null);
                         container.addView(gridLayout);
                         GridView gridView = (GridView) gridLayout.findViewById(R.id.system_status_grid);
-                        gridView.setAdapter(new SystemStatusGridAdapter(gridView, context, grid_images, grid_texts));
+                        gridView.setAdapter(new SystemStatusGridAdapter(gridView, context, images, names));
                         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                                for (int j = 0; j < grid_texts.length; j++) {
+                                for (int j = 0; j < names.size(); j++) {
                                     if (position == j) {
-                                        Intent i = new Intent(context, systemClass.get(grid_texts[j]));
+                                        Intent i = new Intent(context, systemClass.get(names.get(j)));
                                         // 获取子系统名称
                                         TextView tv = (TextView) v.findViewById(R.id.sub_grid_view_text);
                                         String sub_sys_name = (String) tv.getText();

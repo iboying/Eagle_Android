@@ -1,6 +1,7 @@
 package com.buoyantec.eagle_android.API;
 
 import com.buoyantec.eagle_android.model.Alarm;
+import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.model.Results;
 import com.buoyantec.eagle_android.model.Rooms;
@@ -52,7 +53,7 @@ public interface MyService {
     // 根据设备id获取设备信息 status: 200, 返回hashMap
     @Headers("Accept: application/json")
     @GET("rooms/{room_id}/devices/{id}")
-    Call<LinkedHashMap<String, String>> getDeviceDataHash(@Path("room_id") Integer room_id,
+    Call<DeviceDetail> getDeviceDataHash(@Path("room_id") Integer room_id,
                                                     @Path("id") Integer device_id);
 
 
@@ -60,7 +61,8 @@ public interface MyService {
     @Headers("Accept: application/json")
     @GET("devices/{device_id}/point_alarms")
     Call<Alarm> getWarnMessages(@Path("device_id") Integer device_id,
-                                   @Query("checked") Integer checked);
+                                @Query("checked") Integer checked,
+                                @Query("page") Integer page);
 
     // 获取机房下子系统的告警数 status: 200
     @Headers("Accept: application/json")

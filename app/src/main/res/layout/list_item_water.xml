@@ -27,6 +27,6 @@
         android:gravity="center"
         android:text="{fa-circle}"
         android:textSize="10sp"
-        android:textColor="@color/list_dot_red"/>
+        android:textColor="@color/list_dot_green"/>
 
 </LinearLayout>

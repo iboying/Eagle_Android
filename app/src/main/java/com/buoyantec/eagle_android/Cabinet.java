@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.StandardListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
@@ -23,18 +22,12 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class Cabinet extends AppCompatActivity {
     private SharedPreferences sp;
@@ -93,30 +86,27 @@ public class Cabinet extends AppCompatActivity {
                 circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
-                    ArrayList<String> device_name = new ArrayList<>();
-                    ArrayList<Integer> device_id = new ArrayList<>();
+                    ArrayList<String> names = new ArrayList<>();
+                    final ArrayList<Integer> ids = new ArrayList<>();
                     // 获取用户
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
-                        device_name.add(device.getName());
-                        device_id.add(device.getId());
+                        names.add(device.getName());
+                        ids.add(device.getId());
                     }
 
                     // 图标
                     Integer image = R.drawable.system_status_cabinet;
-                    // 设备名称
-                    String[] texts = device_name.toArray(new String[device_name.size()]);
-                    // 设备id
-                    final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
+
                     // 加载列表
                     ListView listView = (ListView) findViewById(R.id.cabinet_listView);
-                    listView.setAdapter(new StandardListAdapter(listView, context, image, texts));
+                    listView.setAdapter(new StandardListAdapter(listView, context, image, names));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             TextView title = (TextView) v.findViewById(R.id.list_item_standard_list_text);
                             Intent i = new Intent(Cabinet.this, CabinetDetail.class);
                             i.putExtra("title", title.getText());
-                            i.putExtra("device_id", ids[position]);
+                            i.putExtra("device_id", ids.get(position));
                             startActivity(i);
                         }
                     });

@@ -14,9 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.DeviceStatusListAdapter;
-import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.myService.ApiRequest;
@@ -24,19 +22,12 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class PowerDistribution extends AppCompatActivity {
     private SharedPreferences sp;
@@ -98,39 +89,33 @@ public class PowerDistribution extends AppCompatActivity {
                 circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
-                    ArrayList<String> device_name = new ArrayList<>();
-                    ArrayList<Integer> device_id = new ArrayList<>();
-                    ArrayList<Integer> device_alarm = new ArrayList<>();
+                    List<String> names = new ArrayList<>();
+                    final ArrayList<Integer> ids = new ArrayList<>();
+                    List<Integer> status = new ArrayList<>();
 
                     // 获取配电柜数据
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
-                        device_name.add(device.getName());
-                        device_id.add(device.getId());
+                        names.add(device.getName());
+                        ids.add(device.getId());
                         String alarm = device.getAlarm();
                         if (alarm.equals("false")) {
-                            device_alarm.add(1);
+                            status.add(0);
                         } else {
-                            device_alarm.add(0);
+                            status.add(1);
                         }
                     }
                     // 图标
                     Integer image = R.drawable.power_distribution;
-                    // 设备名称
-                    String[] names = device_name.toArray(new String[device_name.size()]);
-                    // 配电系统数据
-                    Integer[] datas = device_alarm.toArray(new Integer[device_alarm.size()]);
-                    // 设备id
-                    final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
                     ListView listView = (ListView) findViewById(R.id.power_distribution_listView);
-                    listView.setAdapter(new DeviceStatusListAdapter(listView, context, image, names, datas));
+                    listView.setAdapter(new DeviceStatusListAdapter(listView, context, image, names, status));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             TextView title = (TextView) v.findViewById(R.id.list_item_device_status_text);
                             Intent i = new Intent(PowerDistribution.this, PowerDetail.class);
                             i.putExtra("title", title.getText());
-                            i.putExtra("device_id", ids[position]);
+                            i.putExtra("device_id", ids.get(position));
                             startActivity(i);
                         }
                     });

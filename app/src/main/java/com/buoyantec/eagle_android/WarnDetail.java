@@ -2,7 +2,6 @@ package com.buoyantec.eagle_android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,31 +11,24 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
 import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class WarnDetail extends AppCompatActivity {
     private String title;
     private Integer device_id;
     private Context context;
+    private Integer page = 1;
     private CircleProgressBar circleProgressBar;
 
     @Override
@@ -48,7 +40,7 @@ public class WarnDetail extends AppCompatActivity {
         // 加载工具条
         initToolbar();
         //加载告警信息列表
-        initListView();
+        initListView(page);
     }
 
     private void init() {
@@ -73,34 +65,34 @@ public class WarnDetail extends AppCompatActivity {
         subToolbarTitle.setText(title);
     }
 
-    private void initListView() {
+    private void initListView(Integer page) {
         ApiRequest apiRequest = new ApiRequest(this);
         // 告警是否已经解除(0:全部，1:已经确认, 2:未结束。默认为2)
-        Call<Alarm> call = apiRequest.getService().getWarnMessages(device_id, 2);
+        Call<Alarm> call = apiRequest.getService().getWarnMessages(device_id, 2, 1);
         // 发送请求
         call.enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
+                // 初始化变量
+                Alarm alarm = response.body();
+                Integer total_pages = alarm.getTotalPages();
+                final Integer current_page = alarm.getCurrentPage();
                 int code = response.code();
+
                 if (code == 200) {
-                    ArrayList<String> comment = new ArrayList<>();
-                    ArrayList<Integer> state = new ArrayList<>();
+                    ArrayList<String> names = new ArrayList<>();
+                    ArrayList<String> times = new ArrayList<>();
                     // 获取数据
-                    List<PointAlarm> pointAlarms = response.body().getPointAlarms();
-                    Iterator<PointAlarm> itr = pointAlarms.iterator();
-                    while (itr.hasNext()) {
-                        PointAlarm pointAlarm = itr.next();
-                        comment.add(pointAlarm.getComment());
-                        state.add(pointAlarm.getState());
+                    List<PointAlarm> pointAlarms = alarm.getPointAlarms();
+                    for (PointAlarm pointAlarm : pointAlarms) {
+                        names.add(pointAlarm.getComment());
+                        times.add(pointAlarm.getCreatedAt());
                     }
-
-                    String[] texts = comment.toArray(new String[comment.size()]);
-                    Integer[] data = state.toArray(new Integer[state.size()]);
-
+                    // 填装数据
                     ListView listView = (ListView) findViewById(R.id.warn_detail_listView);
-                    listView.setAdapter(new WarnDetailListAdapter(listView, context, texts, data));
+                    listView.setAdapter(new WarnDetailListAdapter(listView, context, names, times));
 
                     Log.i("设备告警->详情", context.getString(R.string.getSuccess) + code);
                 } else {

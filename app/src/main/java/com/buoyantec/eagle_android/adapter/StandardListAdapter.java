@@ -11,36 +11,38 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.R;
 
+import java.util.List;
+
 /**
  * Created by kang on 16/1/12.
  * 能效管理页面的ListView适配器, 含有第二级跳转
  */
 public class StandardListAdapter extends BaseAdapter {
     private Context mContext;
-    private Integer[] images;
+    private List<Integer> images;
     private Integer image;
-    private String[] texts;
+    private List<String> names;
     private ListView listView;
 
     // 动态图标
-    public StandardListAdapter(ListView listView, Context c, Integer[] images, String[] texts) {
+    public StandardListAdapter(ListView listView, Context c, List<Integer> images, List<String> names) {
         this.listView = listView;
         this.mContext = c;
         this.images = images;
-        this.texts = texts;
+        this.names = names;
     }
 
     // 静态图标
-    public StandardListAdapter(ListView listView, Context c, Integer image, String[] texts) {
+    public StandardListAdapter(ListView listView, Context c, Integer image, List<String> names) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
-        this.texts = texts;
+        this.names = names;
     }
 
     @Override
     public int getCount() {
-        return texts.length;
+        return names.size();
     }
 
     @Override
@@ -65,9 +67,9 @@ public class StandardListAdapter extends BaseAdapter {
         if (image != null) {
             iv.setBackgroundResource(image);
         } else {
-            iv.setBackgroundResource(images[position]);
+            iv.setBackgroundResource(images.get(position));
         }
-        tv.setText(texts[position]);
+        tv.setText(names.get(position));
 
         return convertView;
     }

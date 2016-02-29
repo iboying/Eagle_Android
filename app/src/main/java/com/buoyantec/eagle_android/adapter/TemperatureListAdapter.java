@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by kang on 16/2/23.
  * 温湿度系统list适配器
@@ -18,10 +20,10 @@ import com.buoyantec.eagle_android.R;
 public class TemperatureListAdapter extends BaseAdapter {
     private Context mContext;
     private ListView listView;
-    private String[] temperature;
-    private String[] humidity;
+    private ArrayList<String> temperature;
+    private ArrayList<String> humidity;
 
-    public TemperatureListAdapter(ListView listView, Context c, String[] temperature, String[] humidity) {
+    public TemperatureListAdapter(ListView listView, Context c, ArrayList<String> temperature, ArrayList<String> humidity) {
         this.listView = listView;
         this.mContext = c;
         this.temperature = temperature;
@@ -30,7 +32,7 @@ public class TemperatureListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return temperature.length;
+        return temperature.size();
     }
 
     @Override
@@ -60,8 +62,8 @@ public class TemperatureListAdapter extends BaseAdapter {
 
         item.setBackgroundResource(colors[position % 2]);
         num.setText(String.valueOf(position+1));
-        name.setText(temperature[position]+"℃");
-        st.setText(humidity[position]+"%");
+        name.setText(temperature.get(position)+"℃");
+        st.setText(humidity.get(position)+"%");
 
         return convertView;
     }

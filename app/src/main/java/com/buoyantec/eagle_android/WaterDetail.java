@@ -13,25 +13,18 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
 import com.buoyantec.eagle_android.adapter.WaterListAdapter;
+import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class WaterDetail extends AppCompatActivity {
     private CircleProgressBar circleProgressBar;
@@ -72,35 +65,24 @@ public class WaterDetail extends AppCompatActivity {
         final Context context = this;
 
         ApiRequest apiRequest = new ApiRequest(this);
-        Call<LinkedHashMap<String, String>> call = apiRequest
-                .getService()
-                .getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<LinkedHashMap<String, String>>() {
+        Call<DeviceDetail> call = apiRequest.getService().getDeviceDataHash(room_id, device_id);
+        call.enqueue(new Callback<DeviceDetail>() {
             @Override
-            public void onResponse(Response<LinkedHashMap<String, String>> response) {
+            public void onResponse(Response<DeviceDetail> response) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
+
                 if (code == 200) {
-                    ArrayList<String> nameArray = new ArrayList<>();
-                    ArrayList<Integer> statusArray = new ArrayList<>();
-                    LinkedHashMap<String, String> map = response.body();;
+                    ArrayList<String> names = new ArrayList<>();
+                    ArrayList<String> status = new ArrayList<>();
 
-                    map.remove("id");
-                    map.remove("name");
-                    // 循环hash,存入数组
-                    for (Map.Entry<String, String> entry : map.entrySet()) {
-                        nameArray.add(entry.getKey());
-                        if (entry.getValue() == null) {
-                            statusArray.add(1);
-                        } else {
-                            statusArray.add(0);
-                        }
+                    // 循环list,存入数组
+                    List<HashMap<String, String>> points =  response.body().getAlarms();
+                    for (HashMap<String, String> point: points) {
+                        names.add(point.get("name"));
+                        status.add(point.get("value"));
                     }
-
-                    // item数据
-                    String[] names = nameArray.toArray(new String[nameArray.size()]);
-                    Integer[] status = statusArray.toArray(new Integer[statusArray.size()]);
 
                     // 加载列表
                     ListView listView = (ListView) findViewById(R.id.water_detail_listView);

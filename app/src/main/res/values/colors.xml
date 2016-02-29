@@ -30,7 +30,7 @@
     <!--登陆页背景色-->
     <color name="loginWindowColor">#EEEEEE</color>
     
-    <!--机柜温度,空调,列头柜ListView灰色背景色-->
+    <!--机柜温度,空调,列头柜ListView灰色背景色(斑马线)-->
     <color name="stripListViewGrayColor">#F5F5F5</color>
 
     <!--通用颜色-->

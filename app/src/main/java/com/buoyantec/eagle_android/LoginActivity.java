@@ -33,8 +33,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.buoyantec.eagle_android.R.id.progressBar;
-
 /**
  * Created by kang on 16/1/25.
  * 描述: 登录控制器
@@ -271,7 +269,6 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("email", user.getEmail());
                     editor.putString("token", user.getAuthenticationToken());
                     editor.putString("phone", phone);
-                    editor.putString("password", password);
                     editor.apply();
                     // 获取用户机房列表
                     ApiRooms apiRooms = new ApiRooms(getApplicationContext());

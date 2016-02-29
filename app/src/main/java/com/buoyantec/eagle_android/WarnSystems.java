@@ -2,7 +2,6 @@ package com.buoyantec.eagle_android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
 import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
@@ -21,20 +19,13 @@ import com.buoyantec.eagle_android.model.SubSystem;
 import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class WarnSystems extends AppCompatActivity{
     private HashMap<String, Integer> systemIcon;

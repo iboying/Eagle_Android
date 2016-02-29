@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/windowBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_warn_systems"
     tools:context="com.buoyantec.eagle_android.WarnSystems">
@@ -22,9 +22,8 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/warn_systems_listView"
-        android:layout_weight="1"
         android:clickable="true"
         android:dividerHeight="1dp"
         android:background="@color/white"/>

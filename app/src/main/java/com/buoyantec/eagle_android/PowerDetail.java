@@ -13,24 +13,18 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
+import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class PowerDetail extends AppCompatActivity {
     private CircleProgressBar circleProgressBar;
@@ -71,36 +65,29 @@ public class PowerDetail extends AppCompatActivity {
 
         // 获取指定链接数据
         ApiRequest apiRequest = new ApiRequest(this);
-        Call<LinkedHashMap<String, String>> call = apiRequest
-                .getService()
-                .getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<LinkedHashMap<String, String>>() {
+        Call<DeviceDetail> call = apiRequest.getService().getDeviceDataHash(room_id, device_id);
+        call.enqueue(new Callback<DeviceDetail>() {
             @Override
-            public void onResponse(Response<LinkedHashMap<String, String>> response) {
+            public void onResponse(Response<DeviceDetail> response) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
-                    LinkedHashMap<String, String> map = response.body();
+                    DeviceDetail map = response.body();
 
-                    ArrayList<String> nameArray = new ArrayList<>();
-                    ArrayList<String> statusArray = new ArrayList<>();
+                    ArrayList<String> names = new ArrayList<>();
+                    ArrayList<String> values = new ArrayList<>();
 
-                    map.remove("id");
-                    map.remove("name");
-                    // 循环hash,存入数组
-                    for (Map.Entry<String, String> entry : map.entrySet()) {
-                        nameArray.add(entry.getKey());
-                        statusArray.add(entry.getValue());
+                    // 循环list,存入数组
+                    List<HashMap<String, String>> points =  response.body().getPoints();
+                    for (HashMap<String, String> point: points) {
+                        names.add(point.get("name"));
+                        values.add(point.get("value"));
                     }
-
-                    // item数据
-                    String[] names = nameArray.toArray(new String[nameArray.size()]);
-                    String[] status = statusArray.toArray(new String[statusArray.size()]);
 
                     // 加载列表
                     ListView listView = (ListView) findViewById(R.id.power_detail_listView);
-                    listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, status));
+                    listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
                     Log.i("配电系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
                     Log.i("配电系统->详情", context.getString(R.string.getFailed) + code);

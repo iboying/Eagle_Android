@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.R;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by kang on 16/2/23.
  * 漏水系统list适配器
@@ -20,10 +22,10 @@ import com.joanzapata.iconify.widget.IconTextView;
 public class WaterListAdapter extends BaseAdapter {
     private Context mContext;
     private ListView listView;
-    private String[] names;
-    private Integer[] status;
+    private ArrayList<String> names;
+    private ArrayList<String> status;
 
-    public WaterListAdapter(ListView listView, Context c, String[] names, Integer[] status) {
+    public WaterListAdapter(ListView listView, Context c, ArrayList<String> names, ArrayList<String> status) {
         this.listView = listView;
         this.mContext = c;
         this.names = names;
@@ -32,7 +34,7 @@ public class WaterListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return names.length;
+        return names.size();
     }
 
     @Override
@@ -60,9 +62,10 @@ public class WaterListAdapter extends BaseAdapter {
         IconTextView st = BaseViewHolder.get(convertView, R.id.list_item_water_status);
 
         item.setBackgroundResource(colors[position % 2]);
-        name.setText(names[position]);
-        if (status[position] == 1) {
-            st.setTextColor(mContext.getResources().getColor(R.color.list_dot_green));
+        name.setText(names.get(position));
+
+        if (status.get(position).equals("true")) {
+            st.setTextColor(mContext.getResources().getColor(R.color.list_dot_red));
         }
 
         return convertView;

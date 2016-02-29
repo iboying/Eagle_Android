@@ -14,9 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.PrecisionAirListAdapter;
-import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.myService.ApiRequest;
@@ -24,20 +22,13 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class PrecisionAir extends AppCompatActivity {
     private SharedPreferences sp;
@@ -97,39 +88,40 @@ public class PrecisionAir extends AppCompatActivity {
                 circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
-                    ArrayList<String> device_name = new ArrayList<>();
-                    ArrayList<Integer> device_id = new ArrayList<>();
-                    ArrayList<String[]> device_datas = new ArrayList<>();
-                    ArrayList<Integer> device_status = new ArrayList<>();
+                    ArrayList<String> names = new ArrayList<>();
+                    final ArrayList<Integer> ids = new ArrayList<>();
+                    List<List<String>> datas = new ArrayList<>();
+                    List<Integer> status = new ArrayList<>();
 
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
-                        device_name.add(device.getName());
-                        device_id.add(device.getId());
-                        String[] value = {
-                                device.getTemperature()[1],
-                                device.geHumidity()[1]
-                        };
-                        device_datas.add(value);
+                        ids.add(device.getId());
+                        names.add(device.getName());
+                        // 获取存在温湿度的设备数据
+                        List<String> data = new ArrayList<>();
+                        List<HashMap<String, String>> points = device.getPoints();
+                        for (HashMap<String, String> point : points) {
+                            data.add(point.get("value"));
+                        }
+                        datas.add(data);
+                        // 获取存在状态的设备数据
                         String alarm = device.getAlarm();
                         if (alarm == null) {
-                            device_status.add(2);
+                            status.add(2);
                         } else {
                             if (alarm.equals("false")) {
-                                device_status.add(1);
+                                status.add(0);
                             } else {
-                                device_status.add(0);
+                                status.add(1);
                             }
                         }
                     }
                     // 图标
                     Integer image = R.drawable.air;
                     // 设备id
-                    final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
 
                     ListView listView = (ListView) findViewById(R.id.precision_air_listView);
-                    listView.setAdapter(new PrecisionAirListAdapter(
-                            listView, context, image, device_name, device_datas, device_status));
+                    listView.setAdapter(new PrecisionAirListAdapter(listView, context, image, names, datas, status));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             TextView title = (TextView) v.findViewById(R.id.list_item_precision_air_text);
@@ -138,7 +130,7 @@ public class PrecisionAir extends AppCompatActivity {
                             }
                             Intent i = new Intent(PrecisionAir.this, PrecisionAirDetail.class);
                             i.putExtra("title", title.getText());
-                            i.putExtra("device_id", ids[position]);
+                            i.putExtra("device_id", ids.get(position));
                             startActivity(i);
                         }
                     });

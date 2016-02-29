@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by kang on 16/1/17.
  * (机柜温度,空调,列头柜) ListView适配器
@@ -18,22 +20,22 @@ import com.buoyantec.eagle_android.R;
 public class DeviceDetailListAdapter extends BaseAdapter {
     private Context mContext;
     private ListView listView;
-    private String[] names;
+    private ArrayList<String> names;
     //(设备详情)数据
-    private String[] status;
+    private ArrayList<String> values;
 
 
     //(设备详情)构造函数
-    public DeviceDetailListAdapter(ListView listView, Context c, String[] names, String[] status) {
+    public DeviceDetailListAdapter(ListView listView, Context c, ArrayList<String> names, ArrayList<String> values) {
         this.listView = listView;
         this.mContext = c;
         this.names = names;
-        this.status = status;
+        this.values = values;
     }
 
     @Override
     public int getCount() {
-        return names.length;
+        return names.size();
     }
 
     @Override
@@ -61,8 +63,8 @@ public class DeviceDetailListAdapter extends BaseAdapter {
         TextView st = BaseViewHolder.get(convertView, R.id.list_item_device_detail_status);
 
         item.setBackgroundResource(colors[position % 2]);
-        name.setText(names[position]);
-        st.setText(status[position]);
+        name.setText(names.get(position));
+        st.setText(values.get(position));
 
         return convertView;
     }

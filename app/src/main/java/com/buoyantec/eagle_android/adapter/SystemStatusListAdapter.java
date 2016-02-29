@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.R;
 
+import java.util.List;
+
 /**
  * Created by kang on 16/1/15.
  * 系统状态子页list适配器( UPS系统, 电量仪系统 )
@@ -18,22 +20,28 @@ import com.buoyantec.eagle_android.R;
 public class SystemStatusListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer image;
-    private String[] texts;
-    private String[][] datas;
+    private List<String> names;
+    private List<List<String>> keys;
+    private List<List<String>> values;
     private ListView listView;
 
-    public SystemStatusListAdapter(ListView listView, Context c, Integer image,
-                                   String[] texts, String[][] datas) {
+    public SystemStatusListAdapter(ListView listView,
+                                   Context c,
+                                   Integer image,
+                                   List<String> names,
+                                   List<List<String>> keys,
+                                   List<List<String>> values) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
-        this.texts = texts;
-        this.datas = datas;
+        this.names = names;
+        this.keys = keys;
+        this.values = values;
     }
 
     @Override
     public int getCount() {
-        return texts.length;
+        return names.size();
     }
 
     @Override
@@ -53,24 +61,30 @@ public class SystemStatusListAdapter extends BaseAdapter {
         }
         TextView tv = BaseViewHolder.get(convertView, R.id.list_item_power_ups_text);
         ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_power_ups_image);
-        TextView av = BaseViewHolder.get(convertView, R.id.list_item_power_ups_av);
-        TextView bv = BaseViewHolder.get(convertView, R.id.list_item_power_ups_bv);
-        TextView cv = BaseViewHolder.get(convertView, R.id.list_item_power_ups_cv);
-        TextView a = BaseViewHolder.get(convertView, R.id.list_item_power_ups_a);
+        // keys
+        TextView oneKey = BaseViewHolder.get(convertView, R.id.list_item_one_key);
+        TextView twoKey = BaseViewHolder.get(convertView, R.id.list_item_two_key);
+        TextView threeKey = BaseViewHolder.get(convertView, R.id.list_item_three_key);
+        TextView fourKey = BaseViewHolder.get(convertView, R.id.list_item_four_key);
+        // values
+        TextView oneValue = BaseViewHolder.get(convertView, R.id.list_item_one_value);
+        TextView twoValue = BaseViewHolder.get(convertView, R.id.list_item_two_value);
+        TextView threeValue = BaseViewHolder.get(convertView, R.id.list_item_three_value);
+        TextView fourValue = BaseViewHolder.get(convertView, R.id.list_item_four_value);
 
-        tv.setText(texts[position]);
+        tv.setText(names.get(position));
         iv.setImageResource(image);
-        if (datas.length > 0) {
-            av.setText(datas[position][0]);
-            bv.setText(datas[position][1]);
-            cv.setText(datas[position][2]);
-            a.setText(datas[position][3]);
-        } else {
-            av.setText("0.0");
-            bv.setText("0.0");
-            cv.setText("0.0");
-            a.setText("0.0");
-        }
+
+        // keys
+        oneKey.setText(keys.get(position).get(0));
+        twoKey.setText(keys.get(position).get(1));
+        threeKey.setText(keys.get(position).get(2));
+        fourKey.setText(keys.get(position).get(3));
+        // values
+        oneValue.setText(values.get(position).get(0));
+        twoValue.setText(values.get(position).get(1));
+        threeValue.setText(values.get(position).get(2));
+        fourValue.setText(values.get(position).get(3));
 
         return convertView;
     }

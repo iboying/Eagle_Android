@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/list_item_battery_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="19dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -51,6 +51,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/list_item_one_key"
                     android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -59,7 +60,7 @@
                     android:textSize="@dimen/text_tiny"
                     android:background="@drawable/battery_left_text_bg"/>
                 <TextView
-                    android:id="@+id/list_item_battery_v"
+                    android:id="@+id/list_item_one_value"
                     android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -73,6 +74,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/list_item_two_key"
                     android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -81,7 +83,7 @@
                     android:textSize="@dimen/text_tiny"
                     android:background="@drawable/battery_left_text_bg"/>
                 <TextView
-                    android:id="@+id/list_item_battery_a"
+                    android:id="@+id/list_item_two_value"
                     android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -102,6 +104,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/list_item_three_key"
                     android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -110,7 +113,7 @@
                     android:textSize="@dimen/text_tiny"
                     android:background="@drawable/battery_left_text_bg"/>
                 <TextView
-                    android:id="@+id/list_item_battery_t1"
+                    android:id="@+id/list_item_three_value"
                     android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -124,6 +127,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/list_item_four_key"
                     android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -132,7 +136,7 @@
                     android:textSize="@dimen/text_tiny"
                     android:background="@drawable/battery_left_text_bg"/>
                 <TextView
-                    android:id="@+id/list_item_battery_t2"
+                    android:id="@+id/list_item_four_value"
                     android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:gravity="center"

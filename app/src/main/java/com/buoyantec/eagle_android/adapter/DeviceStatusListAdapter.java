@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.R;
 
+import java.util.List;
+
 /**
  * Created by kang on 16/2/23.
  * 设备状态列表适配器
@@ -20,22 +22,25 @@ import com.buoyantec.eagle_android.R;
 public class DeviceStatusListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer image;
-    private String[] texts;
-    private Integer[] status;
+    private List<String> names;
+    private List<Integer> status;
     private ListView listView;
 
-    public DeviceStatusListAdapter(ListView listView, Context c, Integer image,
-                                   String[] texts, Integer[] status) {
+    public DeviceStatusListAdapter(ListView listView,
+                                   Context c,
+                                   Integer image,
+                                   List<String> names,
+                                   List<Integer> status) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
-        this.texts = texts;
+        this.names = names;
         this.status = status;
     }
 
     @Override
     public int getCount() {
-        return texts.length;
+        return names.size();
     }
 
     @Override
@@ -61,11 +66,11 @@ public class DeviceStatusListAdapter extends BaseAdapter {
         TextView textStatus = BaseViewHolder.get(convertView, R.id.list_item_device_status_status_text);
 
         iv.setImageResource(image);
-        tv.setText(texts[position]);
-        if (status[position] == 0) {
+        tv.setText(names.get(position));
+        if (status.get(position) == 1) {
             imageStatus.setBackgroundResource(R.drawable.box_false);
             textStatus.setText("工作失常");
-        } else if (status[position] == 1){
+        } else if (status.get(position) == 0){
             imageStatus.setBackgroundResource(R.drawable.box_true);
             textStatus.setText("工作正常");
         } else {

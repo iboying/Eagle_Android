@@ -13,27 +13,18 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
-import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
 import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
+import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.buoyantec.eagle_android.myService.ApiRequest;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class TemperatureDetail extends AppCompatActivity {
     private CircleProgressBar circleProgressBar;
@@ -74,41 +65,32 @@ public class TemperatureDetail extends AppCompatActivity {
         final Context context = this;
 
         ApiRequest apiRequest = new ApiRequest(this);
-        Call<LinkedHashMap<String, String>> call = apiRequest
-                .getService()
-                .getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<LinkedHashMap<String, String>>() {
+        Call<DeviceDetail> call = apiRequest.getService().getDeviceDataHash(room_id, device_id);
+        call.enqueue(new Callback<DeviceDetail>() {
             @Override
-            public void onResponse(Response<LinkedHashMap<String, String>> response) {
+            public void onResponse(Response<DeviceDetail> response) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> tem = new ArrayList<>();
                     ArrayList<String> hum = new ArrayList<>();
-                    LinkedHashMap<String, String> map = response.body();;
 
-                    map.remove("id");
-                    map.remove("name");
-                    Integer count = map.size()/2;
+                    // 循环list,存入数组
+                    List<HashMap<String, String>> points =  response.body().getPoints();
                     int i = 1;
-                    // 循环hash,存入数组
-                    for (Map.Entry<String, String> entry : map.entrySet()) {
-                        if (i <= count) {
-                            tem.add(entry.getValue());
+                    for (HashMap<String, String> point: points) {
+                        if (i%2==1) {
+                            tem.add(point.get("value"));
                         } else {
-                            hum.add(entry.getValue());
+                            hum.add(point.get("value"));
                         }
                         i++;
                     }
 
-                    // item数据
-                    String[] names = tem.toArray(new String[tem.size()]);
-                    String[] status = hum.toArray(new String[hum.size()]);
-
                     // 加载列表
                     ListView listView = (ListView) findViewById(R.id.temperature_detail_listView);
-                    listView.setAdapter(new TemperatureListAdapter(listView, context, names, status));
+                    listView.setAdapter(new TemperatureListAdapter(listView, context, tem, hum));
 
                     Log.i("温湿度系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {

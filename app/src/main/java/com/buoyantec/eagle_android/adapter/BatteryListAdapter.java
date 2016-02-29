@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.R;
 
+import java.util.List;
+
 /**
  * Created by kang on 16/1/18.
  * 电池检测ListView适配器
@@ -18,22 +20,28 @@ import com.buoyantec.eagle_android.R;
 public class BatteryListAdapter extends BaseAdapter{
     private Context mContext;
     private Integer image;
-    private String[] texts;
-    private Integer[][] datas;
+    private List<String> names;
+    private List<List<String>> keys;
+    private List<List<String>> values;
     private ListView listView;
 
-    public BatteryListAdapter(ListView listView, Context c, Integer image,
-                                   String[] texts, Integer[][] datas) {
+    public BatteryListAdapter(ListView listView,
+                              Context c,
+                              Integer image,
+                              List<String> names,
+                              List<List<String>> keys,
+                              List<List<String>> values) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
-        this.texts = texts;
-        this.datas = datas;
+        this.names = names;
+        this.keys = keys;
+        this.values = values;
     }
 
     @Override
     public int getCount() {
-        return texts.length;
+        return names.size();
     }
 
     @Override
@@ -54,17 +62,30 @@ public class BatteryListAdapter extends BaseAdapter{
         }
         ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_battery_image);
         TextView tv = BaseViewHolder.get(convertView, R.id.list_item_battery_text);
-        TextView v = BaseViewHolder.get(convertView, R.id.list_item_battery_v);
-        TextView a = BaseViewHolder.get(convertView, R.id.list_item_battery_a);
-        TextView t1 = BaseViewHolder.get(convertView, R.id.list_item_battery_t1);
-        TextView t2 = BaseViewHolder.get(convertView, R.id.list_item_battery_t2);
 
-        iv.setBackgroundResource(image);
-        tv.setText(texts[position]);
-        v.setText(datas[1][0].toString()+"v");
-        a.setText(datas[1][1].toString()+"a");
-        t1.setText(datas[1][2].toString()+"度");
-        t2.setText(datas[1][3].toString()+"度");
+        TextView oneKey = BaseViewHolder.get(convertView, R.id.list_item_one_key);
+        TextView twoKey = BaseViewHolder.get(convertView, R.id.list_item_two_key);
+        TextView threeKey = BaseViewHolder.get(convertView, R.id.list_item_three_key);
+        TextView fourKey = BaseViewHolder.get(convertView, R.id.list_item_four_key);
+        // values
+        TextView oneValue = BaseViewHolder.get(convertView, R.id.list_item_one_value);
+        TextView twoValue = BaseViewHolder.get(convertView, R.id.list_item_two_value);
+        TextView threeValue = BaseViewHolder.get(convertView, R.id.list_item_three_value);
+        TextView fourValue = BaseViewHolder.get(convertView, R.id.list_item_four_value);
+
+        tv.setText(names.get(position));
+        iv.setImageResource(image);
+
+        // keys
+        oneKey.setText(keys.get(position).get(0));
+        twoKey.setText(keys.get(position).get(1));
+        threeKey.setText(keys.get(position).get(2));
+        fourKey.setText(keys.get(position).get(3));
+        // values
+        oneValue.setText(values.get(position).get(0));
+        twoValue.setText(values.get(position).get(1));
+        threeValue.setText(values.get(position).get(2));
+        fourValue.setText(values.get(position).get(3));
 
         return convertView;
     }

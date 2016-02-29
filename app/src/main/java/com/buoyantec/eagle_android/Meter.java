@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
@@ -23,18 +22,13 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * 当前: 系统状态 -> 电量仪系统
@@ -96,41 +90,41 @@ public class Meter extends AppCompatActivity {
                 circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
-                    ArrayList<String> device_name = new ArrayList<>();
-                    ArrayList<Integer> device_id = new ArrayList<>();
-                    ArrayList<String[]> device_datas = new ArrayList<>();
+                    final List<Integer> ids = new ArrayList<>();
+                    List<String> names = new ArrayList<>();
+                    List<List<String>> keys = new ArrayList<>();
+                    List<List<String>> values = new ArrayList<>();
 
-                    // 获取设备数据
+                    // 获取UPS系统的设备列表
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
-                        device_name.add(device.getName());
-                        device_id.add(device.getId());
-                        String[] value = {
-                                device.getAv()[1],
-                                device.getBv()[1],
-                                device.getCv()[1],
-                                device.geRate()[1]
-                        };
-                        device_datas.add(value);
+                        ids.add(device.getId());
+                        names.add(device.getName());
+                        // 获取point数据
+                        List<String> k = new ArrayList<>();
+                        List<String> v = new ArrayList<>();
+                        List<HashMap<String, String>> points = device.getPoints();
+                        for (HashMap<String, String> point : points) {
+                            k.add(point.get("name"));
+                            v.add(point.get("value"));
+                        }
+                        keys.add(k);
+                        values.add(v);
                     }
+
                     // 图标
                     Integer image = R.drawable.power_distribution;
-                    // 设备名称
-                    String[] names = device_name.toArray(new String[device_name.size()]);
-                    // 设备数据
-                    String[][] datas = device_datas.toArray(new String[device_datas.size()][]);
-                    // 设备id
-                    final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
+
                     // 加载列表
                     ListView listView = (ListView) findViewById(R.id.meter_listView);
-                    listView.setAdapter(new SystemStatusListAdapter(listView, context, image, names, datas));
+                    listView.setAdapter(new SystemStatusListAdapter(listView, context, image, names, keys, values));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             TextView title = (TextView) view.findViewById(R.id.list_item_power_ups_text);
                             Intent i = new Intent(Meter.this, MeterDetail.class);
                             i.putExtra("title", title.getText());
-                            i.putExtra("device_id", ids[position]);
+                            i.putExtra("device_id", ids.get(position));
                             startActivity(i);
                         }
                     });

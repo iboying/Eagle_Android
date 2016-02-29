@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.adapter.MySliderView;
 import com.buoyantec.eagle_android.model.Result;
@@ -36,21 +35,14 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,12 +62,12 @@ public class MainActivity extends AppCompatActivity
          * 否: 加载登陆页
          */
         mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        String pwd = mPreferences.getString("password", "");
+        String token = mPreferences.getString("token", "");
         Integer current_room_id = mPreferences.getInt("current_room_id", 0);
         String rooms = mPreferences.getString("rooms", null);
         String current_room = mPreferences.getString("current_room", null);
 
-        if (pwd.isEmpty() || current_room_id==0 || rooms==null || current_room==null) {
+        if (token.isEmpty() || current_room_id==0 || rooms==null || current_room==null) {
             finish();
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
@@ -136,7 +128,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = mPreferences.edit();
-                editor.putString("password", "");
+                editor.putString("token", "");
                 editor.apply();
                 finish();
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
@@ -307,8 +299,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(Response<Results> response) {
                 circleProgressBar = (CircleProgressBar) findViewById(R.id.grid_warn_message_progress);
-                circleProgressBar.setVisibility(View.GONE);
-
                 int code = response.code();
                 if (code == 200) {
                     // 计数
@@ -324,6 +314,8 @@ public class MainActivity extends AppCompatActivity
                     ImageView warnMessage = (ImageView) findViewById(R.id.grid_warn_message_image);
                     BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
                     badge.setBadgeMargin(0);
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
 
                     if (count == 0) {
                         badge.hide();
@@ -337,13 +329,15 @@ public class MainActivity extends AppCompatActivity
                     }
                     Log.i("获取子系统告警数", context.getString(R.string.getSuccess) + code);
                 } else {
-                    // 输出非201时的错误信息
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i("获取子系统告警数", context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
+                // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 Log.i("获取子系统告警数", context.getString(R.string.linkFailed));
                 // TODO: 16/2/19 错误处理

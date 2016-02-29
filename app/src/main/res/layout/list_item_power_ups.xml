@@ -56,8 +56,8 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/list_item_power_ups_av"
-                    android:layout_width="60dp"
+                    android:id="@+id/list_item_one_value"
+                    android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -71,7 +71,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/list_item_power_ups_bv"
+                    android:id="@+id/list_item_two_value"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_gravity="center"
@@ -88,19 +88,19 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp">
             <TextView
+                android:id="@+id/list_item_one_key"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="@dimen/text_tiny"
-                android:text="A相电压"/>
+                android:textSize="@dimen/text_tiny"/>
             <TextView
+                android:id="@+id/list_item_two_key"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="@dimen/text_tiny"
-                android:text="B相电压"/>
+                android:textSize="@dimen/text_tiny"/>
         </TableRow>
         <TableRow
             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/list_item_power_ups_cv"
+                    android:id="@+id/list_item_three_value"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_gravity="center"
@@ -125,7 +125,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/list_item_power_ups_a"
+                    android:id="@+id/list_item_four_value"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_gravity="center"
@@ -141,19 +141,19 @@
             android:layout_width="match_parent"
             android:layout_marginTop="1dp">
             <TextView
+                android:id="@+id/list_item_three_key"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="@dimen/text_tiny"
-                android:text="C相电压"/>
+                android:textSize="@dimen/text_tiny"/>
             <TextView
+                android:id="@+id/list_item_four_key"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="@dimen/text_tiny"
-                android:text="频率"/>
+                android:textSize="@dimen/text_tiny"/>
         </TableRow>
 
     </TableLayout>

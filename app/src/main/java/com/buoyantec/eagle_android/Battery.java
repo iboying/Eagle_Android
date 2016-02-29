@@ -23,6 +23,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -86,27 +87,41 @@ public class Battery extends AppCompatActivity {
                 circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
-                    ArrayList<String> device_name = new ArrayList<>();
-                    // 获取数据
+                    final List<Integer> ids = new ArrayList<>();
+                    List<String> names = new ArrayList<>();
+                    List<List<String>> keys = new ArrayList<>();
+                    List<List<String>> values = new ArrayList<>();
+
+                    // 获取UPS系统的设备列表
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
-                        device_name.add(device.getName());
+                        ids.add(device.getId());
+                        names.add(device.getName());
+                        // 获取point数据
+                        List<String> k = new ArrayList<>();
+                        List<String> v = new ArrayList<>();
+                        List<HashMap<String, String>> points = device.getPoints();
+                        for (HashMap<String, String> point : points) {
+                            k.add(point.get("name"));
+                            v.add(point.get("value"));
+                        }
+                        keys.add(k);
+                        values.add(v);
                     }
+
                     // 列表图标
                     Integer image = R.drawable.battery;
-                    // 设备名称
-                    String[] names = device_name.toArray(new String[device_name.size()]);
-                    // 设备数据
-                    Integer[][] datas = {{75, 75, 75, 75}, {60, 40, 80, 50}};
+
                     // 加载设备列表
                     ListView listView = (ListView) findViewById(R.id.battery_listView);
-                    listView.setAdapter(new BatteryListAdapter(listView, context, image, names, datas));
+                    listView.setAdapter(new BatteryListAdapter(listView, context, image, names, keys, values));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             TextView title = (TextView) view.findViewById(R.id.list_item_battery_text);
                             Intent i = new Intent(Battery.this, BatteryDetail.class);
                             i.putExtra("title", title.getText());
+                            i.putExtra("device_id", ids.get(position));
                             startActivity(i);
                         }
                     });
