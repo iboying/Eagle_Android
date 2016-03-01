@@ -39,8 +39,7 @@
             app:selected_width="6dp"
             app:selected_height="6dp"
             app:unselected_width="6dp"
-            app:unselected_height="6dp"
-            />
+            app:unselected_height="6dp"/>
 
     </RelativeLayout>
 

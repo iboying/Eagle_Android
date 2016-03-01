@@ -49,10 +49,12 @@ public class ApiRooms {
                     List<Room> roomList = response.body().getRooms();
                     // 遍历机房
                     for (Room room : roomList) {
-                        result += (room.getId() + "");
-                        result += '#';
-                        result += room.getName();
-                        result += '#';
+                        if (room.getName() != null) {
+                            result += (room.getId() + "");
+                            result += '#';
+                            result += room.getName();
+                            result += '#';
+                        }
                     }
 
                     Integer current_room_id = sp.getInt("current_room_id", 0);

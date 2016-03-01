@@ -129,6 +129,9 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString("token", "");
+                editor.putString("current_room", null);
+                editor.putInt("current_room_id", 0);
+                editor.putString("rooms", null);
                 editor.apply();
                 finish();
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
@@ -299,6 +302,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(Response<Results> response) {
                 circleProgressBar = (CircleProgressBar) findViewById(R.id.grid_warn_message_progress);
+
                 int code = response.code();
                 if (code == 200) {
                     // 计数
@@ -316,7 +320,6 @@ public class MainActivity extends AppCompatActivity
                     badge.setBadgeMargin(0);
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.GONE);
-
                     if (count == 0) {
                         badge.hide();
                     } else {
@@ -337,6 +340,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Throwable t) {
+                circleProgressBar = (CircleProgressBar) findViewById(R.id.grid_warn_message_progress);
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 Log.i("获取子系统告警数", context.getString(R.string.linkFailed));
