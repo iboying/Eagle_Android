@@ -30,17 +30,13 @@ public class WarnDetail extends AppCompatActivity {
     private String title;
     private Integer device_id;
     private Context context;
-    private Integer page = 1;
     // 组件
     private CircleProgressBar circleProgressBar;
     private ListView listView;
-    private View footer;
     private Button addMore;
     // 列表数据
     private List<String> names = new ArrayList<>();
     private List<String> times = new ArrayList<>();
-    // 第一次载入数据
-    private boolean firstGetData = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +47,7 @@ public class WarnDetail extends AppCompatActivity {
         // 加载工具条
         initToolbar();
         //加载告警信息列表
-        initListView(page);
+        initListView(1);
     }
 
     private void init() {
@@ -64,7 +60,7 @@ public class WarnDetail extends AppCompatActivity {
         circleProgressBar.setVisibility(View.VISIBLE);
         // 列表
         listView = (ListView) findViewById(R.id.warn_detail_listView);
-        footer = getLayoutInflater().inflate(R.layout.list_view_footer, null);
+        View footer = getLayoutInflater().inflate(R.layout.list_view_footer, null);
         listView.addFooterView(footer);
         addMore = (Button) findViewById(R.id.list_more);
     }
