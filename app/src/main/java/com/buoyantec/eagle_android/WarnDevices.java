@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.API.MyService;
 import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
@@ -24,6 +25,7 @@ import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -120,47 +122,47 @@ public class WarnDevices extends AppCompatActivity {
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
                     // 载入设备列表
-                    ArrayList<String> device_name = new ArrayList<>();
-                    ArrayList<Integer> device_id = new ArrayList<>();
-                    ArrayList<Integer> deviceAlarmCount = new ArrayList<>();
+                    final ArrayList<String> names = new ArrayList<>();
+                    final ArrayList<Integer> ids = new ArrayList<>();
+                    ArrayList<Integer> alarmCount = new ArrayList<>();
                     // 读取数据
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
                         String deviceName = device.getName();
                         Integer id = device.getId();
 
-                        device_name.add(deviceName);
-                        device_id.add(id);
+                        names.add(deviceName);
+                        ids.add(id);
                         if (countMap.get(deviceName) != null) {
-                            deviceAlarmCount.add(countMap.get(deviceName));
+                            alarmCount.add(countMap.get(deviceName));
                         } else {
-                            deviceAlarmCount.add(0);
+                            alarmCount.add(0);
                         }
                     }
-                    // references to our images
-                    Integer[] images = new Integer[device_name.size()];
-                    final String[] names = device_name.toArray(new String[device_name.size()]);
-                    final Integer[] ids = device_id.toArray(new Integer[device_id.size()]);
-                    Integer[] count = deviceAlarmCount.toArray(new Integer[deviceAlarmCount.size()]);
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
+
+                    // images
+                    Integer[] images = new Integer[names.size()];
 
                     ListView listView = (ListView) findViewById(R.id.warn_devices_listView);
-                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, names, count));
+                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, names, alarmCount));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             Intent i = new Intent(WarnDevices.this, WarnDetail.class);
-                            i.putExtra("title", names[position]);
-                            i.putExtra("device_id", ids[position]);
+                            i.putExtra("title", names.get(position));
+                            i.putExtra("device_id", ids.get(position));
                             startActivity(i);
                         }
                     });
                     Log.i("设备告警", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i("设备告警", context.getString(R.string.getFailed) + code);
                 }
             }
@@ -169,8 +171,8 @@ public class WarnDevices extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i("设备告警", context.getString(R.string.linkFailed));
-                //// TODO: 16/1/28  错误处理
             }
         });
     }

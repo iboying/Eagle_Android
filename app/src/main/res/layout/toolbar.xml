@@ -11,6 +11,13 @@
     android:theme="@style/ActionBarThemeOverlay"
     app:popupTheme="@style/ActionBarPopupThemeOverlay"
     app:titleTextAppearance="@style/ActionBar.TitleText">
+
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:visibility="invisible"
+        android:layout_gravity="center"/>
+
     <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
@@ -19,5 +26,18 @@
         android:textColor="@color/textColorPrimary"
         android:layout_gravity="center"
         android:textSize="@dimen/text_large"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:text="hello"/>
+
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:id="@+id/progressBar"
+        app:mlpb_progress_stoke_width="2sp"
+        app:mlpb_background_color="@color/colorPrimary"
+        app:mlpb_enable_circle_background="false"
+        app:mlpb_progress_color="@color/gray"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:visibility="visible"
+        android:layout_gravity="center"/>
+
 </android.support.v7.widget.Toolbar>

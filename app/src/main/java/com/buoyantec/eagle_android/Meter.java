@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
@@ -86,8 +87,6 @@ public class Meter extends AppCompatActivity {
         call.enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
                     final List<Integer> ids = new ArrayList<>();
@@ -112,6 +111,9 @@ public class Meter extends AppCompatActivity {
                         values.add(v);
                     }
 
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
+
                     // 图标
                     Integer image = R.drawable.power_distribution;
 
@@ -131,6 +133,8 @@ public class Meter extends AppCompatActivity {
                     Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
+                    circleProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
                 }
             }
@@ -139,8 +143,8 @@ public class Meter extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
-                //// TODO: 16/1/28  错误处理
             }
         });
     }

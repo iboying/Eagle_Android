@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.WaterListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
@@ -90,6 +91,7 @@ public class FireFightingDetail extends AppCompatActivity {
 
                     Log.i("消防系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i("消防系统->详情", context.getString(R.string.getFailed) + code);
                 }
             }
@@ -99,7 +101,7 @@ public class FireFightingDetail extends AppCompatActivity {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 Log.i("消防系统->详情", context.getString(R.string.linkFailed));
-                // TODO: 16/2/22 错误处理
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
             }
         });
     }

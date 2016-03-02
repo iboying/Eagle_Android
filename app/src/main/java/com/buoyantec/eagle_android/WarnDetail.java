@@ -8,14 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
 import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.paging.listview.PagingListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +76,6 @@ public class WarnDetail extends AppCompatActivity {
         call.enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
                 // 初始化变量
                 Alarm alarm = response.body();
                 Integer total_pages = alarm.getTotalPages();
@@ -88,26 +89,38 @@ public class WarnDetail extends AppCompatActivity {
                     List<PointAlarm> pointAlarms = alarm.getPointAlarms();
                     for (PointAlarm pointAlarm : pointAlarms) {
                         names.add(pointAlarm.getComment());
-                        times.add(pointAlarm.getCreatedAt());
+                        times.add(pointAlarm.getUpdatedAt());
                     }
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
+
                     // 填装数据
-                    ListView listView = (ListView) findViewById(R.id.warn_detail_listView);
+                    PagingListView listView = (PagingListView) findViewById(R.id.warn_detail_listView);
+//                    View footer = getLayoutInflater().inflate(R.layout.list_view_footer, null);
+//                    listView.addFooterView(footer);
                     listView.setAdapter(new WarnDetailListAdapter(listView, context, names, times));
+                    listView.setHasMoreItems(true);
+                    listView.setPagingableListener(new PagingListView.Pagingable() {
+                        @Override
+                        public void onLoadMoreItems() {
+
+                        }
+                    });
 
                     Log.i("设备告警->详情", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i("设备告警->详情", context.getString(R.string.getFailed) + code);
                 }
-                System.out.println("设备告警列表接口调用完成");
             }
 
             @Override
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i("设备告警->详情", context.getString(R.string.linkFailed));
-                // TODO: 16/2/19 错误处理
             }
         });
     }

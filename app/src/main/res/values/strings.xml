@@ -23,7 +23,7 @@
     <string name="error_invalid_phone">请输入正确的手机号</string>
     <string name="error_invalid_email">请输入正确的邮箱</string>
     <string name="error_invalid_password">密码长度太短</string>
-    <string name="error_incorrect_password">密码不正确</string>
+    <string name="error_incorrect_password">手机号或密码不正确</string>
     <string name="error_field_required">不能为空</string>
     <string name="permission_rationale">"实现邮件功能需要读取联系人权限"</string>
 
@@ -61,6 +61,6 @@
     <string name="linkFailed">==========Link: 失败==========</string>
     <string name="getFailed">==========Get: 失败==========</string>
     <string name="getSuccess">==========Get: 成功==========</string>
-
-
+    <string name="netWorkFailed">无法连接服务器</string>
+    <string name="getDataFailed">获取数据失败</string>
 </resources>

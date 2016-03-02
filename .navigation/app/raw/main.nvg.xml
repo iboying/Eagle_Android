@@ -214,7 +214,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.Battery"/>
+        className = "com.buoyantec.eagle_android.UI.Battery"/>
       <point      
         x = "1800"      
         y = "1400"/>

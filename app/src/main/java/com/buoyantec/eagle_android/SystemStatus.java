@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.SystemStatusGridAdapter;
 import com.buoyantec.eagle_android.model.MySystem;
@@ -122,8 +123,6 @@ public class SystemStatus extends AppCompatActivity {
         call.enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
                 statusCode = response.code();
                 if (response.body() != null && statusCode == 200) {
                     // 定义动态数组,用于保存子系统
@@ -171,6 +170,9 @@ public class SystemStatus extends AppCompatActivity {
                             }
                         }
 
+                        // 隐藏进度条
+                        circleProgressBar.setVisibility(View.GONE);
+
                         // 动态加载gridView
                         View gridLayout = View.inflate(context, R.layout.system_status_grid_view, null);
                         container.addView(gridLayout);
@@ -193,14 +195,15 @@ public class SystemStatus extends AppCompatActivity {
                     }
                     Log.i("系统状态", context.getString(R.string.getSuccess) + statusCode);
                 } else {
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i("系统状态", context.getString(R.string.getFailed) + statusCode);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i("系统状态", context.getString(R.string.linkFailed));
             }
         });

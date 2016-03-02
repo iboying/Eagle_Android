@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.model.User;
 import com.buoyantec.eagle_android.myService.ApiRequest;
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mLoginButton;
     // 数据
     private SharedPreferences mPreferences;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,13 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = (CircleProgressBar) findViewById(R.id.progressBar);
         mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        context = this;
+
+        Intent i = getIntent();
+        String error = i.getStringExtra("error");
+        if (error != null) {
+            Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -134,7 +144,6 @@ public class LoginActivity extends AppCompatActivity {
      * 验证手机号格式
      */
     private boolean isPhoneValid(String phone) {
-        //TODO: Replace this with your own logic
         return phone.length() == 11;
     }
 
@@ -142,7 +151,6 @@ public class LoginActivity extends AppCompatActivity {
      * 验证密码长度
      */
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() >= 6;
     }
 
@@ -218,7 +226,6 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * 登录时显示进度条
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -270,30 +277,24 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("token", user.getAuthenticationToken());
                     editor.putString("phone", phone);
                     editor.apply();
-                    // 获取用户机房列表
-                    ApiRooms apiRooms = new ApiRooms(getApplicationContext());
+                    // 获取用户机房列表,并跳转页面
+                    ApiRooms apiRooms = new ApiRooms(getApplicationContext(), LoginActivity.this);
                     apiRooms.getUserRooms();
-                    // 跳转到主页面
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(i);
-                    finish();
 
                     Log.i("用户登录", getResources().getString(R.string.getSuccess) + code);
                 } else {
                     showProgress(false);
                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                     mPasswordView.requestFocus();
-
                     Log.i("用户登录", getResources().getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                // TODO: 16/2/25 网络错误处理
                 showProgress(false);
-                mPhoneView.setError("网络连接错误");
-                mPhoneView.requestFocus();
+                mPasswordView.requestFocus();
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_LONG).show();
                 Log.i("用户登录", getResources().getString(R.string.linkFailed));
             }
         });

@@ -122,25 +122,32 @@ public class MainActivity extends AppCompatActivity
         String mName = mPreferences.getString("name", null);
         name.setText(mName);
 
-        // 退出登录功能
+        // 退出按钮
         Button signOutButton = (Button) findViewById(R.id.sign_out_button);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.putString("token", "");
-                editor.putString("current_room", null);
-                editor.putInt("current_room_id", 0);
-                editor.putString("rooms", null);
-                editor.apply();
-                finish();
+                signOut();
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
             }
         });
     }
 
-    //为后退键绑定关闭侧边菜单功能
+    // 退出登录, 清楚数据
+    private void signOut() {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString("token", "");
+        editor.putString("current_room", null);
+        editor.putInt("current_room_id", 0);
+        editor.putString("rooms", null);
+        editor.apply();
+        finish();
+    }
+
+    /**
+     * 为后退键绑定关闭侧边菜单功能
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -149,7 +156,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    // 物理菜单键绑定功能
+    /**
+     * 物理菜单键绑定功能
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_MENU) {
@@ -165,7 +177,9 @@ public class MainActivity extends AppCompatActivity
         return super.onKeyDown(keyCode, event);
     }
 
-    // 两次点击返回键退出程序
+    /**
+     * 两次点击返回键退出程序
+     */
     private void exitByDoubleClick() {
         Timer tExit = null;
         if (!isExit) {
@@ -180,12 +194,16 @@ public class MainActivity extends AppCompatActivity
             }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
 
         } else {
-            finish();
+            signOut();
             System.exit(0);
         }
     }
 
-    //侧边菜单响应函数
+    /**
+     * 侧边菜单响应函数
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -206,7 +224,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    //初始化轮播控件
+    /**
+     * 初始化轮播控件
+     */
     private void initCarousel() {
         SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
         sliderShow.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
@@ -235,8 +255,9 @@ public class MainActivity extends AppCompatActivity
         sliderShow.setDuration(8000);
     }
 
-    //---------------------私有方法------------------------
-    //初始化栅格布局
+    /**
+     * 初始化栅格布局
+     */
     private void initGridView(){
         final Context context = this;
         // references to our images
@@ -289,7 +310,11 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * 异步任务,获取机房总告警数
+     */
     public void getSubSystemAlarmCount() {
+        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
         // 获取机房id
         final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
         Integer room_id = sp.getInt("current_room_id", 1);
@@ -301,8 +326,6 @@ public class MainActivity extends AppCompatActivity
         call.enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {
-                circleProgressBar = (CircleProgressBar) findViewById(R.id.grid_warn_message_progress);
-
                 int code = response.code();
                 if (code == 200) {
                     // 计数
@@ -319,7 +342,7 @@ public class MainActivity extends AppCompatActivity
                     BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
                     badge.setBadgeMargin(0);
                     // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
+                    circleProgressBar.setVisibility(View.INVISIBLE);
                     if (count == 0) {
                         badge.hide();
                     } else {
@@ -333,18 +356,17 @@ public class MainActivity extends AppCompatActivity
                     Log.i("获取子系统告警数", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
+                    circleProgressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i("获取子系统告警数", context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                circleProgressBar = (CircleProgressBar) findViewById(R.id.grid_warn_message_progress);
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
+                circleProgressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i("获取子系统告警数", context.getString(R.string.linkFailed));
-                // TODO: 16/2/19 错误处理
             }
         });
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
 import com.buoyantec.eagle_android.model.MySystem;
@@ -93,15 +94,13 @@ public class WarnSystems extends AppCompatActivity{
         call.enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
                 statusCode = response.code();
                 if (response.body() != null && statusCode == 200) {
                     // 定义动态数组,用于保存子系统及图标
-                    ArrayList<String> subSystemList = new ArrayList<>();
-                    ArrayList<Integer> subSystemIcon = new ArrayList<>();
-                    ArrayList<Integer> subSystemAlarmCount = new ArrayList<>();
-                    ArrayList<Integer> subSystemId = new ArrayList<>();
+                    final ArrayList<String> names = new ArrayList<>();
+                    ArrayList<Integer> device_images = new ArrayList<>();
+                    ArrayList<Integer> alarmCount = new ArrayList<>();
+                    final ArrayList<Integer> ids = new ArrayList<>();
 
                     // 读取子系统告警数量
                     Bundle bundle = getIntent().getExtras();
@@ -113,38 +112,41 @@ public class WarnSystems extends AppCompatActivity{
                         // 获取所有的子系统( 比如: ups, 配电..)
                         for (SubSystem subSystem : mySystem.getSubSystem()) {
                             String subName = subSystem.getSubSystemName();
-                            subSystemList.add(subName);
-                            subSystemIcon.add(systemIcon.get(subName));
-                            subSystemId.add(subSystem.getId());
+                            names.add(subName);
+                            device_images.add(systemIcon.get(subName));
+                            ids.add(subSystem.getId());
                             if (map != null) {
                                 if (map.get(subName) != null) {
-                                    subSystemAlarmCount.add(map.get(subName));
+                                    alarmCount.add(map.get(subName));
                                 } else {
-                                    subSystemAlarmCount.add(0);
+                                    alarmCount.add(0);
                                 }
                             } else {
-                                subSystemAlarmCount.add(0);
+                                alarmCount.add(0);
                             }
                         }
                     }
-                    // 加载listView
-                    final String[] texts = subSystemList.toArray(new String[subSystemList.size()]);
-                    final Integer[] images = subSystemIcon.toArray(new Integer[subSystemIcon.size()]);
-                    Integer[] count = subSystemAlarmCount.toArray(new Integer[subSystemAlarmCount.size()]);
-                    final Integer[] ids = subSystemId.toArray(new Integer[subSystemId.size()]);
 
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
+
+                    // 图片
+                    Integer[] images = device_images.toArray(new Integer[device_images.size()]);
+
+                    // 加载listView
                     ListView listView = (ListView) findViewById(R.id.warn_systems_listView);
-                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, texts, count));
+                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, names, alarmCount));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                             Intent i = new Intent(WarnSystems.this, WarnDevices.class);
-                            i.putExtra("title", texts[position]);
-                            i.putExtra("subSystem_id", ids[position]);
+                            i.putExtra("title", names.get(position));
+                            i.putExtra("subSystem_id", ids.get(position));
                             startActivity(i);
                         }
                     });
                     Log.i("系统告警", context.getString(R.string.getSuccess) + statusCode);
                 } else {
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i("系统告警", context.getString(R.string.getFailed) + statusCode);
                 }
             }
@@ -153,6 +155,7 @@ public class WarnSystems extends AppCompatActivity{
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i("系统告警", context.getString(R.string.linkFailed));
             }
         });

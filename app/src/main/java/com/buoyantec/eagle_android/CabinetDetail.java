@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
@@ -70,8 +71,6 @@ public class CabinetDetail extends AppCompatActivity {
         call.enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
 
                 if (code == 200) {
@@ -85,12 +84,16 @@ public class CabinetDetail extends AppCompatActivity {
                         values.add(point.get("value"));
                     }
 
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
+
                     // 加载列表
                     ListView listView = (ListView) findViewById(R.id.cabinet_detail_listView);
                     listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
 
                     Log.i("机柜环境->详情", context.getString(R.string.getSuccess) + code);
                 } else {
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i("机柜环境->详情", context.getString(R.string.getFailed) + code);
                 }
             }
@@ -100,7 +103,7 @@ public class CabinetDetail extends AppCompatActivity {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 Log.i("机柜环境->详情", context.getString(R.string.linkFailed));
-                // TODO: 16/2/22 错误处理
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
             }
         });
     }

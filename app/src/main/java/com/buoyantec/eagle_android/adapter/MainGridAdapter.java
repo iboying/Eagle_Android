@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.BadgeView;
@@ -47,18 +48,17 @@ public class MainGridAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, parent, false);
         }
 
+        LinearLayout container = BaseViewHolder.get(convertView, R.id.grid_image_container);
         CircleProgressBar cp = BaseViewHolder.get(convertView, R.id.progressBar);
         TextView tv = BaseViewHolder.get(convertView, R.id.grid_view_text);
         ImageView iv = BaseViewHolder.get(convertView, R.id.grid_view_image);
 
         iv.setBackgroundResource(images[position]);
         tv.setText(texts[position]);
+
         // 添加id
         if (position == 1) {
             iv.setId(R.id.grid_warn_message_image);
-            // 进度条
-            cp.setVisibility(View.VISIBLE);
-            cp.setId(R.id.grid_warn_message_progress);
         }
 
         return convertView;

@@ -10,24 +10,35 @@ public class PointAlarm {
     @SerializedName("id")
     @Expose
     private int id;
+
     @SerializedName("device_name")
     @Expose
     private String deviceName;
+
     @SerializedName("pid")
     @Expose
     private Object pid;
+
     @SerializedName("state")
     @Expose
     private int state;
+
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
+
     @SerializedName("is_checked")
     @Expose
     private boolean isChecked;
+
     @SerializedName("point_id")
     @Expose
     private int pointId;
+
     @SerializedName("comment")
     @Expose
     private String comment;
@@ -120,6 +131,24 @@ public class PointAlarm {
      */
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    /**
+     *
+     * @return
+     * The createdAt
+     */
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     *
+     * @param createdAt
+     * The created_at
+     */
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     /**

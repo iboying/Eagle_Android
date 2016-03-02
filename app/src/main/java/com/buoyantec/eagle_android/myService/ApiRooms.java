@@ -2,14 +2,16 @@ package com.buoyantec.eagle_android.myService;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.buoyantec.eagle_android.MainActivity;
 import com.buoyantec.eagle_android.R;
 import com.buoyantec.eagle_android.model.Room;
 import com.buoyantec.eagle_android.model.Rooms;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,11 +26,13 @@ import retrofit2.Response;
  */
 public class ApiRooms {
     private Context context;
+    private Activity loginActivity;
     private SharedPreferences sp;
 
     //初始化
-    public ApiRooms(Context context){
+    public ApiRooms(Context context, Activity loginActivity){
         this.context = context;
+        this.loginActivity = loginActivity;
         sp = context.getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
@@ -57,40 +61,38 @@ public class ApiRooms {
                         }
                     }
 
-                    Integer current_room_id = sp.getInt("current_room_id", 0);
                     SharedPreferences.Editor editor = sp.edit();
 
-                    if (current_room_id == 0) {
-                        if (result.equals("")) {
-                            editor.putString("rooms", null);
-                        } else {
-                            String[] rooms = result.split("#");
-                            Integer room_id = Integer.parseInt(rooms[0]);
-                            String room = rooms[1];
-
-                            // 保存当前机房信息
-                            editor.putString("rooms", result);
-                            editor.putString("current_room", room);
-                            editor.putInt("current_room_id", room_id);
-                        }
+                    if (result.equals("")) {
+                        // 登陆页,显示错误信息
+                        Intent i = new Intent(loginActivity, loginActivity.getClass());
+                        i.putExtra("error", "没有可管理的机房,请联系管理员");
+                        loginActivity.startActivity(i);
+                    } else {
+                        String[] rooms = result.split("#");
+                        Integer room_id = Integer.parseInt(rooms[0]);
+                        String room = rooms[1];
+                        // 保存当前机房信息
+                        editor.putString("rooms", result);
+                        editor.putString("current_room", room);
+                        editor.putInt("current_room_id", room_id);
+                        editor.apply();
+                        // 进入主页
+                        Intent i = new Intent(loginActivity, MainActivity.class);
+                        loginActivity.startActivity(i);
+                        loginActivity.finish();
                     }
-                    editor.apply();
 
                     Log.i("机房列表", context.getString(R.string.getSuccess) + code);
                 } else {
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
                     Log.i("机房列表", context.getString(R.string.getFailed) + code);
-                    try {
-                        String error = response.errorBody().string();
-                        System.out.println(error);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                // TODO: 16/2/25 错误处理
+                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i("机房列表", context.getString(R.string.linkFailed));
             }
         });

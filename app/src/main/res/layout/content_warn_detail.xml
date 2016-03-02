@@ -18,14 +18,21 @@
         app:mlpb_progress_color="@color/loginFocusedBorder"
         android:layout_width="@dimen/progress_size"
         android:layout_height="@dimen/progress_size"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_gravity="center_horizontal"/>
 
-    <ListView
+    <!--<ListView-->
+        <!--android:id="@+id/warn_detail_listView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:dividerHeight="1dp"-->
+        <!--android:divider="@color/windowBackgroundColor"/>-->
+
+    <com.paging.listview.PagingListView
         android:id="@+id/warn_detail_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:dividerHeight="1dp"
-        android:background="@color/white"/>
+        android:divider="@color/windowBackgroundColor"/>
 
 </LinearLayout>

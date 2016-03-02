@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/grid_image_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,18 +19,6 @@
             android:layout_marginBottom="1dp"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"/>
-
-        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
-            android:id="@+id/progressBar"
-            app:mlpb_progress_stoke_width="2dp"
-            app:mlpb_progress_color="@color/white"
-            android:background="@drawable/progress_bg"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:visibility="gone"
-            android:layout_gravity="right"/>
     </FrameLayout>
 
     <TextView

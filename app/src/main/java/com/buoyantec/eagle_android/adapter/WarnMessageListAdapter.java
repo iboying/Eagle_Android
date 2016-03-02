@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.BadgeView;
 import com.buoyantec.eagle_android.R;
 
+import java.util.List;
+
 /**
  * Created by kang on 16/1/7.
  * 告警信息页面适配器, 不含有第二级跳转, 只显示状态信息
@@ -19,13 +21,13 @@ import com.buoyantec.eagle_android.R;
 public class WarnMessageListAdapter extends BaseAdapter{
     private Context mContext;
     private Integer[] images;
-    private String[] texts;
-    private Integer[] count;
+    private List<String> texts;
+    private List<Integer> count;
     private ListView listView;
     private LayoutInflater mInflater;
 
-    public WarnMessageListAdapter(ListView listView, Context c, Integer[] images, String[] texts,
-                                  Integer[] count) {
+    public WarnMessageListAdapter(ListView listView, Context c, Integer[] images, List<String> texts,
+                                  List<Integer> count) {
         this.listView = listView;
         this.mContext = c;
         this.images = images;
@@ -36,7 +38,7 @@ public class WarnMessageListAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return count.length;
+        return count.size();
     }
 
     @Override
@@ -70,11 +72,11 @@ public class WarnMessageListAdapter extends BaseAdapter{
             holder.icon.setBackgroundResource(R.drawable.system_status_air);
         }
 
-        holder.text.setText(texts[position]);
+        holder.text.setText(texts.get(position));
 
-        if (count[position] != 0) {
+        if (count.get(position) != 0) {
             holder.status.setText("");
-            holder.badge.setText(count[position].toString());
+            holder.badge.setText(count.get(position).toString());
             holder.badge.show();
         } else {
             holder.status.setText("正常");
