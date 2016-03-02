@@ -37,8 +37,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="14sp"
-            android:text="水冷机器爆炸"/>
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/warn_detail_time"
@@ -51,8 +50,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/gray"
-            android:textSize="12sp"
-            android:text="2016-02-18 23:00"/>
+            android:textSize="12sp"/>
     </LinearLayout>
 
     <Button

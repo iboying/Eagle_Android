@@ -8,17 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
 import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.paging.listview.PagingListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,16 @@ public class WarnDetail extends AppCompatActivity {
     private Integer device_id;
     private Context context;
     private Integer page = 1;
+    // 组件
     private CircleProgressBar circleProgressBar;
+    private ListView listView;
+    private View footer;
+    private Button addMore;
+    // 列表数据
+    private List<String> names = new ArrayList<>();
+    private List<String> times = new ArrayList<>();
+    // 第一次载入数据
+    private boolean firstGetData = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,11 @@ public class WarnDetail extends AppCompatActivity {
         // 进度条
         circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
+        // 列表
+        listView = (ListView) findViewById(R.id.warn_detail_listView);
+        footer = getLayoutInflater().inflate(R.layout.list_view_footer, null);
+        listView.addFooterView(footer);
+        addMore = (Button) findViewById(R.id.list_more);
     }
 
     private void initToolbar() {
@@ -71,55 +84,63 @@ public class WarnDetail extends AppCompatActivity {
     private void initListView(Integer page) {
         ApiRequest apiRequest = new ApiRequest(this);
         // 告警是否已经解除(0:全部，1:已经确认, 2:未结束。默认为2)
-        Call<Alarm> call = apiRequest.getService().getWarnMessages(device_id, 2, 1);
+        Call<Alarm> call = apiRequest.getService().getWarnMessages(device_id, 2, page);
         // 发送请求
         call.enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
                 // 初始化变量
                 Alarm alarm = response.body();
-                Integer total_pages = alarm.getTotalPages();
+                final Integer total_pages = alarm.getTotalPages();
                 final Integer current_page = alarm.getCurrentPage();
                 int code = response.code();
 
                 if (code == 200) {
-                    ArrayList<String> names = new ArrayList<>();
-                    ArrayList<String> times = new ArrayList<>();
                     // 获取数据
                     List<PointAlarm> pointAlarms = alarm.getPointAlarms();
                     for (PointAlarm pointAlarm : pointAlarms) {
                         names.add(pointAlarm.getComment());
                         times.add(pointAlarm.getUpdatedAt());
                     }
-                    // 隐藏进度条
+
                     circleProgressBar.setVisibility(View.GONE);
 
-                    // 填装数据
-                    PagingListView listView = (PagingListView) findViewById(R.id.warn_detail_listView);
-//                    View footer = getLayoutInflater().inflate(R.layout.list_view_footer, null);
-//                    listView.addFooterView(footer);
-                    listView.setAdapter(new WarnDetailListAdapter(listView, context, names, times));
-                    listView.setHasMoreItems(true);
-                    listView.setPagingableListener(new PagingListView.Pagingable() {
-                        @Override
-                        public void onLoadMoreItems() {
+                    // ListView填装数据
+                    BaseAdapter adapter = new WarnDetailListAdapter(context, names, times);
+                    adapter.notifyDataSetChanged();
+                    listView.setAdapter(adapter);
 
-                        }
-                    });
+                    // 判断是否有更多数据
+                    if (current_page < total_pages) {
+                        addMore.setClickable(true);
+                        addMore.setText("加载更多");
+                        addMore.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                addMore.setText("正在加载...");
+                                addMore.setClickable(false);
+                                initListView(current_page + 1);
+                            }
+                        });
+                    } else {
+                        addMore.setVisibility(View.GONE);
+                    }
 
                     Log.i("设备告警->详情", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
-                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    circleProgressBar.setVisibility(View.GONE);
+                    addMore.setClickable(true);
+                    addMore.setText("点击重新加载");
                     Log.i("设备告警->详情", context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                addMore.setClickable(true);
+                addMore.setText("点击重新加载");
                 Log.i("设备告警->详情", context.getString(R.string.linkFailed));
             }
         });

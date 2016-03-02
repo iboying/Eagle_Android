@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@android:color/transparent"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:gravity="center">
 
-    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
-        android:id="@+id/progressBar"
-        app:mlpb_progress_stoke_width="@dimen/stoke_width"
-        app:mlpb_progress_color="@color/loginFocusedBorder"
-        android:layout_width="@dimen/progress_size"
-        android:layout_height="@dimen/progress_size"
-        android:visibility="visible"
-        android:layout_gravity="center_horizontal"/>
+    <Button
+        android:id="@+id/list_more"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/windowBackgroundColor"
+        android:text="加载更多"/>
+
 </LinearLayout>

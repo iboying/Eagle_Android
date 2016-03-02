@@ -37,7 +37,6 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
     // 圆形进度条
     compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
-    compile 'com.github.nicolasjafelle:paginglistview:1.2'
 // 网络通信
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'

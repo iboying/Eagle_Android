@@ -285,25 +285,25 @@ public class MainActivity extends AppCompatActivity
                     i.putExtras(bundle);
                     startActivity(i);
                 } else if (position == 2) {
-//                    Intent i = new Intent(MainActivity.this, WorkPlan.class);
-//                    i.putExtra("title", texts[position]);
-//                    startActivity(i);
+                    Intent i = new Intent(MainActivity.this, WorkPlan.class);
+                    i.putExtra("title", texts[position]);
+                    startActivity(i);
                     Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
                 } else if (position == 3) {
-//                    Intent i = new Intent(MainActivity.this, PowerManage.class);
-//                    i.putExtra("title", texts[position]);
-//                    startActivity(i);
+                    Intent i = new Intent(MainActivity.this, PowerManage.class);
+                    i.putExtra("title", texts[position]);
+                    startActivity(i);
                     Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
 
                 } else if (position == 4) {
-//                    Intent i = new Intent(MainActivity.this, ItManage.class);
-//                    i.putExtra("title", texts[position]);
-//                    startActivity(i);
+                    Intent i = new Intent(MainActivity.this, ItManage.class);
+                    i.putExtra("title", texts[position]);
+                    startActivity(i);
                     Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
                 } else if (position == 5) {
-//                    Intent i = new Intent(MainActivity.this, Other.class);
-//                    i.putExtra("title", texts[position]);
-//                    startActivity(i);
+                    Intent i = new Intent(MainActivity.this, Other.class);
+                    i.putExtra("title", texts[position]);
+                    startActivity(i);
                     Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
                 }
             }
