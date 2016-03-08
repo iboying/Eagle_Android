@@ -16,7 +16,7 @@
         android:paddingTop="20dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1.2">
 
         <ImageView
             android:id="@+id/list_item_device_status_image"

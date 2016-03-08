@@ -43,6 +43,14 @@ public class PointAlarm {
     @Expose
     private String comment;
 
+    @SerializedName("type")
+    @Expose
+    private String type;
+
+    @SerializedName("alarm_value")
+    @Expose
+    private String alarmValue;
+
     /**
      *
      * @return
@@ -50,15 +58,6 @@ public class PointAlarm {
      */
     public int getId() {
         return id;
-    }
-
-    /**
-     *
-     * @param id
-     * The id
-     */
-    public void setId(int id) {
-        this.id = id;
     }
 
     /**
@@ -72,29 +71,11 @@ public class PointAlarm {
 
     /**
      *
-     * @param deviceName
-     * The device_name
-     */
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
-
-    /**
-     *
      * @return
      * The pid
      */
     public Object getPid() {
         return pid;
-    }
-
-    /**
-     *
-     * @param pid
-     * The pid
-     */
-    public void setPid(Object pid) {
-        this.pid = pid;
     }
 
     /**
@@ -108,29 +89,11 @@ public class PointAlarm {
 
     /**
      *
-     * @param state
-     * The state
-     */
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    /**
-     *
      * @return
      * The createdAt
      */
     public String getCreatedAt() {
         return createdAt;
-    }
-
-    /**
-     *
-     * @param createdAt
-     * The created_at
-     */
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
     /**
@@ -144,29 +107,11 @@ public class PointAlarm {
 
     /**
      *
-     * @param createdAt
-     * The created_at
-     */
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    /**
-     *
      * @return
      * The isChecked
      */
     public boolean isIsChecked() {
         return isChecked;
-    }
-
-    /**
-     *
-     * @param isChecked
-     * The is_checked
-     */
-    public void setIsChecked(boolean isChecked) {
-        this.isChecked = isChecked;
     }
 
     /**
@@ -180,15 +125,6 @@ public class PointAlarm {
 
     /**
      *
-     * @param pointId
-     * The point_id
-     */
-    public void setPointId(int pointId) {
-        this.pointId = pointId;
-    }
-
-    /**
-     *
      * @return
      * The comment
      */
@@ -198,11 +134,20 @@ public class PointAlarm {
 
     /**
      *
-     * @param comment
-     * The comment
+     * @return
+     * The type
      */
-    public void setComment(String comment) {
-        this.comment = comment;
+    public String getType() {
+        return type;
+    }
+
+    /**
+     *
+     * @return
+     * The alarmValue
+     */
+    public String getAlarmValue() {
+        return alarmValue;
     }
 
 }

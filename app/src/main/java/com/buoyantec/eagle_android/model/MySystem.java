@@ -49,29 +49,11 @@ public class MySystem {
 
     /**
      *
-     * @param id
-     * The id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     *
      * @return
      * The name
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     *
-     * @param name
-     * The name
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -82,14 +64,4 @@ public class MySystem {
     public List<SubSystem> getSubSystem() {
         return subSystem;
     }
-
-    /**
-     *
-     * @param subSystem
-     * The sub_system
-     */
-    public void setSubSystem(List<SubSystem> subSystem) {
-        this.subSystem = subSystem;
-    }
-
 }

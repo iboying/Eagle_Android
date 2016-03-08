@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.buoyantec.eagle_android" >
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.buoyantec.eagle_android.ui.activity" >
 
     <!-- if you want to load images from the internet -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +16,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name="com.buoyantec.eagle_android.App"
+        tools:replace="android:icon">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -97,7 +101,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".UpsSystem"
@@ -107,7 +111,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".Cabinet"
@@ -117,7 +121,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".PrecisionAir"
@@ -127,7 +131,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".Meter"
@@ -137,7 +141,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".Battery"
@@ -147,7 +151,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".BatteryDetail"
@@ -156,7 +160,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.Battery" />
+                android:value=".Battery" />
         </activity>
         <activity
             android:name=".WarnDetail"
@@ -165,7 +169,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.WarnDevices" />
+                android:value=".WarnDevices" />
         </activity>
         <activity
             android:name=".PrecisionAirDetail"
@@ -174,7 +178,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.PrecisionAir" />
+                android:value=".PrecisionAir" />
         </activity>
         <activity
             android:name=".MeterDetail"
@@ -193,16 +197,17 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".Temperature"
             android:label="@string/title_activity_temperature"
             android:launchMode="singleTop"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".VideoSystem"
@@ -212,7 +217,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
         <activity
             android:name=".FireFightingDetail"
@@ -222,7 +227,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.FireFighting" />
+                android:value=".FireFighting" />
         </activity>
         <activity
             android:name=".Pue"
@@ -258,7 +263,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.UpsSystem" />
+                android:value=".UpsSystem" />
         </activity>
         <activity
             android:name=".PowerDetail"
@@ -267,7 +272,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.PowerDistribution" />
+                android:value=".PowerDistribution" />
         </activity>
         <activity
             android:name=".WarnDevices"
@@ -276,7 +281,7 @@
             android:parentActivityName=".WarnSystems" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.WarnSystems" />
+                android:value=".WarnSystems" />
         </activity>
         <activity
             android:name=".CabinetDetail"
@@ -284,7 +289,7 @@
             android:parentActivityName=".Cabinet" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.Cabinet" />
+                android:value=".Cabinet" />
         </activity>
         <activity
             android:name=".TemperatureDetail"
@@ -292,7 +297,7 @@
             android:parentActivityName=".Temperature" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.Temperature" />
+                android:value=".Temperature" />
         </activity>
         <activity
             android:name=".WaterDetail"
@@ -300,7 +305,7 @@
             android:parentActivityName=".Water" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.Water" />
+                android:value=".Water" />
         </activity>
         <activity
             android:name=".FireFighting"
@@ -309,7 +314,7 @@
             android:parentActivityName=".SystemStatus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.SystemStatus" />
+                android:value=".SystemStatus" />
         </activity>
     </application>
 

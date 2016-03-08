@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.R;
+import com.buoyantec.eagle_android.ui.activity.R;
 
 import java.util.List;
 
@@ -17,18 +17,26 @@ import java.util.List;
  */
 public class WarnDetailListAdapter extends BaseAdapter {
     private Context mContext;
-    private List<String> names;
+    private List<String> comments;
+    private List<String> types;
     private List<String> updated_at;
+    private List<String> alarms;
 
-    public WarnDetailListAdapter(Context c, List<String> names, List<String> updated_at) {
+    public WarnDetailListAdapter(Context c,
+                                 List<String> comments,
+                                 List<String> types,
+                                 List<String> updated_at,
+                                 List<String> alarms) {
         this.mContext = c;
-        this.names = names;
+        this.comments = comments;
+        this.types = types;
         this.updated_at = updated_at;
+        this.alarms = alarms;
     }
 
     @Override
     public int getCount() {
-        return names.size();
+        return comments.size();
     }
 
     @Override
@@ -49,9 +57,17 @@ public class WarnDetailListAdapter extends BaseAdapter {
         }
         TextView text_textView = BaseViewHolder.get(convertView, R.id.warn_detail_name);
         TextView data_textView = BaseViewHolder.get(convertView, R.id.warn_detail_time);
+        TextView type = BaseViewHolder.get(convertView, R.id.warn_detail_type);
+        TextView alarm = BaseViewHolder.get(convertView, R.id.warn_detail_alarm);
 
-        text_textView.setText(names.get(position));
+        text_textView.setText("信息:  "+comments.get(position));
         data_textView.setText(updated_at.get(position));
+        type.setText("类型:  "+types.get(position));
+        if (alarms.get(position) == null || alarms.get(position).equals("")){
+            alarm.setText("备注:  无");
+        } else {
+            alarm.setText("备注:  "+alarms.get(position));
+        }
 
         return convertView;
     }

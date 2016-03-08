@@ -25,29 +25,11 @@ public class Result {
 
     /**
      *
-     * @param name
-     * The name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     *
      * @return
      * The size
      */
     public int getSize() {
         return size;
-    }
-
-    /**
-     *
-     * @param size
-     * The size
-     */
-    public void setSize(int size) {
-        this.size = size;
     }
 
 }

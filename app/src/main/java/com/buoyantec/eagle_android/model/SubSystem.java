@@ -23,15 +23,6 @@ public class SubSystem {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     * The id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
 
     /**
      *
@@ -40,15 +31,6 @@ public class SubSystem {
      */
     public String getSubSystemName() {
         return subSystemName;
-    }
-
-    /**
-     *
-     * @param subSystemName
-     * The sub_system_name
-     */
-    public void setSubSystemName(String subSystemName) {
-        this.subSystemName = subSystemName;
     }
 
 }

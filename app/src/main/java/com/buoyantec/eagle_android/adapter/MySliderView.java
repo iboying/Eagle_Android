@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.R;
+import com.buoyantec.eagle_android.ui.activity.R;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 
 /**

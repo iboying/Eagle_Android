@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.R;
+import com.buoyantec.eagle_android.ui.activity.R;
 
 import java.util.List;
 
@@ -69,6 +69,8 @@ public class StandardListAdapter extends BaseAdapter {
         } else {
             iv.setBackgroundResource(images.get(position));
         }
+
+        System.out.println(names.get(position)+"=====");
         tv.setText(names.get(position));
 
         return convertView;

@@ -7,8 +7,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.buoyantec.eagle_android.MainActivity;
-import com.buoyantec.eagle_android.R;
+import com.buoyantec.eagle_android.ui.activity.MainActivity;
+import com.buoyantec.eagle_android.ui.activity.R;
 import com.buoyantec.eagle_android.model.Room;
 import com.buoyantec.eagle_android.model.Rooms;
 

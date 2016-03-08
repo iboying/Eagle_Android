@@ -9,7 +9,7 @@
     android:background="@color/windowBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_ups_system"
-    tools:context="com.buoyantec.eagle_android.UpsSystem">
+    tools:context="com.buoyantec.eagle_android.ui.activity.UpsSystem">
 
     <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
         android:id="@+id/progressBar"

@@ -37,13 +37,4 @@ public class MySystems {
         return systems;
     }
 
-    /**
-     *
-     * @param systems
-     * The systems
-     */
-    public void setMySystems(List<MySystem> systems) {
-        this.systems = systems;
-    }
-
 }

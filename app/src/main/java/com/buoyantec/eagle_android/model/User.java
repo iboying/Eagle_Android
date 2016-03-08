@@ -1,13 +1,9 @@
 package com.buoyantec.eagle_android.model;
 
-import com.buoyantec.eagle_android.API.MyService;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-
-import retrofit2.GsonConverterFactory;
-import retrofit2.Retrofit;
 
 /**
  * Created by kang on 16/1/25.
@@ -50,29 +46,11 @@ public class User implements Serializable{
 
     /**
      *
-     * @param id
-     * The id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     *
      * @return
      * The email
      */
     public String getEmail() {
         return email;
-    }
-
-    /**
-     *
-     * @param email
-     * The email
-     */
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     /**
@@ -86,29 +64,11 @@ public class User implements Serializable{
 
     /**
      *
-     * @param createdAt
-     * The created_at
-     */
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    /**
-     *
      * @return
      * The updatedAt
      */
     public String getUpdatedAt() {
         return updatedAt;
-    }
-
-    /**
-     *
-     * @param updatedAt
-     * The updated_at
-     */
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     /**
@@ -122,15 +82,6 @@ public class User implements Serializable{
 
     /**
      *
-     * @param name
-     * The name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     *
      * @return
      * The phone
      */
@@ -140,28 +91,10 @@ public class User implements Serializable{
 
     /**
      *
-     * @param phone
-     * The phone
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
-     *
      * @return
      * The authenticationToken
      */
     public String getAuthenticationToken() {
         return authenticationToken;
-    }
-
-    /**
-     *
-     * @param authenticationToken
-     * The authentication_token
-     */
-    public void setAuthenticationToken(String authenticationToken) {
-        this.authenticationToken = authenticationToken;
     }
 }

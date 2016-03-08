@@ -22,13 +22,4 @@ public class Results {
         return results;
     }
 
-    /**
-     *
-     * @param results
-     * The results
-     */
-    public void setResults(List<Result> results) {
-        this.results = results;
-    }
-
 }

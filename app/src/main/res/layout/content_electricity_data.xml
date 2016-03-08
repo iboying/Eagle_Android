@@ -9,7 +9,7 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_power_data"
-    tools:context="com.buoyantec.eagle_android.ElectricityData">
+    tools:context="com.buoyantec.eagle_android.ui.activity.ElectricityData">
 
     <LinearLayout
         android:layout_width="match_parent"

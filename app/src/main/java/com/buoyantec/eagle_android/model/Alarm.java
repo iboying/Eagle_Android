@@ -30,29 +30,11 @@ public class Alarm {
 
     /**
      *
-     * @param totalPages
-     * The total_pages
-     */
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    /**
-     *
      * @return
      * The currentPage
      */
     public int getCurrentPage() {
         return currentPage;
-    }
-
-    /**
-     *
-     * @param currentPage
-     * The current_page
-     */
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
     }
 
     /**
@@ -63,14 +45,4 @@ public class Alarm {
     public List<PointAlarm> getPointAlarms() {
         return pointAlarms;
     }
-
-    /**
-     *
-     * @param pointAlarms
-     * The point_alarms
-     */
-    public void setPointAlarms(List<PointAlarm> pointAlarms) {
-        this.pointAlarms = pointAlarms;
-    }
-
 }

@@ -3,7 +3,7 @@ package com.buoyantec.eagle_android.myService;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.buoyantec.eagle_android.API.MyService;
+import com.buoyantec.eagle_android.engine.Engine;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import retrofit2.Retrofit;
  * Created by kang on 16/2/25.
  * 统一请求类
  * 添加 token,phone 到header
- * 返回: MyService 实例
+ * 返回: Engine 实例
  */
 public class ApiRequest {
     private Context context;
@@ -43,7 +43,7 @@ public class ApiRequest {
      * header: token, phone
      * @return myService
      */
-    public MyService getService() {
+    public Engine getService() {
         // 获取token和phone
         SharedPreferences sp = context.getSharedPreferences("foobar", Context.MODE_PRIVATE);
         token = sp.getString("token", null);
@@ -68,20 +68,20 @@ public class ApiRequest {
                 .client(client)
                 .build();
 
-        return retrofit.create(MyService.class);
+        return retrofit.create(Engine.class);
     }
 
     /**
      * 登录时的服务
      * header: null
      */
-    public MyService getLoginService() {
+    public Engine getLoginService() {
         // 创建登录Retrofit实例
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://139.196.190.201/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        return retrofit.create(MyService.class);
+        return retrofit.create(Engine.class);
     }
 }

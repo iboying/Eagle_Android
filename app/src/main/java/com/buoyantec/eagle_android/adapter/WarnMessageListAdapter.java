@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.BadgeView;
-import com.buoyantec.eagle_android.R;
+import com.buoyantec.eagle_android.ui.customView.BadgeView;
+import com.buoyantec.eagle_android.ui.activity.R;
 
 import java.util.List;
 

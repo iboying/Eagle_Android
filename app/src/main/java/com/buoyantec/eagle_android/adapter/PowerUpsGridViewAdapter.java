@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.R;
+import com.buoyantec.eagle_android.ui.activity.R;
 
 /**
  * Created by kang on 16/1/20.

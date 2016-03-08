@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.R;
+import com.buoyantec.eagle_android.ui.activity.R;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.List;
@@ -22,6 +22,7 @@ public class PrecisionAirListAdapter extends BaseAdapter {
     private Context mContext;
     private Integer image;
     private List<String> texts;
+    private List<List<String>> labels;
     private List<List<String>> datas;
     private List<Integer> status;
     private ListView listView;
@@ -30,12 +31,14 @@ public class PrecisionAirListAdapter extends BaseAdapter {
                                    Context c,
                                    Integer image,
                                    List<String> names,
+                                   List<List<String>> labels,
                                    List<List<String>> datas,
                                    List<Integer> status) {
         this.listView = listView;
         this.mContext = c;
         this.image = image;
         this.texts = names;
+        this.labels = labels;
         this.datas = datas;
         this.status = status;
     }
@@ -70,10 +73,14 @@ public class PrecisionAirListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // 没有状态类型的列表
         if (status.get(position) == 2){
-                convertView = LayoutInflater.from(mContext)
-                        .inflate(R.layout.list_item_precision_air, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item_precision_air, parent, false);
+
             ImageView iv = BaseViewHolder.get(convertView, R.id.list_item_precision_air_image);
             TextView tv = BaseViewHolder.get(convertView, R.id.list_item_precision_air_text);
+
+            TextView degree_label = BaseViewHolder.get(convertView, R.id.list_item_degree_label);
+            TextView humidity_label = BaseViewHolder.get(convertView, R.id.list_item_humidity_label);
+
             TextView degree = BaseViewHolder.get(convertView, R.id.list_item_precision_air_degree);
             TextView humidity = BaseViewHolder.get(convertView, R.id.list_item_precision_air_humidity);
 
@@ -81,7 +88,9 @@ public class PrecisionAirListAdapter extends BaseAdapter {
             tv.setText(texts.get(position));
 
             if (datas.size() > 0) {
+                degree_label.setText("{fa-square #FF987E} "+labels.get(position).get(0));
                 degree.setText(datas.get(position).get(0)+"℃");
+                humidity_label.setText("{fa-square #00BDFF} "+labels.get(position).get(1));
                 humidity.setText(datas.get(position).get(1)+"%");
             } else {
                 degree.setText("0"+"℃");
