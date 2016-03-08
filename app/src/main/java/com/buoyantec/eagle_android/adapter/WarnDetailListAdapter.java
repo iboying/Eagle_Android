@@ -21,17 +21,20 @@ public class WarnDetailListAdapter extends BaseAdapter {
     private List<String> types;
     private List<String> updated_at;
     private List<String> alarms;
+    private List<String> status;
 
     public WarnDetailListAdapter(Context c,
                                  List<String> comments,
                                  List<String> types,
                                  List<String> updated_at,
-                                 List<String> alarms) {
+                                 List<String> alarms,
+                                 List<String> status) {
         this.mContext = c;
         this.comments = comments;
         this.types = types;
         this.updated_at = updated_at;
         this.alarms = alarms;
+        this.status = status;
     }
 
     @Override
@@ -56,11 +59,13 @@ public class WarnDetailListAdapter extends BaseAdapter {
                     .inflate(R.layout.list_item_warn_detail, parent, false);
         }
         TextView text_textView = BaseViewHolder.get(convertView, R.id.warn_detail_name);
+        TextView status_textView = BaseViewHolder.get(convertView, R.id.warn_detail_status);
         TextView data_textView = BaseViewHolder.get(convertView, R.id.warn_detail_time);
         TextView type = BaseViewHolder.get(convertView, R.id.warn_detail_type);
         TextView alarm = BaseViewHolder.get(convertView, R.id.warn_detail_alarm);
 
         text_textView.setText("信息:  "+comments.get(position));
+        status_textView.setText("状态:  "+status.get(position));
         data_textView.setText(updated_at.get(position));
         type.setText("类型:  "+types.get(position));
         if (alarms.get(position) == null || alarms.get(position).equals("")){

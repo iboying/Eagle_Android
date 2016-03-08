@@ -47,6 +47,10 @@ public class PointAlarm {
     @Expose
     private String type;
 
+    @SerializedName("meaning")
+    @Expose
+    private String meaning;
+
     @SerializedName("alarm_value")
     @Expose
     private String alarmValue;
@@ -139,6 +143,15 @@ public class PointAlarm {
      */
     public String getType() {
         return type;
+    }
+
+    /**
+     *
+     * @return
+     * The type
+     */
+    public String getMeaning() {
+        return meaning;
     }
 
     /**

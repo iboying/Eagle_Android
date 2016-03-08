@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity
             room_ids.add(Integer.parseInt(rooms[i]));
             room_names.add(rooms[i + 1]);
             if (rooms[i+1].equals("青海银监局")) {
-                room_images.add(R.drawable.qh);
+                room_images.add(R.drawable.qinghai);
             } else {
                 room_images.add(R.drawable.image_room);
             }
