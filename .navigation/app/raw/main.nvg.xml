@@ -6,7 +6,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.PrecisionAirDetail"/>
+        className = "com.buoyantec.iGrid.ui.activity.PrecisionAirDetail"/>
       <point      
         x = "3504"      
         y = "196"/>
@@ -14,7 +14,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.UpsDetail"/>
+        className = "com.buoyantec.iGrid.ui.activity.UpsDetail"/>
       <point      
         x = "3768"      
         y = "1652"/>
@@ -22,7 +22,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.MeterDetail"/>
+        className = "com.buoyantec.iGrid.ui.activity.MeterDetail"/>
       <point      
         x = "108"      
         y = "1500"/>
@@ -30,7 +30,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.PrecisionAir"/>
+        className = "com.buoyantec.iGrid.ui.activity.PrecisionAir"/>
       <point      
         x = "2152"      
         y = "212"/>
@@ -38,7 +38,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.ElectricityData"/>
+        className = "com.buoyantec.iGrid.ui.activity.ElectricityData"/>
       <point      
         x = "2848"      
         y = "2504"/>
@@ -46,7 +46,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.FireFightingDetail"/>
+        className = "com.buoyantec.iGrid.ui.activity.FireFightingDetail"/>
       <point      
         x = "76"      
         y = "12"/>
@@ -54,7 +54,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.MainActivity"/>
+        className = "com.buoyantec.iGrid.ui.activity.MainActivity"/>
       <point      
         x = "1616"      
         y = "2956"/>
@@ -62,7 +62,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.PowerManage"/>
+        className = "com.buoyantec.iGrid.ui.activity.PowerManage"/>
       <point      
         x = "4448"      
         y = "168"/>
@@ -70,7 +70,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.PowerAnalyse"/>
+        className = "com.buoyantec.iGrid.ui.activity.PowerAnalyse"/>
       <point      
         x = "900"      
         y = "500"/>
@@ -78,7 +78,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.Water"/>
+        className = "com.buoyantec.iGrid.ui.activity.Water"/>
       <point      
         x = "950"      
         y = "550"/>
@@ -86,7 +86,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.WorkPlan"/>
+        className = "com.buoyantec.iGrid.ui.activity.WorkPlan"/>
       <point      
         x = "1000"      
         y = "600"/>
@@ -94,7 +94,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.BatteryDetail"/>
+        className = "com.buoyantec.iGrid.ui.activity.BatteryDetail"/>
       <point      
         x = "1050"      
         y = "650"/>
@@ -102,7 +102,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.WarnDetail"/>
+        className = "com.buoyantec.iGrid.ui.activity.WarnDetail"/>
       <point      
         x = "1100"      
         y = "700"/>
@@ -110,7 +110,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.PowerDetail"/>
+        className = "com.buoyantec.iGrid.ui.activity.PowerDetail"/>
       <point      
         x = "1150"      
         y = "750"/>
@@ -118,7 +118,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.Pue"/>
+        className = "com.buoyantec.iGrid.ui.activity.Pue"/>
       <point      
         x = "1200"      
         y = "800"/>
@@ -126,7 +126,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.VideoSystem"/>
+        className = "com.buoyantec.iGrid.ui.activity.VideoSystem"/>
       <point      
         x = "1250"      
         y = "850"/>
@@ -134,7 +134,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.LoginActivity"/>
+        className = "com.buoyantec.iGrid.ui.activity.LoginActivity"/>
       <point      
         x = "1300"      
         y = "900"/>
@@ -142,7 +142,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.UpsSystem"/>
+        className = "com.buoyantec.iGrid.ui.activity.UpsSystem"/>
       <point      
         x = "1350"      
         y = "950"/>
@@ -150,7 +150,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.Cabinet"/>
+        className = "com.buoyantec.iGrid.ui.activity.Cabinet"/>
       <point      
         x = "1400"      
         y = "1000"/>
@@ -158,7 +158,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.Meter"/>
+        className = "com.buoyantec.iGrid.ui.activity.Meter"/>
       <point      
         x = "1450"      
         y = "1050"/>
@@ -166,7 +166,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.SystemStatus"/>
+        className = "com.buoyantec.iGrid.ui.activity.SystemStatus"/>
       <point      
         x = "1500"      
         y = "1100"/>
@@ -174,7 +174,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.WarnSystems"/>
+        className = "com.buoyantec.iGrid.ui.activity.WarnSystems"/>
       <point      
         x = "1550"      
         y = "1150"/>
@@ -182,7 +182,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.Other"/>
+        className = "com.buoyantec.iGrid.ui.activity.Other"/>
       <point      
         x = "1600"      
         y = "1200"/>
@@ -190,7 +190,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.Temperature"/>
+        className = "com.buoyantec.iGrid.ui.activity.Temperature"/>
       <point      
         x = "1650"      
         y = "1250"/>
@@ -198,7 +198,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.ItManage"/>
+        className = "com.buoyantec.iGrid.ui.activity.ItManage"/>
       <point      
         x = "1700"      
         y = "1300"/>
@@ -206,7 +206,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.PowerDistribution"/>
+        className = "com.buoyantec.iGrid.ui.activity.PowerDistribution"/>
       <point      
         x = "1750"      
         y = "1350"/>
@@ -214,7 +214,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.buoyantec.eagle_android.ui.activity.Battery"/>
+        className = "com.buoyantec.iGrid.ui.activity.Battery"/>
       <point      
         x = "1800"      
         y = "1400"/>

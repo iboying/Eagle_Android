@@ -9,7 +9,7 @@
     android:background="@color/windowBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_temperature"
-    tools:context="com.buoyantec.eagle_android.ui.activity.Temperature">
+    tools:context="com.buoyantec.iGrid.ui.activity.Temperature">
 
     <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
         android:id="@+id/progressBar"
@@ -26,6 +26,5 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:dividerHeight="1dp"
-        android:divider="@color/white"
         android:background="@color/white"/>
 </LinearLayout>

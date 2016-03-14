@@ -9,7 +9,7 @@
     android:background="@color/windowBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_cabinet"
-    tools:context="com.buoyantec.eagle_android.ui.activity.Cabinet">
+    tools:context="com.buoyantec.iGrid.ui.activity.Cabinet">
 
     <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
         android:id="@+id/progressBar"

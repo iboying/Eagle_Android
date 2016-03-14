@@ -9,7 +9,7 @@
     android:background="@color/windowBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_warn_devices"
-    tools:context="com.buoyantec.eagle_android.ui.activity.WarnDevices">
+    tools:context="com.buoyantec.iGrid.ui.activity.WarnDevices">
 
     <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
         android:id="@+id/progressBar"

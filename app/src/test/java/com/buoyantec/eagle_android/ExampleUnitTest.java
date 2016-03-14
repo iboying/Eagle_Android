@@ -1,4 +1,4 @@
-package com.buoyantec.eagle_android;
+package com.buoyantec.iGrid;
 
 import org.junit.Test;
 

@@ -9,7 +9,7 @@
     android:background="@color/windowBackgroundColor"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_ups_detail"
-    tools:context="com.buoyantec.eagle_android.ui.activity.UpsDetail">
+    tools:context="com.buoyantec.iGrid.ui.activity.UpsDetail">
 
     <TextView
         android:layout_width="match_parent"
