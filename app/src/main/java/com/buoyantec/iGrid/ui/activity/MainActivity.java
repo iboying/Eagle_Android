@@ -7,35 +7,28 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.buoyantec.iGrid.adapter.ToolbarMenuAdapter;
 import com.buoyantec.iGrid.ui.customView.BadgeView;
 import com.buoyantec.iGrid.adapter.MainGridAdapter;
 import com.buoyantec.iGrid.adapter.MySliderView;
 import com.buoyantec.iGrid.model.Result;
 import com.buoyantec.iGrid.model.Results;
-import com.buoyantec.iGrid.myService.ApiRequest;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -49,12 +42,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     private SharedPreferences mPreferences;
     private String[] rooms;
     private HashMap<String, Integer> systemAlarmCount;
@@ -64,7 +55,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     // 组件
     private Toolbar toolbar;
     private GridView gridView;
-    // 机房弹出框
+    // 机房弹出菜单
     private PopupWindow window = null;
     private LayoutInflater inflater;
     private View view;
@@ -90,6 +81,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             setContentView(R.layout.activity_main);
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
+            circleProgressBar = getViewById(R.id.progressBar);
+
             context = this;
             // 初始化toolbar和侧边栏
             initToolBar();
@@ -102,30 +95,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    protected void setListener() {
-
-
-    }
+    protected void setListener() {}
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        // 退出按钮
-        Button signOutButton = getViewById(R.id.sign_out_button);
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i);
-            }
-        });
-        // 异步任务: 检测告警信息
-        getSubSystemAlarmCount();
+
     }
 
-    /**
-     * 为后退键绑定关闭侧边菜单功能
-     */
+    // 为后退键绑定关闭侧边菜单功能
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = getViewById(R.id.drawer_layout);
@@ -134,9 +111,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    /**
-     * 物理菜单键绑定功能
-     */
+    // 物理菜单键绑定功能
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_MENU) {
@@ -152,9 +127,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * 侧边菜单响应函数
-     */
+    // 侧边菜单响应函数
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -205,11 +178,29 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         NavigationView navigationView = getViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // 更新数据
+        // 显示姓名
         View headLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
         TextView name = (TextView) headLayout.findViewById(R.id.user_name);
         String mName = mPreferences.getString("name", null);
         name.setText(mName);
+
+        // 退出按钮
+        Button signOutButton = getViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 退出时删除用户信息
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putString("token", "");
+                editor.apply();
+                finish();
+                // 退回登录页
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+        // 异步任务: 检测告警信息
+        getSubSystemAlarmCount();
     }
 
     // 初始化轮播控件
@@ -308,51 +299,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
     }
 
-    // TODO: 16/3/4 显示机房切换菜单
-    // 显示机房菜单
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.toolbar_room) {
-//            if (window != null) {
-//                if (window.isShowing()) {
-//                    window.dismiss();
-//                    window = null;
-//                }
-//            } else {
-//                showWindow();
-//            }
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private void showWindow() {
-//        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        view = inflater.inflate(R.layout.toolbar_menu, null, false);
-//
-//        // 加载listView
-//        ListView listView = (ListView) view.findViewById(R.id.toolbar_room_list);
-//        listView.setAdapter(new ToolbarMenuAdapter(context, rooms));
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                Intent i = new Intent(MainActivity.this, MainActivity.class);
-//                startActivity(i);
-//            }
-//        });
-//
-//        if (window == null) {
-//            window = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        }
-//
-//        View room = getViewById(R.id.toolbar_room);
-//        window.showAtLocation(room, Gravity.NO_GRAVITY, 15, 160);
-//    }
-
     // 两次点击返回键退出程序
     private void exitByDoubleClick() {
         Timer tExit;
@@ -368,27 +314,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
 
         } else {
-            signOut();
             System.exit(0);
         }
     }
 
-    // 退出登录, 清楚数据
-    private void signOut() {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString("token", "");
-        editor.putString("current_room", null);
-        editor.putInt("current_room_id", 0);
-        editor.putString("rooms", null);
-        editor.apply();
-        finish();
-    }
-
-
-
     // 异步任务,获取机房总告警数
     public void getSubSystemAlarmCount() {
-        circleProgressBar = getViewById(R.id.progressBar);
         // 获取机房id
         Integer room_id = mPreferences.getInt("current_room_id", 1);
         // 请求服务
@@ -439,4 +370,49 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
     }
+
+    // TODO: 16/3/4 显示机房切换菜单
+    // 显示机房菜单
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == R.id.toolbar_room) {
+//            if (window != null) {
+//                if (window.isShowing()) {
+//                    window.dismiss();
+//                    window = null;
+//                }
+//            } else {
+//                showWindow();
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    private void showWindow() {
+//        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        view = inflater.inflate(R.layout.toolbar_menu, null, false);
+//
+//        // 加载listView
+//        ListView listView = (ListView) view.findViewById(R.id.toolbar_room_list);
+//        listView.setAdapter(new ToolbarMenuAdapter(context, rooms));
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                Intent i = new Intent(MainActivity.this, MainActivity.class);
+//                startActivity(i);
+//            }
+//        });
+//
+//        if (window == null) {
+//            window = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        }
+//
+//        View room = getViewById(R.id.toolbar_room);
+//        window.showAtLocation(room, Gravity.NO_GRAVITY, 15, 160);
+//    }
 }

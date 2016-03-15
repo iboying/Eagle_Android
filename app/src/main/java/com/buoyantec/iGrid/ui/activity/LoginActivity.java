@@ -159,14 +159,14 @@ public class LoginActivity extends BaseActivity {
         View focusView = null;
 
         // 验证: 密码是否为空/密码是否符合自定义规则
-        if (!TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // 验证: 手机号是否为空/手机号是否符合自定义规则
-        if (TextUtils.isEmpty(phone) || !isPhoneValid(phone)) {
+        if (TextUtils.isEmpty(phone) && !isPhoneValid(phone)) {
             mPhoneView.setError(getString(R.string.error_field_required));
             focusView = mPhoneView;
             cancel = true;
@@ -271,4 +271,3 @@ public class LoginActivity extends BaseActivity {
         });
     }
 }
-

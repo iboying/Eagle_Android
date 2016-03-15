@@ -1,5 +1,7 @@
 package com.buoyantec.iGrid.ui.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +11,14 @@ import com.buoyantec.iGrid.App;
 import com.buoyantec.iGrid.engine.Engine;
 import com.buoyantec.iGrid.util.ToastUtil;
 
+import java.io.IOException;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
 
 /**
  * Created by kang on 16/3/3.
@@ -27,7 +36,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
-        mEngine = mApp.getEngine();
+        // 在登录成功后初始化通用链接
+        setEngine();
         mLoginEngine = mApp.getLoginEngine();
         initView(savedInstanceState);
         setListener();
@@ -89,5 +99,36 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
         }
+    }
+
+    // 设置通用链接
+    private void setEngine() {
+        final String token;
+        final String phone;
+        // 获取token和phone
+        SharedPreferences sp = getApplicationContext()
+                .getSharedPreferences("foobar", Context.MODE_PRIVATE);
+        token = sp.getString("token", null);
+        phone = sp.getString("phone", null);
+
+        System.out.println(token+"0090909090909");
+        // 定义拦截器,添加headers
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder()
+                        .addHeader("X-User-Token", token)
+                        .addHeader("X-User-Phone", phone)
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
+
+        // 创建Retrofit实例
+        mEngine = new Retrofit.Builder()
+                .baseUrl("http://139.196.190.201/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build().create(Engine.class);
     }
 }
