@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,10 +23,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.buoyantec.iGrid.adapter.ToolbarMenuAdapter;
 import com.buoyantec.iGrid.ui.customView.BadgeView;
 import com.buoyantec.iGrid.adapter.MainGridAdapter;
 import com.buoyantec.iGrid.adapter.MySliderView;
@@ -48,24 +53,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences mPreferences;
     private String[] rooms;
     private HashMap<String, Integer> systemAlarmCount;
     private CircleProgressBar circleProgressBar;
     private static Boolean isExit = false;
+    private Context context;
     // 组件
     private Toolbar toolbar;
+    private GridView gridView;
     // 机房弹出框
     private PopupWindow window = null;
     private LayoutInflater inflater;
     private View view;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         /**
          * 用户信息是否存在
          * 是: 加载主页面
@@ -82,10 +87,10 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
         } else {
+            setContentView(R.layout.activity_main);
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
-            // 加载布局文件
-            setContentView(R.layout.activity_main);
+            context = this;
             // 初始化toolbar和侧边栏
             initToolBar();
             initDrawer();
@@ -93,53 +98,19 @@ public class MainActivity extends AppCompatActivity
             initCarousel();
             // 初始化GridView
             initGridView();
-            // 异步任务: 检测告警信息
-            getSubSystemAlarmCount();
         }
     }
 
-    /**
-     * 初始化toolbar
-     */
-    public void initToolBar(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        TextView subToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+    @Override
+    protected void setListener() {
 
-        // 获取所有机房([id1, room1, id2, room2, ...])
-        String sp_rooms = mPreferences.getString("rooms", null);
-        if (sp_rooms != null) {
-            rooms = sp_rooms.split("#");
-            String current_room = mPreferences.getString("current_room", null);
-            subToolbarTitle.setText(current_room);
-        } else {
-            subToolbarTitle.setText("无可管理机房");
-        }
+
     }
 
-    /**
-     * 添加侧边菜单,并绑定ToolBar菜单按钮
-     */
-    private void initDrawer() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // 更新数据
-        View headLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        TextView name = (TextView) headLayout.findViewById(R.id.user_name);
-        String mName = mPreferences.getString("name", null);
-        name.setText(mName);
-
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // 退出按钮
-        Button signOutButton = (Button) findViewById(R.id.sign_out_button);
+        Button signOutButton = getViewById(R.id.sign_out_button);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,67 +119,8 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
-    }
-
-    // TODO: 16/3/4 显示机房切换菜单
-//    /**
-//     * 显示机房菜单
-//     */
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.toolbar_room) {
-//            if (window != null) {
-//                if (window.isShowing()) {
-//                    window.dismiss();
-//                    window = null;
-//                }
-//            } else {
-//                showWindow();
-//            }
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private void showWindow() {
-//        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        view = inflater.inflate(R.layout.toolbar_menu, null, false);
-//        Context context = this;
-//
-//        // 加载listView
-//        ListView listView = (ListView) view.findViewById(R.id.toolbar_room_list);
-//        listView.setAdapter(new ToolbarMenuAdapter(context, rooms));
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                Intent i = new Intent(MainActivity.this, MainActivity.class);
-//                startActivity(i);
-//            }
-//        });
-//
-//        if (window == null) {
-//            window = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        }
-//
-//        View room = findViewById(R.id.toolbar_room);
-//        window.showAtLocation(room, Gravity.NO_GRAVITY, 15, 160);
-//    }
-
-    /**
-     * 退出登录, 清楚数据
-     */
-    private void signOut() {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString("token", "");
-        editor.putString("current_room", null);
-        editor.putInt("current_room_id", 0);
-        editor.putString("rooms", null);
-        editor.apply();
-        finish();
+        // 异步任务: 检测告警信息
+        getSubSystemAlarmCount();
     }
 
     /**
@@ -216,7 +128,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = getViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -228,7 +140,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_MENU) {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = getViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
             } else {
@@ -238,28 +150,6 @@ public class MainActivity extends AppCompatActivity
             exitByDoubleClick();      //调用双击退出函数
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * 两次点击返回键退出程序
-     */
-    private void exitByDoubleClick() {
-        Timer tExit = null;
-        if (!isExit) {
-            isExit = true; // 准备退出
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-            tExit = new Timer();
-            tExit.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    isExit = false; // 取消退出
-                }
-            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
-
-        } else {
-            signOut();
-            System.exit(0);
-        }
     }
 
     /**
@@ -280,22 +170,58 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = getViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    /**
-     * 初始化轮播控件
-     */
+    // 初始化toolbar
+    public void initToolBar(){
+        toolbar = getViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        TextView subToolbarTitle = getViewById(R.id.toolbar_title);
+
+        // 获取所有机房([id1, room1, id2, room2, ...])
+        String sp_rooms = mPreferences.getString("rooms", null);
+        if (sp_rooms != null) {
+            rooms = sp_rooms.split("#");
+            String current_room = mPreferences.getString("current_room", null);
+            subToolbarTitle.setText(current_room);
+        } else {
+            subToolbarTitle.setText("无可管理机房");
+        }
+    }
+
+    // 添加侧边菜单,并绑定ToolBar菜单按钮
+    private void initDrawer() {
+        DrawerLayout drawer = getViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = getViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // 更新数据
+        View headLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        TextView name = (TextView) headLayout.findViewById(R.id.user_name);
+        String mName = mPreferences.getString("name", null);
+        name.setText(mName);
+    }
+
+    // 初始化轮播控件
     private void initCarousel() {
-        SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
-        sliderShow.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
+        SliderLayout sliderShow = getViewById(R.id.slider);
+        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
 
         final List<Integer> room_ids = new ArrayList<>();
         final List<String> room_names = new ArrayList<>();
         List<Integer> room_images = new ArrayList<>();
 
+        // 青海银监局使用指定图片
         for (int i = 0; i< rooms.length; i+=2){
             room_ids.add(Integer.parseInt(rooms[i]));
             room_names.add(rooms[i + 1]);
@@ -330,23 +256,20 @@ public class MainActivity extends AppCompatActivity
         sliderShow.setDuration(8000);
     }
 
-    /**
-     * 初始化栅格布局
-     */
+    // 初始化栅格布局
     private void initGridView(){
-        final Context context = this;
-        // references to our images
+        gridView = getViewById(R.id.grid_view);
+
         Integer[] images = {
                 R.drawable.icon_system_status, R.drawable.icon_info,
                 R.drawable.icon_work_order, R.drawable.icon_power_manager,
                 R.drawable.icon_phone, R.drawable.icon_other
         };
-        // texts of images
+
         final String[] texts = { "系统状态", "告警信息", "工作安排", "能效管理", "IT管理", "其他" };
 
-        GridView gridview = (GridView) findViewById(R.id.grid_view);
-        gridview.setAdapter(new MainGridAdapter(gridview, this, images, texts));
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setAdapter(new MainGridAdapter(gridView, this, images, texts));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
                     Intent i = new Intent(MainActivity.this, SystemStatus.class);
@@ -385,20 +308,91 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    /**
-     * 异步任务,获取机房总告警数
-     */
-    public void getSubSystemAlarmCount() {
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
-        // 获取机房id
-        final SharedPreferences sp = getSharedPreferences("foobar", MODE_PRIVATE);
-        Integer room_id = sp.getInt("current_room_id", 1);
-        final Context context = this;
+    // TODO: 16/3/4 显示机房切换菜单
+    // 显示机房菜单
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == R.id.toolbar_room) {
+//            if (window != null) {
+//                if (window.isShowing()) {
+//                    window.dismiss();
+//                    window = null;
+//                }
+//            } else {
+//                showWindow();
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    private void showWindow() {
+//        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        view = inflater.inflate(R.layout.toolbar_menu, null, false);
+//
+//        // 加载listView
+//        ListView listView = (ListView) view.findViewById(R.id.toolbar_room_list);
+//        listView.setAdapter(new ToolbarMenuAdapter(context, rooms));
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                Intent i = new Intent(MainActivity.this, MainActivity.class);
+//                startActivity(i);
+//            }
+//        });
+//
+//        if (window == null) {
+//            window = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        }
+//
+//        View room = getViewById(R.id.toolbar_room);
+//        window.showAtLocation(room, Gravity.NO_GRAVITY, 15, 160);
+//    }
 
+    // 两次点击返回键退出程序
+    private void exitByDoubleClick() {
+        Timer tExit;
+        if (!isExit) {
+            isExit = true; // 准备退出
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            tExit = new Timer();
+            tExit.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isExit = false; // 取消退出
+                }
+            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+
+        } else {
+            signOut();
+            System.exit(0);
+        }
+    }
+
+    // 退出登录, 清楚数据
+    private void signOut() {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString("token", "");
+        editor.putString("current_room", null);
+        editor.putInt("current_room_id", 0);
+        editor.putString("rooms", null);
+        editor.apply();
+        finish();
+    }
+
+
+
+    // 异步任务,获取机房总告警数
+    public void getSubSystemAlarmCount() {
+        circleProgressBar = getViewById(R.id.progressBar);
+        // 获取机房id
+        Integer room_id = mPreferences.getInt("current_room_id", 1);
         // 请求服务
-        final ApiRequest apiRequest = new ApiRequest(this);
-        Call<Results> call = apiRequest.getService().getSystemAlarmCount(room_id);
-        call.enqueue(new Callback<Results>() {
+        mEngine.getSystemAlarmCount(room_id).enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {
                 int code = response.code();
@@ -413,7 +407,7 @@ public class MainActivity extends AppCompatActivity
                         systemAlarmCount.put(result.getName(), result.getSize());
                     }
 
-                    ImageView warnMessage = (ImageView) findViewById(R.id.grid_warn_message_image);
+                    ImageView warnMessage = getViewById(R.id.grid_warn_message_image);
                     BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
                     badge.setBadgeMargin(0,5);
                     // 隐藏进度条

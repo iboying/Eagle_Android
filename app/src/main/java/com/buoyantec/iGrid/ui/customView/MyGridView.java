@@ -1,4 +1,4 @@
-package com.buoyantec.iGrid.ui.activity;
+package com.buoyantec.iGrid.ui.customView;
 
 import android.content.Context;
 import android.util.AttributeSet;

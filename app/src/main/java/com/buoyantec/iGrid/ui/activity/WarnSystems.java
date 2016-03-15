@@ -28,18 +28,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WarnSystems extends AppCompatActivity{
+public class WarnSystems extends BaseActivity{
     private HashMap<String, Integer> systemIcon;
     private Integer statusCode;
     private Context context;
     private CircleProgressBar circleProgressBar;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_warn_systems);
-        // 初始化
         init();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // sub_toolbar
         initToolbar();
         // ListView
@@ -49,9 +58,10 @@ public class WarnSystems extends AppCompatActivity{
     private void init(){
         systemIcon = new HashMap<>();
         context = this;
-
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
 
         // 动力
@@ -75,23 +85,16 @@ public class WarnSystems extends AppCompatActivity{
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        subToolbarTitle.setText(i.getStringExtra("title"));
+        subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 
     private void initListView() {
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<MySystems> call = apiRequest.getService().getSystems();
-        // 发送请求
-        call.enqueue(new Callback<MySystems>() {
+        mEngine.getSystems().enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
                 statusCode = response.code();
@@ -134,7 +137,7 @@ public class WarnSystems extends AppCompatActivity{
                     Integer[] images = device_images.toArray(new Integer[device_images.size()]);
 
                     // 加载listView
-                    ListView listView = (ListView) findViewById(R.id.warn_systems_listView);
+                    ListView listView = getViewById(R.id.warn_systems_listView);
                     listView.setAdapter(new WarnMessageListAdapter(listView, context, images, names, alarmCount));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

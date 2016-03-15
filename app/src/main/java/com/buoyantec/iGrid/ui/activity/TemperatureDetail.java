@@ -28,55 +28,63 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TemperatureDetail extends AppCompatActivity {
+public class TemperatureDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
+    private SharedPreferences sp;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
+    private ListView listView;
+    private Context context;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_temperature_detail);
+        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        listView = getViewById(R.id.temperature_detail_listView);
+        circleProgressBar = getViewById(R.id.progressBar);
+        context = this;
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // 初始化toolbar
         initToolbar();
         // 初始化list
         initListView();
 
-        SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         String current_room = sp.getString("current_room", null);
         assert current_room != null;
         if (current_room.equals("青海银监局")) {
-            ImageView imageView = (ImageView) findViewById(R.id.temperature_detail_image);
+            ImageView imageView = getViewById(R.id.temperature_detail_image);
             imageView.setImageResource(R.drawable.temperature_detail);
         }
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        subToolbarTitle.setText(i.getStringExtra("title"));
+        subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 
     private void initListView() {
         // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
-
         // 获取device_id 和 room_id
-        final SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         Integer room_id = sp.getInt("current_room_id", 1);
-        Intent i = getIntent();
-        Integer device_id = i.getIntExtra("device_id", 1);
-        final Context context = this;
+        Integer device_id = getIntent().getIntExtra("device_id", 1);
 
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<DeviceDetail> call = apiRequest.getService().getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {
                 int code = response.code();
@@ -85,10 +93,10 @@ public class TemperatureDetail extends AppCompatActivity {
                     ArrayList<String> hum = new ArrayList<>();
 
                     // 循环list,存入数组
-                    List<HashMap<String, String>> points =  response.body().getPoints();
+                    List<HashMap<String, String>> points = response.body().getPoints();
                     int i = 1;
-                    for (HashMap<String, String> point: points) {
-                        if (i%2==1) {
+                    for (HashMap<String, String> point : points) {
+                        if (i % 2 == 1) {
                             tem.add(point.get("value"));
                         } else {
                             hum.add(point.get("value"));
@@ -99,7 +107,6 @@ public class TemperatureDetail extends AppCompatActivity {
                     circleProgressBar.setVisibility(View.GONE);
 
                     // 加载列表
-                    ListView listView = (ListView) findViewById(R.id.temperature_detail_listView);
                     listView.setAdapter(new TemperatureListAdapter(listView, context, tem, hum));
 
                     Log.i("温湿度系统->详情", context.getString(R.string.getSuccess) + code);

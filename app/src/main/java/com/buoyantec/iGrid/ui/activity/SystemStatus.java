@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.buoyantec.iGrid.adapter.SystemStatusGridAdapter;
 import com.buoyantec.iGrid.model.MySystem;
 import com.buoyantec.iGrid.model.MySystems;
 import com.buoyantec.iGrid.model.SubSystem;
-import com.buoyantec.iGrid.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 
@@ -27,25 +25,34 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SystemStatus extends AppCompatActivity {
+public class SystemStatus extends BaseActivity {
     private HashMap<String, Integer> systemIcon;
     private HashMap<String, Class> systemClass;
     private HashMap<String, String[]> kindSystems;
     private Integer statusCode;
     private Context context;
-    // 进度条
+    // 组件
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
     private CircleProgressBar circleProgressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_system_status);
         // 初始化变量
         init();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // sub_toolbar
         initToolbar();
         // 获取接口,刷新UI
@@ -58,8 +65,10 @@ public class SystemStatus extends AppCompatActivity {
         systemClass = new HashMap<>();
         kindSystems = new LinkedHashMap<>();
         context = this;
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
         // 动力
         systemIcon.put("UPS系统", R.drawable.system_status_ups);
@@ -101,14 +110,12 @@ public class SystemStatus extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
         Intent i = getIntent();
         subToolbarTitle.setText(i.getStringExtra("title"));
     }
@@ -117,10 +124,7 @@ public class SystemStatus extends AppCompatActivity {
      * 动态获取系统列表
      */
     private void initSystems() {
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<MySystems> call = apiRequest.getService().getSystems();
-        // 发送请求
-        call.enqueue(new Callback<MySystems>() {
+        mEngine.getSystems().enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
                 statusCode = response.code();
@@ -148,7 +152,7 @@ public class SystemStatus extends AppCompatActivity {
                     }
 
                     // 按照kindSystems加载UI
-                    LinearLayout container = (LinearLayout) findViewById(R.id.system_status_linearLayout);
+                    LinearLayout container = getViewById(R.id.system_status_linearLayout);
                     for (HashMap.Entry<String, String[]> entry : kindSystems.entrySet()) {
                         // 加载分类标题
                         View titleLayout = View.inflate(context, R.layout.system_status_text_view, null);

@@ -30,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Cabinet extends AppCompatActivity {
+public class Cabinet extends BaseActivity {
     private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
@@ -38,14 +38,21 @@ public class Cabinet extends AppCompatActivity {
     private CircleProgressBar circleProgressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //加载字体图标
-        Iconify.with(new FontAwesomeModule());
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_cabinet);
+        Iconify.with(new FontAwesomeModule());
         init();
         //初始化toolbar
         initToolbar();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         //初始化list
         initListView();
     }
@@ -60,27 +67,24 @@ public class Cabinet extends AppCompatActivity {
 
         context = getApplicationContext();
         // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
+        Toolbar toolbar = getViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
+        TextView subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         subToolbarTitle.setText(sub_sys_name);
     }
 
     private void initListView() {
-        ApiRequest apiRequest = new ApiRequest(this);
-        // 获取指定链接数据
-        Call<Devices> call = apiRequest.getService().getDevices(room_id, sub_sys_name);
-        call.enqueue(new Callback<Devices>() {
+        mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
                 int code = response.code();
@@ -101,7 +105,7 @@ public class Cabinet extends AppCompatActivity {
                     circleProgressBar.setVisibility(View.GONE);
 
                     // 加载列表
-                    ListView listView = (ListView) findViewById(R.id.cabinet_listView);
+                    ListView listView = (ListView) getViewById(R.id.cabinet_listView);
                     listView.setAdapter(new StandardListAdapter(listView, context, image, names));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

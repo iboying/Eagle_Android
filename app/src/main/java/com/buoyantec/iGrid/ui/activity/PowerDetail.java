@@ -2,11 +2,9 @@ package com.buoyantec.iGrid.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -16,58 +14,64 @@ import android.widget.Toast;
 
 import com.buoyantec.iGrid.adapter.DeviceDetailListAdapter;
 import com.buoyantec.iGrid.model.DeviceDetail;
-import com.buoyantec.iGrid.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PowerDetail extends AppCompatActivity {
+public class PowerDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
+
+    private Context context;
+    private SharedPreferences sp;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_power_detail);
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
+        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        context = this;
+
         initToolbar();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         initListView();
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        String title = i.getStringExtra("title");
-        subToolbarTitle.setText(title);
+        subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 
     private void initListView() {
         // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
 
         // 获取device_id 和 room_id
-        final SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        Intent i = getIntent();
-        Integer device_id = i.getIntExtra("device_id", 1);
+        Integer device_id = getIntent().getIntExtra("device_id", 1);
         Integer room_id = sp.getInt("current_room_id", 1);
-        final Context context = this;
 
         // 获取指定链接数据
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<DeviceDetail> call = apiRequest.getService().getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {
                 int code = response.code();
@@ -78,8 +82,8 @@ public class PowerDetail extends AppCompatActivity {
                     ArrayList<String> values = new ArrayList<>();
 
                     // 循环list,存入数组
-                    List<HashMap<String, String>> points =  response.body().getPoints();
-                    for (HashMap<String, String> point: points) {
+                    List<HashMap<String, String>> points = response.body().getPoints();
+                    for (HashMap<String, String> point : points) {
                         names.add(point.get("name"));
                         values.add(point.get("value"));
                     }
@@ -87,7 +91,7 @@ public class PowerDetail extends AppCompatActivity {
                     circleProgressBar.setVisibility(View.GONE);
 
                     // 加载列表
-                    ListView listView = (ListView) findViewById(R.id.power_detail_listView);
+                    ListView listView = getViewById(R.id.power_detail_listView);
                     listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
                     Log.i("配电系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {

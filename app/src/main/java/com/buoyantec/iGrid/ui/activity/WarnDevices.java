@@ -31,19 +31,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WarnDevices extends AppCompatActivity {
+public class WarnDevices extends BaseActivity {
     private SharedPreferences sp;
     private Integer room_id;
     private String subSystemName;
     private Context context;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
     private CircleProgressBar circleProgressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_warn_devices);
-        // 初始化
         init();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // sub_toolbar
         initToolbar();
         // 获得数据
@@ -54,36 +63,30 @@ public class WarnDevices extends AppCompatActivity {
         sp = getSharedPreferences("foobar", MODE_PRIVATE);
         room_id = sp.getInt("current_room_id", 1);
         context = this;
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        subSystemName = i.getStringExtra("title");
+        subSystemName = getIntent().getStringExtra("title");
         subToolbarTitle.setText(subSystemName);
     }
 
     // 获取设备告警数量
     private void getDeviceAlarmCount() {
         // 初始化
-        Intent i = getIntent();
-        Integer sub_system_id = i.getIntExtra("subSystem_id", 1);
+        Integer sub_system_id = getIntent().getIntExtra("subSystem_id", 1);
         final HashMap<String, Integer> deviceCount = new HashMap<>();
 
-        final ApiRequest apiRequest = new ApiRequest(this);
-        Call<Results> call = apiRequest.getService().getDeviceAlarmCount(room_id, sub_system_id);
-        // 获取数据
-        call.enqueue(new Callback<Results>() {
+        mEngine.getDeviceAlarmCount(room_id, sub_system_id).enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {
                 if (response.code() == 200) {
@@ -94,7 +97,7 @@ public class WarnDevices extends AppCompatActivity {
                     }
 
                     // 获得告警数,加载listView
-                    initListView(apiRequest.getService(), deviceCount);
+                    initListView(deviceCount);
                 } else {
                     // 输出非201时的错误信息
                     System.out.println(">>>>>>>>>>设备告警数量接口状态错误>>>>>>>>>>>>");
@@ -115,10 +118,8 @@ public class WarnDevices extends AppCompatActivity {
         });
     }
 
-    private void initListView(Engine myService, final HashMap<String, Integer> countMap) {
-        Call<Devices> call = myService.getDevices(room_id, subSystemName);
-        // 发送请求
-        call.enqueue(new Callback<Devices>() {
+    private void initListView(final HashMap<String, Integer> countMap) {
+        mEngine.getDevices(room_id, subSystemName).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
                 int code = response.code();
@@ -148,7 +149,7 @@ public class WarnDevices extends AppCompatActivity {
                     // images
                     Integer[] images = new Integer[names.size()];
 
-                    ListView listView = (ListView) findViewById(R.id.warn_devices_listView);
+                    ListView listView = getViewById(R.id.warn_devices_listView);
                     listView.setAdapter(new WarnMessageListAdapter(listView, context, images, names, alarmCount));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

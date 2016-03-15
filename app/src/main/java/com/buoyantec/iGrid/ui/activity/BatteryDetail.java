@@ -3,29 +3,34 @@ package com.buoyantec.iGrid.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-public class BatteryDetail extends AppCompatActivity {
+public class BatteryDetail extends BaseActivity {
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_battery_detail);
-        //初始化toolbar
-        initToolbar();
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
     }
 
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        //初始化toolbar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
         Intent i = getIntent();
         String title = i.getStringExtra("title");
         subToolbarTitle.setText(title);

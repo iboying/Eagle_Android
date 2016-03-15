@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 import com.buoyantec.iGrid.adapter.StandardListAdapter;
 import com.buoyantec.iGrid.model.Device;
 import com.buoyantec.iGrid.model.Devices;
-import com.buoyantec.iGrid.myService.ApiRequest;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -26,25 +24,31 @@ import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Water extends AppCompatActivity {
+public class Water extends BaseActivity {
     private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
     private CircleProgressBar circleProgressBar;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_water);
-        // 初始化变量
         init();
-        // 加载字体图标
-        Iconify.with(new FontAwesomeModule());
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // 初始化toolbar
         initToolbar();
         // 加载list
@@ -52,6 +56,7 @@ public class Water extends AppCompatActivity {
     }
 
     private void init() {
+        Iconify.with(new FontAwesomeModule());
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         // TODO: 16/2/7 默认值的问题
         room_id = sp.getInt("current_room_id", 1);
@@ -60,28 +65,25 @@ public class Water extends AppCompatActivity {
         sub_sys_name = i.getStringExtra("sub_sys_name");
 
         context = getApplicationContext();
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
         subToolbarTitle.setText(sub_sys_name);
     }
 
     private void initListView() {
         // 获取指定链接数据
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<Devices> call = apiRequest.getService().getDevices(room_id, sub_sys_name);
-        call.enqueue(new Callback<Devices>() {
+        mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
                 int code = response.code();
@@ -100,7 +102,7 @@ public class Water extends AppCompatActivity {
                     // 图标
                     Integer image = R.drawable.system_status_water;
 
-                    ListView listView = (ListView) findViewById(R.id.water_listView);
+                    ListView listView = getViewById(R.id.water_listView);
                     listView.setAdapter(new StandardListAdapter(listView, context, image, names));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

@@ -31,57 +31,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Battery extends AppCompatActivity {
-    private SharedPreferences sp;
+public class Battery extends BaseActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
     private CircleProgressBar circleProgressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //加载字体图标
-        Iconify.with(new FontAwesomeModule());
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_battery);
+        Iconify.with(new FontAwesomeModule());
         init();
-        //初始化toolbar
         initToolbar();
-        //初始化list
-        initListView();
     }
 
-    private void init() {
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        // TODO: 16/2/7 默认值的问题
-        room_id = sp.getInt("current_room_id", 1);
+    @Override
+    protected void setListener() {
 
-        Intent i = getIntent();
-        sub_sys_name = i.getStringExtra("sub_sys_name");
-
-        context = getApplicationContext();
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
     }
 
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        subToolbarTitle.setText(sub_sys_name);
-    }
-
-    private void initListView() {
-        ApiRequest apiRequest = new ApiRequest(this);
-        // 获取指定链接数据
-        Call<Devices> call = apiRequest.getService().getDevices(room_id, sub_sys_name);
-        call.enqueue(new Callback<Devices>() {
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
                 int code = response.code();
@@ -115,7 +86,7 @@ public class Battery extends AppCompatActivity {
                     circleProgressBar.setVisibility(View.GONE);
 
                     // 加载设备列表
-                    ListView listView = (ListView) findViewById(R.id.battery_listView);
+                    ListView listView = getViewById(R.id.battery_listView);
                     listView.setAdapter(new BatteryListAdapter(listView, context, image, names, keys, values));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -144,5 +115,31 @@ public class Battery extends AppCompatActivity {
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });
+    }
+
+    // 初始化变量
+    private void init() {
+        SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        room_id = sp.getInt("current_room_id", 1);
+
+        Intent i = getIntent();
+        sub_sys_name = i.getStringExtra("sub_sys_name");
+
+        circleProgressBar = getViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
+
+        context = this;
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = getViewById(R.id.sub_toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        TextView subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        subToolbarTitle.setText(sub_sys_name);
     }
 }

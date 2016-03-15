@@ -36,7 +36,6 @@ public class App extends Application {
 
     /**
      * 应用
-     * @return
      */
     public static App getInstance() {
         return sInstance;
@@ -44,7 +43,6 @@ public class App extends Application {
 
     /**
      * 返回带header的链接
-     * @return
      */
     public Engine getEngine() {
         return engine;
@@ -52,13 +50,12 @@ public class App extends Application {
 
     /**
      * 返回登录链接
-     * @return
      */
     public Engine getLoginEngine() {
         return loginEngine;
     }
 
-    //
+    // 设置登录链接
     private void setLoginEngine() {
         loginEngine = new Retrofit.Builder()
                 .baseUrl("http://139.196.190.201/")
@@ -66,6 +63,7 @@ public class App extends Application {
                 .build().create(Engine.class);
     }
 
+    // 设置通用链接
     private void setEngine() {
         // 获取token和phone
         SharedPreferences sp = sInstance.getApplicationContext()

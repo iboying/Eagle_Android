@@ -17,32 +17,38 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PowerManage extends AppCompatActivity {
+public class PowerManage extends BaseActivity {
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // 加载字体图标
-        Iconify.with(new FontAwesomeModule());
-        // 加载布局
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_power_manage);
+        Iconify.with(new FontAwesomeModule());
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         // 初始化toolbar
         initToolbar();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // 初始化list
         initListView();
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        subToolbarTitle.setText(i.getStringExtra("title"));
+        subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 
     /**
@@ -62,7 +68,7 @@ public class PowerManage extends AppCompatActivity {
         names.add("能 效 分 析");
         names.add("用 电 数 据");
 
-        ListView listView = (ListView) findViewById(R.id.power_manage_listView);
+        ListView listView = getViewById(R.id.power_manage_listView);
         listView.setAdapter(new StandardListAdapter(listView, this, images, names));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

@@ -19,6 +19,8 @@ import com.buoyantec.iGrid.model.PointAlarm;
 import com.buoyantec.iGrid.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WarnDetail extends AppCompatActivity {
+public class WarnDetail extends BaseActivity {
     private String title;
     private Integer device_id;
     private Context context;
@@ -34,6 +36,8 @@ public class WarnDetail extends AppCompatActivity {
     private CircleProgressBar circleProgressBar;
     private ListView listView;
     private Button addMore;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
     // 列表数据
     private List<String> comments = new ArrayList<>();
     private List<String> types = new ArrayList<>();
@@ -42,11 +46,18 @@ public class WarnDetail extends AppCompatActivity {
     private List<String> status = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_warn_detail);
-        //初始化
         init();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // 加载工具条
         initToolbar();
         //加载告警信息列表
@@ -58,34 +69,29 @@ public class WarnDetail extends AppCompatActivity {
         device_id = i.getIntExtra("device_id", 1);
         title = i.getStringExtra("title");
         context = this;
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
         // 列表
-        listView = (ListView) findViewById(R.id.warn_detail_listView);
+        listView = getViewById(R.id.warn_detail_listView);
         View footer = getLayoutInflater().inflate(R.layout.list_view_footer, null);
         listView.addFooterView(footer);
-        addMore = (Button) findViewById(R.id.list_more);
+        addMore = getViewById(R.id.list_more);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
         subToolbarTitle.setText(title);
     }
 
     private void initListView(Integer page) {
-        ApiRequest apiRequest = new ApiRequest(this);
-        // 告警是否已经解除(0:全部，1:已经确认, 2:未结束。默认为2)
-        Call<Alarm> call = apiRequest.getService().getWarnMessages(device_id, 2, page);
-        // 发送请求
-        call.enqueue(new Callback<Alarm>() {
+        mEngine.getWarnMessages(device_id, 2, page).enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
                 // 初始化变量

@@ -35,11 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
     /**
-     * 查找View
-     *
-     * @param id   控件的id
-     * @param <VT> View类型
-     * @return
+     * 全局查找View
      */
     protected <VT extends View> VT getViewById(@IdRes int id) {
         return (VT) findViewById(id);
@@ -57,23 +53,25 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     /**
      * 处理业务逻辑，状态恢复等操作
-     *
-     * @param savedInstanceState
      */
     protected abstract void processLogic(Bundle savedInstanceState);
 
     /**
      * 需要处理点击事件时，重写该方法
-     *
-     * @param v
      */
     public void onClick(View v) {
     }
 
+    /**
+     * 显示Toast
+     */
     protected void showToast(String text) {
         ToastUtil.show(text);
     }
 
+    /**
+     * 显示alert
+     */
     public void showLoadingDialog() {
         if (mLoadingDialog == null) {
             mLoadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -84,6 +82,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         mLoadingDialog.show();
     }
 
+    /**
+     * 隐藏alert
+     */
     public void dismissLoadingDialog() {
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();

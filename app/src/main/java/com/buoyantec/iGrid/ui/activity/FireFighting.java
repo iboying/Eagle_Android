@@ -30,29 +30,37 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FireFighting extends AppCompatActivity {
-    private SharedPreferences sp;
+public class FireFighting extends BaseActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
     private CircleProgressBar circleProgressBar;
+    private Toolbar toolbar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_fire_fighting);
-        // 初始化变量
-        init();
         // 加载字体图标
         Iconify.with(new FontAwesomeModule());
+        // 初始化变量
+        init();
         // 初始化toolbar
         initToolbar();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // 加载list
         initListView();
     }
 
     private void init() {
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         // TODO: 16/2/7 默认值的问题
         room_id = sp.getInt("current_room_id", 1);
 
@@ -61,27 +69,24 @@ public class FireFighting extends AppCompatActivity {
 
         context = getApplicationContext();
         // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
+        toolbar = getViewById(R.id.sub_toolbar);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
+        TextView subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         subToolbarTitle.setText(sub_sys_name);
     }
 
     private void initListView() {
-        ApiRequest apiRequest = new ApiRequest(this);
-        // 获取指定链接数据
-        Call<Devices> call = apiRequest.getService().getDevices(room_id, sub_sys_name);
-        call.enqueue(new Callback<Devices>() {
+        mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
                 int code = response.code();
@@ -106,7 +111,7 @@ public class FireFighting extends AppCompatActivity {
                     circleProgressBar.setVisibility(View.GONE);
 
                     // 加载列表
-                    ListView listView = (ListView) findViewById(R.id.fire_fighting_listView);
+                    ListView listView = getViewById(R.id.fire_fighting_listView);
                     listView.setAdapter(new StandardListAdapter(listView, context, images, names));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

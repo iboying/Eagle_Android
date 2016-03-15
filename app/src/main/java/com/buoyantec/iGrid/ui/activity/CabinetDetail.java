@@ -27,48 +27,54 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CabinetDetail extends AppCompatActivity {
+public class CabinetDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
+    private SharedPreferences sharedPreferences;
+    private Toolbar toolbar;
+    private Context context;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_cabinet_detail);
-        // sub_toolbar
+
+        toolbar = getViewById(R.id.sub_toolbar);
+        circleProgressBar = getViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
+        sharedPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        context = this;
+
         initToolbar();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         initListView();
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        String subSystemName = i.getStringExtra("title");
+        TextView subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        String subSystemName = getIntent().getStringExtra("title");
         subToolbarTitle.setText(subSystemName);
     }
 
     private void initListView() {
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
-
         // 获取device_id 和 room_id
-        final SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        Integer room_id = sp.getInt("current_room_id", 1);
-        Intent i = getIntent();
-        Integer device_id = i.getIntExtra("device_id", 1);
-        final Context context = this;
+        Integer room_id = sharedPreferences.getInt("current_room_id", 1);
+        Integer device_id = getIntent().getIntExtra("device_id", 1);
 
         // 获取指定链接数据
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<DeviceDetail> call = apiRequest.getService().getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {
                 int code = response.code();
@@ -76,19 +82,16 @@ public class CabinetDetail extends AppCompatActivity {
                 if (code == 200) {
                     ArrayList<String> names = new ArrayList<>();
                     ArrayList<String> values = new ArrayList<>();
-
                     // 循环list,存入数组
-                    List<HashMap<String, String>> points =  response.body().getPoints();
-                    for (HashMap<String, String> point: points) {
+                    List<HashMap<String, String>> points = response.body().getPoints();
+                    for (HashMap<String, String> point : points) {
                         names.add(point.get("name"));
                         values.add(point.get("value"));
                     }
-
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.GONE);
-
                     // 加载列表
-                    ListView listView = (ListView) findViewById(R.id.cabinet_detail_listView);
+                    ListView listView = getViewById(R.id.cabinet_detail_listView);
                     listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
 
                     Log.i("机柜环境->详情", context.getString(R.string.getSuccess) + code);

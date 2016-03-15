@@ -3,6 +3,7 @@ package com.buoyantec.iGrid.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -28,55 +29,64 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WaterDetail extends AppCompatActivity {
+public class WaterDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
+    private ListView listView;
+    private ImageView imageView;
+    private SharedPreferences sp;
+    private Context context;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_water_detail);
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        imageView = getViewById(R.id.water_detail_image);
+        listView = getViewById(R.id.water_detail_listView);
+        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        context = this;
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // 初始化toolbar
         initToolbar();
         // 初始化list
         initListView();
 
-        SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         String current_room = sp.getString("current_room", null);
         assert current_room != null;
         if (current_room.equals("青海银监局")) {
-            ImageView imageView = (ImageView) findViewById(R.id.water_detail_image);
             imageView.setImageResource(R.drawable.water_detail);
         }
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        subToolbarTitle.setText(i.getStringExtra("title"));
+        subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 
     private void initListView() {
         // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
 
         // 获取device_id 和 room_id
-        final SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         Integer room_id = sp.getInt("current_room_id", 1);
-        Intent i = getIntent();
-        Integer device_id = i.getIntExtra("device_id", 1);
-        final Context context = this;
+        Integer device_id = getIntent().getIntExtra("device_id", 1);
 
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<DeviceDetail> call = apiRequest.getService().getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {
                 int code = response.code();
@@ -86,8 +96,8 @@ public class WaterDetail extends AppCompatActivity {
                     ArrayList<String> status = new ArrayList<>();
 
                     // 循环list,存入数组
-                    List<HashMap<String, String>> points =  response.body().getAlarms();
-                    for (HashMap<String, String> point: points) {
+                    List<HashMap<String, String>> points = response.body().getAlarms();
+                    for (HashMap<String, String> point : points) {
                         names.add(point.get("name"));
                         status.add(point.get("value"));
                     }
@@ -96,7 +106,6 @@ public class WaterDetail extends AppCompatActivity {
                     circleProgressBar.setVisibility(View.GONE);
 
                     // 加载列表
-                    ListView listView = (ListView) findViewById(R.id.water_detail_listView);
                     listView.setAdapter(new WaterListAdapter(listView, context, names, status));
 
                     Log.i("漏水系统->详情", context.getString(R.string.getSuccess) + code);
