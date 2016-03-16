@@ -252,7 +252,7 @@ public class LoginActivity extends BaseActivity {
                     editor.putString("phone", phone);
                     editor.apply();
                     /**
-                     * 初始化全局静态变量mEngine(登录时初始化一次)
+                     * 初始化全局静态变量mEngine(登录时初始化第一次)
                      */
                     setEngine(mPreferences);
                     // 获取用户机房列表,并跳转页面

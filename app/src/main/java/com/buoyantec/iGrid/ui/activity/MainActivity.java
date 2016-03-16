@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -168,7 +169,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    // 添加侧边菜单,并绑定ToolBar菜单按钮
+    /**
+     * 添加侧边菜单,并绑定ToolBar菜单按钮
+     */
     private void initDrawer() {
         DrawerLayout drawer = getViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -189,21 +192,48 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 退出时删除用户信息
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.putString("token", "");
-                editor.apply();
-                finish();
-                // 退回登录页
-                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i);
+                signOutConfirm();
             }
         });
         // 异步任务: 检测告警信息
         getSubSystemAlarmCount();
     }
 
-    // 初始化轮播控件
+    // 退出确认
+    private void signOutConfirm() {
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("确定退出吗?")
+                .setContentText("退出登录后您将无法收到告警推送!")
+                .setCancelText("取消")
+                .setConfirmText("退出")
+                .showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.cancel();
+                    }
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        // 退出时删除用户信息
+                        SharedPreferences.Editor editor = mPreferences.edit();
+                        editor.putString("token", "");
+                        editor.apply();
+                        finish();
+                        // 退回登录页
+                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(i);
+                    }
+                })
+                .show();
+    }
+
+
+    /**
+     * 初始化轮播控件
+     */
     private void initCarousel() {
         SliderLayout sliderShow = getViewById(R.id.slider);
         sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
@@ -319,6 +349,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void getSubSystemAlarmCount() {
         // 获取机房id
         Integer room_id = mPreferences.getInt("current_room_id", 1);
+        /**
+         * 初始化全局静态变量mEngine(登录时初始化第一次)
+         */
+        setEngine(mPreferences);
         // 请求服务
         mEngine.getSystemAlarmCount(room_id).enqueue(new Callback<Results>() {
             @Override
