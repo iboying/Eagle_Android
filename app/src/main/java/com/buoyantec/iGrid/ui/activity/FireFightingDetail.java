@@ -99,7 +99,7 @@ public class FireFightingDetail extends BaseActivity {
 
                     Log.i("消防系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
-                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    showToast(context.getString(R.string.getDataFailed));
                     Log.i("消防系统->详情", context.getString(R.string.getFailed) + code);
                 }
             }
@@ -108,8 +108,8 @@ public class FireFightingDetail extends BaseActivity {
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
+                showToast(context.getString(R.string.netWorkFailed));
                 Log.i("消防系统->详情", context.getString(R.string.linkFailed));
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -14,8 +14,6 @@ public class Other extends BaseActivity {
         setContentView(R.layout.activity_other);
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        //sub_toolbar
-        initToolbar();
     }
 
     @Override
@@ -25,7 +23,8 @@ public class Other extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-
+        //sub_toolbar
+        initToolbar();
     }
 
     private void initToolbar() {

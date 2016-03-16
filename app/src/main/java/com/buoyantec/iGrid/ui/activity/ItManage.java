@@ -7,12 +7,13 @@ import android.support.v7.app.ActionBar;
 
 public class ItManage extends BaseActivity {
     private Toolbar toolbar;
+    private TextView subToolbarTitle;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_it_manage);
         toolbar = getViewById(R.id.sub_toolbar);
-        initToolbar();
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
     }
 
     @Override
@@ -22,7 +23,7 @@ public class ItManage extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-
+        initToolbar();
     }
 
     private void initToolbar() {
@@ -31,8 +32,6 @@ public class ItManage extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 }

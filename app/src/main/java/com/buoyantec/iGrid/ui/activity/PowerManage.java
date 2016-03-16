@@ -27,8 +27,6 @@ public class PowerManage extends BaseActivity {
         Iconify.with(new FontAwesomeModule());
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        // 初始化toolbar
-        initToolbar();
     }
 
     @Override
@@ -38,6 +36,8 @@ public class PowerManage extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        // 初始化toolbar
+        initToolbar();
         // 初始化list
         initListView();
     }

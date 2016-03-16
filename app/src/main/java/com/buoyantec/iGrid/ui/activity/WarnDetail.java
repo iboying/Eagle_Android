@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -16,15 +15,11 @@ import android.widget.TextView;
 import com.buoyantec.iGrid.adapter.WarnDetailListAdapter;
 import com.buoyantec.iGrid.model.Alarm;
 import com.buoyantec.iGrid.model.PointAlarm;
-import com.buoyantec.iGrid.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 

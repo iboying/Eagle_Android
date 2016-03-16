@@ -20,10 +20,7 @@ import retrofit2.Retrofit;
  */
 public class App extends Application {
     private static App sInstance;
-//    private Engine engine;
     private Engine loginEngine;
-//    private String token;
-//    private String phone;
 
     @Override
     public void onCreate() {

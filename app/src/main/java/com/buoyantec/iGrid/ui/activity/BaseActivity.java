@@ -101,6 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    // TODO: 16/3/16 通用链接放进app.java中
     // 设置通用链接
     private void setEngine() {
         final String token;
@@ -111,7 +112,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         token = sp.getString("token", null);
         phone = sp.getString("phone", null);
 
-        System.out.println(token+"0090909090909");
         // 定义拦截器,添加headers
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override

@@ -1,6 +1,5 @@
 package com.buoyantec.iGrid.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -31,8 +30,6 @@ public class BatteryDetail extends BaseActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Intent i = getIntent();
-        String title = i.getStringExtra("title");
-        subToolbarTitle.setText(title);
+        subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 }

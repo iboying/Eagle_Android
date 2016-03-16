@@ -22,11 +22,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.buoyantec.iGrid.model.Room;
+import com.buoyantec.iGrid.model.Rooms;
 import com.buoyantec.iGrid.model.User;
-import com.buoyantec.iGrid.myService.ApiRooms;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+
+import java.util.List;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -249,8 +252,7 @@ public class LoginActivity extends BaseActivity {
                     editor.putString("phone", phone);
                     editor.apply();
                     // 获取用户机房列表,并跳转页面
-                    ApiRooms apiRooms = new ApiRooms(getApplicationContext(), LoginActivity.this);
-                    apiRooms.getUserRooms();
+                    getUserRooms();
 
                     Log.i("用户登录", getResources().getString(R.string.getSuccess) + code);
                 } else {
@@ -267,6 +269,63 @@ public class LoginActivity extends BaseActivity {
                 mPasswordView.requestFocus();
                 showToast(context.getString(R.string.netWorkFailed));
                 Log.i("用户登录", getResources().getString(R.string.linkFailed));
+            }
+        });
+    }
+
+    // 获取用户成功后,后去机房信息
+    public void getUserRooms() {
+        mEngine.getRooms().enqueue(new Callback<Rooms>() {
+            @Override
+            public void onResponse(Response<Rooms> response) {
+                int code = response.code();
+                if (response.body() != null && code == 200) {
+                    String result = "";
+                    // 获得机房List
+                    List<Room> roomList = response.body().getRooms();
+                    // 遍历机房
+                    for (Room room : roomList) {
+                        if (room.getName() != null) {
+                            result += (room.getId() + "");
+                            result += '#';
+                            result += room.getName();
+                            result += '#';
+                        }
+                    }
+
+                    SharedPreferences.Editor editor = mPreferences.edit();
+
+                    if (result.equals("")) {
+                        // 登陆页,显示错误信息
+                        Intent i = new Intent(context, LoginActivity.class);
+                        i.putExtra("error", "没有可管理的机房,请联系管理员");
+                        startActivity(i);
+                    } else {
+                        String[] rooms = result.split("#");
+                        Integer room_id = Integer.parseInt(rooms[0]);
+                        String room = rooms[1];
+                        // 保存当前机房信息
+                        editor.putString("rooms", result);
+                        editor.putString("current_room", room);
+                        editor.putInt("current_room_id", room_id);
+                        editor.apply();
+                        // 进入主页
+                        Intent i = new Intent(context, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+
+                    Log.i("机房列表", context.getString(R.string.getSuccess) + code);
+                } else {
+                    showToast(context.getString(R.string.getDataFailed));
+                    Log.i("机房列表", context.getString(R.string.getFailed) + code);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                showToast(context.getString(R.string.netWorkFailed));
+                Log.i("机房列表", context.getString(R.string.linkFailed));
             }
         });
     }

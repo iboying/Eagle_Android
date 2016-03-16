@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buoyantec.iGrid.adapter.SystemStatusGridAdapter;
 import com.buoyantec.iGrid.model.MySystem;
@@ -199,7 +198,7 @@ public class SystemStatus extends BaseActivity {
                     }
                     Log.i("系统状态", context.getString(R.string.getSuccess) + statusCode);
                 } else {
-                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    showToast(context.getString(R.string.getDataFailed));
                     Log.i("系统状态", context.getString(R.string.getFailed) + statusCode);
                 }
             }
@@ -207,7 +206,7 @@ public class SystemStatus extends BaseActivity {
             @Override
             public void onFailure(Throwable t) {
                 circleProgressBar.setVisibility(View.GONE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                showToast(context.getString(R.string.netWorkFailed));
                 Log.i("系统状态", context.getString(R.string.linkFailed));
             }
         });

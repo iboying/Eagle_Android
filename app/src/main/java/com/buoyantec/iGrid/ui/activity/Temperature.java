@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buoyantec.iGrid.adapter.StandardListAdapter;
 import com.buoyantec.iGrid.model.Device;
@@ -118,7 +117,7 @@ public class Temperature extends BaseActivity {
                     Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
-                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    showToast(context.getString(R.string.getDataFailed));
                     Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
                 }
             }
@@ -127,7 +126,7 @@ public class Temperature extends BaseActivity {
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                showToast(context.getString(R.string.netWorkFailed));
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });

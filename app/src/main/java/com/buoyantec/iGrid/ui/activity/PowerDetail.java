@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buoyantec.iGrid.adapter.DeviceDetailListAdapter;
 import com.buoyantec.iGrid.model.DeviceDetail;
@@ -39,8 +38,6 @@ public class PowerDetail extends BaseActivity {
         circleProgressBar = getViewById(R.id.progressBar);
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
-
-        initToolbar();
     }
 
     @Override
@@ -50,6 +47,7 @@ public class PowerDetail extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        initToolbar();
         initListView();
     }
 
@@ -95,7 +93,7 @@ public class PowerDetail extends BaseActivity {
                     listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
                     Log.i("配电系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
-                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    showToast(context.getString(R.string.getDataFailed));
                     Log.i("配电系统->详情", context.getString(R.string.getFailed) + code);
                 }
             }
@@ -104,7 +102,7 @@ public class PowerDetail extends BaseActivity {
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                showToast(context.getString(R.string.netWorkFailed));
                 Log.i("配电系统->详情", context.getString(R.string.linkFailed));
             }
         });

@@ -277,24 +277,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Intent i = new Intent(MainActivity.this, WorkPlan.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
-                    Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
+                    showToast("暂未开通");
                 } else if (position == 3) {
                     Intent i = new Intent(MainActivity.this, PowerManage.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
-                    Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
-
+                    showToast("暂未开通");
                 } else if (position == 4) {
                     Intent i = new Intent(MainActivity.this, ItManage.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
-                    Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
-                } else if (position == 5) {
+                    showToast("暂未开通");                } else if (position == 5) {
                     Intent i = new Intent(MainActivity.this, Other.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
-                    Toast.makeText(context, "暂未开通", Toast.LENGTH_SHORT).show();
-                }
+                    showToast("暂未开通");                }
             }
         });
     }
@@ -304,7 +301,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Timer tExit;
         if (!isExit) {
             isExit = true; // 准备退出
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            showToast("再按一次退出程序");
             tExit = new Timer();
             tExit.schedule(new TimerTask() {
                 @Override

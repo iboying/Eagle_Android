@@ -10,17 +10,10 @@ public class PowerAnalyse extends BaseActivity {
     private TextView subToolbarTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_power_analyse);
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        initToolbar();
-    }
-
-    @Override
-    protected void initView(Bundle savedInstanceState) {
-
     }
 
     @Override
@@ -30,7 +23,7 @@ public class PowerAnalyse extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-
+        initToolbar();
     }
 
     private void initToolbar() {
