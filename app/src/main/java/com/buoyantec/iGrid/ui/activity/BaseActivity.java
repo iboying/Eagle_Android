@@ -27,7 +27,7 @@ import retrofit2.Retrofit;
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener{
     protected String TAG;
     protected App mApp;
-    protected Engine mEngine;
+    protected static Engine mEngine;
     protected Engine mLoginEngine;
     private SweetAlertDialog mLoadingDialog;
 
@@ -37,7 +37,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
         // 在登录成功后初始化通用链接
-        setEngine();
         mLoginEngine = mApp.getLoginEngine();
         initView(savedInstanceState);
         setListener();
@@ -101,14 +100,14 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    // TODO: 16/3/16 通用链接放进app.java中
-    // 设置通用链接
-    private void setEngine() {
+    /**
+     * 设置通用链接,登录时调用一次,初始化全局静态变量mEngine
+     * @param sp
+     */
+    public void setEngine(SharedPreferences sp) {
         final String token;
         final String phone;
         // 获取token和phone
-        SharedPreferences sp = getApplicationContext()
-                .getSharedPreferences("foobar", Context.MODE_PRIVATE);
         token = sp.getString("token", null);
         phone = sp.getString("phone", null);
 
