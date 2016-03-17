@@ -135,14 +135,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         if (id == R.id.nav_user_number) {
-
+            Intent i = new Intent(this, MyActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_message) {
 
         } else if (id == R.id.nav_setting) {
             Intent i = new Intent(this, SettingActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_about) {
-
+            Intent i = new Intent(this, AboutActivity.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = getViewById(R.id.drawer_layout);

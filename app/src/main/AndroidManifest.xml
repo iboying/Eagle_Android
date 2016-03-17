@@ -323,6 +323,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
         </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".MyActivity"
+            android:label="@string/title_activity_my"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
