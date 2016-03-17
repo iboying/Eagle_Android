@@ -6,6 +6,6 @@
           android:id="@+id/toolbar_room"
           android:icon="@drawable/ic_action_room"
           android:orderInCategory="1"
-          android:title="search"
+          android:title="机房切换"
           app:showAsAction="ifRoom" />
 </menu>

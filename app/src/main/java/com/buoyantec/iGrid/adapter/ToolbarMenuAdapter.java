@@ -9,32 +9,34 @@ import android.widget.TextView;
 
 import com.buoyantec.iGrid.ui.activity.R;
 
+import java.util.List;
+
 /**
  * Created by kang on 16/3/4.
  * 菜单选项
  */
 public class ToolbarMenuAdapter extends BaseAdapter {
     private Context context;
-    private String[] rooms;
+    private List<String> rooms;
 
-    public ToolbarMenuAdapter(Context c, String[] rooms) {
+    public ToolbarMenuAdapter(Context c, List<String> rooms) {
         this.context = c;
         this.rooms = rooms;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return rooms.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return position;
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class ToolbarMenuAdapter extends BaseAdapter {
 
         TextView  room = BaseViewHolder.get(convertView, R.id.list_item_toolbar_menu_name);
 
-        room.setText(rooms[position]);
+        room.setText(rooms.get(position));
 
         return convertView;
     }

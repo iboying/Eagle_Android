@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,14 +18,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.buoyantec.iGrid.adapter.ToolbarMenuAdapter;
 import com.buoyantec.iGrid.ui.customView.BadgeView;
 import com.buoyantec.iGrid.adapter.MainGridAdapter;
 import com.buoyantec.iGrid.adapter.MySliderView;
@@ -48,14 +53,14 @@ import retrofit2.Response;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences mPreferences;
-    private String[] rooms;
+    private List<String> roomNames;
+    private List<Integer> roomIds;
     private HashMap<String, Integer> systemAlarmCount;
     private CircleProgressBar circleProgressBar;
     private static Boolean isExit = false;
     private Context context;
     // 组件
     private Toolbar toolbar;
-    private GridView gridView;
     // 机房弹出菜单
     private PopupWindow window = null;
     private LayoutInflater inflater;
@@ -82,8 +87,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             setContentView(R.layout.activity_main);
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
+            // 初始化变量
             circleProgressBar = getViewById(R.id.progressBar);
-
+            roomIds = new ArrayList<>();
+            roomNames = new ArrayList<>();
             context = this;
             // 初始化toolbar和侧边栏
             initToolBar();
@@ -99,9 +106,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void setListener() {}
 
     @Override
-    protected void processLogic(Bundle savedInstanceState) {
-
-    }
+    protected void processLogic(Bundle savedInstanceState) {}
 
     // 为后退键绑定关闭侧边菜单功能
     @Override
@@ -165,7 +170,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // 获取所有机房([id1, room1, id2, room2, ...])
         String sp_rooms = mPreferences.getString("rooms", null);
         if (sp_rooms != null) {
-            rooms = sp_rooms.split("#");
+            // [1,name,2,name2,...]
+            String[] rooms = sp_rooms.split("#");
+            // 存储机房id和机房名称
+            for (int i = 0; i < rooms.length; i++) {
+                if (i%2==0) {
+                    roomIds.add(Integer.parseInt(rooms[i]));
+                } else {
+                    roomNames.add(rooms[i]);
+                }
+            }
             String current_room = mPreferences.getString("current_room", null);
             subToolbarTitle.setText(current_room);
         } else {
@@ -173,9 +187,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    /**
-     * 添加侧边菜单,并绑定ToolBar菜单按钮
-     */
+    // 添加侧边菜单,并绑定ToolBar菜单按钮
     private void initDrawer() {
         DrawerLayout drawer = getViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -234,42 +246,34 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .show();
     }
 
-
-    /**
-     * 初始化轮播控件
-     */
+     // 初始化轮播控件
     private void initCarousel() {
         SliderLayout sliderShow = getViewById(R.id.slider);
         sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
 
-        final List<Integer> room_ids = new ArrayList<>();
-        final List<String> room_names = new ArrayList<>();
         List<Integer> room_images = new ArrayList<>();
-
         // 青海银监局使用指定图片
-        for (int i = 0; i< rooms.length; i+=2){
-            room_ids.add(Integer.parseInt(rooms[i]));
-            room_names.add(rooms[i + 1]);
-            if (rooms[i+1].equals("青海银监局")) {
+        for (int i = 0; i< roomIds.size(); i++){
+            if (roomNames.get(i).equals("青海银监局")) {
                 room_images.add(R.drawable.qinghai);
             } else {
                 room_images.add(R.drawable.image_room);
             }
         }
 
-        for (int i = 0; i< room_ids.size(); i++){
+        for (int i = 0; i< roomIds.size(); i++){
             MySliderView mySliderView = new MySliderView(this);
 
             final int finalI = i;
             mySliderView
-                    .description(room_names.get(i))
+                    .description(roomNames.get(i))
                     .image(room_images.get(i))
                     .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                         @Override
                         public void onSliderClick(BaseSliderView slider) {
                             SharedPreferences.Editor editor = mPreferences.edit();
-                            editor.putInt("current_room_id", room_ids.get(finalI));
-                            editor.putString("current_room", room_names.get(finalI));
+                            editor.putInt("current_room_id", roomIds.get(finalI));
+                            editor.putString("current_room", roomNames.get(finalI));
                             editor.apply();
                             finish();
                             Intent i = new Intent(MainActivity.this, MainActivity.class);
@@ -283,7 +287,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // 初始化栅格布局
     private void initGridView(){
-        gridView = getViewById(R.id.grid_view);
+        GridView gridView = getViewById(R.id.grid_view);
 
         Integer[] images = {
                 R.drawable.icon_system_status, R.drawable.icon_info,
@@ -321,11 +325,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Intent i = new Intent(MainActivity.this, ItManage.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
-                    showToast("暂未开通");                } else if (position == 5) {
+                    showToast("暂未开通");
+                } else if (position == 5) {
                     Intent i = new Intent(MainActivity.this, Other.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
-                    showToast("暂未开通");                }
+                    showToast("暂未开通");
+                }
             }
         });
     }
@@ -375,15 +381,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                     ImageView warnMessage = getViewById(R.id.grid_warn_message_image);
                     BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
-                    badge.setBadgeMargin(0,5);
+                    badge.setBadgeMargin(0, 5);
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.INVISIBLE);
                     if (count == 0) {
                         badge.hide();
                     } else {
-                        if (count>=1000) {
+                        if (count >= 1000) {
                             badge.setText("···");
-                        } else{
+                        } else {
                             badge.setText(count.toString());
                         }
                         badge.show();
@@ -406,48 +412,50 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
     }
 
-    // TODO: 16/3/4 显示机房切换菜单
-    // 显示机房菜单
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.toolbar_room) {
-//            if (window != null) {
-//                if (window.isShowing()) {
-//                    window.dismiss();
-//                    window = null;
-//                }
-//            } else {
-//                showWindow();
-//            }
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private void showWindow() {
-//        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        view = inflater.inflate(R.layout.toolbar_menu, null, false);
-//
-//        // 加载listView
-//        ListView listView = (ListView) view.findViewById(R.id.toolbar_room_list);
-//        listView.setAdapter(new ToolbarMenuAdapter(context, rooms));
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                Intent i = new Intent(MainActivity.this, MainActivity.class);
-//                startActivity(i);
-//            }
-//        });
-//
-//        if (window == null) {
-//            window = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        }
-//
-//        View room = getViewById(R.id.toolbar_room);
-//        window.showAtLocation(room, Gravity.NO_GRAVITY, 15, 160);
-//    }
+    // 选择机房下拉菜单
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.toolbar_room) {
+            View room = getViewById(R.id.toolbar_room);
+            displayPopupWindow(room);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void displayPopupWindow(View anchorView) {
+        // 实例化popWindow,并获取菜单
+        PopupWindow popup = new PopupWindow(context);
+        View layout = getLayoutInflater().inflate(R.layout.toolbar_menu, null);
+        // 加载机房列表
+        ListView listView = (ListView) layout.findViewById(R.id.toolbar_room_list);
+        listView.setAdapter(new ToolbarMenuAdapter(context, roomNames));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putInt("current_room_id", roomIds.get(position));
+                editor.putString("current_room", roomNames.get(position));
+                editor.apply();
+                finish();
+                Intent i = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
+        // 把菜单模块加入popWindow中
+        popup.setContentView(layout);
+        // 设置高度和宽度
+        popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popup.setWidth(300);
+        // 失去焦点时,关闭popWindow
+        popup.setOutsideTouchable(true);
+        popup.setFocusable(true);
+        // 给控件加上popWindow (使用背景图,取消注释)
+//        popup.setBackgroundDrawable(new BitmapDrawable());
+        popup.showAsDropDown(anchorView, 0, 5);
+    }
 }
