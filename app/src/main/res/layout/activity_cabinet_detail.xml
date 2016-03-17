@@ -14,7 +14,41 @@
         <!--顶部功能条-->
         <include layout="@layout/sub_toolbar"/>
     </android.support.design.widget.AppBarLayout>
-    <!--主体内容-->
-    <include layout="@layout/content_cabinet_detail"/>
+
+    <!--body-->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackgroundColor"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_cabinet_detail"
+        tools:context="com.buoyantec.iGrid.ui.activity.CabinetDetail">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="元件状态"/>
+
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            app:mlpb_progress_stoke_width="@dimen/stoke_width"
+            app:mlpb_progress_color="@color/loginFocusedBorder"
+            android:layout_width="@dimen/progress_size"
+            android:layout_height="@dimen/progress_size"
+            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"/>
+
+        <ListView
+            android:id="@+id/cabinet_detail_listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="0dp"
+            android:divider="@color/white"/>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

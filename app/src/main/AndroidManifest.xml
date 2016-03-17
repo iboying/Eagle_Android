@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.buoyantec.iGrid.ui.activity" >
 
@@ -12,15 +11,15 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
 
     <application
+        android:name="com.buoyantec.iGrid.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="com.buoyantec.iGrid.App"
-        tools:replace="android:icon">
+        tools:replace="android:icon" >
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -32,289 +31,297 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:name=".SystemStatus"
             android:label="@string/title_activity_system_status"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.WarnSystems"
+            android:name=".WarnSystems"
             android:label="@string/title_activity_warn_messages"
             android:launchMode="singleTask"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.WorkPlan"
+            android:name=".WorkPlan"
             android:label="@string/title_activity_work_plan"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.PowerManage"
+            android:name=".PowerManage"
             android:label="@string/title_activity_power_manage"
             android:launchMode="singleTask"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.ItManage"
+            android:name=".ItManage"
             android:label="@string/title_activity_it_manage"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.Other"
+            android:name=".Other"
             android:label="@string/title_activity_other"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.PowerDistribution"
+            android:name=".PowerDistribution"
             android:label="@string/title_activity_power_distribution"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.UpsSystem"
+            android:name=".UpsSystem"
             android:label="@string/title_activity_ups_system"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.Cabinet"
+            android:name=".Cabinet"
             android:label="@string/title_activity_cabinet"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.PrecisionAir"
+            android:name=".PrecisionAir"
             android:label="@string/title_activity_precision_air"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.Meter"
+            android:name=".Meter"
             android:label="@string/title_activity_box"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.Battery"
+            android:name=".Battery"
             android:label="@string/title_activity_battery"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.BatteryDetail"
+            android:name=".BatteryDetail"
             android:label="@string/title_activity_battery_show"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.Battery"
+            android:parentActivityName=".Battery"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.Battery" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.WarnDetail"
+            android:name=".WarnDetail"
             android:label="@string/title_activity_warn_detail"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.WarnDevices"
+            android:parentActivityName=".WarnDevices"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.WarnDevices" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.PrecisionAirDetail"
+            android:name=".PrecisionAirDetail"
             android:label="@string/title_activity_precision_air_detail"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.PrecisionAir"
+            android:parentActivityName=".PrecisionAir"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.PrecisionAir" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.MeterDetail"
+            android:name=".MeterDetail"
             android:label="@string/title_activity_box_detail"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.Meter"
+            android:parentActivityName=".Meter"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.Meter" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.Water"
+            android:name=".Water"
             android:label="@string/title_activity_water"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.Temperature"
+            android:name=".Temperature"
             android:label="@string/title_activity_temperature"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.VideoSystem"
+            android:name=".VideoSystem"
             android:label="@string/title_activity_video_system"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus"
+            android:parentActivityName=".SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.FireFightingDetail"
+            android:name=".FireFightingDetail"
             android:label="@string/title_activity_smoke"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.FireFighting"
+            android:parentActivityName=".FireFighting"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.FireFighting" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.Pue"
+            android:name=".Pue"
             android:label="@string/title_activity_pue"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.PowerManage"
+            android:parentActivityName=".PowerManage"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.PowerManage" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.PowerAnalyse"
+            android:name=".PowerAnalyse"
             android:label="@string/title_activity_power_analyse"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.PowerManage"
+            android:parentActivityName=".PowerManage"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.PowerManage" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.ElectricityData"
+            android:name=".ElectricityData"
             android:label="@string/title_activity_power_data"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.PowerManage"
+            android:parentActivityName=".PowerManage"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.PowerManage" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.UpsDetail"
+            android:name=".UpsDetail"
             android:label="@string/title_activity_ups_detail"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.UpsSystem"
+            android:parentActivityName=".UpsSystem"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.UpsSystem" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.PowerDetail"
+            android:name=".PowerDetail"
             android:label="@string/title_activity_power_detail"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.PowerDistribution"
+            android:parentActivityName=".PowerDistribution"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.PowerDistribution" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.WarnDevices"
+            android:name=".WarnDevices"
             android:label="@string/title_activity_warn_devices"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.WarnSystems" >
+            android:parentActivityName=".WarnSystems" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.WarnSystems" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.CabinetDetail"
+            android:name=".CabinetDetail"
             android:label="@string/title_activity_cabinet_detail"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.Cabinet" >
+            android:parentActivityName=".Cabinet" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.Cabinet" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.TemperatureDetail"
+            android:name=".TemperatureDetail"
             android:label="@string/title_activity_temperature_detail"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.Temperature" >
+            android:parentActivityName=".Temperature" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.Temperature" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.WaterDetail"
+            android:name=".WaterDetail"
             android:label="@string/title_activity_water_detail"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.Water" >
+            android:parentActivityName=".Water" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.Water" />
         </activity>
         <activity
-            android:name="com.buoyantec.iGrid.ui.activity.FireFighting"
+            android:name=".FireFighting"
             android:label="@string/title_activity_fire_fighting"
             android:launchMode="singleTop"
-            android:parentActivityName="com.buoyantec.iGrid.ui.activity.SystemStatus" >
+            android:parentActivityName=".SystemStatus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
         </activity>
     </application>
 

@@ -40,8 +40,6 @@ public class FireFighting extends BaseActivity {
         Iconify.with(new FontAwesomeModule());
         // 初始化变量
         init();
-        // 初始化toolbar
-        initToolbar();
     }
 
     @Override
@@ -49,6 +47,8 @@ public class FireFighting extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        // 初始化toolbar
+        initToolbar();
         // 加载list
         initListView();
     }

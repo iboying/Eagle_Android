@@ -15,6 +15,35 @@
         <include layout="@layout/sub_toolbar"/>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_meter"/>
+    <!--body-->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_meter"
+        android:background="@color/windowBackgroundColor"
+        tools:context="com.buoyantec.iGrid.ui.activity.Meter">
+
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            app:mlpb_progress_stoke_width="@dimen/stoke_width"
+            app:mlpb_progress_color="@color/loginFocusedBorder"
+            android:layout_width="@dimen/progress_size"
+            android:layout_height="@dimen/progress_size"
+            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"/>
+
+        <ListView
+            android:id="@+id/meter_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="1dp"
+            android:divider="@color/windowBackgroundColor">
+        </ListView>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

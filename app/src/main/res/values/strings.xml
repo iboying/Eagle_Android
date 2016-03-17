@@ -63,4 +63,5 @@
     <string name="getSuccess">==========Get: 成功==========</string>
     <string name="netWorkFailed">无法连接服务器</string>
     <string name="getDataFailed">获取数据失败</string>
+    <string name="title_activity_setting">SettingActivity</string>
 </resources>
