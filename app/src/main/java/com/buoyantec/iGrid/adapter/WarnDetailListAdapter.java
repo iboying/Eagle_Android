@@ -64,14 +64,14 @@ public class WarnDetailListAdapter extends BaseAdapter {
         TextView type = BaseViewHolder.get(convertView, R.id.warn_detail_type);
         TextView alarm = BaseViewHolder.get(convertView, R.id.warn_detail_alarm);
 
-        text_textView.setText("信息:  "+comments.get(position));
-        status_textView.setText("状态:  "+status.get(position));
+        text_textView.setText("描 述:  "+comments.get(position));
+        status_textView.setText("状 态:  "+status.get(position));
         data_textView.setText(updated_at.get(position));
-        type.setText("类型:  "+types.get(position));
+        type.setText("类 型:  "+types.get(position));
         if (alarms.get(position) == null || alarms.get(position).equals("")){
-            alarm.setText("备注:  无");
+            alarm.setText("详 情:  无");
         } else {
-            alarm.setText("备注:  "+alarms.get(position));
+            alarm.setText("详 情:  "+alarms.get(position));
         }
 
         return convertView;

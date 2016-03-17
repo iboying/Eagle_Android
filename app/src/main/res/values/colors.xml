@@ -22,6 +22,9 @@
     <!--侧边菜单栏背景色-->
     <color name="drawerBackgroundColor">#3F3F3F</color>
 
+    <!--侧边菜单内容文字颜色-->
+    <color name="nav_font_color">#959595</color>
+
     <!--登录页border-->
     <color name="loginFocusedBorder">#0072F8</color>
     <color name="loginNormalBorder">#9B9B9B</color>

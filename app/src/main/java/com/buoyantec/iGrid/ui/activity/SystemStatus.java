@@ -58,7 +58,6 @@ public class SystemStatus extends BaseActivity {
         initSystems();
     }
 
-    //-------------------私有方法--------------------
     private void init(){
         systemIcon = new HashMap<>();
         systemClass = new HashMap<>();

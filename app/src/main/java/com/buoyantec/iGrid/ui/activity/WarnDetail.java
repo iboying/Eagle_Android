@@ -106,7 +106,7 @@ public class WarnDetail extends BaseActivity {
                         alarms.add(pointAlarm.getAlarmValue());
                         status.add(pointAlarm.getMeaning());
                         if (pointAlarm.getType() == null) {
-                            types.add("告警");
+                            types.add("开关量告警");
                         } else {
                             types.add(pointAlarm.getType());
                         }

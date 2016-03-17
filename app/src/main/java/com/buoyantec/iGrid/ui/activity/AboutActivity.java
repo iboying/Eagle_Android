@@ -36,7 +36,7 @@ public class AboutActivity extends BaseActivity {
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        subToolbarTitle.setText("关于iGrid");
+        subToolbarTitle.setText("关 于");
     }
 
 }

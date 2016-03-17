@@ -138,7 +138,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Intent i = new Intent(this, MyActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_message) {
-
+            Intent i = new Intent(this, InfoActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_setting) {
             Intent i = new Intent(this, SettingActivity.class);
             startActivity(i);
