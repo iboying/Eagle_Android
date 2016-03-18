@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="#303030">
 
     <ListView
         android:id="@+id/toolbar_room_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="#000000"
-        android:dividerHeight="1dp"/>
+        android:dividerHeight="1px"/>
 </LinearLayout>

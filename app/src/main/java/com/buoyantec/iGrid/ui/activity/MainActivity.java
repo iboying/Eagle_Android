@@ -61,10 +61,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private Context context;
     // 组件
     private Toolbar toolbar;
-    // 机房弹出菜单
-    private PopupWindow window = null;
-    private LayoutInflater inflater;
-    private View view;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -430,7 +426,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void displayPopupWindow(View anchorView) {
         // 实例化popWindow,并获取菜单
-        PopupWindow popup = new PopupWindow(context);
+        final PopupWindow popup = new PopupWindow(context);
         View layout = getLayoutInflater().inflate(R.layout.toolbar_menu, null);
         // 加载机房列表
         ListView listView = (ListView) layout.findViewById(R.id.toolbar_room_list);
@@ -441,6 +437,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 editor.putInt("current_room_id", roomIds.get(position));
                 editor.putString("current_room", roomNames.get(position));
                 editor.apply();
+                // 切记,切换activity时,清除popupWindow
+                popup.dismiss();
                 finish();
                 Intent i = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(i);
@@ -454,8 +452,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // 失去焦点时,关闭popWindow
         popup.setOutsideTouchable(true);
         popup.setFocusable(true);
-        // 给控件加上popWindow (使用背景图,取消注释)
-//        popup.setBackgroundDrawable(new BitmapDrawable());
-        popup.showAsDropDown(anchorView, 0, 5);
+        // 给控件加上popWindow, setBackgroundDrawable可以取消popupWindow的边框
+        popup.setBackgroundDrawable(new BitmapDrawable());
+        // 设置相对于父级控件的位置
+        popup.showAsDropDown(anchorView, -200, 0);
     }
 }
