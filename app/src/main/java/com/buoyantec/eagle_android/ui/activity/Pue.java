@@ -3,6 +3,8 @@ package com.buoyantec.eagle_android.ui.activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 public class Pue extends BaseActivity {

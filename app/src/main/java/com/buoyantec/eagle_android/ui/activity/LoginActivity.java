@@ -45,6 +45,7 @@ public class LoginActivity extends BaseActivity {
     private CircleProgressBar mProgressView;
     private View mLoginFormView;
     private Button mLoginButton;
+    private TextView forgotPassword;
     // 数据
     private SharedPreferences mPreferences;
     private Context context;
@@ -58,6 +59,7 @@ public class LoginActivity extends BaseActivity {
         mLoginButton = getViewById(R.id.sign_in_button);
         mLoginFormView = getViewById(R.id.login_form);
         mProgressView = getViewById(R.id.progressBar);
+        forgotPassword = getViewById(R.id.forgotPasswordTextView);
 
         mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
@@ -88,6 +90,15 @@ public class LoginActivity extends BaseActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        // 忘记密码
+        forgotPassword.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, forgotPasswordActivity.class);
+                startActivity(i);
             }
         });
 
@@ -162,15 +173,22 @@ public class LoginActivity extends BaseActivity {
         View focusView = null;
 
         // 验证: 密码是否为空/密码是否符合自定义规则
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        } else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
-
         // 验证: 手机号是否为空/手机号是否符合自定义规则
-        if (TextUtils.isEmpty(phone) && !isPhoneValid(phone)) {
+        if (TextUtils.isEmpty(phone)) {
             mPhoneView.setError(getString(R.string.error_field_required));
+            focusView = mPhoneView;
+            cancel = true;
+        }else if (!isPhoneValid(phone)) {
+            mPhoneView.setError(getString(R.string.error_invalid_phone));
             focusView = mPhoneView;
             cancel = true;
         }
