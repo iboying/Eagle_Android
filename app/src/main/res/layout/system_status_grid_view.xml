@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="165dp">
-    <com.buoyantec.iGrid.ui.customView.MyGridView
+    <com.buoyantec.eagle_android.ui.customView.MyGridView
         android:id="@+id/system_status_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

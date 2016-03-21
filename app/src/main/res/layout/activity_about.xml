@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/windowBackgroundColor"
-    tools:context="com.buoyantec.iGrid.ui.activity.AboutActivity">
+    tools:context="com.buoyantec.eagle_android.ui.activity.AboutActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:background="@color/windowBackgroundColor"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.buoyantec.iGrid.ui.activity.AboutActivity">
+        tools:context="com.buoyantec.eagle_android.ui.activity.AboutActivity">
 
 
         <ImageView

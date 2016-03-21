@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.buoyantec.iGrid.ui.activity.WarnDetail">
+    tools:context="com.buoyantec.eagle_android.ui.activity.WarnDetail">
 
     <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:background="@color/windowBackgroundColor"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_warn_detail"
-        tools:context="com.buoyantec.iGrid.ui.activity.WarnDetail">
+        tools:context="com.buoyantec.eagle_android.ui.activity.WarnDetail">
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"

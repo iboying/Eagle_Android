@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.buoyantec.iGrid.ui.activity" >
-
-    <!-- if you want to load images from the internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
+    package="com.buoyantec.eagle_android.ui.activity" >
 
     <application
-        android:name="com.buoyantec.iGrid.App"
+        android:name="com.buoyantec.eagle_android.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon" >
+
         <activity
-            android:name=".MainActivity"
+            android:name="com.buoyantec.eagle_android.ui.activity.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -31,322 +25,437 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.buoyantec.eagle_android.ui.activity.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".SystemStatus"
+            android:name="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:label="@string/title_activity_system_status"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".WarnSystems"
+            android:name="com.buoyantec.eagle_android.ui.activity.WarnSystems"
             android:label="@string/title_activity_warn_messages"
             android:launchMode="singleTask"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".WorkPlan"
+            android:name="com.buoyantec.eagle_android.ui.activity.WorkPlan"
             android:label="@string/title_activity_work_plan"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".PowerManage"
+            android:name="com.buoyantec.eagle_android.ui.activity.PowerManage"
             android:label="@string/title_activity_power_manage"
             android:launchMode="singleTask"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".ItManage"
+            android:name="com.buoyantec.eagle_android.ui.activity.ItManage"
             android:label="@string/title_activity_it_manage"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".Other"
+            android:name="com.buoyantec.eagle_android.ui.activity.Other"
             android:label="@string/title_activity_other"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".PowerDistribution"
+            android:name="com.buoyantec.eagle_android.ui.activity.PowerDistribution"
             android:label="@string/title_activity_power_distribution"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".UpsSystem"
+            android:name="com.buoyantec.eagle_android.ui.activity.UpsSystem"
             android:label="@string/title_activity_ups_system"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".Cabinet"
+            android:name="com.buoyantec.eagle_android.ui.activity.Cabinet"
             android:label="@string/title_activity_cabinet"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".PrecisionAir"
+            android:name="com.buoyantec.eagle_android.ui.activity.PrecisionAir"
             android:label="@string/title_activity_precision_air"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".Meter"
+            android:name="com.buoyantec.eagle_android.ui.activity.Meter"
             android:label="@string/title_activity_box"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".Battery"
+            android:name="com.buoyantec.eagle_android.ui.activity.Battery"
             android:label="@string/title_activity_battery"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".BatteryDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.BatteryDetail"
             android:label="@string/title_activity_battery_show"
-            android:parentActivityName=".Battery"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.Battery"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.Battery" />
+                android:value="com.buoyantec.eagle_android.ui.activity.Battery" />
         </activity>
         <activity
-            android:name=".WarnDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.WarnDetail"
             android:label="@string/title_activity_warn_detail"
-            android:parentActivityName=".WarnDevices"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.WarnDevices"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.WarnDevices" />
+                android:value="com.buoyantec.eagle_android.ui.activity.WarnDevices" />
         </activity>
         <activity
-            android:name=".PrecisionAirDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.PrecisionAirDetail"
             android:label="@string/title_activity_precision_air_detail"
-            android:parentActivityName=".PrecisionAir"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.PrecisionAir"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.PrecisionAir" />
+                android:value="com.buoyantec.eagle_android.ui.activity.PrecisionAir" />
         </activity>
         <activity
-            android:name=".MeterDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.MeterDetail"
             android:label="@string/title_activity_box_detail"
-            android:parentActivityName=".Meter"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.Meter"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.Meter" />
+                android:value="com.buoyantec.eagle_android.ui.activity.Meter" />
         </activity>
         <activity
-            android:name=".Water"
+            android:name="com.buoyantec.eagle_android.ui.activity.Water"
             android:label="@string/title_activity_water"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".Temperature"
+            android:name="com.buoyantec.eagle_android.ui.activity.Temperature"
             android:label="@string/title_activity_temperature"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".VideoSystem"
+            android:name="com.buoyantec.eagle_android.ui.activity.VideoSystem"
             android:label="@string/title_activity_video_system"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".FireFightingDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.FireFightingDetail"
             android:label="@string/title_activity_smoke"
             android:launchMode="singleTop"
-            android:parentActivityName=".FireFighting"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.FireFighting"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.FireFighting" />
+                android:value="com.buoyantec.eagle_android.ui.activity.FireFighting" />
         </activity>
         <activity
-            android:name=".Pue"
+            android:name="com.buoyantec.eagle_android.ui.activity.Pue"
             android:label="@string/title_activity_pue"
-            android:parentActivityName=".PowerManage"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.PowerManage"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.PowerManage" />
+                android:value="com.buoyantec.eagle_android.ui.activity.PowerManage" />
         </activity>
         <activity
-            android:name=".PowerAnalyse"
+            android:name="com.buoyantec.eagle_android.ui.activity.PowerAnalyse"
             android:label="@string/title_activity_power_analyse"
-            android:parentActivityName=".PowerManage"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.PowerManage"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.PowerManage" />
+                android:value="com.buoyantec.eagle_android.ui.activity.PowerManage" />
         </activity>
         <activity
-            android:name=".ElectricityData"
+            android:name="com.buoyantec.eagle_android.ui.activity.ElectricityData"
             android:label="@string/title_activity_power_data"
-            android:parentActivityName=".PowerManage"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.PowerManage"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.PowerManage" />
+                android:value="com.buoyantec.eagle_android.ui.activity.PowerManage" />
         </activity>
         <activity
-            android:name=".UpsDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.UpsDetail"
             android:label="@string/title_activity_ups_detail"
-            android:parentActivityName=".UpsSystem"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.UpsSystem"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.UpsSystem" />
+                android:value="com.buoyantec.eagle_android.ui.activity.UpsSystem" />
         </activity>
         <activity
-            android:name=".PowerDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.PowerDetail"
             android:label="@string/title_activity_power_detail"
-            android:parentActivityName=".PowerDistribution"
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.PowerDistribution"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.PowerDistribution" />
+                android:value="com.buoyantec.eagle_android.ui.activity.PowerDistribution" />
         </activity>
         <activity
-            android:name=".WarnDevices"
+            android:name="com.buoyantec.eagle_android.ui.activity.WarnDevices"
             android:label="@string/title_activity_warn_devices"
             android:launchMode="singleTop"
-            android:parentActivityName=".WarnSystems" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.WarnSystems" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.WarnSystems" />
+                android:value="com.buoyantec.eagle_android.ui.activity.WarnSystems" />
         </activity>
         <activity
-            android:name=".CabinetDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.CabinetDetail"
             android:label="@string/title_activity_cabinet_detail"
-            android:parentActivityName=".Cabinet" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.Cabinet" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.Cabinet" />
+                android:value="com.buoyantec.eagle_android.ui.activity.Cabinet" />
         </activity>
         <activity
-            android:name=".TemperatureDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.TemperatureDetail"
             android:label="@string/title_activity_temperature_detail"
-            android:parentActivityName=".Temperature" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.Temperature" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.Temperature" />
+                android:value="com.buoyantec.eagle_android.ui.activity.Temperature" />
         </activity>
         <activity
-            android:name=".WaterDetail"
+            android:name="com.buoyantec.eagle_android.ui.activity.WaterDetail"
             android:label="@string/title_activity_water_detail"
-            android:parentActivityName=".Water" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.Water" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.Water" />
+                android:value="com.buoyantec.eagle_android.ui.activity.Water" />
         </activity>
         <activity
-            android:name=".FireFighting"
+            android:name="com.buoyantec.eagle_android.ui.activity.FireFighting"
             android:label="@string/title_activity_fire_fighting"
             android:launchMode="singleTop"
-            android:parentActivityName=".SystemStatus" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.SystemStatus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.SystemStatus" />
+                android:value="com.buoyantec.eagle_android.ui.activity.SystemStatus" />
         </activity>
         <activity
-            android:name=".SettingActivity"
+            android:name="com.buoyantec.eagle_android.ui.activity.SettingActivity"
             android:label="@string/title_activity_setting"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name="com.buoyantec.eagle_android.ui.activity.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".MyActivity"
+            android:name="com.buoyantec.eagle_android.ui.activity.MyActivity"
             android:label="@string/title_activity_my"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MainActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".InfoActivity"
+            android:name="com.buoyantec.eagle_android.ui.activity.InfoActivity"
             android:label="@string/title_activity_info"
-            android:parentActivityName=".MyActivity" >
+            android:parentActivityName="com.buoyantec.eagle_android.ui.activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.iGrid.ui.activity.MyActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MyActivity" />
         </activity>
-    </application>
 
+        <!--信鸽推送-->
+
+
+        <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
+        <activity
+            android:name="com.tencent.android.tpush.XGPushActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:exported="false" >
+            <intent-filter>
+                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action"-->
+                <action android:name="android.intent.action" />
+            </intent-filter>
+        </activity>
+        <!-- 【必须】 信鸽receiver广播接收 -->
+        <receiver
+            android:name="com.tencent.android.tpush.XGPushReceiver"
+            android:process=":xg_service_v2" >
+            <intent-filter android:priority="0x7fffffff" >
+
+                <!-- 【必须】 信鸽SDK的内部广播 -->
+                <action android:name="com.tencent.android.tpush.action.SDK" />
+                <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />
+                <!-- 【必须】 系统广播：网络切换 -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+                <!-- 【可选】 系统广播：开屏 -->
+                <action android:name="android.intent.action.USER_PRESENT" />
+
+                <!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+            <!-- 【可选】 usb相关的系统广播，增强信鸽service的复活机会，请根据需要添加 -->
+            <intent-filter android:priority="0x7fffffff" >
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
+                <action android:name="android.intent.action.MEDIA_REMOVED" />
+                <action android:name="android.intent.action.MEDIA_CHECKING" />
+                <action android:name="android.intent.action.MEDIA_EJECT" />
+
+                <data android:scheme="file" />
+            </intent-filter>
+        </receiver>
+        <!-- 【必须】 信鸽service -->
+        <service
+            android:name="com.tencent.android.tpush.service.XGPushService"
+            android:exported="true"
+            android:persistent="true"
+            android:process=":xg_service_v2" />
+        <!-- 【必须】 通知service，其中android:name部分要改为当前包名 -->
+        <service
+            android:name="com.tencent.android.tpush.rpc.XGRemoteService"
+            android:exported="true" >
+            <intent-filter>
+                <!-- 【必须】 请修改为当前APP名包.PUSH_ACTION，如demo的包名为：com.qq.xgdemo -->
+                <action android:name="com.buoyantec.eagle_android.PUSH_ACTION" />
+            </intent-filter>
+        </service>
+        <!-- 已废弃，可删除之；若不删除也不会有任何副作用 -->
+        <!--<service
+            android:name="com.tencent.android.tpush.service.XGDaemonService"
+            android:process=":qq_push_daemon" />
+        -->
+        <!-- 【可选】信鸽拉起其他APP应用，若应用在本地找不到可以自动下载 -->
+        <!--
+              <service
+            android:name="com.tencent.android.tpush.XGDownloadService"
+            android:enabled="true"
+            android:exported="false" />
+        -->
+        <!-- 【可选】APP实现的Receiver，用于接收消息透传和操作结果的回调，请根据需要添加 -->
+        <!-- YOUR_PACKAGE_PATH.CustomPushReceiver需要改为自己的Receiver： -->
+        <!--<receiver android:name="com.buoyantec.eagle_android.receiver.MessageReceiver"-->
+                  <!--android:exported="false">-->
+            <!--<intent-filter>-->
+                <!--&lt;!&ndash; 接收消息透传 &ndash;&gt;-->
+                <!--<action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />-->
+                <!--&lt;!&ndash; 监听注册、反注册、设置/删除标签、通知被点击等处理结果 &ndash;&gt;-->
+                <!--<action android:name="com.tencent.android.tpush.action.FEEDBACK" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <!-- 【必须】 请修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_ID"
+            android:value="2100188827" />
+        <!-- 【必须】 请修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_KEY"
+            android:value="A79K548GFSCQ" />
+
+    </application>`
+
+    <!-- 权限 -->
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <!-- 【必须】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 【常用】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 【可选】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
 </manifest>
