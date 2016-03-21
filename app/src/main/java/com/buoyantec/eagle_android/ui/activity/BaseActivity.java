@@ -42,6 +42,17 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         processLogic(savedInstanceState);
     }
 
+    @Override
+    protected void onStop() {
+        stopElement();
+        super.onStop();
+    }
+
+    /**
+     * stop事件
+     */
+    protected void stopElement() {}
+
     /**
      * 全局查找View
      */

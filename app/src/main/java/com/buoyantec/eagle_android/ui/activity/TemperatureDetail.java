@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.loopj.android.image.SmartImageView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
@@ -54,13 +55,9 @@ public class TemperatureDetail extends BaseActivity {
         initToolbar();
         // 初始化list
         initListView();
-
-        String current_room = sp.getString("current_room", null);
-        assert current_room != null;
-        if (current_room.equals("青海银监局")) {
-            ImageView imageView = getViewById(R.id.temperature_detail_image);
-            imageView.setImageResource(R.drawable.temperature_detail);
-        }
+        // TODO: 16/3/21 获取地址加载温湿度图片
+        SmartImageView myImage = getViewById(R.id.temperature_detail_image);
+        myImage.setImageUrl("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
     }
 
     private void initToolbar() {

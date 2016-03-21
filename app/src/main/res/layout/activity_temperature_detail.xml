@@ -30,12 +30,11 @@
             android:background="@color/white"
             android:padding="20dp">
 
-            <ImageView
+            <com.loopj.android.image.SmartImageView
                 android:id="@+id/temperature_detail_image"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="center"
-                android:src="@drawable/temperature"
                 android:contentDescription="温湿度检测"/>
         </LinearLayout>
 

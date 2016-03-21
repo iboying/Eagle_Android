@@ -29,37 +29,44 @@
             tools:context=".MainActivity">
 
             <!--首页轮播-->
-            <RelativeLayout
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--tools:context="com.daimajia.slider.demo.MainActivity">-->
+                <!--<com.daimajia.slider.library.SliderLayout-->
+                    <!--android:id="@+id/slider"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/SliderImageColor"/>-->
+                <!--<com.daimajia.slider.library.Indicators.PagerIndicator-->
+                    <!--android:id="@+id/custom_indicator"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="6dp"-->
+                    <!--android:gravity="center"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--app:selected_color="#000000"-->
+                    <!--app:unselected_color="#55555555"-->
+                    <!--app:shape="oval"-->
+                    <!--app:selected_padding_left="3dp"-->
+                    <!--app:selected_padding_right="3dp"-->
+                    <!--app:unselected_padding_left="3dp"-->
+                    <!--app:unselected_padding_right="3dp"-->
+                    <!--app:selected_width="6dp"-->
+                    <!--app:selected_height="6dp"-->
+                    <!--app:unselected_width="6dp"-->
+                    <!--app:unselected_height="6dp"/>-->
+
+            <!--</RelativeLayout>-->
+
+            <com.loopj.android.image.SmartImageView
+                android:id="@+id/room_image"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                tools:context="com.daimajia.slider.demo.MainActivity">
-                <com.daimajia.slider.library.SliderLayout
-                    android:id="@+id/slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/SliderImageColor"/>
-                <com.daimajia.slider.library.Indicators.PagerIndicator
-                    android:id="@+id/custom_indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="6dp"
-                    android:gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    app:selected_color="#000000"
-                    app:unselected_color="#55555555"
-                    app:shape="oval"
-                    app:selected_padding_left="3dp"
-                    app:selected_padding_right="3dp"
-                    app:unselected_padding_left="3dp"
-                    app:unselected_padding_right="3dp"
-                    app:selected_width="6dp"
-                    app:selected_height="6dp"
-                    app:unselected_width="6dp"
-                    app:unselected_height="6dp"/>
-
-            </RelativeLayout>
+                android:scaleType="center"/>
 
             <!--GridView布局-->
             <LinearLayout

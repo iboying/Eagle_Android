@@ -38,6 +38,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.loopj.android.image.SmartImageView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -63,6 +64,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private Context context;
     // 组件
     private Toolbar toolbar;
+    private SliderLayout sliderShow;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
             // 初始化变量
+//            sliderShow = getViewById(R.id.slider);
             circleProgressBar = getViewById(R.id.progressBar);
             roomIds = new ArrayList<>();
             roomNames = new ArrayList<>();
@@ -95,9 +98,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             initDrawer();
             // 图片轮播
             initCarousel();
+            // 首页机房图片
+            roomImage();
             // 初始化GridView
             initGridView();
         }
+    }
+
+    private void roomImage() {
+        // TODO: 16/3/21 获取机房图片地址
+        SmartImageView myImage = getViewById(R.id.room_image);
+        myImage.setImageUrl("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
     }
 
     @Override
@@ -267,41 +278,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
      // 初始化轮播控件
     private void initCarousel() {
-        SliderLayout sliderShow = getViewById(R.id.slider);
-        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
 
-        List<Integer> room_images = new ArrayList<>();
-        // 青海银监局使用指定图片
-        for (int i = 0; i< roomIds.size(); i++){
-            if (roomNames.get(i).equals("青海银监局")) {
-                room_images.add(R.drawable.qinghai);
-            } else {
-                room_images.add(R.drawable.image_room);
-            }
-        }
-
-        for (int i = 0; i< roomIds.size(); i++){
-            MySliderView mySliderView = new MySliderView(this);
-
-            final int finalI = i;
-            mySliderView
-                    .description(roomNames.get(i))
-                    .image(room_images.get(i))
-                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                        @Override
-                        public void onSliderClick(BaseSliderView slider) {
-                            SharedPreferences.Editor editor = mPreferences.edit();
-                            editor.putInt("current_room_id", roomIds.get(finalI));
-                            editor.putString("current_room", roomNames.get(finalI));
-                            editor.apply();
-                            finish();
-                            Intent i = new Intent(MainActivity.this, MainActivity.class);
-                            startActivity(i);
-                        }
-                    });
-            sliderShow.addSlider(mySliderView);
-        }
-        sliderShow.setDuration(8000);
+//        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
+//        MySliderView mySliderView = new MySliderView(this);
+//        mySliderView
+//            .description(mPreferences.getString("current_room", null))
+//                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg")
+//                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+//                    @Override
+//                    public void onSliderClick(BaseSliderView slider) {
+//                        SharedPreferences.Editor editor = mPreferences.edit();
+//                        editor.putInt("current_room_id", mPreferences.getInt("current_room_id", 0));
+//                        editor.putString("current_room", mPreferences.getString("current_room", null));
+//                        editor.apply();
+//                        finish();
+//                        Intent i = new Intent(MainActivity.this, MainActivity.class);
+//                        startActivity(i);
+//                    }
+//            });
+//        sliderShow.addSlider(mySliderView);
+//        sliderShow.setDuration(8000);
     }
 
     // 初始化栅格布局
@@ -479,5 +475,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         popup.setBackgroundDrawable(new BitmapDrawable());
         // 设置相对于父级控件的位置
         popup.showAsDropDown(anchorView, -200, 0);
+    }
+
+    /**
+     * onStop事件
+     */
+    @Override
+    public void stopElement() {
+//        sliderShow.stopAutoCycle();
+        super.stopElement();
     }
 }
