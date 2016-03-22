@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -30,6 +29,8 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,12 +75,9 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void setListener() {
         // 点击登录按钮
-        mLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                beginLogin();
-            }
-        });
+        mLoginButton.setOnClickListener(this);
+        // 忘记密码
+        forgotPassword.setOnClickListener(this);
 
         // 密码编辑响应
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -90,15 +88,6 @@ public class LoginActivity extends BaseActivity {
                     return true;
                 }
                 return false;
-            }
-        });
-
-        // 忘记密码
-        forgotPassword.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, forgotPasswordActivity.class);
-                startActivity(i);
             }
         });
 
@@ -139,6 +128,21 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_in_button:
+                beginLogin();
+                break;
+            case R.id.forgotPasswordTextView:
+                Intent i = new Intent(context, forgotPasswordActivity.class);
+                i.putExtra("phone", mPhoneView.getText().toString());
+                startActivity(i);
+                break;
+        }
+        super.onClick(v);
     }
 
     @Override
@@ -208,7 +212,15 @@ public class LoginActivity extends BaseActivity {
      * 验证手机号格式
      */
     private boolean isPhoneValid(String phone) {
-        return phone.length() == 11;
+        boolean flag;
+        try{
+            Pattern pattern = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+            Matcher matcher = pattern.matcher(phone);
+            flag = matcher.matches();
+        }catch(Exception e){
+            flag = false;
+        }
+        return flag;
     }
 
     /**
@@ -254,7 +266,7 @@ public class LoginActivity extends BaseActivity {
      * 调用接口,处理数据
      */
     private void loginTask(final String phone, final String password) {
-        mLoginEngine.getUser(phone, password).enqueue(new Callback<User>() {
+        mNoHeaderEngine.getUser(phone, password).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Response<User> response) {
                 int code = response.code();

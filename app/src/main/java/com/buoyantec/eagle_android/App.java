@@ -13,7 +13,7 @@ import retrofit2.Retrofit;
  */
 public class App extends Application {
     private static App sInstance;
-    private Engine loginEngine;
+    private Engine noHeaderEngine;
 
     @Override
     public void onCreate() {
@@ -33,13 +33,13 @@ public class App extends Application {
     /**
      * 返回登录链接
      */
-    public Engine getLoginEngine() {
-        return loginEngine;
+    public Engine getNoHeaderEngine() {
+        return noHeaderEngine;
     }
 
     // 设置登录链接
     private void setLoginEngine() {
-        loginEngine = new Retrofit.Builder()
+        noHeaderEngine = new Retrofit.Builder()
                 .baseUrl("http://139.196.190.201/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(Engine.class);

@@ -8,6 +8,8 @@ import com.buoyantec.eagle_android.model.Rooms;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.User;
 
+import java.util.HashMap;
+
 import retrofit2.Call;
 
 import retrofit2.http.Field;
@@ -29,6 +31,19 @@ public interface Engine {
     @POST("users/sign_in")
     Call<User> getUser(@Field("user[phone]") String phone, @Field("user[password]") String password);
 
+
+    // 获取验证码
+    @FormUrlEncoded
+    @Headers("Accept: application/json")
+    @POST("sms_tokens")
+    Call<HashMap<String, String>> getSms(@Field("sms_token[phone]") String phone);
+
+    // 修改密码
+    @FormUrlEncoded
+    @Headers("Accept: application/json")
+    @POST("users/update_password")
+    Call<User> updatePassword(@Field("user[phone]") String phone, @Field("user[password]") String password, @Field("user[sms_token]") String sms);
+
     // 获取机房列表 status: 200
     @Headers("Accept: application/json")
     @GET("rooms")
@@ -49,7 +64,6 @@ public interface Engine {
     @Headers("Accept: application/json")
     @GET("rooms/{room_id}/devices/{id}")
     Call<DeviceDetail> getDeviceDataHash(@Path("room_id") Integer room_id, @Path("id") Integer device_id);
-
 
 
     // 根据设备id获取设备告警列表 status: 200

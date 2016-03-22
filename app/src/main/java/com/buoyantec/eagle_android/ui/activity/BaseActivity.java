@@ -27,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected String TAG;
     protected App mApp;
     protected static Engine mEngine;
-    protected Engine mLoginEngine;
+    protected Engine mNoHeaderEngine;
     private SweetAlertDialog mLoadingDialog;
 
     @Override
@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
         // 在登录成功后初始化通用链接
-        mLoginEngine = mApp.getLoginEngine();
+        mNoHeaderEngine = mApp.getNoHeaderEngine();
         initView(savedInstanceState);
         setListener();
         processLogic(savedInstanceState);
@@ -89,28 +89,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
     /**
-     * 显示alert
-     */
-    public void showLoadingDialog() {
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-            mLoadingDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
-            mLoadingDialog.setCancelable(false);
-            mLoadingDialog.setTitleText("数据加载中...");
-        }
-        mLoadingDialog.show();
-    }
-
-    /**
-     * 隐藏alert
-     */
-    public void dismissLoadingDialog() {
-        if (mLoadingDialog != null) {
-            mLoadingDialog.dismiss();
-        }
-    }
-
-    /**
      * 设置通用链接,登录时调用一次,初始化全局静态变量mEngine
      * @param sp
      */
@@ -139,5 +117,27 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build().create(Engine.class);
+    }
+
+    /**
+     * alert: 载入
+     */
+    public void showLoadingDialog(String msg) {
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            mLoadingDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
+            mLoadingDialog.setCancelable(false);
+            mLoadingDialog.setTitleText(msg);
+        }
+        mLoadingDialog.show();
+    }
+
+    /**
+     * 隐藏alert
+     */
+    public void dismissLoadingDialog() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
+        }
     }
 }
