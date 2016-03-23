@@ -1,7 +1,9 @@
 package com.buoyantec.eagle_android.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +35,7 @@ public class SystemStatus extends BaseActivity {
     private HashMap<String, String[]> kindSystems;
     private Integer statusCode;
     private Context context;
+    private SharedPreferences sp;
     // 组件
     private Toolbar toolbar;
     private TextView subToolbarTitle;
@@ -122,7 +125,10 @@ public class SystemStatus extends BaseActivity {
      * 动态获取系统列表
      */
     private void initSystems() {
-        mEngine.getSystems().enqueue(new Callback<MySystems>() {
+        Integer room_id = getIntent().getIntExtra("room_id", 0);
+        if (room_id == 0)
+            room_id = null;
+        mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
                 statusCode = response.code();
@@ -143,10 +149,8 @@ public class SystemStatus extends BaseActivity {
                             subSystemList.add(subName);
                         }
                         // 把分类名和对应的子系统列表写入HashMap
-                        if (subSystemList.size() > 0) {
-                            kindSystems.put(systemName,
-                                    subSystemList.toArray(new String[subSystemList.size()]));
-                        }
+                        if (subSystemList.size() > 0)
+                            kindSystems.put(systemName, subSystemList.toArray(new String[subSystemList.size()]));
                     }
 
                     // 按照kindSystems加载UI

@@ -59,6 +59,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private CircleProgressBar circleProgressBar;
     private static Boolean isExit = false;
     private Context context;
+
+    private Integer current_room_id;
     // 组件
     private Toolbar toolbar;
     private SliderLayout sliderShow;
@@ -72,7 +74,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
          */
         mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         String token = mPreferences.getString("token", "");
-        Integer current_room_id = mPreferences.getInt("current_room_id", 0);
+        current_room_id = mPreferences.getInt("current_room_id", 0);
         String rooms = mPreferences.getString("rooms", null);
         String current_room = mPreferences.getString("current_room", null);
 
@@ -314,12 +316,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
                     Intent i = new Intent(MainActivity.this, SystemStatus.class);
+                    i.putExtra("room_id", current_room_id);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
                 } else if (position == 1) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("systemAlarmCount", systemAlarmCount);
                     Intent i = new Intent(MainActivity.this, WarnSystems.class);
+                    i.putExtra("room_id", current_room_id);
                     i.putExtra("title", texts[position]);
                     i.putExtras(bundle);
                     startActivity(i);

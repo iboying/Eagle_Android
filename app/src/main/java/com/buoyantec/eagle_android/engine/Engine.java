@@ -52,7 +52,7 @@ public interface Engine {
     // 获取系统列表 status: 200
     @Headers("Accept: application/json")
     @GET("systems")
-    Call<MySystems> getSystems();
+    Call<MySystems> getSystems(@Query("room_id") Integer room_id);
 
     // 根据子系统获取设备, 返回: device类
     @FormUrlEncoded

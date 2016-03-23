@@ -14,9 +14,15 @@ public class Room {
     @SerializedName("name")
     @Expose
     private String name;
+
     @SerializedName("id")
     @Expose
     private int id;
+
+    @SerializedName("pic")
+    @Expose
+    private String pic;
+
 
     public String getName() {
         return name;
@@ -25,6 +31,10 @@ public class Room {
 
     public int getId() {
         return id;
+    }
+
+    public String getPic() {
+        return pic;
     }
 
 }

@@ -90,7 +90,10 @@ public class WarnSystems extends BaseActivity{
     }
 
     private void initListView() {
-        mEngine.getSystems().enqueue(new Callback<MySystems>() {
+        Integer room_id = getIntent().getIntExtra("room_id", 0);
+        if (room_id == 0)
+            room_id = null;
+        mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
                 statusCode = response.code();
