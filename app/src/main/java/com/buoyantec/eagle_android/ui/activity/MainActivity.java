@@ -32,14 +32,12 @@ import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.model.Result;
 import com.buoyantec.eagle_android.model.Results;
-import com.daimajia.slider.library.SliderLayout;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.loopj.android.image.SmartImageView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
-import com.tencent.android.tpush.service.XGPushService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,7 +63,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private Integer current_room_id;
     // 组件
     private Toolbar toolbar;
-    private SliderLayout sliderShow;
+//    private SliderLayout sliderShow;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -124,19 +122,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        // TODO: 16/3/18 推送待解决
+        /**
+         * 注册信鸽推送
+         */
         // 开启logcat输出，方便debug，发布时请关闭
         XGPushConfig.enableDebug(this, true);
         // 如果需要知道注册是否成功，请使用registerPush(getApplicationContext(), XGIOperateCallback)带callback版本
         // 如果需要绑定账号，请使用registerPush(getApplicationContext(),account)版本
         // 具体可参考详细的开发指南
         // 传递的参数为ApplicationContext
-            Context context = getApplicationContext();
-            XGPushManager.registerPush(context);
+        Context context = getApplicationContext();
+        XGPushManager.registerPush(context);
 
-        // 2.36（不包括）之前的版本需要调用以下2行代码
-            Intent service = new Intent(context, XGPushService.class);
-            context.startService(service);
+        // 2.36（不包括）之前的版本需要调用以下2行代码(新版本,一定要注释掉)
+        // Intent service = new Intent(context, XGPushService.class);
+        // context.startService(service);
 
         // 其它常用的API：
         // 绑定账号（别名）注册：registerPush(context,account)或registerPush(context,account, XGIOperateCallback)，其中account为APP账号，可以为任意字符串（qq、openid或任意第三方），业务方一定要注意终端与后台保持一致。
@@ -289,29 +289,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 })
                 .show();
     }
-
-     // 初始化轮播控件
-//    private void initCarousel() {
-//        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
-//        MySliderView mySliderView = new MySliderView(this);
-//        mySliderView
-//            .description(mPreferences.getString("current_room", null))
-//                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg")
-//                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-//                    @Override
-//                    public void onSliderClick(BaseSliderView slider) {
-//                        SharedPreferences.Editor editor = mPreferences.edit();
-//                        editor.putInt("current_room_id", mPreferences.getInt("current_room_id", 0));
-//                        editor.putString("current_room", mPreferences.getString("current_room", null));
-//                        editor.apply();
-//                        finish();
-//                        Intent i = new Intent(MainActivity.this, MainActivity.class);
-//                        startActivity(i);
-//                    }
-//            });
-//        sliderShow.addSlider(mySliderView);
-//        sliderShow.setDuration(8000);
-//    }
 
     // 初始化栅格布局
     private void initGridView(){
@@ -495,10 +472,34 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * onStop事件
+     * 使用轮播时,需调用
      */
     @Override
     public void stopElement() {
 //        sliderShow.stopAutoCycle();
         super.stopElement();
     }
+
+    // 初始化轮播控件
+//    private void initCarousel() {
+//        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
+//        MySliderView mySliderView = new MySliderView(this);
+//        mySliderView
+//            .description(mPreferences.getString("current_room", null))
+//                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg")
+//                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+//                    @Override
+//                    public void onSliderClick(BaseSliderView slider) {
+//                        SharedPreferences.Editor editor = mPreferences.edit();
+//                        editor.putInt("current_room_id", mPreferences.getInt("current_room_id", 0));
+//                        editor.putString("current_room", mPreferences.getString("current_room", null));
+//                        editor.apply();
+//                        finish();
+//                        Intent i = new Intent(MainActivity.this, MainActivity.class);
+//                        startActivity(i);
+//                    }
+//            });
+//        sliderShow.addSlider(mySliderView);
+//        sliderShow.setDuration(8000);
+//    }
 }

@@ -36,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
         // 在登录成功后初始化通用链接
+
         mNoHeaderEngine = mApp.getNoHeaderEngine();
         initView(savedInstanceState);
         setListener();

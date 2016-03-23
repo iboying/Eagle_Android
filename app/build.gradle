@@ -17,6 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -48,7 +54,4 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0-SNAPSHOT'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
     compile 'org.glassfish:javax.annotation:10.0-b28'
-    compile files('libs/Xg_sdk_v2.42_20160111_1539.jar')
-    compile files('libs/wup-1.0.0.E-SNAPSHOT.jar')
-    compile files('libs/android-smart-image-view-1.0.0.jar')
 }
