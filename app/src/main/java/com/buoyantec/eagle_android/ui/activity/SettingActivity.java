@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
@@ -9,12 +10,12 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.tencent.android.tpush.XGPushManager;
+
 public class SettingActivity extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private Switch receiveMsg;
-    
-    private SharedPreferences sp;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -22,8 +23,6 @@ public class SettingActivity extends BaseActivity {
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         receiveMsg = getViewById(R.id.settingSwitch);
-        
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
     @Override
@@ -31,10 +30,13 @@ public class SettingActivity extends BaseActivity {
         receiveMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Context context = getApplicationContext();
                 if (receiveMsg.isChecked()) {
-                    showToast("接收消息");
+                    XGPushManager.registerPush(context);
+                    showToast("设置成功");
                 } else {
-                    showToast("拒绝消息");
+                    XGPushManager.unregisterPush(context);
+                    showToast("设置成功");
                 }
             }
         });
