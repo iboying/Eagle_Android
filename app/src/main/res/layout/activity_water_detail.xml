@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
                 android:gravity="center"
-                android:src="@drawable/water"
+                android:scaleType="centerInside"
                 android:contentDescription="漏水检测"/>
         </LinearLayout>
 

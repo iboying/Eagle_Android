@@ -42,6 +42,7 @@ import com.tencent.android.tpush.XGPushManager;
 import com.tencent.android.tpush.service.XGPushService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -55,6 +56,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private SharedPreferences mPreferences;
     private List<String> roomNames;
     private List<Integer> roomIds;
+    private List<String> roomPics;
     private HashMap<String, Integer> systemAlarmCount;
     private CircleProgressBar circleProgressBar;
     private static Boolean isExit = false;
@@ -91,12 +93,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             circleProgressBar = getViewById(R.id.progressBar);
             roomIds = new ArrayList<>();
             roomNames = new ArrayList<>();
+            roomPics = new ArrayList<>();
             context = this;
             // 初始化toolbar和侧边栏
             initToolBar();
             initDrawer();
             // 图片轮播
-            initCarousel();
+//            initCarousel();
             // 首页机房图片
             roomImage();
             // 初始化GridView
@@ -106,8 +109,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void roomImage() {
         // TODO: 16/3/21 获取机房图片地址
+        String current_room_pic = mPreferences.getString("current_room_pic", null);
         SmartImageView myImage = getViewById(R.id.room_image);
-        myImage.setImageUrl("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
+
+        if (current_room_pic == null || current_room_pic.equals("null")) {
+            myImage.setBackgroundResource(R.drawable.room_default);
+        } else {
+            myImage.setImageUrl(current_room_pic);
+        }
     }
 
     @Override
@@ -196,6 +205,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         assert actionBar != null;
         TextView subToolbarTitle = getViewById(R.id.toolbar_title);
 
+        // 获取机房图片
+        String sp_paths = mPreferences.getString("pic_paths", null);
+        if (sp_paths != null) {
+            String[] paths = sp_paths.split("##");
+            Collections.addAll(roomPics, paths);
+        }
         // 获取所有机房([id1, room1, id2, room2, ...])
         String sp_rooms = mPreferences.getString("rooms", null);
         if (sp_rooms != null) {
@@ -276,8 +291,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
      // 初始化轮播控件
-    private void initCarousel() {
-
+//    private void initCarousel() {
 //        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
 //        MySliderView mySliderView = new MySliderView(this);
 //        mySliderView
@@ -297,7 +311,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //            });
 //        sliderShow.addSlider(mySliderView);
 //        sliderShow.setDuration(8000);
-    }
+//    }
 
     // 初始化栅格布局
     private void initGridView(){
@@ -456,6 +470,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putInt("current_room_id", roomIds.get(position));
                 editor.putString("current_room", roomNames.get(position));
+                editor.putString("current_room_pic", roomPics.get(position));
                 editor.apply();
                 // 切记,切换activity时,清除popupWindow
                 popup.dismiss();

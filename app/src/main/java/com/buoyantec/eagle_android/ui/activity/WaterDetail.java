@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,7 +28,7 @@ public class WaterDetail extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private ListView listView;
-    private ImageView imageView;
+    private SmartImageView waterImage;
     private SharedPreferences sp;
     private Context context;
 
@@ -38,7 +37,7 @@ public class WaterDetail extends BaseActivity {
         setContentView(R.layout.activity_water_detail);
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        imageView = getViewById(R.id.water_detail_image);
+        waterImage = getViewById(R.id.water_detail_image);
         listView = getViewById(R.id.water_detail_listView);
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
@@ -55,9 +54,6 @@ public class WaterDetail extends BaseActivity {
         initToolbar();
         // 初始化list
         initListView();
-        // TODO: 16/3/21 获取地址加载漏水图片
-        SmartImageView myImage = getViewById(R.id.water_detail_image);
-        myImage.setImageUrl("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
     }
 
     private void initToolbar() {
@@ -86,6 +82,14 @@ public class WaterDetail extends BaseActivity {
                 if (code == 200) {
                     ArrayList<String> names = new ArrayList<>();
                     ArrayList<String> status = new ArrayList<>();
+
+                    // 获取图片
+                    String path = response.body().getPic();
+                    if (path == null || path.equals("null")) {
+                        waterImage.setBackgroundResource(R.drawable.device_default);
+                    } else {
+                        waterImage.setImageUrl(path);
+                    }
 
                     // 循环list,存入数组
                     List<HashMap<String, String>> points = response.body().getAlarms();

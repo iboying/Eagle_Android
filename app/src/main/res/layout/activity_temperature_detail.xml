@@ -35,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="center"
+                android:scaleType="centerInside"
                 android:contentDescription="温湿度检测"/>
         </LinearLayout>
 

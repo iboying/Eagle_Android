@@ -89,7 +89,7 @@ public class Water extends BaseActivity {
                 if (code == 200) {
                     List<String> names = new ArrayList<>();
                     final List<Integer> ids = new ArrayList<>();
-                    // 获取用户
+                    // 获取设备
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
                         names.add(device.getName());

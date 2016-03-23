@@ -13,15 +13,23 @@ public class DeviceDetail {
     @SerializedName("id")
     @Expose
     private int id;
+
     @SerializedName("name")
     @Expose
     private String name;
+
+    @SerializedName("pic")
+    @Expose
+    private String pic;
+
     @SerializedName("points")
     @Expose
     private List<HashMap<String, String>> points = new ArrayList<HashMap<String, String>>();
+
     @SerializedName("alarms")
     @Expose
     private List<HashMap<String, String>> alarms = new ArrayList<HashMap<String, String>>();
+
 
     /**
      *
@@ -39,6 +47,10 @@ public class DeviceDetail {
      */
     public String getName() {
         return name;
+    }
+
+    public String getPic() {
+        return pic;
     }
 
     /**

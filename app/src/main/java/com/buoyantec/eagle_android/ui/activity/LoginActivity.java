@@ -315,6 +315,7 @@ public class LoginActivity extends BaseActivity {
                 int code = response.code();
                 if (response.body() != null && code == 200) {
                     String result = "";
+                    String pic_path = "";
                     // 获得机房List
                     List<Room> roomList = response.body().getRooms();
                     // 遍历机房
@@ -324,6 +325,8 @@ public class LoginActivity extends BaseActivity {
                             result += '#';
                             result += room.getName();
                             result += '#';
+                            pic_path += room.getPic();
+                            pic_path += "##";
                         }
                     }
 
@@ -335,13 +338,21 @@ public class LoginActivity extends BaseActivity {
                         i.putExtra("error", "没有可管理的机房,请联系管理员");
                         startActivity(i);
                     } else {
+                        // 机房信息[id,name,id,name]
                         String[] rooms = result.split("#");
+                        // 机房图片路径
+                        String[] paths = pic_path.split("##");
+                        // 取第一个机房为默认机房
                         Integer room_id = Integer.parseInt(rooms[0]);
                         String room = rooms[1];
+                        // 取第一个路径为默认路径
+                        String path = paths[0];
                         // 保存当前机房信息
                         editor.putString("rooms", result);
+                        editor.putString("pic_paths", pic_path);
                         editor.putString("current_room", room);
                         editor.putInt("current_room_id", room_id);
+                        editor.putString("current_room_pic", path);
                         editor.apply();
                         // 进入主页
                         Intent i = new Intent(context, MainActivity.class);

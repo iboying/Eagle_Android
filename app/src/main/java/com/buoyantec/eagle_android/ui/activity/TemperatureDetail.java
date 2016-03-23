@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,6 +27,7 @@ public class TemperatureDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
     private SharedPreferences sp;
     private Toolbar toolbar;
+    private SmartImageView myImage;
     private TextView subToolbarTitle;
     private ListView listView;
     private Context context;
@@ -39,6 +39,7 @@ public class TemperatureDetail extends BaseActivity {
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        myImage = getViewById(R.id.temperature_detail_image);
         listView = getViewById(R.id.temperature_detail_listView);
         circleProgressBar = getViewById(R.id.progressBar);
         context = this;
@@ -55,9 +56,6 @@ public class TemperatureDetail extends BaseActivity {
         initToolbar();
         // 初始化list
         initListView();
-        // TODO: 16/3/21 获取地址加载温湿度图片
-        SmartImageView myImage = getViewById(R.id.temperature_detail_image);
-        myImage.setImageUrl("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
     }
 
     private void initToolbar() {
@@ -84,6 +82,13 @@ public class TemperatureDetail extends BaseActivity {
                     ArrayList<String> tem = new ArrayList<>();
                     ArrayList<String> hum = new ArrayList<>();
 
+                    // 获取图片
+                    String path = response.body().getPic();
+                    if (path == null || path.equals("null")) {
+                        myImage.setBackgroundResource(R.drawable.device_default);
+                    } else {
+                        myImage.setImageUrl(path);
+                    }
                     // 循环list,存入数组
                     List<HashMap<String, String>> points = response.body().getPoints();
                     int i = 1;

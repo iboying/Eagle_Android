@@ -23,10 +23,6 @@ public class Device {
     @Expose
     private String name;
 
-    @SerializedName("pic")
-    @Expose
-    private String pic;
-
     // 配电系统,空调系统(室外机,冷水机组)
     @SerializedName("alarm")
     @Expose
@@ -52,14 +48,6 @@ public class Device {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * @return
-     * The pic
-     */
-    public String getPic() {
-        return pic;
     }
 
     /**

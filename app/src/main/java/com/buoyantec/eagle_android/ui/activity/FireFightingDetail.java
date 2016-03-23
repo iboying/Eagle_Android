@@ -27,6 +27,7 @@ import retrofit2.Response;
 public class FireFightingDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
+    private SmartImageView myImage;
     private Context context;
     private SharedPreferences sp;
 
@@ -34,14 +35,9 @@ public class FireFightingDetail extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_fire_fighting_detail);
         toolbar = getViewById(R.id.sub_toolbar);
+        myImage = getViewById(R.id.fire_fighting_detail_image);
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
-        // 初始化toolbar
-        initToolbar();
-
-        // TODO: 16/3/21 获取地址加载消防图片
-        SmartImageView myImage = getViewById(R.id.fire_fighting_detail_image);
-        myImage.setImageUrl("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
     }
 
     @Override
@@ -51,6 +47,8 @@ public class FireFightingDetail extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        // 初始化toolbar
+        initToolbar();
         // 初始化list
         initListView();
     }
@@ -84,6 +82,13 @@ public class FireFightingDetail extends BaseActivity {
                 if (code == 200) {
                     ArrayList<String> names = new ArrayList<>();
                     ArrayList<String> status = new ArrayList<>();
+                    // 获取图片
+                    String path = response.body().getPic();
+                    if (path == null || path.equals("null")) {
+                        myImage.setBackgroundResource(R.drawable.device_default);
+                    } else {
+                        myImage.setImageUrl(path);
+                    }
                     // 循环list,存入数组
                     List<HashMap<String, String>> points = response.body().getAlarms();
                     for (HashMap<String, String> point : points) {
