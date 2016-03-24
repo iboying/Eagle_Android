@@ -30,6 +30,19 @@ public class DeviceDetail {
     @Expose
     private List<HashMap<String, String>> alarms = new ArrayList<HashMap<String, String>>();
 
+    // V2版本
+    @SerializedName("number_type")
+    @Expose
+    private List<HashMap<String, String>> numberType = new ArrayList<HashMap<String, String>>();
+
+    @SerializedName("status_type")
+    @Expose
+    private List<HashMap<String, String>> statusType = new ArrayList<HashMap<String, String>>();
+
+    @SerializedName("alarm_type")
+    @Expose
+    private List<HashMap<String, String>> alarmType = new ArrayList<HashMap<String, String>>();
+
 
     /**
      *
@@ -69,6 +82,22 @@ public class DeviceDetail {
      */
     public List<HashMap<String, String>> getAlarms() {
         return alarms;
+    }
+
+
+    // V2 版本
+
+
+    public List<HashMap<String, String>> getNumberType() {
+        return numberType;
+    }
+
+    public List<HashMap<String, String>> getAlarmType() {
+        return alarmType;
+    }
+
+    public List<HashMap<String, String>> getStatusType() {
+        return statusType;
     }
 
 }

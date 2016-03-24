@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
+import com.buoyantec.eagle_android.adapter.CustomAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
@@ -88,7 +88,17 @@ public class UpsDetail extends BaseActivity {
 
                     // 加载列表
                     ListView listView = getViewById(R.id.ups_detail_listView);
-                    listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
+//                    listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
+
+                    CustomAdapter mAdapter = new CustomAdapter(context);
+                    for (int i = 1; i < 30; i++) {
+                        mAdapter.addItem("Row Item #" + i);
+                        if (i % 4 == 0) {
+                            mAdapter.addSectionHeaderItem("Section #" + i);
+                        }
+                    }
+                    listView.setAdapter(mAdapter);
+//                    setListAdapter(mAdapter);
 
                     Log.i("UPS系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
