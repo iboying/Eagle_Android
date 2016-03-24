@@ -23,18 +23,19 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.buoyantec.eagle_android.ui.activity.Pue">
 
-        <LinearLayout
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="40dp">
+            android:layout_height="3sp"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_bar_color"
+            android:id="@+id/pue_progress"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:gravity="center"
-                android:src="@drawable/pue"/>
-        </LinearLayout>
+        <WebView
+            android:id="@+id/pue_web"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </WebView>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
