@@ -118,8 +118,6 @@ public class PrecisionAir extends BaseActivity {
                             }
                         }
                     }
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
 
                     // 图标
                     Integer image = R.drawable.air;
@@ -138,9 +136,14 @@ public class PrecisionAir extends BaseActivity {
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     showToast(context.getString(R.string.getDataFailed));
                     Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
                 }

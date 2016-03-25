@@ -11,13 +11,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,27 +80,26 @@ public class MeterDetail extends BaseActivity {
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
         // 获取指定链接数据
-        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {
                 int code = response.code();
                 if (code == 200) {
-                    ArrayList<String> names = new ArrayList<>();
-                    ArrayList<String> values = new ArrayList<>();
-
                     // 循环list,存入数组
-                    List<HashMap<String, String>> points = response.body().getPoints();
-                    for (HashMap<String, String> point : points) {
-                        names.add(point.get("name"));
-                        values.add(point.get("value"));
-                    }
+                    List<HashMap<String, String>> numbers = response.body().getNumberType();
+                    List<HashMap<String, String>> status = response.body().getStatusType();
+                    List<HashMap<String, String>> alarms = response.body().getAlarmType();
+
+                    // 调用helper,生成ListView
+                    DeviceDetailList deviceDetailList = new DeviceDetailList(context, listView, numbers, status, alarms);
+                    deviceDetailList.setListView();
+
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.GONE);
-
-                    // 加载列表
-                    listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
                     Log.i("电量仪系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     showToast(context.getString(R.string.getDataFailed));
                     Log.i("电量仪系统->详情", context.getString(R.string.getFailed) + code);
                 }

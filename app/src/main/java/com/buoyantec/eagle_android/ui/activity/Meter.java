@@ -109,9 +109,6 @@ public class Meter extends BaseActivity {
                         values.add(v);
                     }
 
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
-
                     // 图标
                     Integer image = R.drawable.power_distribution;
 
@@ -128,6 +125,9 @@ public class Meter extends BaseActivity {
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息

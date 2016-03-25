@@ -107,9 +107,6 @@ public class UpsSystem extends BaseActivity {
                         values.add(v);
                     }
 
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
-
                     // references to our images
                     Integer image = R.drawable.ups_system;
 
@@ -123,9 +120,14 @@ public class UpsSystem extends BaseActivity {
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     showToast(context.getString(R.string.getDataFailed));
                     Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
                 }

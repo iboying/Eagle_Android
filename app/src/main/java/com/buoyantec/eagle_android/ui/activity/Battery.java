@@ -80,9 +80,6 @@ public class Battery extends BaseActivity {
                     // 列表图标
                     Integer image = R.drawable.battery;
 
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
-
                     // 加载设备列表
                     ListView listView = getViewById(R.id.battery_listView);
                     listView.setAdapter(new BatteryListAdapter(listView, context, image, names, keys, values));
@@ -96,6 +93,9 @@ public class Battery extends BaseActivity {
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息

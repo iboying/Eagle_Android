@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.adapter.WaterListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.loopj.android.image.SmartImageView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
@@ -72,15 +73,11 @@ public class FireFightingDetail extends BaseActivity {
         Integer room_id = sp.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
-        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
                 int code = response.code();
                 if (code == 200) {
-                    ArrayList<String> names = new ArrayList<>();
-                    ArrayList<String> status = new ArrayList<>();
                     // 获取图片
                     String path = response.body().getPic();
                     if (path == null || path.equals("null")) {
@@ -88,18 +85,23 @@ public class FireFightingDetail extends BaseActivity {
                     } else {
                         myImage.setImageUrl(path);
                     }
-                    // 循环list,存入数组
-                    List<HashMap<String, String>> points = response.body().getAlarms();
-                    for (HashMap<String, String> point : points) {
-                        names.add(point.get("name"));
-                        status.add(point.get("value"));
-                    }
-                    // 加载列表
-                    ListView listView = getViewById(R.id.fire_fighting_detail_listView);
-                    listView.setAdapter(new WaterListAdapter(listView, context, names, status));
 
+                    // 循环list,存入数组
+                    List<HashMap<String, String>> numbers = response.body().getNumberType();
+                    List<HashMap<String, String>> status = response.body().getStatusType();
+                    List<HashMap<String, String>> alarms = response.body().getAlarmType();
+
+                    // 调用helper,生成ListView
+                    ListView listView = getViewById(R.id.fire_fighting_detail_listView);
+                    DeviceDetailList deviceDetailList = new DeviceDetailList(context, listView, numbers, status, alarms);
+                    deviceDetailList.setListView();
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i("消防系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     showToast(context.getString(R.string.getDataFailed));
                     Log.i("消防系统->详情", context.getString(R.string.getFailed) + code);
                 }

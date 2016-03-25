@@ -98,8 +98,6 @@ public class Temperature extends BaseActivity {
                         names.add(device.getName());
                         ids.add(device.getId());
                     }
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
 
                     // 图标
                     Integer image = R.drawable.system_status_temperature;
@@ -114,9 +112,14 @@ public class Temperature extends BaseActivity {
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     showToast(context.getString(R.string.getDataFailed));
                     Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
                 }

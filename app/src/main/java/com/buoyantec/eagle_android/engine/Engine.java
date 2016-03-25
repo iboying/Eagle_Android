@@ -66,7 +66,7 @@ public interface Engine {
     @GET("rooms/{room_id}/devices/{id}")
     Call<DeviceDetail> getDeviceDataHash(@Path("room_id") Integer room_id, @Path("id") Integer device_id);
 
-    // 根据设备id获取设备信息(v2) status: 200, 返回hashMap
+    // 根据设备id获取设备信息(v2版本) status: 200, 返回hashMap
     @Headers("Accept: application/json")
     @GET("v2/rooms/{room_id}/devices/{id}")
     Call<DeviceDetail> getDeviceDataHashV2(@Path("room_id") Integer room_id, @Path("id") Integer device_id);

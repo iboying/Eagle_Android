@@ -28,11 +28,11 @@
         tools:showIn="@layout/activity_cabinet_detail"
         tools:context="com.buoyantec.eagle_android.ui.activity.CabinetDetail">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="元件状态"/>
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:gravity="center"-->
+            <!--android:text="元件状态"/>-->
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"
