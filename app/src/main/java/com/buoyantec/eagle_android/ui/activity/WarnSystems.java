@@ -114,23 +114,16 @@ public class WarnSystems extends BaseActivity{
                         // 获取所有的子系统( 比如: ups, 配电..)
                         for (SubSystem subSystem : mySystem.getSubSystem()) {
                             String subName = subSystem.getSubSystemName();
-                            names.add(subName);
-                            device_images.add(systemIcon.get(subName));
-                            ids.add(subSystem.getId());
                             if (map != null) {
                                 if (map.get(subName) != null) {
+                                    names.add(subName);
+                                    ids.add(subSystem.getId());
+                                    device_images.add(systemIcon.get(subName));
                                     alarmCount.add(map.get(subName));
-                                } else {
-                                    alarmCount.add(0);
                                 }
-                            } else {
-                                alarmCount.add(0);
                             }
                         }
                     }
-
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
 
                     // 图片
                     Integer[] images = device_images.toArray(new Integer[device_images.size()]);
@@ -146,8 +139,13 @@ public class WarnSystems extends BaseActivity{
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i("系统告警", context.getString(R.string.getSuccess) + statusCode);
                 } else {
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     showToast(context.getString(R.string.getDataFailed));
                     Log.i("系统告警", context.getString(R.string.getFailed) + statusCode);
                 }

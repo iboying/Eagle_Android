@@ -84,7 +84,8 @@ public class WarnDevices extends BaseActivity {
         mEngine.getDeviceAlarmCount(room_id, sub_system_id).enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {
-                if (response.code() == 200) {
+                Integer statusCode = response.code();
+                if (statusCode == 200) {
                     // 计数
                     List<Result> results = response.body().getResults();
                     for (Result result : results) {
@@ -93,13 +94,14 @@ public class WarnDevices extends BaseActivity {
 
                     // 获得告警数,加载listView
                     initListView(deviceCount);
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                 } else {
                     // 输出非201时的错误信息
-                    System.out.println(">>>>>>>>>>设备告警数量接口状态错误>>>>>>>>>>>>");
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putInt("error_status_code", response.code());
-                    editor.putString("error_msg", response.errorBody().toString());
-                    editor.apply();
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
+                    showToast(context.getString(R.string.getDataFailed));
+                    Log.i("系统告警", context.getString(R.string.getFailed) + statusCode);
                 }
             }
 
@@ -108,7 +110,6 @@ public class WarnDevices extends BaseActivity {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 System.out.println("设备告警数量接口,链接错误");
-                // TODO: 16/2/19 错误处理
             }
         });
     }
@@ -129,17 +130,12 @@ public class WarnDevices extends BaseActivity {
                         String deviceName = device.getName();
                         Integer id = device.getId();
 
-                        names.add(deviceName);
-                        ids.add(id);
                         if (countMap.get(deviceName) != null) {
                             alarmCount.add(countMap.get(deviceName));
-                        } else {
-                            alarmCount.add(0);
+                            names.add(deviceName);
+                            ids.add(id);
                         }
                     }
-
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
 
                     // images
                     Integer[] images = new Integer[names.size()];
@@ -154,6 +150,9 @@ public class WarnDevices extends BaseActivity {
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i("设备告警", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
