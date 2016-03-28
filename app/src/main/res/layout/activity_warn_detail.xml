@@ -40,6 +40,7 @@
             android:id="@+id/warn_detail_listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:dividerHeight="1dp"
             android:divider="@color/windowBackgroundColor"/>
     </LinearLayout>

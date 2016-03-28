@@ -89,4 +89,9 @@ public interface Engine {
     @POST("rooms/{room_id}/point_alarms/count")
     Call<Results> getDeviceAlarmCount(@Path("room_id") Integer room_id, @Field("sub_system_id") Integer sub_system_id);
 
+    // 确认告警
+    @Headers("Accept: application/json")
+    @POST("point_alarms/{point_id}/checked")
+    Call<Results> checkAlarm(@Path("point_id") Integer point_id);
+
 }
