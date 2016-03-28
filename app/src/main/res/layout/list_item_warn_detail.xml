@@ -81,14 +81,4 @@
         android:textColor="@color/list_dot_red"
         android:singleLine="true"/>
 
-    <!--<Button-->
-        <!--android:id="@+id/warn_detail_confirm"-->
-        <!--android:layout_width="44dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:background="@drawable/warn_detail_btn_bg"-->
-        <!--android:visibility="invisible"-->
-        <!--android:text="确认"/>-->
-
 </LinearLayout>

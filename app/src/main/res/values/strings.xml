@@ -74,4 +74,8 @@
     <string name="netWorkFailed">无法连接服务器</string>
     <string name="getDataFailed">获取数据失败</string>
     <string name="title_activity_forgot_password">forgotPasswordActivity</string>
+    <string name="title_activity_receiver">Receiver</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
