@@ -327,7 +327,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Intent i = new Intent(MainActivity.this, PowerManage.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
-                    showToast("暂未开通");
                 } else if (position == 4) {
                     Intent i = new Intent(MainActivity.this, ItManage.class);
                     i.putExtra("title", texts[position]);

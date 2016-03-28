@@ -33,7 +33,11 @@ public class PointAlarm {
 
     @SerializedName("is_checked")
     @Expose
-    private boolean isChecked;
+    private boolean checked;
+
+    @SerializedName("checked_user")
+    @Expose
+    private String checkedUser;
 
     @SerializedName("point_id")
     @Expose
@@ -112,10 +116,19 @@ public class PointAlarm {
     /**
      *
      * @return
-     * The isChecked
+     * The checked
      */
-    public boolean isIsChecked() {
-        return isChecked;
+    public boolean isChecked() {
+        return checked;
+    }
+
+    /**
+     *
+     * @return
+     * The checkedUser
+     */
+    public String getCheckedUser() {
+        return checkedUser;
     }
 
     /**

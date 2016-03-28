@@ -11,16 +11,6 @@
     android:orientation="horizontal"
     android:background="@color/white">
 
-    <com.joanzapata.iconify.widget.IconTextView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:background="#EAAD40"
-        android:text="{fa-exclamation}"
-        android:textSize="26sp"
-        android:textColor="@color/white"
-        android:singleLine="true"/>
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -79,6 +69,17 @@
             android:textColor="@color/gray"
             android:textSize="12sp"/>
     </LinearLayout>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/device_detail_checked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="{fa-info-circle}"
+        android:textSize="20sp"
+        android:textColor="@color/list_dot_red"
+        android:singleLine="true"/>
 
     <!--<Button-->
         <!--android:id="@+id/warn_detail_confirm"-->

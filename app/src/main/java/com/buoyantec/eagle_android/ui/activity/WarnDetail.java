@@ -39,6 +39,7 @@ public class WarnDetail extends BaseActivity {
     private List<String> times = new ArrayList<>();
     private List<String> alarms = new ArrayList<>();
     private List<String> status = new ArrayList<>();
+    private List<Boolean> checked = new ArrayList<>();
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -95,7 +96,6 @@ public class WarnDetail extends BaseActivity {
 
                 final Integer total_pages = alarm.getTotalPages();
                 final Integer current_page = alarm.getCurrentPage();
-                List<String> data = new ArrayList<>();
 
                 if (code == 200) {
                     // 获取数据
@@ -105,6 +105,7 @@ public class WarnDetail extends BaseActivity {
                         times.add(pointAlarm.getUpdatedAt());
                         alarms.add(pointAlarm.getAlarmValue());
                         status.add(pointAlarm.getMeaning());
+                        checked.add(pointAlarm.isChecked());
                         if (pointAlarm.getType() == null) {
                             types.add("开关量告警");
                         } else {
@@ -115,7 +116,7 @@ public class WarnDetail extends BaseActivity {
                     circleProgressBar.setVisibility(View.GONE);
 
                     // ListView填装数据
-                    BaseAdapter adapter = new WarnDetailListAdapter(context, comments, types, times, alarms, status);
+                    BaseAdapter adapter = new WarnDetailListAdapter(context, comments, types, times, alarms, status, checked);
                     adapter.notifyDataSetChanged();
                     listView.setAdapter(adapter);
 
