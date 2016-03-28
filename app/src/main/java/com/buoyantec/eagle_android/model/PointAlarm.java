@@ -31,6 +31,10 @@ public class PointAlarm {
     @Expose
     private String updatedAt;
 
+    @SerializedName("checked_at")
+    @Expose
+    private String checkedAt;
+
     @SerializedName("is_checked")
     @Expose
     private boolean checked;
@@ -58,6 +62,10 @@ public class PointAlarm {
     @SerializedName("alarm_value")
     @Expose
     private String alarmValue;
+
+    @SerializedName("point_name")
+    @Expose
+    private String pointName;
 
     /**
      *
@@ -129,6 +137,14 @@ public class PointAlarm {
      */
     public String getCheckedUser() {
         return checkedUser;
+    }
+
+    public String getPointName() {
+        return pointName;
+    }
+
+    public String getCheckedAt() {
+        return checkedAt;
     }
 
     /**

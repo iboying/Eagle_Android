@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,16 +40,20 @@ public class WarnDetail extends BaseActivity {
     private TextView subToolbarTitle;
     // 列表数据
     private List<Integer> point_ids = new ArrayList<>();
+    private List<String> pointNames = new ArrayList<>();
     private List<String> comments = new ArrayList<>();
     private List<String> types = new ArrayList<>();
-    private List<String> times = new ArrayList<>();
+    private List<String> alarmTimes = new ArrayList<>();
+    private List<String> checkedAt = new ArrayList<>();
     private List<String> alarms = new ArrayList<>();
-    private List<String> status = new ArrayList<>();
-    private List<Boolean> checked = new ArrayList<>();
-    private List<String> userNames = new ArrayList<>();
+    private List<String> meanings = new ArrayList<>();
+    private List<Boolean> isChecked = new ArrayList<>();
+    private List<String> checkedUser = new ArrayList<>();
+    private List<Integer> state = new ArrayList<>();
     // 模态框
     private MaterialDialog materialDialog;
     private View dialogDetail;
+    private TextView alarmPoint;
     private TextView info;
     private TextView alarmStatus;
     private TextView level;
@@ -95,6 +100,7 @@ public class WarnDetail extends BaseActivity {
         materialDialog = new MaterialDialog(this);
         dialogDetail = View.inflate(context, R.layout.alarm_detail, null);
         info = (TextView) dialogDetail.findViewById(R.id.push_alarm_info);
+        alarmPoint = (TextView) dialogDetail.findViewById(R.id.push_point_name);
         alarmStatus = (TextView) dialogDetail.findViewById(R.id.push_alarm_status);
         level = (TextView) dialogDetail.findViewById(R.id.push_alarm_level);
         alarmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_time);
@@ -112,6 +118,11 @@ public class WarnDetail extends BaseActivity {
         subToolbarTitle.setText(title);
     }
 
+    /**
+     * 解除时间：
+     * 如果state不为0，则空白，因为此时告警未解除。
+     * 如果state为0，则取updated_at，作为告警解除时间
+     */
     private void initListView(Integer page) {
         mEngine.getWarnMessages(device_id, 2, page).enqueue(new Callback<Alarm>() {
             @Override
@@ -127,13 +138,32 @@ public class WarnDetail extends BaseActivity {
                     // 获取数据
                     List<PointAlarm> pointAlarms = alarm.getPointAlarms();
                     for (PointAlarm pointAlarm : pointAlarms) {
+                        // 告警点id(id)
                         point_ids.add(pointAlarm.getPointId());
+                        // 告警点名称(point_name)
+                        pointNames.add(pointAlarm.getPointName());
+                        // 信息(comment)
                         comments.add(pointAlarm.getComment());
-                        times.add(pointAlarm.getUpdatedAt());
+                        // 告警时间(updated_at)
+                        alarmTimes.add(pointAlarm.getUpdatedAt());
+                        // 告警解除时间(checked_at)
+                        checkedAt.add(pointAlarm.getCheckedAt());
+                        // 详情(alarm_value)
                         alarms.add(pointAlarm.getAlarmValue());
-                        status.add(pointAlarm.getMeaning());
-                        checked.add(pointAlarm.isChecked());
-                        userNames.add(pointAlarm.getCheckedUser());
+                        // 状态(meaning)
+                        meanings.add(pointAlarm.getMeaning());
+                        // 操作员(checked_user)
+                        checkedUser.add(pointAlarm.getCheckedUser());
+                        // 是否已确认(is_checked)
+                        if (pointAlarm.getCheckedUser().equals("")) {
+                            isChecked.add(false);
+                        } else {
+                            isChecked.add(true);
+                        }
+
+                        // 标识(state)
+                        state.add(pointAlarm.getState());
+                        // 类型(type)
                         if (pointAlarm.getType() == null) {
                             types.add("开关量告警");
                         } else {
@@ -145,35 +175,52 @@ public class WarnDetail extends BaseActivity {
                     circleProgressBar.setVisibility(View.GONE);
 
                     // ListView填装数据
-                    BaseAdapter adapter = new WarnDetailListAdapter(context, comments, types, times, alarms, status, checked);
+                    BaseAdapter adapter = new WarnDetailListAdapter(context, pointNames, comments, alarmTimes, isChecked);
                     adapter.notifyDataSetChanged();
                     listView.setAdapter(adapter);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
                             // 传入数据
-                            info.setText("信 息: "+comments.get(position));
-                            alarmStatus.setText("状 态: "+status.get(position));
-                            level.setText("类 型: "+types.get(position));
-                            alarmTime.setText("告警时间: "+times.get(position));
-                            finishTime.setText("解除时间: "+"2016-3-3");
-                            user.setText("操作员: "+userNames.get(position));
-                            confirmTime.setText("确认时间: "+"2015-3-3");
-
+                            alarmPoint.setText(pointNames.get(position));
+                            info.setText(comments.get(position));
+                            alarmStatus.setText(meanings.get(position));
+                            level.setText(types.get(position));
+                            alarmTime.setText(alarmTimes.get(position));
+                            user.setText(checkedUser.get(position));
+                            if (checkedAt.get(position) == null) {
+                                confirmTime.setText("未确认");
+                            } else {
+                                confirmTime.setText(checkedAt.get(position));
+                            }
+                            if (state.get(position) == 0) {
+                                finishTime.setText(alarmTimes.get(position));
+                            } else {
+                                finishTime.setText("未解除");
+                            }
                             materialDialog.setContentView(dialogDetail)
-                                .setPositiveButton("确认告警", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // 确认告警
-                                        checkAlarm(view, point_ids.get(position));
-                                    }
-                                })
                                 .setNegativeButton("取消", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         materialDialog.dismiss();
                                     }
                                 });
+
+                            String checkedName = checkedUser.get(position);
+                            if (checkedName.equals("")) {
+                                materialDialog.setPositiveButton("确认告警", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // 确认告警
+                                        checkedUser.set(position, getSharedPreferences("foobar", Activity.MODE_PRIVATE).getString("name", null));
+                                        checkAlarm(view, point_ids.get(position));
+                                    }
+                                });
+                                showToast(checkedName+"if");
+                            } else {
+                                materialDialog.setPositiveButton("",null);
+                                showToast(checkedName+"else");
+                            }
                             materialDialog.show();
                         }
                     });

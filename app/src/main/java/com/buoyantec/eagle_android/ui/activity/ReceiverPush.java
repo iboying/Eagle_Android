@@ -34,7 +34,7 @@ public class ReceiverPush extends BaseActivity {
         finishTime = getViewById(R.id.push_alarm_finish_time);
         user = getViewById(R.id.push_alarm_user);
         confirmTime = getViewById(R.id.push_alarm_confirm_time);
-        confirmButton = getViewById(R.id.confirm_button);
+        confirmButton = getViewById(R.id.push_alarm_confirm_button);
     }
 
     @Override
