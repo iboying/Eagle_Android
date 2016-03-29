@@ -3,6 +3,7 @@ package com.buoyantec.eagle_android.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -13,8 +14,7 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.adapter.WaterListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
-import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
-import com.loopj.android.image.SmartImageView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class FireFightingDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
-    private SmartImageView myImage;
+    private SimpleDraweeView myImage;
     private Context context;
     private SharedPreferences sp;
 
@@ -82,10 +82,9 @@ public class FireFightingDetail extends BaseActivity {
                     ArrayList<String> status = new ArrayList<>();
                     // 获取图片
                     String path = response.body().getPic();
-                    if (path == null || path.equals("null")) {
-                        myImage.setBackgroundResource(R.drawable.device_default);
-                    } else {
-                        myImage.setImageUrl(path);
+                    if (path != null) {
+                        Uri uri = Uri.parse(path);
+                        myImage.setImageURI(uri);
                     }
 
                     // 循环list,存入数组

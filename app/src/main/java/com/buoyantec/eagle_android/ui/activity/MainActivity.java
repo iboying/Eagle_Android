@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -32,9 +33,10 @@ import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.model.Result;
 import com.buoyantec.eagle_android.model.Results;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
-import com.loopj.android.image.SmartImageView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -77,6 +79,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         current_room_id = mPreferences.getInt("current_room_id", 0);
         String rooms = mPreferences.getString("rooms", null);
         String current_room = mPreferences.getString("current_room", null);
+        context = this;
 
         if (token.isEmpty() || current_room_id==0 || rooms==null || current_room==null) {
             finish();
@@ -92,7 +95,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             roomIds = new ArrayList<>();
             roomNames = new ArrayList<>();
             roomPics = new ArrayList<>();
-            context = this;
             // 初始化toolbar和侧边栏
             initToolBar();
             initDrawer();
@@ -106,14 +108,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void roomImage() {
-        // TODO: 16/3/21 获取机房图片地址
         String current_room_pic = mPreferences.getString("current_room_pic", null);
-        SmartImageView myImage = getViewById(R.id.room_image);
-
-        if (current_room_pic == null || current_room_pic.equals("null")) {
-            myImage.setBackgroundResource(R.drawable.room_default);
-        } else {
-            myImage.setImageUrl(current_room_pic);
+        SimpleDraweeView myImage = (SimpleDraweeView) findViewById(R.id.room_image);
+        if (current_room_pic != null) {
+            Uri uri = Uri.parse(current_room_pic);
+            myImage.setImageURI(uri);
         }
     }
 

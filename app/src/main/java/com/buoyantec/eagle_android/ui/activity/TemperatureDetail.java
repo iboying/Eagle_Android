@@ -2,18 +2,20 @@ package com.buoyantec.eagle_android.ui.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
-import com.loopj.android.image.SmartImageView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class TemperatureDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
     private SharedPreferences sp;
     private Toolbar toolbar;
-    private SmartImageView myImage;
+    private SimpleDraweeView myImage;
     private TextView subToolbarTitle;
     private ListView listView;
     private Context context;
@@ -86,11 +88,11 @@ public class TemperatureDetail extends BaseActivity {
 
                     // 获取图片
                     String path = response.body().getPic();
-                    if (path == null || path.equals("null")) {
-                        myImage.setBackgroundResource(R.drawable.device_default);
-                    } else {
-                        myImage.setImageUrl(path);
+                    if (path != null) {
+                        Uri uri = Uri.parse(path);
+                        myImage.setImageURI(uri);
                     }
+
                     // 循环list,存入数组
                     List<HashMap<String, String>> points = response.body().getPoints();
                     for (HashMap<String, String> point : points) {

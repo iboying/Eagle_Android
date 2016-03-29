@@ -2,19 +2,20 @@ package com.buoyantec.eagle_android.ui.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.adapter.WaterListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
-import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
-import com.loopj.android.image.SmartImageView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class WaterDetail extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private ListView listView;
-    private SmartImageView waterImage;
+    private SimpleDraweeView waterImage;
     private SharedPreferences sp;
     private Context context;
 
@@ -85,11 +86,11 @@ public class WaterDetail extends BaseActivity {
                     ArrayList<String> status = new ArrayList<>();
                     // 获取图片
                     String path = response.body().getPic();
-                    if (path == null || path.equals("null")) {
-                        waterImage.setBackgroundResource(R.drawable.device_default);
-                    } else {
-                        waterImage.setImageUrl(path);
+                    if (path != null) {
+                        Uri uri = Uri.parse(path);
+                        waterImage.setImageURI(uri);
                     }
+
                     // 循环list,存入数组
                     List<HashMap<String, String>> points =  response.body().getAlarms();
                     for (HashMap<String, String> point: points) {

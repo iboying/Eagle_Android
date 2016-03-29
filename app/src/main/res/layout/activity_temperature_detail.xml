@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,13 +31,13 @@
             android:background="@color/white"
             android:padding="20dp">
 
-            <com.loopj.android.image.SmartImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/temperature_detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="center"
                 android:scaleType="centerInside"
-                android:contentDescription="温湿度检测"/>
+                fresco:placeholderImage="@drawable/device_default"/>
         </LinearLayout>
 
         <LinearLayout

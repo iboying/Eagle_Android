@@ -9,6 +9,7 @@ import android.view.View;
 import com.buoyantec.eagle_android.App;
 import com.buoyantec.eagle_android.engine.Engine;
 import com.buoyantec.eagle_android.util.ToastUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.io.IOException;
 
@@ -35,6 +36,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         TAG = this.getClass().getSimpleName();
         mApp = App.getInstance();
+        // 初始化Fresco
+        Fresco.initialize(this);
         // 在登录成功后初始化通用链接
 
         mNoHeaderEngine = mApp.getNoHeaderEngine();
