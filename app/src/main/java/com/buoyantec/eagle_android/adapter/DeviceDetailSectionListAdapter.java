@@ -3,6 +3,7 @@ package com.buoyantec.eagle_android.adapter;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.ui.activity.R;
 
+/**
+ * 带有头部分类的ListView
+ */
 public class DeviceDetailSectionListAdapter extends BaseAdapter {
 
     private static final int TYPE_ITEM = 0;
@@ -74,8 +78,6 @@ public class DeviceDetailSectionListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // 定义行背景色
         Integer[] colors = {R.color.white, R.color.stripListViewGrayColor};
-        // 定义文字颜色
-        Integer[] font_colors = {R.color.signInBorderColor, R.color.list_dot_red, R.color.gray};
 
         ViewHolder holder;
         int rowType = getItemViewType(position);
@@ -108,14 +110,17 @@ public class DeviceDetailSectionListAdapter extends BaseAdapter {
             holder.item.setBackgroundResource(colors[position % 2]);
         }
         if (mColors.get(position).equals("blue")) {
-            holder.textView.setTextColor(font_colors[0]);
-            holder.status.setTextColor(font_colors[0]);
+            holder.textView.setTextColor(Color.parseColor("#105DF7"));
+            holder.status.setTextColor(Color.parseColor("#105DF7"));
         } else if (mColors.get(position).equals("red")) {
-            holder.textView.setTextColor(font_colors[1]);
-            holder.status.setTextColor(font_colors[1]);
+            holder.textView.setTextColor(Color.parseColor("#FF2600"));
+            holder.status.setTextColor(Color.parseColor("#FF2600"));
+        } else if (mColors.get(position).equals("black")){
+            holder.textView.setTextColor(Color.parseColor("#aaaaaa"));
+            holder.status.setTextColor(Color.parseColor("#aaaaaa"));
         } else {
-            holder.textView.setTextColor(font_colors[2]);
-            holder.status.setTextColor(font_colors[2]);
+            holder.textView.setTextColor(Color.parseColor("#959595"));
+            holder.status.setTextColor(Color.parseColor("#959595"));
         }
         return convertView;
     }

@@ -2,7 +2,7 @@
 <!--item: 系统状态->子系统->设备信息列表-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/device_detail_list_item"
+    android:id="@+id/device_detail_listView_item"
     android:orientation="horizontal"
     android:gravity="center"
     android:background="@color/stripListViewGrayColor"
@@ -19,18 +19,20 @@
         android:textColor="@color/list_dot_green"/>
 
     <TextView
-        android:id="@+id/list_item_device_detail_name"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_height="30dp"
-        android:gravity="center_vertical|left"
+        android:textColor="@color/gray"
+        android:gravity="left"
         android:singleLine="true"
-        android:ellipsize="end" />
+        android:ellipsize="end"
+        android:id="@+id/list_item_device_detail_name"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="right"
+        android:textColor="@color/gray"
         android:id="@+id/list_item_device_detail_status"/>
 
 </LinearLayout>

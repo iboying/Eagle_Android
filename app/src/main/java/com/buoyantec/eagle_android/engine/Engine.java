@@ -92,6 +92,6 @@ public interface Engine {
     // 确认告警
     @Headers("Accept: application/json")
     @POST("point_alarms/{point_id}/checked")
-    Call<Results> checkAlarm(@Path("point_id") Integer point_id);
+    Call<HashMap<String, String>> checkAlarm(@Path("point_id") Integer point_id);
 
 }

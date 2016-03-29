@@ -81,6 +81,8 @@ public class WaterDetail extends BaseActivity {
                 int code = response.code();
 
                 if (code == 200) {
+                    ArrayList<String> names = new ArrayList<>();
+                    ArrayList<String> status = new ArrayList<>();
                     // 获取图片
                     String path = response.body().getPic();
                     if (path == null || path.equals("null")) {
@@ -88,16 +90,16 @@ public class WaterDetail extends BaseActivity {
                     } else {
                         waterImage.setImageUrl(path);
                     }
-
                     // 循环list,存入数组
-                    List<HashMap<String, String>> numbers = response.body().getNumberType();
-                    List<HashMap<String, String>> status = response.body().getStatusType();
-                    List<HashMap<String, String>> alarms = response.body().getAlarmType();
+                    List<HashMap<String, String>> points =  response.body().getAlarms();
+                    for (HashMap<String, String> point: points) {
+                        names.add(point.get("name"));
+                        status.add(point.get("value"));
+                    }
 
-                    // 调用helper,生成ListView
-                    ListView listView = getViewById(R.id.water_detail_listView);
-                    DeviceDetailList deviceDetailList = new DeviceDetailList(context, listView, numbers, status, alarms);
-                    deviceDetailList.setListView();
+                    // 加载列表
+                    ListView listView = (ListView) findViewById(R.id.water_detail_listView);
+                    listView.setAdapter(new WaterListAdapter(listView, context, names, status));
 
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.GONE);

@@ -1,6 +1,7 @@
 package com.buoyantec.eagle_android.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +20,21 @@ import java.util.ArrayList;
  */
 public class TemperatureListAdapter extends BaseAdapter {
     private Context mContext;
-    private ListView listView;
     private ArrayList<String> temperature;
     private ArrayList<String> humidity;
+    private ArrayList<String> temColor;
+    private ArrayList<String> humColor;
 
-    public TemperatureListAdapter(ListView listView, Context c, ArrayList<String> temperature, ArrayList<String> humidity) {
-        this.listView = listView;
+    public TemperatureListAdapter(Context c,
+                                  ArrayList<String> temperature,
+                                  ArrayList<String> temColor,
+                                  ArrayList<String> humidity,
+                                  ArrayList<String> humColor) {
         this.mContext = c;
         this.temperature = temperature;
+        this.temColor = temColor;
         this.humidity = humidity;
+        this.humColor = humColor;
     }
 
     @Override
@@ -57,13 +64,33 @@ public class TemperatureListAdapter extends BaseAdapter {
 
         LinearLayout item = BaseViewHolder.get(convertView, R.id.device_detail_listView_item);
         TextView num = BaseViewHolder.get(convertView, R.id.list_item_temperature_num);
-        TextView name = BaseViewHolder.get(convertView, R.id.list_item_temperature_temperature);
-        TextView st = BaseViewHolder.get(convertView, R.id.list_item_temperature_humidity);
+        TextView tem = BaseViewHolder.get(convertView, R.id.list_item_temperature_temperature);
+        TextView hum = BaseViewHolder.get(convertView, R.id.list_item_temperature_humidity);
 
         item.setBackgroundResource(colors[position % 2]);
         num.setText(String.valueOf(position+1));
-        name.setText(temperature.get(position)+"℃");
-        st.setText(humidity.get(position)+"%");
+
+        tem.setText(temperature.get(position) + "℃");
+        if (temColor.get(position).equals("blue")) {
+            tem.setTextColor(Color.parseColor("#105DF7"));
+        } else if (temColor.get(position).equals("red")) {
+            tem.setTextColor(Color.parseColor("#FF2600"));
+        } else if (temColor.get(position).equals("black")){
+            tem.setTextColor(Color.parseColor("#aaaaaa"));
+        } else {
+            tem.setTextColor(Color.parseColor("#959595"));
+        }
+
+        hum.setText(humidity.get(position) + "%");
+        if (humColor.get(position).equals("blue")) {
+            hum.setTextColor(Color.parseColor("#105DF7"));
+        } else if (humColor.get(position).equals("red")) {
+            hum.setTextColor(Color.parseColor("#FF2600"));
+        } else if (humColor.get(position).equals("black")){
+            hum.setTextColor(Color.parseColor("#aaaaaa"));
+        } else {
+            hum.setTextColor(Color.parseColor("#959595"));
+        }
 
         return convertView;
     }

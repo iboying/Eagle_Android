@@ -81,6 +81,8 @@ public class TemperatureDetail extends BaseActivity {
                 if (code == 200) {
                     ArrayList<String> tem = new ArrayList<>();
                     ArrayList<String> hum = new ArrayList<>();
+                    ArrayList<String> temColor = new ArrayList<>();
+                    ArrayList<String> humColor = new ArrayList<>();
 
                     // 获取图片
                     String path = response.body().getPic();
@@ -91,20 +93,20 @@ public class TemperatureDetail extends BaseActivity {
                     }
                     // 循环list,存入数组
                     List<HashMap<String, String>> points = response.body().getPoints();
-                    int i = 1;
                     for (HashMap<String, String> point : points) {
-                        if (i % 2 == 1) {
+                        if (point.get("name").equals("温度")) {
                             tem.add(point.get("value"));
-                        } else {
+                            temColor.add(point.get("color"));
+                        } else if (point.get("name").equals("湿度")) {
                             hum.add(point.get("value"));
+                            humColor.add(point.get("color"));
                         }
-                        i++;
                     }
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.GONE);
 
                     // 加载列表
-                    listView.setAdapter(new TemperatureListAdapter(listView, context, tem, hum));
+                    listView.setAdapter(new TemperatureListAdapter(context, tem, temColor, hum, humColor));
 
                     Log.i("温湿度系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {

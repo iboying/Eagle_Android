@@ -17,11 +17,11 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
-import com.buoyantec.eagle_android.model.Results;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.drakeet.materialdialog.MaterialDialog;
@@ -181,6 +181,16 @@ public class WarnDetail extends BaseActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+                            materialDialog = new MaterialDialog(context);
+                            dialogDetail = View.inflate(context, R.layout.alarm_detail, null);
+                            info = (TextView) dialogDetail.findViewById(R.id.push_alarm_info);
+                            alarmPoint = (TextView) dialogDetail.findViewById(R.id.push_point_name);
+                            alarmStatus = (TextView) dialogDetail.findViewById(R.id.push_alarm_status);
+                            level = (TextView) dialogDetail.findViewById(R.id.push_alarm_level);
+                            alarmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_time);
+                            finishTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_finish_time);
+                            user = (TextView) dialogDetail.findViewById(R.id.push_alarm_user);
+                            confirmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_confirm_time);
                             // 传入数据
                             alarmPoint.setText(pointNames.get(position));
                             info.setText(comments.get(position));
@@ -189,14 +199,14 @@ public class WarnDetail extends BaseActivity {
                             alarmTime.setText(alarmTimes.get(position));
                             user.setText(checkedUser.get(position));
                             if (checkedAt.get(position) == null) {
-                                confirmTime.setText("未确认");
+                                confirmTime.setText("");
                             } else {
                                 confirmTime.setText(checkedAt.get(position));
                             }
                             if (state.get(position) == 0) {
                                 finishTime.setText(alarmTimes.get(position));
                             } else {
-                                finishTime.setText("未解除");
+                                finishTime.setText("");
                             }
                             materialDialog.setContentView(dialogDetail)
                                 .setNegativeButton("取消", new View.OnClickListener() {
@@ -212,14 +222,11 @@ public class WarnDetail extends BaseActivity {
                                     @Override
                                     public void onClick(View v) {
                                         // 确认告警
-                                        checkedUser.set(position, getSharedPreferences("foobar", Activity.MODE_PRIVATE).getString("name", null));
-                                        checkAlarm(view, point_ids.get(position));
+                                        checkAlarm(view, point_ids.get(position), position);
                                     }
                                 });
-                                showToast(checkedName+"if");
                             } else {
-                                materialDialog.setPositiveButton("",null);
-                                showToast(checkedName+"else");
+                                materialDialog.setPositiveButton("", null);
                             }
                             materialDialog.show();
                         }
@@ -262,15 +269,18 @@ public class WarnDetail extends BaseActivity {
     }
 
     // 确认告警
-    private void checkAlarm(View view, Integer point_id) {
+    private void checkAlarm(View view, Integer point_id, final int position) {
         materialDialog.dismiss();
         showLoadingDialog("正在确认...");
         final IconTextView icon = (IconTextView) view.findViewById(R.id.device_detail_checked);
-        mEngine.checkAlarm(point_id).enqueue(new Callback<Results>() {
+        mEngine.checkAlarm(point_id).enqueue(new Callback<HashMap<String, String>>() {
             @Override
-            public void onResponse(Response<Results> response) {
-                if (response.code() == 200) {
+            public void onResponse(Response<HashMap<String, String>> response) {
+                HashMap<String, String> data = response.body();
+                if (data.get("result").equals("处理成功")) {
                     dismissLoadingDialog();
+                    // 改变item操作员
+                    checkedUser.set(position, getSharedPreferences("foobar", Activity.MODE_PRIVATE).getString("name", null));
                     icon.setTextColor(context.getResources().getColor(R.color.gray));
                 } else {
                     dismissLoadingDialog();
