@@ -121,53 +121,55 @@ public class ReceiverPush extends BaseActivity {
         // "checked_at":null,
         // "point_id":4570
         // }
-        String customContent = sp.getString("custom_content", "");
+        String customContent = sp.getString("custom_content", null);
         System.out.println("receiverPush.customContent------->"+customContent);
         Gson gson = new Gson();
         PointAlarm alarm = gson.fromJson(customContent, PointAlarm.class);
         // 设置数据
         Log.d("alarm", "=============alarm===========");
 
-        if (!String.valueOf(alarm.getPointId()).equals("")) {
-            pointId = alarm.getPointId();
-            Log.d("pointId", String.valueOf(alarm.getPointId()));
-        }
-        if (alarm.getDeviceName() != null) {
-            deviceName.setText(alarm.getDeviceName());
-            Log.d("deviceName", alarm.getDeviceName());
-        }
-        if (alarm.getComment() != null) {
-            info.setText(alarm.getComment());
-            Log.d("info", alarm.getComment());
-        }
-        if (alarm.getMeaning() != null) {
-            status.setText(alarm.getMeaning());
-            Log.d("status", alarm.getMeaning());
-        }
-        if (alarm.getType() != null) {
-            type.setText(alarm.getType());
-            Log.d("type", alarm.getType());
-        }
-        if (alarm.getUpdatedAt() != null) {
-            alarmTime.setText(alarm.getUpdatedAt());
-            Log.d("alarmTime", alarm.getUpdatedAt());
-        }
-
-        if (!String.valueOf(alarm.getState()).equals("") && alarm.getUpdatedAt() != null) {
-            if (alarm.getState() == 0) {
-                finishTime.setText(alarm.getUpdatedAt());
-            } else {
-                finishTime.setText("");
+        if (customContent != null) {
+            if (!String.valueOf(alarm.getPointId()).isEmpty()) {
+                pointId = alarm.getPointId();
+                Log.d("pointId", String.valueOf(alarm.getPointId()));
             }
-            Log.d("finishTime", alarm.getUpdatedAt());
-        }
-        if (alarm.getCheckedUser() != null) {
-            user.setText(alarm.getCheckedUser());
-            Log.d("user", alarm.getCheckedUser());
-        }
-        if (alarm.getCheckedAt() != null) {
-            confirmTime.setText(alarm.getCheckedAt());
-            Log.d("confirmTime", alarm.getCheckedAt());
+            if (alarm.getDeviceName() != null) {
+                deviceName.setText(alarm.getDeviceName());
+                Log.d("deviceName", alarm.getDeviceName());
+            }
+            if (alarm.getComment() != null) {
+                info.setText(alarm.getComment());
+                Log.d("info", alarm.getComment());
+            }
+            if (alarm.getMeaning() != null) {
+                status.setText(alarm.getMeaning());
+                Log.d("status", alarm.getMeaning());
+            }
+            if (alarm.getType() != null) {
+                type.setText(alarm.getType());
+                Log.d("type", alarm.getType());
+            }
+            if (alarm.getUpdatedAt() != null) {
+                alarmTime.setText(alarm.getUpdatedAt());
+                Log.d("alarmTime", alarm.getUpdatedAt());
+            }
+
+            if (!String.valueOf(alarm.getState()).isEmpty() && alarm.getUpdatedAt() != null) {
+                if (alarm.getState() == 0) {
+                    finishTime.setText(alarm.getUpdatedAt());
+                } else {
+                    finishTime.setText("");
+                }
+                Log.d("finishTime", alarm.getUpdatedAt());
+            }
+            if (alarm.getCheckedUser() != null) {
+                user.setText(alarm.getCheckedUser());
+                Log.d("user", alarm.getCheckedUser());
+            }
+            if (alarm.getCheckedAt() != null) {
+                confirmTime.setText(alarm.getCheckedAt());
+                Log.d("confirmTime", alarm.getCheckedAt());
+            }
         }
     }
 
