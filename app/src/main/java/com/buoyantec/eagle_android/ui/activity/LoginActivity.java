@@ -438,17 +438,17 @@ public class LoginActivity extends BaseActivity {
                     editor.apply();
 
                     Log.i("device_token", user.getDeviceToken());
-                    Log.i("推送服务", context.getString(R.string.getSuccess) + response.code());
+                    Log.i("上传推送token", context.getString(R.string.getSuccess) + response.code());
                 } else {
                     showToast(context.getString(R.string.getDataFailed));
-                    Log.i("推送服务", context.getString(R.string.getFailed) + response.code());
+                    Log.i("上传推送token", context.getString(R.string.getFailed) + response.code());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                showToast("推送服务"+context.getString(R.string.getDataFailed));
-                Log.i("推送服务", context.getString(R.string.linkFailed));
+                showToast("上传推送token"+context.getString(R.string.getDataFailed));
+                Log.i("上传推送token", context.getString(R.string.linkFailed));
             }
         });
     }

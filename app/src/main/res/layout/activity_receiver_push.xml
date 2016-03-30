@@ -56,8 +56,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="信息"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -77,8 +76,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="信息"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -99,8 +97,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="信息"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -120,8 +117,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="信息"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -142,8 +138,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="信息"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -163,8 +158,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="信息"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -185,8 +179,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="信息"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <Button

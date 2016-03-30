@@ -91,6 +91,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
         } else {
+            // 注册信鸽服务(暂时添加,防止收不到)
+            XGPushManager.registerPush(context);
             setContentView(R.layout.activity_main);
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());

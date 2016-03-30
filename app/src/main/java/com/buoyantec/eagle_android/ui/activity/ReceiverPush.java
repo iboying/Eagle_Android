@@ -1,10 +1,12 @@
 package com.buoyantec.eagle_android.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,7 +34,9 @@ public class ReceiverPush extends BaseActivity {
     private TextView confirmTime;
     private Button confirmButton;
 
-    private int pointId;
+    private Integer pointId;
+
+    private SharedPreferences sp;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class ReceiverPush extends BaseActivity {
         confirmTime = getViewById(R.id.push_alarm_confirm_time);
         // 确认按钮
         confirmButton = getViewById(R.id.push_alarm_confirm_button);
+        sp  = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
     @Override
@@ -72,7 +77,6 @@ public class ReceiverPush extends BaseActivity {
                         if (data.get("result").equals("处理成功")) {
                             dismissLoadingDialog();
                             // 改变item操作员
-                            SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
                             user.setText(sp.getString("name", ""));
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                             Date currentDate = new Date(System.currentTimeMillis());
@@ -117,24 +121,54 @@ public class ReceiverPush extends BaseActivity {
         // "checked_at":null,
         // "point_id":4570
         // }
-        String customContent = getIntent().getStringExtra("custom_content");
-
+        String customContent = sp.getString("custom_content", "");
+        System.out.println("receiverPush.customContent------->"+customContent);
         Gson gson = new Gson();
         PointAlarm alarm = gson.fromJson(customContent, PointAlarm.class);
         // 设置数据
-        pointId = alarm.getPointId();
-        deviceName.setText(alarm.getDeviceName());
-        info.setText(alarm.getComment());
-        status.setText(alarm.getMeaning());
-        type.setText(alarm.getType());
-        alarmTime.setText(alarm.getUpdatedAt());
-        if (alarm.getState() == 0) {
-            finishTime.setText(alarm.getUpdatedAt());
-        } else {
-            finishTime.setText("");
+        Log.d("alarm", "=============alarm===========");
+
+        if (!String.valueOf(alarm.getPointId()).equals("")) {
+            pointId = alarm.getPointId();
+            Log.d("pointId", String.valueOf(alarm.getPointId()));
         }
-        user.setText(alarm.getCheckedUser());
-        confirmTime.setText(alarm.getCheckedAt());
+        if (alarm.getDeviceName() != null) {
+            deviceName.setText(alarm.getDeviceName());
+            Log.d("deviceName", alarm.getDeviceName());
+        }
+        if (alarm.getComment() != null) {
+            info.setText(alarm.getComment());
+            Log.d("info", alarm.getComment());
+        }
+        if (alarm.getMeaning() != null) {
+            status.setText(alarm.getMeaning());
+            Log.d("status", alarm.getMeaning());
+        }
+        if (alarm.getType() != null) {
+            type.setText(alarm.getType());
+            Log.d("type", alarm.getType());
+        }
+        if (alarm.getUpdatedAt() != null) {
+            alarmTime.setText(alarm.getUpdatedAt());
+            Log.d("alarmTime", alarm.getUpdatedAt());
+        }
+
+        if (!String.valueOf(alarm.getState()).equals("") && alarm.getUpdatedAt() != null) {
+            if (alarm.getState() == 0) {
+                finishTime.setText(alarm.getUpdatedAt());
+            } else {
+                finishTime.setText("");
+            }
+            Log.d("finishTime", alarm.getUpdatedAt());
+        }
+        if (alarm.getCheckedUser() != null) {
+            user.setText(alarm.getCheckedUser());
+            Log.d("user", alarm.getCheckedUser());
+        }
+        if (alarm.getCheckedAt() != null) {
+            confirmTime.setText(alarm.getCheckedAt());
+            Log.d("confirmTime", alarm.getCheckedAt());
+        }
     }
 
     private void initToolBar() {
