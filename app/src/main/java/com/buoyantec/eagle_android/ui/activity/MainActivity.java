@@ -1,6 +1,8 @@
 package com.buoyantec.eagle_android.ui.activity;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,8 +40,11 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGNotifaction;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.android.tpush.common.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,7 +84,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         current_room_id = mPreferences.getInt("current_room_id", 0);
         String rooms = mPreferences.getString("rooms", null);
         String current_room = mPreferences.getString("current_room", null);
-        context = this;
+        context = getApplicationContext();
 
         if (token.isEmpty() || current_room_id==0 || rooms==null || current_room==null) {
             finish();
@@ -90,7 +95,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
             // 初始化变量
-//            sliderShow = getViewById(R.id.slider);
+            // sliderShow = getViewById(R.id.slider);
             circleProgressBar = getViewById(R.id.progressBar);
             roomIds = new ArrayList<>();
             roomNames = new ArrayList<>();
@@ -99,7 +104,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             initToolBar();
             initDrawer();
             // 图片轮播
-//            initCarousel();
+            // initCarousel();
             // 首页机房图片
             roomImage();
             // 初始化GridView
@@ -120,30 +125,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void setListener() {}
 
     @Override
-    protected void processLogic(Bundle savedInstanceState) {
-        /**
-         * 注册信鸽推送
-         */
-        // 开启logcat输出，方便debug，发布时请关闭
-        XGPushConfig.enableDebug(this, true);
-        // 如果需要知道注册是否成功，请使用registerPush(getApplicationContext(), XGIOperateCallback)带callback版本
-        // 如果需要绑定账号，请使用registerPush(getApplicationContext(),account)版本
-        // 具体可参考详细的开发指南
-        // 传递的参数为ApplicationContext
-        Context context = getApplicationContext();
-        XGPushManager.registerPush(context);
-
-        // 2.36（不包括）之前的版本需要调用以下2行代码(新版本,一定要注释掉)
-        // Intent service = new Intent(context, XGPushService.class);
-        // context.startService(service);
-
-        // 其它常用的API：
-        // 绑定账号（别名）注册：registerPush(context,account)或registerPush(context,account, XGIOperateCallback)，其中account为APP账号，可以为任意字符串（qq、openid或任意第三方），业务方一定要注意终端与后台保持一致。
-        // 取消绑定账号（别名）：registerPush(context,"*")，即account="*"为取消绑定，解绑后，该针对该账号的推送将失效
-        // 反注册（不再接收消息）：unregisterPush(context)
-        // 设置标签：setTag(context, tagName)
-        // 删除标签：deleteTag(context, tagName)
-    }
+    protected void processLogic(Bundle savedInstanceState) {}
 
     // 为后退键绑定关闭侧边菜单功能
     @Override

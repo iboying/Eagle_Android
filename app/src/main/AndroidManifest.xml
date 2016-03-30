@@ -359,7 +359,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.ui.activity.MyActivity" />
+                android:value="com.buoyantec.eagle_android.ui.activity.MainActivity" />
         </activity>
         <activity
             android:name=".forgotPasswordActivity"
@@ -453,13 +453,22 @@
 
 
         <!-- 【必须】 请修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
+        <!--<meta-data-->
+            <!--android:name="XG_V2_ACCESS_ID"-->
+            <!--android:value="2100190140" />-->
+        <!--&lt;!&ndash; 【必须】 请修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="XG_V2_ACCESS_KEY"-->
+            <!--android:value="A5C52C7C5IWW" />-->
+
+         <!--【必须】 请修改为APP的AccessId，“21”开头的10位数字，中间没空格-->
         <meta-data
             android:name="XG_V2_ACCESS_ID"
-            android:value="2100190140" />
+            android:value="2100189459" />
         <!-- 【必须】 请修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
         <meta-data
             android:name="XG_V2_ACCESS_KEY"
-            android:value="A5C52C7C5IWW" />
+            android:value="AP17YP49B6TE" />
     </application>
 
 </manifest>

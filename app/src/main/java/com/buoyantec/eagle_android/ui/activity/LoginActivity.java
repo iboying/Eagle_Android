@@ -27,6 +27,10 @@ import com.buoyantec.eagle_android.model.User;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
+import com.tencent.android.tpush.common.Constants;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -50,6 +54,7 @@ public class LoginActivity extends BaseActivity {
     // 数据
     private SharedPreferences mPreferences;
     private Context context;
+    private String deviceToken;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -64,6 +69,7 @@ public class LoginActivity extends BaseActivity {
 
         mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
+        deviceToken = null;
 
         Intent i = getIntent();
         String error = i.getStringExtra("error");
@@ -148,6 +154,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         phoneAutoComplete();
+        // 反注册（不再接收消息）：unregisterPush(context)
+        XGPushManager.unregisterPush(context);
     }
 
     /**
@@ -307,7 +315,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    // 获取用户成功后,后去机房信息
+    // 获取用户成功后,后取机房信息
     public void getUserRooms() {
         mEngine.getRooms().enqueue(new Callback<Rooms>() {
             @Override
@@ -354,6 +362,8 @@ public class LoginActivity extends BaseActivity {
                         editor.putInt("current_room_id", room_id);
                         editor.putString("current_room_pic", path);
                         editor.apply();
+                        // 注册信鸽推送,用于推送
+                        registerXgPush();
                         // 进入主页
                         Intent i = new Intent(context, MainActivity.class);
                         startActivity(i);
@@ -362,6 +372,7 @@ public class LoginActivity extends BaseActivity {
 
                     Log.i("机房列表", context.getString(R.string.getSuccess) + code);
                 } else {
+                    showProgress(false);
                     showToast(context.getString(R.string.getDataFailed));
                     Log.i("机房列表", context.getString(R.string.getFailed) + code);
                 }
@@ -369,8 +380,75 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                showProgress(false);
                 showToast(context.getString(R.string.netWorkFailed));
                 Log.i("机房列表", context.getString(R.string.linkFailed));
+            }
+        });
+    }
+
+    // 注册信鸽推送
+    private void registerXgPush() {
+        /**
+         * 注册信鸽推送
+         */
+        // 开启logcat输出，方便debug，发布时请关闭
+//        XGPushConfig.enableDebug(this, true);
+        // 如果需要知道注册是否成功，请使用registerPush(getApplicationContext(), XGIOperateCallback)带callback版本
+        // 如果需要绑定账号，请使用registerPush(getApplicationContext(),account)版本
+        // 具体可参考详细的开发指南
+        // 传递的参数为ApplicationContext
+        XGPushManager.registerPush(context, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object o, int i) {
+                deviceToken = o.toString();
+                uploadDeviceInfo();
+                Log.i(Constants.LogTag, "信鸽推送注册(成功).token:" + o);
+            }
+
+            @Override
+            public void onFail(Object o, int i, String s) {
+                Log.w(Constants.LogTag, "信鸽推送注册(失败).token:" + o + ", errCode:" + i + ",msg:" + s);
+            }
+        });
+
+        // 2.36（不包括）之前的版本需要调用以下2行代码(新版本,一定要注释掉)
+        // Intent service = new Intent(context, XGPushService.class);
+        // context.startService(service);
+
+        // 其它常用的API：
+        // 绑定账号（别名）注册：registerPush(context,account)或registerPush(context,account, XGIOperateCallback)，其中account为APP账号，可以为任意字符串（qq、openid或任意第三方），业务方一定要注意终端与后台保持一致。
+        // 取消绑定账号（别名）：registerPush(context,"*")，即account="*"为取消绑定，解绑后，该针对该账号的推送将失效
+        // 反注册（不再接收消息）：unregisterPush(context)
+        // 设置标签：setTag(context, tagName)
+        // 删除标签：deleteTag(context, tagName)
+    }
+
+    // 注册设备信息,用于推送
+    public void uploadDeviceInfo() {
+        // 注册设备到服务器
+        mEngine.upLoadDeviceToken("android", deviceToken).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Response<User> response) {
+                if (response.code() == 200) {
+                    User user = response.body();
+                    // 保存数据
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putString("device_token", user.getDeviceToken());
+                    editor.apply();
+
+                    Log.i("device_token", user.getDeviceToken());
+                    Log.i("推送服务", context.getString(R.string.getSuccess) + response.code());
+                } else {
+                    showToast(context.getString(R.string.getDataFailed));
+                    Log.i("推送服务", context.getString(R.string.getFailed) + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                showToast("推送服务"+context.getString(R.string.getDataFailed));
+                Log.i("推送服务", context.getString(R.string.linkFailed));
             }
         });
     }

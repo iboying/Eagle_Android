@@ -41,6 +41,15 @@ public class User implements Serializable{
     @Expose
     private String authenticationToken;
 
+    @SerializedName("os")
+    @Expose
+    private String os;
+
+
+    @SerializedName("device_token")
+    @Expose
+    private String deviceToken;
+
     @SerializedName("errors")
     @Expose
     private String errors;
@@ -111,5 +120,13 @@ public class User implements Serializable{
 
     public String getErrors() {
         return errors;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public String getOs() {
+        return os;
     }
 }

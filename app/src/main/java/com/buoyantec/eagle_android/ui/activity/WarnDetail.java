@@ -56,7 +56,7 @@ public class WarnDetail extends BaseActivity {
     private TextView alarmPoint;
     private TextView info;
     private TextView alarmStatus;
-    private TextView level;
+    private TextView type;
     private TextView alarmTime;
     private TextView finishTime;
     private TextView user;
@@ -102,7 +102,7 @@ public class WarnDetail extends BaseActivity {
         info = (TextView) dialogDetail.findViewById(R.id.push_alarm_info);
         alarmPoint = (TextView) dialogDetail.findViewById(R.id.push_point_name);
         alarmStatus = (TextView) dialogDetail.findViewById(R.id.push_alarm_status);
-        level = (TextView) dialogDetail.findViewById(R.id.push_alarm_level);
+        type = (TextView) dialogDetail.findViewById(R.id.push_alarm_type);
         alarmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_time);
         finishTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_finish_time);
         user = (TextView) dialogDetail.findViewById(R.id.push_alarm_user);
@@ -186,7 +186,7 @@ public class WarnDetail extends BaseActivity {
                             info = (TextView) dialogDetail.findViewById(R.id.push_alarm_info);
                             alarmPoint = (TextView) dialogDetail.findViewById(R.id.push_point_name);
                             alarmStatus = (TextView) dialogDetail.findViewById(R.id.push_alarm_status);
-                            level = (TextView) dialogDetail.findViewById(R.id.push_alarm_level);
+                            type = (TextView) dialogDetail.findViewById(R.id.push_alarm_type);
                             alarmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_time);
                             finishTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_finish_time);
                             user = (TextView) dialogDetail.findViewById(R.id.push_alarm_user);
@@ -195,7 +195,7 @@ public class WarnDetail extends BaseActivity {
                             alarmPoint.setText(pointNames.get(position));
                             info.setText(comments.get(position));
                             alarmStatus.setText(meanings.get(position));
-                            level.setText(types.get(position));
+                            type.setText(types.get(position));
                             alarmTime.setText(alarmTimes.get(position));
                             user.setText(checkedUser.get(position));
                             if (checkedAt.get(position) == null) {

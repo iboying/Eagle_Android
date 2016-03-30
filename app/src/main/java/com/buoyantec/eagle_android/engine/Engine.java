@@ -31,6 +31,11 @@ public interface Engine {
     @POST("users/sign_in")
     Call<User> getUser(@Field("user[phone]") String phone, @Field("user[password]") String password);
 
+    // 上传用户token
+    @FormUrlEncoded
+    @Headers("Accept: application/json")
+    @POST("users/update_device")
+    Call<User> upLoadDeviceToken(@Field("user[os]") String os, @Field("user[device_token]") String device_token);
 
     // 获取验证码
     @FormUrlEncoded

@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -50,6 +51,17 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onStop() {
         stopElement();
         super.onStop();
+    }
+
+    /**
+     * 信鸽推送: 效果统计
+     * 如果被打开的activity启动模式为SingleTop，SingleTask或SingleInstance，请根据以下在该activity重载onNewIntent方法
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);// 必须要调用这句
     }
 
     /**
