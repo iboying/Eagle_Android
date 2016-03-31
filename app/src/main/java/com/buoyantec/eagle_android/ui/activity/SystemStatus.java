@@ -129,6 +129,10 @@ public class SystemStatus extends BaseActivity {
         Integer room_id = sp.getInt("current_room_id", 0);
         if (room_id == 0)
             room_id = null;
+        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
+        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        setEngine(mPreferences);
+
         mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {

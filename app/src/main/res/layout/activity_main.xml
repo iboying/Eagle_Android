@@ -61,13 +61,18 @@
 
             <!--</RelativeLayout>-->
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/room_image"
-                android:layout_width="fill_parent"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                fresco:placeholderImage="@drawable/room_default"/>
+                android:layout_weight="1">
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/room_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:actualImageScaleType="fitXY"
+                    fresco:placeholderImage="@drawable/room_default"/>
+            </LinearLayout>
 
             <!--GridView布局-->
             <LinearLayout

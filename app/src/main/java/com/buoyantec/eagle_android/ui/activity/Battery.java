@@ -50,6 +50,9 @@ public class Battery extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
+        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        setEngine(mPreferences);
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {

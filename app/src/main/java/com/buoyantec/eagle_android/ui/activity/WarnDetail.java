@@ -3,6 +3,7 @@ package com.buoyantec.eagle_android.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -52,6 +53,7 @@ public class WarnDetail extends BaseActivity {
     private List<Boolean> isChecked = new ArrayList<>();
     private List<String> checkedUser = new ArrayList<>();
     private List<Integer> state = new ArrayList<>();
+    private List<String> confirmDate = new ArrayList<>();
     // 模态框
     private MaterialDialog materialDialog;
     private View dialogDetail;
@@ -126,6 +128,8 @@ public class WarnDetail extends BaseActivity {
      * 如果state为0，则取updated_at，作为告警解除时间
      */
     private void initListView(Integer page) {
+        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        setEngine(mPreferences);
         mEngine.getWarnMessages(device_id, 0, page).enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
@@ -162,15 +166,12 @@ public class WarnDetail extends BaseActivity {
                         } else {
                             isChecked.add(true);
                         }
-
                         // 标识(state)
                         state.add(pointAlarm.getState());
                         // 类型(type)
-                        if (pointAlarm.getType() == null) {
-                            types.add("开关量告警");
-                        } else {
-                            types.add(pointAlarm.getType());
-                        }
+                        types.add(pointAlarm.getType());
+                        // 确认时间(此字段根据state和update判断,此处声明用于不获取数据的情况下,确认后修改确认时间)
+                        confirmDate.add("");
 
                     }
 
@@ -201,7 +202,7 @@ public class WarnDetail extends BaseActivity {
                             alarmTime.setText(alarmTimes.get(position));
                             user.setText(checkedUser.get(position));
                             if (checkedAt.get(position) == null) {
-                                confirmTime.setText("");
+                                confirmTime.setText(confirmDate.get(position));
                             } else {
                                 confirmTime.setText(checkedAt.get(position));
                             }
@@ -211,12 +212,12 @@ public class WarnDetail extends BaseActivity {
                                 finishTime.setText("");
                             }
                             materialDialog.setContentView(dialogDetail)
-                                .setNegativeButton("取消", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        materialDialog.dismiss();
-                                    }
-                                });
+                                    .setNegativeButton("取消", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            materialDialog.dismiss();
+                                        }
+                                    });
 
                             String checkedName = checkedUser.get(position);
                             if (checkedName.equals("")) {
@@ -288,7 +289,7 @@ public class WarnDetail extends BaseActivity {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     Date currentDate = new Date(System.currentTimeMillis());
                     String str = simpleDateFormat.format(currentDate);
-                    confirmTime.setText(str);
+                    confirmDate.set(position, str);
                 } else {
                     dismissLoadingDialog();
                     showToast("确认失败");

@@ -110,8 +110,10 @@ public class DeviceDetailSectionListAdapter extends BaseAdapter {
             holder.item.setBackgroundResource(colors[position % 2]);
         }
         if (mColors.get(position).equals("blue")) {
+            holder.textView.setTextColor(Color.parseColor("#aaaaaa"));
             holder.status.setTextColor(Color.parseColor("#105DF7"));
         } else if (mColors.get(position).equals("red")) {
+            holder.textView.setTextColor(Color.parseColor("#aaaaaa"));
             holder.status.setTextColor(Color.parseColor("#FF2600"));
         } else if (mColors.get(position).equals("black")){
             holder.textView.setTextColor(Color.parseColor("#aaaaaa"));

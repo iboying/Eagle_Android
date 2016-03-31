@@ -169,6 +169,9 @@ public class ReceiverPush extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     showLoadingDialog("正在确认...");
+                    // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
+                    SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+                    setEngine(mPreferences);
                     mEngine.checkAlarm(id).enqueue(new Callback<HashMap<String, String>>() {
                         @Override
                         public void onResponse(Response<HashMap<String, String>> response) {
@@ -181,6 +184,9 @@ public class ReceiverPush extends BaseActivity {
                                 Date currentDate = new Date(System.currentTimeMillis());
                                 String str = simpleDateFormat.format(currentDate);
                                 confirmTime.setText(str);
+                                // 修改按钮
+                                confirmButton.setText("已被确认");
+                                confirmButton.setClickable(false);
                                 showToast("确认成功");
                             } else {
                                 dismissLoadingDialog();

@@ -76,6 +76,10 @@ public class TemperatureDetail extends BaseActivity {
         Integer room_id = sp.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
+        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
+        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        setEngine(mPreferences);
+
         mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {

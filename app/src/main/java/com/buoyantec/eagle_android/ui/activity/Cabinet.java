@@ -82,6 +82,8 @@ public class Cabinet extends BaseActivity {
     }
 
     private void initListView() {
+        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
+        setEngine(sp);
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {

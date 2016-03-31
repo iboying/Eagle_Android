@@ -87,6 +87,9 @@ public class Temperature extends BaseActivity {
     }
 
     private void initListView() {
+        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
+        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        setEngine(mPreferences);
         // 获取指定链接数据
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override

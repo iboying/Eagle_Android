@@ -27,16 +27,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="20dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/water_detail_image"
                 android:layout_width="fill_parent"
                 android:layout_height="150dp"
-                android:gravity="center"
-                android:scaleType="centerInside"
+                app:actualImageScaleType="fitXY"
                 fresco:placeholderImage="@drawable/device_default"/>
         </LinearLayout>
 
@@ -73,8 +72,9 @@
 
         <ListView
             android:id="@+id/water_detail_listView"
+            android:layout_weight="1.5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:clickable="true"
             android:dividerHeight="0dp"
             android:divider="@color/white"

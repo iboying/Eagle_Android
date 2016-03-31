@@ -68,6 +68,8 @@ public class CabinetDetail extends BaseActivity {
         Integer room_id = sharedPreferences.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
+        // 以下一句不是必须的,只是以防万一的bug,我菜,你咬我
+        setEngine(sharedPreferences);
         // 获取指定链接数据
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override

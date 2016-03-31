@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -81,9 +82,11 @@ public class WarnDevices extends BaseActivity {
     // 获取设备告警数量
     private void getDeviceAlarmCount() {
         // 初始化
+        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         Integer sub_system_id = getIntent().getIntExtra("subSystem_id", 1);
         final HashMap<String, Integer> deviceCount = new HashMap<>();
 
+        setEngine(mPreferences);
         mEngine.getDeviceAlarmCount(room_id, sub_system_id).enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {

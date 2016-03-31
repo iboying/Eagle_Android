@@ -63,6 +63,9 @@ public class UpsDetail extends BaseActivity {
     }
 
     private void initListView() {
+        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
+        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        setEngine(mPreferences);
         // 进度条
         circleProgressBar.setVisibility(View.VISIBLE);
         // 获取device_id 和 room_id
