@@ -290,7 +290,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == 0) {
                     Intent i = new Intent(MainActivity.this, SystemStatus.class);
-                    i.putExtra("room_id", current_room_id);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
                 } else if (position == 1) {

@@ -66,6 +66,7 @@ public class SystemStatus extends BaseActivity {
         systemClass = new HashMap<>();
         kindSystems = new LinkedHashMap<>();
         context = this;
+        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         // 组件
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
@@ -125,7 +126,7 @@ public class SystemStatus extends BaseActivity {
      * 动态获取系统列表
      */
     private void initSystems() {
-        Integer room_id = getIntent().getIntExtra("room_id", 0);
+        Integer room_id = sp.getInt("current_room_id", 0);
         if (room_id == 0)
             room_id = null;
         mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {

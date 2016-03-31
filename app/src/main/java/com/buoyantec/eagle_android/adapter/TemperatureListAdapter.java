@@ -76,7 +76,8 @@ public class TemperatureListAdapter extends BaseAdapter {
         } else if (temColor.get(position).equals("red")) {
             tem.setTextColor(Color.parseColor("#FF2600"));
         } else if (temColor.get(position).equals("black")){
-            tem.setTextColor(Color.parseColor("#aaaaaa"));
+            // 客户需要,正常色换成绿色,black->绿色
+            tem.setTextColor(Color.parseColor("#34E8A3"));
         } else {
             tem.setTextColor(Color.parseColor("#959595"));
         }
@@ -87,7 +88,8 @@ public class TemperatureListAdapter extends BaseAdapter {
         } else if (humColor.get(position).equals("red")) {
             hum.setTextColor(Color.parseColor("#FF2600"));
         } else if (humColor.get(position).equals("black")){
-            hum.setTextColor(Color.parseColor("#aaaaaa"));
+            // 客户需要,正常色换成绿色,black->绿色
+            hum.setTextColor(Color.parseColor("#34E8A3"));
         } else {
             hum.setTextColor(Color.parseColor("#959595"));
         }

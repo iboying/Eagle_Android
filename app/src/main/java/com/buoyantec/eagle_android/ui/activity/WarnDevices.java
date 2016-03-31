@@ -72,6 +72,9 @@ public class WarnDevices extends BaseActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         subSystemName = getIntent().getStringExtra("title");
+        if (subSystemName == null) {
+            subSystemName = "";
+        }
         subToolbarTitle.setText(subSystemName);
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -45,15 +46,10 @@ public class Pue extends BaseActivity {
         String phone = sp.getString("phone", null);
         int room_id = sp.getInt("current_room_id", 1);
 
-        webView.loadUrl("http://ast.buoyantec.com/rooms/pue?user=" + phone + "&room=" + room_id);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
+        webView.loadUrl("http://ast.buoyantec.com/rooms/pue?user=" + phone + "&room=" + room_id);
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -73,7 +69,6 @@ public class Pue extends BaseActivity {
             }
         });
 
-        webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
     }
 

@@ -60,7 +60,9 @@ public class FireFighting extends BaseActivity {
 
         Intent i = getIntent();
         sub_sys_name = i.getStringExtra("sub_sys_name");
-
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
         context = getApplicationContext();
         // 进度条
         circleProgressBar = getViewById(R.id.progressBar);

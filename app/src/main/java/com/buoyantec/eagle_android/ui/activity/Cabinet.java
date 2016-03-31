@@ -60,7 +60,9 @@ public class Cabinet extends BaseActivity {
         // TODO: 16/2/7 默认值的问题
         room_id = sp.getInt("current_room_id", 1);
         sub_sys_name = getIntent().getStringExtra("sub_sys_name");
-
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
         context = getApplicationContext();
         // 组件
         toolbar = getViewById(R.id.sub_toolbar);

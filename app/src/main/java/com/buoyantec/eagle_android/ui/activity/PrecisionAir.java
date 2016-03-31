@@ -60,6 +60,9 @@ public class PrecisionAir extends BaseActivity {
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         room_id = sp.getInt("current_room_id", 1);
         sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
         context = this;
 
         toolbar = getViewById(R.id.sub_toolbar);

@@ -62,6 +62,9 @@ public class Water extends BaseActivity {
 
         Intent i = getIntent();
         sub_sys_name = i.getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
 
         context = getApplicationContext();
         // 组件
