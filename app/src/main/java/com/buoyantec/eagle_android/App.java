@@ -36,6 +36,7 @@ public class App extends Application {
     private static App sInstance;
     private Engine noHeaderEngine;
     private Context context;
+    private static int NOTIFICATION_ID = 1;
 
     // 判断是否是主线程
     public boolean isMainProcess() {
@@ -87,7 +88,6 @@ public class App extends Application {
                     editor.apply();
 
                     // TODO: 16/3/29 其他处理, 可自定义Notification显示推送通知的内容
-                    int NOTIFICATION_ID = 1;
                     NOTIFICATION_ID++;
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     Intent intent = new Intent(context, ReceiverPush.class);

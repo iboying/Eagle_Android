@@ -97,7 +97,7 @@ public interface Engine {
 
     // 获取告警详情
     @Headers("Accept: application/json")
-    @GET("point_alarms/id")
+    @GET("point_alarms/{id}")
     Call<PointAlarm> getAlarm(@Path("id") Integer id);
 
     // 确认告警
