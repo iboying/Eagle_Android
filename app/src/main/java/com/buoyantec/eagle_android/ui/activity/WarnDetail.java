@@ -41,7 +41,7 @@ public class WarnDetail extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     // 列表数据
-    private List<Integer> point_ids = new ArrayList<>();
+    private List<Integer> ids = new ArrayList<>();
     private List<String> pointNames = new ArrayList<>();
     private List<String> comments = new ArrayList<>();
     private List<String> types = new ArrayList<>();
@@ -141,7 +141,7 @@ public class WarnDetail extends BaseActivity {
                     List<PointAlarm> pointAlarms = alarm.getPointAlarms();
                     for (PointAlarm pointAlarm : pointAlarms) {
                         // 告警点id(id)
-                        point_ids.add(pointAlarm.getPointId());
+                        ids.add(pointAlarm.getId());
                         // 告警点名称(point_name)
                         pointNames.add(pointAlarm.getPointName());
                         // 信息(comment)
@@ -224,7 +224,7 @@ public class WarnDetail extends BaseActivity {
                                     @Override
                                     public void onClick(View v) {
                                         // 确认告警
-                                        checkAlarm(view, point_ids.get(position), position);
+                                        checkAlarm(view, ids.get(position), position);
                                     }
                                 });
                             } else {
@@ -271,11 +271,11 @@ public class WarnDetail extends BaseActivity {
     }
 
     // 确认告警
-    private void checkAlarm(View view, Integer point_id, final int position) {
+    private void checkAlarm(View view, Integer id, final int position) {
         materialDialog.dismiss();
         showLoadingDialog("正在确认...");
         final IconTextView icon = (IconTextView) view.findViewById(R.id.device_detail_checked);
-        mEngine.checkAlarm(point_id).enqueue(new Callback<HashMap<String, String>>() {
+        mEngine.checkAlarm(id).enqueue(new Callback<HashMap<String, String>>() {
             @Override
             public void onResponse(Response<HashMap<String, String>> response) {
                 HashMap<String, String> data = response.body();

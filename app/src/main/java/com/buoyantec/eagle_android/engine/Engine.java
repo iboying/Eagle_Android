@@ -3,6 +3,7 @@ package com.buoyantec.eagle_android.engine;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.model.PointAlarm;
 import com.buoyantec.eagle_android.model.Results;
 import com.buoyantec.eagle_android.model.Rooms;
 import com.buoyantec.eagle_android.model.MySystems;
@@ -94,9 +95,14 @@ public interface Engine {
     @POST("rooms/{room_id}/point_alarms/count")
     Call<Results> getDeviceAlarmCount(@Path("room_id") Integer room_id, @Field("sub_system_id") Integer sub_system_id);
 
+    // 获取告警详情
+    @Headers("Accept: application/json")
+    @GET("point_alarms/id")
+    Call<PointAlarm> getAlarm(@Path("id") Integer id);
+
     // 确认告警
     @Headers("Accept: application/json")
-    @POST("point_alarms/{point_id}/checked")
-    Call<HashMap<String, String>> checkAlarm(@Path("point_id") Integer point_id);
+    @POST("point_alarms/{id}/checked")
+    Call<HashMap<String, String>> checkAlarm(@Path("id") Integer id);
 
 }

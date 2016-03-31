@@ -1,7 +1,7 @@
 package com.buoyantec.eagle_android.ui.activity;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -34,9 +34,9 @@ public class ReceiverPush extends BaseActivity {
     private TextView confirmTime;
     private Button confirmButton;
 
-    private Integer pointId;
-
+    private Integer id;
     private SharedPreferences sp;
+    private Context context;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -62,48 +62,30 @@ public class ReceiverPush extends BaseActivity {
         // 确认按钮
         confirmButton = getViewById(R.id.push_alarm_confirm_button);
         sp  = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
+        context = getApplicationContext();
     }
 
     @Override
-    protected void setListener() {
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLoadingDialog("正在确认...");
-                mEngine.checkAlarm(pointId).enqueue(new Callback<HashMap<String, String>>() {
-                    @Override
-                    public void onResponse(Response<HashMap<String, String>> response) {
-                        HashMap<String, String> data = response.body();
-                        if (data.get("result").equals("处理成功")) {
-                            dismissLoadingDialog();
-                            // 改变item操作员
-                            user.setText(sp.getString("name", ""));
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                            Date currentDate = new Date(System.currentTimeMillis());
-                            String str = simpleDateFormat.format(currentDate);
-                            confirmTime.setText(str);
-                            showToast("确认成功");
-                        } else {
-                            dismissLoadingDialog();
-                            showToast("确认失败");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        dismissLoadingDialog();
-                        showToast("网络连接失败");
-                    }
-                });
-            }
-        });
-    }
+    protected void setListener() {}
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         initToolBar();
         // 接收推送消息,更新UI
         setData();
+        // 确认时间
+        confirmAlarm();
+    }
+
+
+
+    private void initToolBar() {
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        subToolbarTitle.setText("推送告警信息");
     }
 
     private void setData() {
@@ -121,64 +103,100 @@ public class ReceiverPush extends BaseActivity {
         // "checked_at":null,
         // "point_id":4570
         // }
+
+        // 显示载入
+        showLoadingDialog("正在加载...");
+
         String customContent = sp.getString("custom_content", null);
-        System.out.println("receiverPush.customContent------->"+customContent);
         Gson gson = new Gson();
-        PointAlarm alarm = gson.fromJson(customContent, PointAlarm.class);
-        // 设置数据
-        Log.d("alarm", "=============alarm===========");
-
+        id = gson.fromJson(customContent, PointAlarm.class).getId();
+        // 从推送中获取告警id,调用接口判断告警是否已确认
+        // 已确认: disabled掉按钮
+        // 未确认: 正常显示
         if (customContent != null) {
-            if (!String.valueOf(alarm.getPointId()).isEmpty()) {
-                pointId = alarm.getPointId();
-                Log.d("pointId", String.valueOf(alarm.getPointId()));
-            }
-            if (alarm.getDeviceName() != null) {
-                deviceName.setText(alarm.getDeviceName());
-                Log.d("deviceName", alarm.getDeviceName());
-            }
-            if (alarm.getComment() != null) {
-                info.setText(alarm.getComment());
-                Log.d("info", alarm.getComment());
-            }
-            if (alarm.getMeaning() != null) {
-                status.setText(alarm.getMeaning());
-                Log.d("status", alarm.getMeaning());
-            }
-            if (alarm.getType() != null) {
-                type.setText(alarm.getType());
-                Log.d("type", alarm.getType());
-            }
-            if (alarm.getUpdatedAt() != null) {
-                alarmTime.setText(alarm.getUpdatedAt());
-                Log.d("alarmTime", alarm.getUpdatedAt());
-            }
+            if (!String.valueOf(id).isEmpty()) {
+                mEngine.getAlarm(id).enqueue(new Callback<PointAlarm>() {
+                    @Override
+                    public void onResponse(Response<PointAlarm> response) {
+                        if (response.code() == 200) {
+                            PointAlarm pointAlarm = response.body();
+                            // 给UI设置数据
+                            deviceName.setText(pointAlarm.getDeviceName());
+                            info.setText(pointAlarm.getComment());
+                            status.setText(pointAlarm.getMeaning());
+                            type.setText(pointAlarm.getType());
+                            alarmTime.setText(pointAlarm.getUpdatedAt());
+                            if (!String.valueOf(pointAlarm.getState()).isEmpty() && pointAlarm.getUpdatedAt() != null) {
+                                if (pointAlarm.getState() == 0) {
+                                    finishTime.setText(pointAlarm.getUpdatedAt());
+                                } else {
+                                    finishTime.setText("");
+                                }
+                            }
+                            user.setText(pointAlarm.getCheckedUser());
+                            confirmTime.setText(pointAlarm.getCheckedAt());
+                            // 判断是否已被确认
+                            if (pointAlarm.getCheckedUser().length() > 0) {
+                                confirmButton.setText("已被确认");
+                                confirmButton.setClickable(false);
+                            }
+                            // 隐藏dialog
+                            dismissLoadingDialog();
+                            Log.i("推送->告警详情", context.getString(R.string.getSuccess) + response.code());
+                        } else {
+                            // 隐藏dialog
+                            dismissLoadingDialog();
+                            showToast(context.getString(R.string.getDataFailed));
+                            Log.i("推送->告警详情", context.getString(R.string.getFailed) + response.code());
+                        }
+                    }
 
-            if (!String.valueOf(alarm.getState()).isEmpty() && alarm.getUpdatedAt() != null) {
-                if (alarm.getState() == 0) {
-                    finishTime.setText(alarm.getUpdatedAt());
-                } else {
-                    finishTime.setText("");
-                }
-                Log.d("finishTime", alarm.getUpdatedAt());
-            }
-            if (alarm.getCheckedUser() != null) {
-                user.setText(alarm.getCheckedUser());
-                Log.d("user", alarm.getCheckedUser());
-            }
-            if (alarm.getCheckedAt() != null) {
-                confirmTime.setText(alarm.getCheckedAt());
-                Log.d("confirmTime", alarm.getCheckedAt());
+                    @Override
+                    public void onFailure(Throwable t) {
+                        // 隐藏dialog
+                        dismissLoadingDialog();
+                        showToast(context.getString(R.string.netWorkFailed));
+                        Log.i("推送->告警详情", context.getString(R.string.linkFailed));
+                    }
+                });
             }
         }
     }
 
-    private void initToolBar() {
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        subToolbarTitle.setText("推送告警信息");
+    private void confirmAlarm() {
+        if (confirmButton.isClickable()) {
+            confirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLoadingDialog("正在确认...");
+                    mEngine.checkAlarm(id).enqueue(new Callback<HashMap<String, String>>() {
+                        @Override
+                        public void onResponse(Response<HashMap<String, String>> response) {
+                            HashMap<String, String> data = response.body();
+                            if (data.get("result").equals("处理成功")) {
+                                dismissLoadingDialog();
+                                // 改变item操作员
+                                user.setText(sp.getString("name", ""));
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                Date currentDate = new Date(System.currentTimeMillis());
+                                String str = simpleDateFormat.format(currentDate);
+                                confirmTime.setText(str);
+                                showToast("确认成功");
+                            } else {
+                                dismissLoadingDialog();
+                                showToast("确认失败");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            dismissLoadingDialog();
+                            showToast("网络连接失败");
+                        }
+                    });
+                }
+            });
+        }
     }
+
 }
