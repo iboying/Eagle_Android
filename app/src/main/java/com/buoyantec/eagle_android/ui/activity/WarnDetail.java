@@ -126,7 +126,7 @@ public class WarnDetail extends BaseActivity {
      * 如果state为0，则取updated_at，作为告警解除时间
      */
     private void initListView(Integer page) {
-        mEngine.getWarnMessages(device_id, 2, page).enqueue(new Callback<Alarm>() {
+        mEngine.getWarnMessages(device_id, 0, page).enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
                 // 初始化变量

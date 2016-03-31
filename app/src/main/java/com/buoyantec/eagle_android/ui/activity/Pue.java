@@ -48,7 +48,7 @@ public class Pue extends BaseActivity {
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webView.loadUrl("http://ast.buoyantec.com/rooms/pue?user=" + phone + "&room=" + room_id);
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -69,7 +69,6 @@ public class Pue extends BaseActivity {
             }
         });
 
-        webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
     }
 
     private void initToolbar() {
