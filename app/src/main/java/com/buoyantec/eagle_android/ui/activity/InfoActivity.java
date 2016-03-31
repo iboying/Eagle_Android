@@ -33,7 +33,7 @@ public class InfoActivity extends BaseActivity {
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        subToolbarTitle.setText("账 号");
+        subToolbarTitle.setText("信 息");
     }
 
 }
