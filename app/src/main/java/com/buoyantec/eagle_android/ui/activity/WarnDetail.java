@@ -20,7 +20,9 @@ import com.buoyantec.eagle_android.model.PointAlarm;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -282,6 +284,11 @@ public class WarnDetail extends BaseActivity {
                     // 改变item操作员
                     checkedUser.set(position, getSharedPreferences("foobar", Activity.MODE_PRIVATE).getString("name", null));
                     icon.setTextColor(context.getResources().getColor(R.color.gray));
+                    // 改变确认时间
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    Date currentDate = new Date(System.currentTimeMillis());
+                    String str = simpleDateFormat.format(currentDate);
+                    confirmTime.setText(str);
                 } else {
                     dismissLoadingDialog();
                     showToast("确认失败");

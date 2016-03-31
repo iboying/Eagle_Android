@@ -9,6 +9,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AbsoluteLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,10 +44,17 @@ public class Pue extends BaseActivity {
         // 加载web
         String phone = sp.getString("phone", null);
         int room_id = sp.getInt("current_room_id", 1);
-        String url = "http://ast.buoyantec.com/rooms/pue?user=" + phone + "&room=" + room_id;
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webView.loadUrl(url);
+
+        webView.loadUrl("http://ast.buoyantec.com/rooms/pue?user=" + phone + "&room=" + room_id);
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -64,6 +72,9 @@ public class Pue extends BaseActivity {
                 super.onProgressChanged(view, newProgress);
             }
         });
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
     }
 
     private void initToolbar() {
@@ -73,5 +84,13 @@ public class Pue extends BaseActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         subToolbarTitle.setText("PUE");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if ( webView.canGoBack()) {
+            webView.goBack();
+        }
     }
 }

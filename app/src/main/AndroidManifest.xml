@@ -356,6 +356,7 @@
         <activity
             android:name=".InfoActivity"
             android:label="@string/title_activity_info"
+            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
