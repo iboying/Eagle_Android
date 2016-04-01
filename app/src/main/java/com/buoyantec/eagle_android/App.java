@@ -19,6 +19,7 @@ import android.util.Log;
 import com.buoyantec.eagle_android.engine.Engine;
 import com.buoyantec.eagle_android.ui.activity.R;
 import com.buoyantec.eagle_android.ui.activity.ReceiverPush;
+import com.pgyersdk.crash.PgyCrashManager;
 import com.tencent.android.tpush.XGNotifaction;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.android.tpush.XGPushNotifactionCallback;
@@ -56,13 +57,14 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        context = getApplicationContext();
         setLoginEngine();
-
+        // 蒲公英应用管理:注册Crash接口
+        PgyCrashManager.register(this);
         /**
          * 处理 -> 推送通知
          * 透传消息命令没有拦截,(未研究)
          */
-        context = getApplicationContext();
         // 在主进程设置信鸽相关的内容
         if (isMainProcess()) {
             // 为保证弹出通知前一定调用本方法，需要在application的onCreate注册

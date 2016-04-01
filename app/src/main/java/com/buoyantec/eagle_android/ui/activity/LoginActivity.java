@@ -360,8 +360,11 @@ public class LoginActivity extends BaseActivity {
                         editor.putInt("current_room_id", room_id);
                         editor.putString("current_room_pic", path);
                         editor.apply();
-                        // 注册信鸽推送,用于推送
-                        registerXgPush();
+                        // 用户如果设置为接收推送,注册信鸽推送
+                        if (sp.getString("push", "").equals("")) {
+                            editor.putString("push", "");
+                            registerXgPush();
+                        }
                         // 进入主页
                         Intent i = new Intent(context, MainActivity.class);
                         startActivity(i);

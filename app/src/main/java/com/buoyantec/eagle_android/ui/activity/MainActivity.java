@@ -40,6 +40,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.pgyersdk.feedback.PgyFeedbackShakeManager;
+import com.pgyersdk.update.PgyUpdateManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,8 +86,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
         } else {
-//            // 注册信鸽服务(暂时添加,防止收不到)
-//            XGPushManager.registerPush(context);
             setContentView(R.layout.activity_main);
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
@@ -104,6 +104,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             roomImage();
             // 初始化GridView
             initGridView();
+            PgyUpdateManager.register(this);
         }
     }
 
@@ -171,6 +172,35 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         DrawerLayout drawer = getViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * 蒲公英: 摇一摇用户反馈
+     */
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+
+        // 自定义摇一摇的灵敏度，默认为950，数值越小灵敏度越高。
+        PgyFeedbackShakeManager.setShakingThreshold(1000);
+
+        // 以对话框的形式弹出
+        PgyFeedbackShakeManager.register(MainActivity.this);
+
+
+        // 以Activity的形式打开，这种情况下必须在AndroidManifest.xml配置FeedbackActivity
+        // 打开沉浸式,默认为false
+        // FeedbackActivity.setBarImmersive(true);
+//        PgyFeedbackShakeManager.register(MainActivity.this, false);
+
+    }
+
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        PgyFeedbackShakeManager.unregister();
     }
 
     // 初始化toolbar

@@ -23,20 +23,39 @@ public class SettingActivity extends BaseActivity {
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         receiveMsg = getViewById(R.id.settingSwitch);
+
+        String push = sp.getString("push", "");
+        if (push.equals("")) {
+            System.out.println(sp.getString("push", null)+"----");
+            receiveMsg.setChecked(true);
+        } else{
+            System.out.println(sp.getString("push", null)+"=====");
+            receiveMsg.setChecked(false);
+        }
     }
 
     @Override
     protected void setListener() {
+        final SharedPreferences.Editor editor = sp.edit();
+
         receiveMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = getApplicationContext();
                 if (receiveMsg.isChecked()) {
+                    // 注册
                     XGPushManager.registerPush(context);
-                    showToast("设置成功");
+                    // 修改配置文件
+                    editor.putString("push", "");
+                    editor.apply();
+                    showToast("接收推送设置成功");
                 } else {
+                    // 反注册
                     XGPushManager.unregisterPush(context);
-                    showToast("设置成功");
+                    // 修改配置文件
+                    editor.putString("push", "no");
+                    editor.apply();
+                    showToast("拒绝推送设置成功");
                 }
             }
         });
