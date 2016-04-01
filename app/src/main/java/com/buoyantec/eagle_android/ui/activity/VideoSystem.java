@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 public class VideoSystem extends BaseActivity {
-    private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -34,7 +33,6 @@ public class VideoSystem extends BaseActivity {
     }
 
     private void init() {
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         room_id = sp.getInt("current_room_id", 1);
         sub_sys_name = getIntent().getStringExtra("sub_sys_name");
         if (sub_sys_name == null) {

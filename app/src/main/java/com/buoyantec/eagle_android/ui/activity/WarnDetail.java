@@ -3,7 +3,6 @@ package com.buoyantec.eagle_android.ui.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -128,8 +127,7 @@ public class WarnDetail extends BaseActivity {
      * 如果state为0，则取updated_at，作为告警解除时间
      */
     private void initListView(Integer page) {
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        setEngine(mPreferences);
+        setEngine(sp);
         mEngine.getWarnMessages(device_id, 0, page).enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
@@ -276,6 +274,7 @@ public class WarnDetail extends BaseActivity {
         materialDialog.dismiss();
         showLoadingDialog("正在确认...");
         final IconTextView icon = (IconTextView) view.findViewById(R.id.device_detail_checked);
+        setEngine(sp);
         mEngine.checkAlarm(id).enqueue(new Callback<HashMap<String, String>>() {
             @Override
             public void onResponse(Response<HashMap<String, String>> response) {

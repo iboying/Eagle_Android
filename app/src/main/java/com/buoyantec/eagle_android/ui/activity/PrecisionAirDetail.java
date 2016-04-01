@@ -1,8 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +26,6 @@ public class PrecisionAirDetail extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private Context context;
-    private SharedPreferences sp;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -39,7 +36,6 @@ public class PrecisionAirDetail extends BaseActivity {
         circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
 
         context = this;
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
     @Override
@@ -71,9 +67,7 @@ public class PrecisionAirDetail extends BaseActivity {
         Integer room_id = sp.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
-        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        setEngine(mPreferences);
+        setEngine(sp);
         // 获取指定链接数据
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override

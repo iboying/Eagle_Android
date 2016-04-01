@@ -1,9 +1,7 @@
 package com.buoyantec.eagle_android.ui.activity;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,7 +24,6 @@ import retrofit2.Response;
  */
 public class CabinetDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
-    private SharedPreferences sharedPreferences;
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private Context context;
@@ -39,7 +36,6 @@ public class CabinetDetail extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
-        sharedPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
     }
 
@@ -65,11 +61,11 @@ public class CabinetDetail extends BaseActivity {
 
     private void initListView() {
         // 获取device_id 和 room_id
-        Integer room_id = sharedPreferences.getInt("current_room_id", 1);
+        Integer room_id = sp.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
         // 以下一句不是必须的,只是以防万一的bug,我菜,你咬我
-        setEngine(sharedPreferences);
+        setEngine(sp);
         // 获取指定链接数据
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override

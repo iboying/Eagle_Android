@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.buoyantec.eagle_android.ui.activity" >
+    package="com.buoyantec.eagle_android.ui.activity"
+    android:versionCode="13"
+    android:versionName="2.3.0">
 
     <!-- 【必须】 信鸽SDK所需权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,7 +33,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon" >
+        tools:replace="android:icon">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

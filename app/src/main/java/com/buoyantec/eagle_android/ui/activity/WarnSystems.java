@@ -1,9 +1,7 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -92,12 +90,11 @@ public class WarnSystems extends BaseActivity{
     }
 
     private void initListView() {
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         Integer room_id = getIntent().getIntExtra("room_id", 0);
         if (room_id == 0)
             room_id = null;
 
-        setEngine(mPreferences);
+        setEngine(sp);
         mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {

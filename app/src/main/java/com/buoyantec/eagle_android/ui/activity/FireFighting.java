@@ -2,9 +2,7 @@ package com.buoyantec.eagle_android.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -54,8 +52,6 @@ public class FireFighting extends BaseActivity {
     }
 
     private void init() {
-        SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        // TODO: 16/2/7 默认值的问题
         room_id = sp.getInt("current_room_id", 1);
 
         Intent i = getIntent();
@@ -82,9 +78,7 @@ public class FireFighting extends BaseActivity {
     }
 
     private void initListView() {
-        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        setEngine(mPreferences);
+        setEngine(sp);
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {

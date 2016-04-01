@@ -1,9 +1,7 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +26,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WarnDevices extends BaseActivity {
-    private SharedPreferences sp;
     private Integer room_id;
     private String subSystemName;
     private Context context;
@@ -56,7 +53,6 @@ public class WarnDevices extends BaseActivity {
     }
 
     private void init(){
-        sp = getSharedPreferences("foobar", MODE_PRIVATE);
         room_id = sp.getInt("current_room_id", 1);
         context = this;
         // 组件
@@ -82,11 +78,10 @@ public class WarnDevices extends BaseActivity {
     // 获取设备告警数量
     private void getDeviceAlarmCount() {
         // 初始化
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         Integer sub_system_id = getIntent().getIntExtra("subSystem_id", 1);
         final HashMap<String, Integer> deviceCount = new HashMap<>();
 
-        setEngine(mPreferences);
+        setEngine(sp);
         mEngine.getDeviceAlarmCount(room_id, sub_system_id).enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {

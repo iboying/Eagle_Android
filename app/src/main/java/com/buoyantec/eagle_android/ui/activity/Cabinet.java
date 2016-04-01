@@ -1,9 +1,7 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +25,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Cabinet extends BaseActivity {
-    private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -56,8 +53,6 @@ public class Cabinet extends BaseActivity {
     }
 
     private void init() {
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        // TODO: 16/2/7 默认值的问题
         room_id = sp.getInt("current_room_id", 1);
         sub_sys_name = getIntent().getStringExtra("sub_sys_name");
         if (sub_sys_name == null) {

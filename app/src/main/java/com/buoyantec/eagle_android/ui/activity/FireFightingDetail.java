@@ -1,8 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -29,14 +27,12 @@ public class FireFightingDetail extends BaseActivity {
     private Toolbar toolbar;
     private SimpleDraweeView myImage;
     private Context context;
-    private SharedPreferences sp;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_fire_fighting_detail);
         toolbar = getViewById(R.id.sub_toolbar);
         myImage = getViewById(R.id.fire_fighting_detail_image);
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
     }
 
@@ -73,9 +69,7 @@ public class FireFightingDetail extends BaseActivity {
         Integer room_id = sp.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
-        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        setEngine(mPreferences);
+        setEngine(sp);
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {

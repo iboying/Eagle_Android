@@ -28,7 +28,6 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.android.tpush.common.Constants;
 
@@ -52,7 +51,6 @@ public class LoginActivity extends BaseActivity {
     private Button mLoginButton;
     private TextView forgotPassword;
     // 数据
-    private SharedPreferences mPreferences;
     private Context context;
     private String deviceToken;
 
@@ -67,7 +65,6 @@ public class LoginActivity extends BaseActivity {
         mProgressView = getViewById(R.id.progressBar);
         forgotPassword = getViewById(R.id.forgotPasswordTextView);
 
-        mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
         deviceToken = null;
 
@@ -162,7 +159,7 @@ public class LoginActivity extends BaseActivity {
      * 手机号自动补全
      */
     private void phoneAutoComplete() {
-        String phone = mPreferences.getString("phone", null);
+        String phone = sp.getString("phone", null);
         if (phone != null) {
             mPhoneView.setText(phone);
             mPasswordView.requestFocus();
@@ -282,7 +279,7 @@ public class LoginActivity extends BaseActivity {
                     // 获取用户
                     User user = response.body();
                     // 写入SharePreferences
-                    SharedPreferences.Editor editor = mPreferences.edit();
+                    SharedPreferences.Editor editor = sp.edit();
                     editor.putInt("id", user.getId());
                     editor.putString("name", user.getName());
                     editor.putString("email", user.getEmail());
@@ -292,7 +289,7 @@ public class LoginActivity extends BaseActivity {
                     /**
                      * 初始化全局静态变量mEngine(登录时初始化第一次)
                      */
-                    setEngine(mPreferences);
+                    setEngine(sp);
                     // 获取用户机房列表,并跳转页面
                     getUserRooms();
 
@@ -317,6 +314,7 @@ public class LoginActivity extends BaseActivity {
 
     // 获取用户成功后,后取机房信息
     public void getUserRooms() {
+        setEngine(sp);
         mEngine.getRooms().enqueue(new Callback<Rooms>() {
             @Override
             public void onResponse(Response<Rooms> response) {
@@ -338,7 +336,7 @@ public class LoginActivity extends BaseActivity {
                         }
                     }
 
-                    SharedPreferences.Editor editor = mPreferences.edit();
+                    SharedPreferences.Editor editor = sp.edit();
 
                     if (result.equals("")) {
                         // 登陆页,显示错误信息
@@ -433,7 +431,7 @@ public class LoginActivity extends BaseActivity {
                 if (response.code() == 200) {
                     User user = response.body();
                     // 保存数据
-                    SharedPreferences.Editor editor = mPreferences.edit();
+                    SharedPreferences.Editor editor = sp.edit();
                     editor.putString("device_token", user.getDeviceToken());
                     editor.apply();
 

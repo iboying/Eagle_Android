@@ -1,5 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected static Engine mEngine;
     protected Engine mNoHeaderEngine;
     private SweetAlertDialog mLoadingDialog;
+    protected SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         // 初始化Fresco
         Fresco.initialize(this);
         // 在登录成功后初始化通用链接
-
+        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         mNoHeaderEngine = mApp.getNoHeaderEngine();
+
         initView(savedInstanceState);
         setListener();
         processLogic(savedInstanceState);

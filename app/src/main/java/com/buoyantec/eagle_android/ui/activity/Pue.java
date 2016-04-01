@@ -1,17 +1,12 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.AbsoluteLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,8 +16,6 @@ public class Pue extends BaseActivity {
     private WebView webView;
     private ProgressBar progressBar;
 
-    private SharedPreferences sp;
-
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_pue);
@@ -30,8 +23,6 @@ public class Pue extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         webView = getViewById(R.id.pue_web);
         progressBar = getViewById(R.id.pue_progress);
-
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
     @Override

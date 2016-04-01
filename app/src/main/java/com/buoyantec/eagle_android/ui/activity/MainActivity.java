@@ -50,7 +50,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private SharedPreferences mPreferences;
     private List<String> roomNames;
     private List<Integer> roomIds;
     private List<String> roomPics;
@@ -71,11 +70,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
          * 是: 加载主页面
          * 否: 加载登陆页
          */
-        mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        String token = mPreferences.getString("token", "");
-        current_room_id = mPreferences.getInt("current_room_id", 0);
-        String rooms = mPreferences.getString("rooms", null);
-        String current_room = mPreferences.getString("current_room", null);
+        String token = sp.getString("token", "");
+        current_room_id = sp.getInt("current_room_id", 0);
+        String rooms = sp.getString("rooms", null);
+        String current_room = sp.getString("current_room", null);
         context = getApplicationContext();
 
         if (token.isEmpty() || current_room_id==0 || rooms==null || current_room==null) {
@@ -107,7 +105,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void roomImage() {
-        String current_room_pic = mPreferences.getString("current_room_pic", null);
+        String current_room_pic = sp.getString("current_room_pic", null);
         SimpleDraweeView myImage = (SimpleDraweeView) findViewById(R.id.room_image);
         if (current_room_pic != null) {
             Uri uri = Uri.parse(current_room_pic);
@@ -181,13 +179,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         TextView subToolbarTitle = getViewById(R.id.toolbar_title);
 
         // 获取机房图片
-        String sp_paths = mPreferences.getString("pic_paths", null);
+        String sp_paths = sp.getString("pic_paths", null);
         if (sp_paths != null) {
             String[] paths = sp_paths.split("##");
             Collections.addAll(roomPics, paths);
         }
         // 获取所有机房([id1, room1, id2, room2, ...])
-        String sp_rooms = mPreferences.getString("rooms", null);
+        String sp_rooms = sp.getString("rooms", null);
         if (sp_rooms != null) {
             // [1,name,2,name2,...]
             String[] rooms = sp_rooms.split("#");
@@ -199,7 +197,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     roomNames.add(rooms[i]);
                 }
             }
-            String current_room = mPreferences.getString("current_room", null);
+            String current_room = sp.getString("current_room", null);
             subToolbarTitle.setText(current_room);
         } else {
             subToolbarTitle.setText("无可管理机房");
@@ -219,7 +217,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // 显示姓名
         View headLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
         TextView name = (TextView) headLayout.findViewById(R.id.user_name);
-        String mName = mPreferences.getString("name", null);
+        String mName = sp.getString("name", null);
         name.setText(mName);
 
         // 退出按钮
@@ -253,7 +251,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
                         // 退出时删除用户信息
-                        SharedPreferences.Editor editor = mPreferences.edit();
+                        SharedPreferences.Editor editor = sp.edit();
                         editor.putString("token", "");
                         editor.apply();
                         finish();
@@ -338,11 +336,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     // 异步任务,获取机房总告警数
     public void getSubSystemAlarmCount() {
         // 获取机房id
-        Integer room_id = mPreferences.getInt("current_room_id", 1);
-        /**
-         * 初始化全局静态变量mEngine(登录时初始化第一次)
-         */
-        setEngine(mPreferences);
+        Integer room_id = sp.getInt("current_room_id", 1);
+
+        setEngine(sp);
         // 请求服务
         mEngine.getSystemAlarmCount(room_id).enqueue(new Callback<Results>() {
             @Override
@@ -417,7 +413,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         listView.setAdapter(new ToolbarMenuAdapter(context, roomNames));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                SharedPreferences.Editor editor = mPreferences.edit();
+                SharedPreferences.Editor editor = sp.edit();
                 editor.putInt("current_room_id", roomIds.get(position));
                 editor.putString("current_room", roomNames.get(position));
                 editor.putString("current_room_pic", roomPics.get(position));
@@ -458,14 +454,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
 //        MySliderView mySliderView = new MySliderView(this);
 //        mySliderView
-//            .description(mPreferences.getString("current_room", null))
+//            .description(sp.getString("current_room", null))
 //                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg")
 //                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
 //                    @Override
 //                    public void onSliderClick(BaseSliderView slider) {
-//                        SharedPreferences.Editor editor = mPreferences.edit();
-//                        editor.putInt("current_room_id", mPreferences.getInt("current_room_id", 0));
-//                        editor.putString("current_room", mPreferences.getString("current_room", null));
+//                        SharedPreferences.Editor editor = sp.edit();
+//                        editor.putInt("current_room_id", sp.getInt("current_room_id", 0));
+//                        editor.putString("current_room", sp.getString("current_room", null));
 //                        editor.apply();
 //                        finish();
 //                        Intent i = new Intent(MainActivity.this, MainActivity.class);

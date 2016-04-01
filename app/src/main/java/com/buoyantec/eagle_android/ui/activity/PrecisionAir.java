@@ -1,9 +1,7 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +26,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PrecisionAir extends BaseActivity {
-    private SharedPreferences sp;
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -57,7 +54,6 @@ public class PrecisionAir extends BaseActivity {
     }
 
     private void init() {
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         room_id = sp.getInt("current_room_id", 1);
         sub_sys_name = getIntent().getStringExtra("sub_sys_name");
         if (sub_sys_name == null) {
@@ -81,9 +77,7 @@ public class PrecisionAir extends BaseActivity {
     }
 
     private void initListView() {
-        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        setEngine(mPreferences);
+        setEngine(sp);
         // 获取指定链接数据
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override

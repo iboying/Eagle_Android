@@ -1,15 +1,12 @@
 package com.buoyantec.eagle_android.ui.activity;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,7 +28,6 @@ public class WaterDetail extends BaseActivity {
     private TextView subToolbarTitle;
     private ListView listView;
     private SimpleDraweeView waterImage;
-    private SharedPreferences sp;
     private Context context;
 
     @Override
@@ -41,7 +37,6 @@ public class WaterDetail extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         waterImage = getViewById(R.id.water_detail_image);
         listView = getViewById(R.id.water_detail_listView);
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
     }
 
@@ -76,9 +71,7 @@ public class WaterDetail extends BaseActivity {
         Integer room_id = sp.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
-        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        setEngine(mPreferences);
+        setEngine(sp);
 
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override

@@ -1,8 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 public class MyActivity extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
-    private SharedPreferences sp;
     private TextView name;
     private TextView phone;
 
@@ -21,8 +18,6 @@ public class MyActivity extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         name = getViewById(R.id.my_name);
         phone = getViewById(R.id.my_phone);
-
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -35,7 +33,6 @@ public class ReceiverPush extends BaseActivity {
     private Button confirmButton;
 
     private Integer id;
-    private SharedPreferences sp;
     private Context context;
 
     @Override
@@ -61,7 +58,6 @@ public class ReceiverPush extends BaseActivity {
         confirmTime = getViewById(R.id.push_alarm_confirm_time);
         // 确认按钮
         confirmButton = getViewById(R.id.push_alarm_confirm_button);
-        sp  = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = getApplicationContext();
     }
 
@@ -115,6 +111,7 @@ public class ReceiverPush extends BaseActivity {
         // 未确认: 正常显示
         if (customContent != null) {
             if (!String.valueOf(id).isEmpty()) {
+                setEngine(sp);
                 mEngine.getAlarm(id).enqueue(new Callback<PointAlarm>() {
                     @Override
                     public void onResponse(Response<PointAlarm> response) {
@@ -169,9 +166,8 @@ public class ReceiverPush extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     showLoadingDialog("正在确认...");
-                    // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
-                    SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-                    setEngine(mPreferences);
+
+                    setEngine(sp);
                     mEngine.checkAlarm(id).enqueue(new Callback<HashMap<String, String>>() {
                         @Override
                         public void onResponse(Response<HashMap<String, String>> response) {

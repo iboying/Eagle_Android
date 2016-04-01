@@ -1,8 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -32,7 +30,6 @@ public class MeterDetail extends BaseActivity {
     private TextView subToolbarTitle;
     private ListView listView;
 
-    private SharedPreferences sp;
     private Context context;
 
     @Override
@@ -44,7 +41,6 @@ public class MeterDetail extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
         listView = getViewById(R.id.meter_detail_listView);
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
 
         //初始化toolbar
@@ -79,9 +75,7 @@ public class MeterDetail extends BaseActivity {
         Integer room_id = sp.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
-        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        setEngine(mPreferences);
+        setEngine(sp);
         // 获取指定链接数据
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override

@@ -1,23 +1,32 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'igrid total solution'
+            keyPassword 'dtby1234'
+            storeFile file('/Users/kang/Documents/Android jks/igrid.jks')
+            storePassword 'dtby1234'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "com.buoyantec.eagle_android"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        // dex突破65535的限制
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']

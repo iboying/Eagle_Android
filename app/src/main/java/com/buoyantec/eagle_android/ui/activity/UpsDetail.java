@@ -1,8 +1,6 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -11,14 +9,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.buoyantec.eagle_android.adapter.DeviceDetailSectionListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import retrofit2.Callback;
@@ -29,8 +24,6 @@ public class UpsDetail extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private Context context;
-    private SharedPreferences sp;
-
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -39,7 +32,6 @@ public class UpsDetail extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
         context = this;
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
     }
 
     @Override
@@ -63,15 +55,13 @@ public class UpsDetail extends BaseActivity {
     }
 
     private void initListView() {
-        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
-        SharedPreferences mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        setEngine(mPreferences);
         // 进度条
         circleProgressBar.setVisibility(View.VISIBLE);
         // 获取device_id 和 room_id
         Integer room_id = sp.getInt("current_room_id", 1);
         Integer device_id = getIntent().getIntExtra("device_id", 1);
 
+        setEngine(sp);
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {

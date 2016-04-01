@@ -30,7 +30,6 @@ public class forgotPasswordActivity extends BaseActivity {
     private EditText mNewPassword;
     private EditText mConfirmPassword;
 
-    private SharedPreferences mPreferences;
     private Context context;
     private CountDownTimer timer;
 
@@ -44,7 +43,6 @@ public class forgotPasswordActivity extends BaseActivity {
         mNewPassword = getViewById(R.id.newPassword);
         mConfirmPassword = getViewById(R.id.confirmPassword);
 
-        mPreferences = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         context = this;
     }
 
@@ -184,7 +182,7 @@ public class forgotPasswordActivity extends BaseActivity {
                                 @Override
                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                                     // 写入SharePreferences
-                                    SharedPreferences.Editor editor = mPreferences.edit();
+                                    SharedPreferences.Editor editor = sp.edit();
                                     editor.putString("phone", phone);
                                     editor.apply();
                                     Intent i = new Intent(forgotPasswordActivity.this, LoginActivity.class);
