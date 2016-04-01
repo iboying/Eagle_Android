@@ -33,6 +33,9 @@ import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.model.Result;
 import com.buoyantec.eagle_android.model.Results;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -105,8 +108,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void roomImage() {
-        String current_room_pic = sp.getString("current_room_pic", null);
         SimpleDraweeView myImage = (SimpleDraweeView) findViewById(R.id.room_image);
+
+        String current_room_pic = sp.getString("current_room_pic", null);
         if (current_room_pic != null) {
             Uri uri = Uri.parse(current_room_pic);
             myImage.setImageURI(uri);

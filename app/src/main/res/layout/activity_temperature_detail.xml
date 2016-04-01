@@ -84,6 +84,6 @@
             android:clickable="true"
             android:dividerHeight="1dp"
             android:divider="@color/white"
-            android:background="@color/white"/>
+            android:background="@color/windowBackgroundColor"/>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

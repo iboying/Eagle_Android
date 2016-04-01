@@ -33,8 +33,8 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/water_detail_image"
-                android:layout_width="fill_parent"
-                android:layout_height="150dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:actualImageScaleType="fitXY"
                 fresco:placeholderImage="@drawable/device_default"/>
         </LinearLayout>
@@ -78,7 +78,7 @@
             android:clickable="true"
             android:dividerHeight="0dp"
             android:divider="@color/white"
-            android:background="@color/white"/>
+            android:background="@color/windowBackgroundColor"/>
 
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
