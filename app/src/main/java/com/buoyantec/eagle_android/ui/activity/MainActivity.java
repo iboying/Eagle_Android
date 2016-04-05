@@ -420,9 +420,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 editor.apply();
                 // 切记,切换activity时,清除popupWindow
                 popup.dismiss();
-                finish();
-                Intent i = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(i);
+                // 重新加载UI组件
+                current_room_id = sp.getInt("current_room_id", 0);
+                roomIds = new ArrayList<>();
+                roomNames = new ArrayList<>();
+                roomPics = new ArrayList<>();
+                // 初始化toolbar和侧边栏
+                initToolBar();
+                initDrawer();
+                roomImage();
+                initGridView();
             }
         });
         // 把菜单模块加入popWindow中
