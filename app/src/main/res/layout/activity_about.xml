@@ -58,59 +58,59 @@
                 android:textColor="@color/nav_font_color"
                 android:text="@string/about_version_text"/>
             <TextView
+                android:id="@+id/versionNmae"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/nav_font_color"
-                android:text="@string/about_version_num"/>
+                android:textColor="@color/nav_font_color"/>
         </LinearLayout>
 
-        <!--<LinearLayout-->
-            <!--android:id="@+id/update_version"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/list_item_bg"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_marginBottom="1dp"-->
-            <!--android:paddingLeft="32dp"-->
-            <!--android:paddingRight="32dp"-->
-            <!--android:paddingTop="16dp"-->
-            <!--android:paddingBottom="16dp">-->
-            <!--<TextView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:textColor="@color/nav_font_color"-->
-                <!--android:text="检查更新"/>-->
-            <!--<com.joanzapata.iconify.widget.IconTextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="{fa-chevron-right}"-->
-                <!--android:textColor="@color/nav_font_color"/>-->
-        <!--</LinearLayout>-->
+        <LinearLayout
+            android:id="@+id/update_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_bg"
+            android:orientation="horizontal"
+            android:layout_marginBottom="1dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/nav_font_color"
+                android:text="检查更新"/>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/nav_font_color"/>
+        </LinearLayout>
 
-        <!--<LinearLayout-->
-            <!--android:id="@+id/feedback"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/list_item_bg"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_marginBottom="1dp"-->
-            <!--android:paddingLeft="32dp"-->
-            <!--android:paddingRight="32dp"-->
-            <!--android:paddingTop="16dp"-->
-            <!--android:paddingBottom="16dp">-->
-            <!--<TextView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:textColor="@color/nav_font_color"-->
-                <!--android:text="反馈"/>-->
-            <!--<com.joanzapata.iconify.widget.IconTextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="{fa-chevron-right}"-->
-                <!--android:textColor="@color/nav_font_color"/>-->
-        <!--</LinearLayout>-->
+        <LinearLayout
+            android:id="@+id/feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_bg"
+            android:orientation="horizontal"
+            android:layout_marginBottom="1dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/nav_font_color"
+                android:text="问题反馈"/>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/nav_font_color"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

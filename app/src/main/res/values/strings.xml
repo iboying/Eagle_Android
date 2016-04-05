@@ -39,7 +39,6 @@
     <string name="about">关 于</string>
 
     <string name="about_version_text">版本号</string>
-    <string name="about_version_num">v2.0</string>
     <string name="about_version_intro">《iGrid Total Solution 数据中心基础设施管理软件》,是由北京臻宇至成电子有限公司自行研发的用于规划数据中心供电系统、环境系统、IT管理、运维管理的整体解决方案。通过标准化的模块化设计及块状组件配置,满足数据中心不断变化的使用需求,提高可用性和可靠性。更可为用户提供3D组态,移动终端,节能措施等高端解决方案。</string>
 
 

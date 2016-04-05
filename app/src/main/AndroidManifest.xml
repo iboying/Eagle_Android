@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.buoyantec.eagle_android.ui.activity"
-    android:versionCode="13"
-    android:versionName="2.3.0">
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <!-- 【必须】 信鸽SDK所需权限 -->
     <uses-permission android:name="android.permission.INTERNET" />

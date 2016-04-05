@@ -1,19 +1,17 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.content.DialogInterface;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pgyersdk.feedback.PgyFeedback;
-import com.pgyersdk.feedback.PgyFeedbackShakeManager;
-import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 
@@ -22,6 +20,7 @@ public class AboutActivity extends BaseActivity {
     private TextView subToolbarTitle;
     private LinearLayout update_version;
     private LinearLayout feedback;
+    private TextView versionName;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -30,37 +29,22 @@ public class AboutActivity extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         update_version = getViewById(R.id.update_version);
         feedback = getViewById(R.id.feedback);
+        versionName = getViewById(R.id.versionNmae);
     }
 
     @Override
     protected void setListener() {
-        feedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PgyFeedback.getInstance().showDialog(AboutActivity.this);
-            }
-        });
-        update_version.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PgyUpdateManager.register(AboutActivity.this, new UpdateManagerListener() {
-                    @Override
-                    public void onNoUpdateAvailable() {
-                        showToast("有新版本");
-                    }
-
-                    @Override
-                    public void onUpdateAvailable(String s) {
-                        showToast("已是最新版本");
-                    }
-                });
-            }
-        });
+        // 问题反馈
+        feedback.setOnClickListener(this);
+        // 检测更新
+        update_version.setOnClickListener(this);
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         initToolbar();
+        // 显示版本号
+        versionName.setText(getAppVersionName(this));
     }
 
     private void initToolbar() {
@@ -73,4 +57,36 @@ public class AboutActivity extends BaseActivity {
         subToolbarTitle.setText("关 于");
     }
 
+    /**
+     * 返回当前程序版本名
+     */
+    public static String getAppVersionName(Context context) {
+        String versionName = "";
+        // Integer versioncode;
+        try {
+            // ---get the package info---
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versionName = pi.versionName;
+            // versioncode = pi.versionCode;
+            if (versionName == null || versionName.length() <= 0) {
+                return "";
+            }
+        } catch (Exception e) {
+            Log.e("VersionInfo", "Exception", e);
+        }
+        return versionName;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.update_version:
+                PgyUpdateManager.register(this);
+                break;
+            case R.id.feedback:
+                PgyFeedback.getInstance().showDialog(AboutActivity.this);
+                break;
+        }
+    }
 }
