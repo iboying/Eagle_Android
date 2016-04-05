@@ -65,6 +65,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/update_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,11 +85,13 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/nav_font_color"/>
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/feedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -108,6 +111,7 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/nav_font_color"/>
         </LinearLayout>

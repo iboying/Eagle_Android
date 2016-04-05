@@ -1,6 +1,5 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,15 +32,10 @@ import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.model.Result;
 import com.buoyantec.eagle_android.model.Results;
-import com.facebook.drawee.drawable.ProgressBarDrawable;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.pgyersdk.feedback.PgyFeedbackShakeManager;
-import com.pgyersdk.update.PgyUpdateManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,7 +98,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             roomImage();
             // 初始化GridView
             initGridView();
-            PgyUpdateManager.register(this);
+            // TODO: 16/4/5 更新版本
+//            PgyUpdateManager.register(this);
         }
     }
 
@@ -172,35 +167,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         DrawerLayout drawer = getViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    /**
-     * 蒲公英: 摇一摇用户反馈
-     */
-    @Override
-    protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-
-        // 自定义摇一摇的灵敏度，默认为950，数值越小灵敏度越高。
-        PgyFeedbackShakeManager.setShakingThreshold(1000);
-
-        // 以对话框的形式弹出
-        PgyFeedbackShakeManager.register(MainActivity.this);
-
-
-        // 以Activity的形式打开，这种情况下必须在AndroidManifest.xml配置FeedbackActivity
-        // 打开沉浸式,默认为false
-        // FeedbackActivity.setBarImmersive(true);
-//        PgyFeedbackShakeManager.register(MainActivity.this, false);
-
-    }
-
-    @Override
-    protected void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
-        PgyFeedbackShakeManager.unregister();
     }
 
     // 初始化toolbar
