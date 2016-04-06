@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.pgyersdk.feedback.PgyFeedback;
 import com.pgyersdk.update.PgyUpdateManager;
-import com.pgyersdk.update.UpdateManagerListener;
 
 public class AboutActivity extends BaseActivity {
     private Toolbar toolbar;

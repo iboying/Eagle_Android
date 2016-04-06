@@ -53,13 +53,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private List<Integer> roomIds;
     private List<String> roomPics;
     private HashMap<String, Integer> systemAlarmCount;
-    private CircleProgressBar circleProgressBar;
     private static Boolean isExit = false;
     private Context context;
 
     private Integer current_room_id;
+    private String current_room;
     // 组件
     private Toolbar toolbar;
+    private TextView subToolbarTitle;
+    private CircleProgressBar circleProgressBar;
+    private SimpleDraweeView myImage;
+    private DrawerLayout drawer;
+    private Button signOutButton;
+    private NavigationView navigationView;
 //    private SliderLayout sliderShow;
 
     @Override
@@ -72,7 +78,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         String token = sp.getString("token", "");
         current_room_id = sp.getInt("current_room_id", 0);
         String rooms = sp.getString("rooms", null);
-        String current_room = sp.getString("current_room", null);
+        current_room = sp.getString("current_room", null);
         context = getApplicationContext();
 
         if (token.isEmpty() || current_room_id==0 || rooms==null || current_room==null) {
@@ -84,33 +90,38 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
             // 初始化变量
-            // sliderShow = getViewById(R.id.slider);
-            circleProgressBar = getViewById(R.id.progressBar);
-            roomIds = new ArrayList<>();
-            roomNames = new ArrayList<>();
-            roomPics = new ArrayList<>();
-            // 初始化toolbar和侧边栏
+            init();
+            // 初始化toolbar
             initToolBar();
+            // 初始化侧边栏
             initDrawer();
-            // 图片轮播
-            // initCarousel();
             // 首页机房图片
             roomImage();
             // 初始化GridView
             initGridView();
+            // 异步任务: 检测告警信息
+            getSubSystemAlarmCount();
             // TODO: 16/4/5 更新版本
-//            PgyUpdateManager.register(this);
+            // PgyUpdateManager.register(this);
+            // 图片轮播
+            // initCarousel();
         }
     }
 
-    private void roomImage() {
-        SimpleDraweeView myImage = (SimpleDraweeView) findViewById(R.id.room_image);
+    // 初始化
+    private void init() {
+        // sliderShow = getViewById(R.id.slider);
+        circleProgressBar = getViewById(R.id.progressBar);
+        myImage = getViewById(R.id.room_image);
+        toolbar = getViewById(R.id.toolbar);
+        subToolbarTitle = getViewById(R.id.toolbar_title);
+        drawer = getViewById(R.id.drawer_layout);
+        signOutButton = getViewById(R.id.sign_out_button);
+        navigationView = getViewById(R.id.nav_view);
 
-        String current_room_pic = sp.getString("current_room_pic", null);
-        if (current_room_pic != null) {
-            Uri uri = Uri.parse(current_room_pic);
-            myImage.setImageURI(uri);
-        }
+        roomIds = new ArrayList<>();
+        roomNames = new ArrayList<>();
+        roomPics = new ArrayList<>();
     }
 
     @Override
@@ -169,14 +180,35 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
+    // 选择机房下拉菜单
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.toolbar_room) {
+            View room = getViewById(R.id.toolbar_room);
+            displayPopupWindow(room);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // onStop事件,使用轮播时,需调用
+    @Override
+    public void stopElement() {
+//        sliderShow.stopAutoCycle();
+        super.stopElement();
+    }
+
     // 初始化toolbar
     public void initToolBar(){
-        toolbar = getViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        TextView subToolbarTitle = getViewById(R.id.toolbar_title);
 
         // 获取机房图片
         String sp_paths = sp.getString("pic_paths", null);
@@ -197,7 +229,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     roomNames.add(rooms[i]);
                 }
             }
-            String current_room = sp.getString("current_room", null);
             subToolbarTitle.setText(current_room);
         } else {
             subToolbarTitle.setText("无可管理机房");
@@ -206,36 +237,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // 添加侧边菜单,并绑定ToolBar菜单按钮
     private void initDrawer() {
-        DrawerLayout drawer = getViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = getViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // 显示姓名
         View headLayout = navigationView.inflateHeaderView(R.layout.nav_header_main);
         TextView name = (TextView) headLayout.findViewById(R.id.user_name);
-        String mName = sp.getString("name", null);
-        name.setText(mName);
+        name.setText(sp.getString("name", null));
 
         // 退出按钮
-        Button signOutButton = getViewById(R.id.sign_out_button);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOutConfirm();
             }
         });
-        // 异步任务: 检测告警信息
-        getSubSystemAlarmCount();
     }
 
     // 退出确认
     private void signOutConfirm() {
         new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-            .setTitleText("确定退出吗?")
+                .setTitleText("确定退出吗?")
                 .setContentText("退出登录后您将无法收到告警推送!")
                 .setCancelText("取消")
                 .setConfirmText("退出")
@@ -261,6 +286,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     }
                 })
                 .show();
+    }
+
+    // 显示机房图片
+    private void roomImage() {
+        String current_room_pic = sp.getString("current_room_pic", null);
+        if (current_room_pic != null) {
+            Uri uri = Uri.parse(current_room_pic);
+            myImage.setImageURI(uri);
+        }
     }
 
     // 初始化栅格布局
@@ -335,12 +369,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // 异步任务,获取机房总告警数
     public void getSubSystemAlarmCount() {
-        // 获取机房id
-        Integer room_id = sp.getInt("current_room_id", 1);
-
         setEngine(sp);
         // 请求服务
-        mEngine.getSystemAlarmCount(room_id).enqueue(new Callback<Results>() {
+        mEngine.getSystemAlarmCount(current_room_id).enqueue(new Callback<Results>() {
             @Override
             public void onResponse(Response<Results> response) {
                 int code = response.code();
@@ -388,22 +419,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
     }
 
-    // 选择机房下拉菜单
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.toolbar_room) {
-            View room = getViewById(R.id.toolbar_room);
-            displayPopupWindow(room);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    // 显示下拉菜单
     private void displayPopupWindow(View anchorView) {
         // 实例化popWindow,并获取菜单
         final PopupWindow popup = new PopupWindow(context);
@@ -411,6 +427,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // 加载机房列表
         ListView listView = (ListView) layout.findViewById(R.id.toolbar_room_list);
         listView.setAdapter(new ToolbarMenuAdapter(context, roomNames));
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 SharedPreferences.Editor editor = sp.edit();
@@ -422,14 +439,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 popup.dismiss();
                 // 重新加载UI组件
                 current_room_id = sp.getInt("current_room_id", 0);
-                roomIds = new ArrayList<>();
-                roomNames = new ArrayList<>();
-                roomPics = new ArrayList<>();
-                // 初始化toolbar和侧边栏
-                initToolBar();
-                initDrawer();
+                // 更新机房信息,机房图片
+                subToolbarTitle.setText(roomNames.get(position));
                 roomImage();
+                // 初始化GridView
                 initGridView();
+                // 异步任务: 检测告警数量
+                getSubSystemAlarmCount();
             }
         });
         // 把菜单模块加入popWindow中
@@ -444,16 +460,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         popup.setBackgroundDrawable(new BitmapDrawable());
         // 设置相对于父级控件的位置
         popup.showAsDropDown(anchorView, -200, 0);
-    }
-
-    /**
-     * onStop事件
-     * 使用轮播时,需调用
-     */
-    @Override
-    public void stopElement() {
-//        sliderShow.stopAutoCycle();
-        super.stopElement();
     }
 
     // 初始化轮播控件
