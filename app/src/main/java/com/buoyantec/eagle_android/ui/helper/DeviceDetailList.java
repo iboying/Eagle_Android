@@ -43,7 +43,7 @@ public class DeviceDetailList {
         if (numbers.size() == 0) {
             names.add("无");
             meanings.add("无");
-            colors.add("empty");
+            colors.add("black");
         }
         for (HashMap<String,String> number : numbers) {
             names.add(number.get("name"));
@@ -57,7 +57,7 @@ public class DeviceDetailList {
         if (status.size() == 0) {
             names.add("无");
             meanings.add("无");
-            colors.add("empty");
+            colors.add("black");
         }
         for (HashMap<String,String> st : status) {
             names.add(st.get("name"));
@@ -71,7 +71,7 @@ public class DeviceDetailList {
         if (alarms.size() == 0) {
             names.add("无");
             meanings.add("无");
-            colors.add("empty");
+            colors.add("black");
         }
         for (HashMap<String,String> alarm : alarms) {
             names.add(alarm.get("name"));

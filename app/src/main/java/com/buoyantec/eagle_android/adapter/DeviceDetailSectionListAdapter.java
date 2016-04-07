@@ -115,10 +115,10 @@ public class DeviceDetailSectionListAdapter extends BaseAdapter {
         } else if (mColors.get(position).equals("red")) {
             holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#FF2600"));
-        } else if (mColors.get(position).equals("black")){
+        } else if (mColors.get(position).equals("green")){
             holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#44DB35"));
-        } else if (mColors.get(position).equals("empty")){
+        } else if (mColors.get(position).equals("black")){
             holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#6F7179"));
         } else {
