@@ -40,6 +40,7 @@
     <!--通用颜色-->
     <color name="white">#ffffff</color>
     <color name="gray">#aaaaaa</color>
-    <color name="list_dot_green">#34E8A3</color>
+    <color name="list_dot_green">#44DB35</color>
     <color name="list_dot_red">#FF2600</color>
+    <color name="listHeaderBg">#808080</color>
 </resources>

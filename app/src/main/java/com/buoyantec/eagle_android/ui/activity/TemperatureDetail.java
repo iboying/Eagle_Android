@@ -92,10 +92,10 @@ public class TemperatureDetail extends BaseActivity {
                     // 循环list,存入数组
                     List<HashMap<String, String>> points = response.body().getPoints();
                     for (HashMap<String, String> point : points) {
-                        if (point.get("name").equals("温度")) {
+                        if (point.get("name").contains("温度")) {
                             tem.add(point.get("value"));
                             temColor.add(point.get("color"));
-                        } else if (point.get("name").equals("湿度")) {
+                        } else if (point.get("name").contains("湿度")) {
                             hum.add(point.get("value"));
                             humColor.add(point.get("color"));
                         }

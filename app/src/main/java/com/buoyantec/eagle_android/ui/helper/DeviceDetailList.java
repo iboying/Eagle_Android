@@ -37,18 +37,18 @@ public class DeviceDetailList {
         ArrayList<String> meanings = new ArrayList<>();
         ArrayList<String> colors = new ArrayList<>();
 
-        names.add("告警点");
+        names.add("参数点");
         meanings.add("");
         colors.add("");
-        if (alarms.size() == 0) {
+        if (numbers.size() == 0) {
             names.add("无");
             meanings.add("无");
-            colors.add("");
+            colors.add("empty");
         }
-        for (HashMap<String,String> alarm : alarms) {
-            names.add(alarm.get("name"));
-            meanings.add(alarm.get("meaning"));
-            colors.add(alarm.get("color"));
+        for (HashMap<String,String> number : numbers) {
+            names.add(number.get("name"));
+            meanings.add(number.get("meaning"));
+            colors.add(number.get("color"));
         }
 
         names.add("状态点");
@@ -57,7 +57,7 @@ public class DeviceDetailList {
         if (status.size() == 0) {
             names.add("无");
             meanings.add("无");
-            colors.add("");
+            colors.add("empty");
         }
         for (HashMap<String,String> st : status) {
             names.add(st.get("name"));
@@ -65,18 +65,18 @@ public class DeviceDetailList {
             colors.add(st.get("color"));
         }
 
-        names.add("参数点");
+        names.add("告警点");
         meanings.add("");
         colors.add("");
-        if (numbers.size() == 0) {
+        if (alarms.size() == 0) {
             names.add("无");
             meanings.add("无");
-            colors.add("");
+            colors.add("empty");
         }
-        for (HashMap<String,String> number : numbers) {
-            names.add(number.get("name"));
-            meanings.add(number.get("meaning"));
-            colors.add(number.get("color"));
+        for (HashMap<String,String> alarm : alarms) {
+            names.add(alarm.get("name"));
+            meanings.add(alarm.get("meaning"));
+            colors.add(alarm.get("color"));
         }
 
         // 加载列表

@@ -12,8 +12,8 @@ android {
         applicationId "com.buoyantec.eagle_android"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 14
-        versionName "2.3.1"
+        versionCode 15
+        versionName "2.3.2"
 
         // dex突破65535的限制
         multiDexEnabled true
@@ -35,16 +35,16 @@ android {
     }
 
     buildTypes {
-//        debug {
-//            // 显示Log
-//            buildConfigField "boolean", "LOG_DEBUG", "true"
-//
-//            versionNameSuffix "-debug"
-//            minifyEnabled false
-//            zipAlignEnabled false
-//            shrinkResources false
-//            signingConfig signingConfigs.debug
-//        }
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+
+            versionNameSuffix "-debug"
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
 
         release {
             // 不显示Log
@@ -111,8 +111,6 @@ dependencies {
     // 外部组件
     // 首页轮播
     compile 'com.daimajia.slider:library:1.1.5@aar'
-    // 圆形图片
-    compile 'de.hdodenhof:circleimageview:2.0.0'
     // 字体图标
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
     // 圆形进度条

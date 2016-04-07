@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -66,6 +67,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private DrawerLayout drawer;
     private Button signOutButton;
     private NavigationView navigationView;
+    private GridView gridView;
 //    private SliderLayout sliderShow;
 
     @Override
@@ -98,15 +100,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             // 首页机房图片
             roomImage();
             // 初始化GridView
-            initGridView();
-            // 异步任务: 检测告警信息
-            getSubSystemAlarmCount();
+            new MyThread().start();
             // TODO: 16/4/5 更新版本
             // PgyUpdateManager.register(this);
             // 图片轮播
             // initCarousel();
         }
     }
+
+    // 如果GridView加载完成,,异步获取告警数了,更新角标
+    Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            if(msg.what==0x123) {
+                getSubSystemAlarmCount();
+            }
+        }
+    };
 
     // 初始化
     private void init() {
@@ -118,6 +127,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer = getViewById(R.id.drawer_layout);
         signOutButton = getViewById(R.id.sign_out_button);
         navigationView = getViewById(R.id.nav_view);
+        gridView = getViewById(R.id.grid_view);
 
         roomIds = new ArrayList<>();
         roomNames = new ArrayList<>();
@@ -299,8 +309,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // 初始化栅格布局
     private void initGridView(){
-        GridView gridView = getViewById(R.id.grid_view);
-
         Integer[] images = {
                 R.drawable.icon_system_status, R.drawable.icon_info,
                 R.drawable.icon_work_order, R.drawable.icon_power_manager,
@@ -328,7 +336,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Intent i = new Intent(MainActivity.this, WorkPlan.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
-                    showToast("暂未开通");
                 } else if (position == 3) {
                     Intent i = new Intent(MainActivity.this, PowerManage.class);
                     i.putExtra("title", texts[position]);
@@ -484,4 +491,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        sliderShow.addSlider(mySliderView);
 //        sliderShow.setDuration(8000);
 //    }
+
+
+    // 等待GridView加载完成,再执行异步操作获取告警数
+    class MyThread extends Thread
+    {
+        @Override
+        public void run() {
+            // 异步任务: 等待GridView加载完成后,获取告警数
+            initGridView();
+            handler.sendEmptyMessage(0x123);
+        }
+    }
 }

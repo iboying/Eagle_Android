@@ -6,26 +6,27 @@
     android:orientation="horizontal"
     android:gravity="center"
     android:background="@color/stripListViewGrayColor"
-    android:paddingLeft="36dp"
-    android:paddingRight="36dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
     android:layout_width="match_parent"
-    android:layout_height="30dp">
+    android:layout_height="36dp">
 
     <com.joanzapata.iconify.widget.IconTextView
-        android:layout_width="24dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:text="{fa-circle}"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:textColor="@color/list_dot_green"/>
 
     <TextView
         android:id="@+id/list_item_device_detail_name"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="30dp"
+        android:layout_height="36dp"
         android:gravity="center_vertical|left"
         android:singleLine="true"
-        android:ellipsize="end" />
+        android:ellipsize="end"
+        android:textSize="14sp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,6 +34,7 @@
         android:layout_marginLeft="10dp"
         android:gravity="right"
         android:singleLine="true"
+        android:textSize="14sp"
         android:id="@+id/list_item_device_detail_status"/>
 
 </LinearLayout>

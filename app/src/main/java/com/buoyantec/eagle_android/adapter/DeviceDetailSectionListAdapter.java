@@ -110,17 +110,20 @@ public class DeviceDetailSectionListAdapter extends BaseAdapter {
             holder.item.setBackgroundResource(colors[position % 2]);
         }
         if (mColors.get(position).equals("blue")) {
-            holder.textView.setTextColor(Color.parseColor("#aaaaaa"));
+            holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#105DF7"));
         } else if (mColors.get(position).equals("red")) {
-            holder.textView.setTextColor(Color.parseColor("#aaaaaa"));
+            holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#FF2600"));
         } else if (mColors.get(position).equals("black")){
-            holder.textView.setTextColor(Color.parseColor("#aaaaaa"));
-            holder.status.setTextColor(Color.parseColor("#34E8A3"));
+            holder.textView.setTextColor(Color.parseColor("#6F7179"));
+            holder.status.setTextColor(Color.parseColor("#44DB35"));
+        } else if (mColors.get(position).equals("empty")){
+            holder.textView.setTextColor(Color.parseColor("#6F7179"));
+            holder.status.setTextColor(Color.parseColor("#6F7179"));
         } else {
-            holder.textView.setTextColor(Color.parseColor("#959595"));
-            holder.status.setTextColor(Color.parseColor("#959595"));
+            holder.textView.setTextColor(Color.parseColor("#ffffff"));
+            holder.status.setTextColor(Color.parseColor("#ffffff"));
         }
         return convertView;
     }
@@ -130,5 +133,4 @@ public class DeviceDetailSectionListAdapter extends BaseAdapter {
         public TextView status;
         public LinearLayout item;
     }
-
 }
