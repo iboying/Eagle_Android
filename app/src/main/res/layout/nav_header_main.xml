@@ -27,7 +27,7 @@
             android:layout_height="70dp"
             android:layout_gravity="center"
             app:roundAsCircle="true"
-            fresco:placeholderImage="@drawable/about_logo"/>
+            fresco:placeholderImage="@drawable/acount_img"/>
     </FrameLayout>
 
     <LinearLayout
