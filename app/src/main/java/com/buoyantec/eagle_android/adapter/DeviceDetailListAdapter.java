@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 /**
  * Created by kang on 16/1/17.
+ * 不含header的list
  * (温湿度,消防系统,漏水) ListView适配器(未被使用)
  */
 public class DeviceDetailListAdapter extends BaseAdapter {

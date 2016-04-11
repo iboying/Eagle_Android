@@ -11,6 +11,15 @@
     android:layout_width="match_parent"
     android:layout_height="26dp">
 
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/list_item_device_list_icon"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:text="{fa-circle}"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:textColor="@color/list_dot_green"/>
+
     <TextView
         android:id="@+id/device_detail_list_title"
         android:layout_width="wrap_content"

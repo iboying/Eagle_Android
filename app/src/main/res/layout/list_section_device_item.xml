@@ -12,6 +12,7 @@
     android:layout_height="36dp">
 
     <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/list_item_device_detail_icon"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:text="{fa-circle}"

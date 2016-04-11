@@ -37,6 +37,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.pgyersdk.update.PgyUpdateManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,6 +69,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private Button signOutButton;
     private NavigationView navigationView;
     private GridView gridView;
+    private BadgeView badge;
 //    private SliderLayout sliderShow;
 
     @Override
@@ -101,8 +103,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             roomImage();
             // 初始化GridView
             new MyThread().start();
-            // TODO: 16/4/5 更新版本
-            // PgyUpdateManager.register(this);
+            // 检测更新版本
+            PgyUpdateManager.register(this);
             // 图片轮播
             // initCarousel();
         }
@@ -117,6 +119,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     };
 
+    // 启动定时任务,五分钟获取一次告警数
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            //要做的事情
+            getSubSystemAlarmCount();
+            handler.postDelayed(this, 10000);
+        }
+    };
+
     // 初始化
     private void init() {
         // sliderShow = getViewById(R.id.slider);
@@ -128,6 +140,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         signOutButton = getViewById(R.id.sign_out_button);
         navigationView = getViewById(R.id.nav_view);
         gridView = getViewById(R.id.grid_view);
+        badge = null;
 
         roomIds = new ArrayList<>();
         roomNames = new ArrayList<>();
@@ -394,8 +407,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     }
 
                     ImageView warnMessage = getViewById(R.id.grid_warn_message_image);
-                    BadgeView badge = new BadgeView(MainActivity.this, warnMessage);
-                    badge.setBadgeMargin(0, 5);
+                    if (badge == null) {
+                        badge = new BadgeView(MainActivity.this, warnMessage);
+                        badge.setBadgeMargin(0, 5);
+                    }
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.INVISIBLE);
                     if (count == 0) {
@@ -492,7 +507,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        sliderShow.setDuration(8000);
 //    }
 
-
     // 等待GridView加载完成,再执行异步操作获取告警数
     class MyThread extends Thread
     {
@@ -502,5 +516,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             initGridView();
             handler.sendEmptyMessage(0x123);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, 10000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
     }
 }

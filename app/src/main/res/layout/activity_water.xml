@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:dividerHeight="1dp"
-            android:divider="@color/white"
             android:background="@color/white"/>
 
     </LinearLayout>
