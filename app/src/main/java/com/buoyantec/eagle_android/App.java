@@ -93,7 +93,6 @@ public class App extends Application {
                     NOTIFICATION_ID++;
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     Intent intent = new Intent(context, ReceiverPush.class);
-                    System.out.println("app.java: customContent----->"+customContent);
                     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
                     Notification notification = new Notification.Builder(context)
                             // 设置打开该通知,通知自动消失

@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     // 物理菜单键绑定功能
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_MENU) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
             DrawerLayout drawer = getViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
@@ -173,7 +173,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 drawer.openDrawer(GravityCompat.START);
             }
         } else if (keyCode == KeyEvent.KEYCODE_BACK) {
-            exitByDoubleClick();      //调用双击退出函数
+            //调用双击退出函数
+            exitByDoubleClick();
         }
         return super.onKeyDown(keyCode, event);
     }

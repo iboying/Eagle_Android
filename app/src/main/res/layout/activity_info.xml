@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/windowBackgroundColor"
     android:fitsSystemWindows="true"
     tools:context="com.buoyantec.eagle_android.ui.activity.InfoActivity">
 
@@ -23,7 +24,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/windowBackgroundColor"
+            android:paddingBottom="16dp"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="com.buoyantec.eagle_android.ui.activity.InfoActivity">
@@ -58,31 +59,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/nav_font_color"
-                    android:text="信息"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:layout_marginBottom="24dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp">
+                    android:text="@string/about_version_text"/>
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/nav_font_color"
-                    android:text="关于版本信息"/>
-                <TextView
-                    android:id="@+id/my_phone"
+                    android:id="@+id/versionName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/nav_font_color"
-                    android:text="第三方发布平台统一发布升级"/>
+                    android:textColor="@color/nav_font_color"/>
             </LinearLayout>
 
             <LinearLayout
@@ -90,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/white"
                 android:orientation="vertical">
                 <ImageView
@@ -100,6 +82,7 @@
                     android:src="@drawable/information"
                     android:scaleType="fitStart"/>
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -42,30 +42,7 @@
             android:src="@drawable/logo_shadow"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:layout_marginBottom="1dp"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/nav_font_color"
-                android:text="@string/about_version_text"/>
-            <TextView
-                android:id="@+id/versionNmae"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/nav_font_color"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/update_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +68,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/feedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,6 +102,7 @@
             android:paddingRight="32dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
+            android:layout_marginTop="16dp"
             android:textSize="@dimen/text_small"
             android:textColor="@color/nav_font_color"
             android:text="@string/about_version_intro"/>

@@ -1,25 +1,24 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pgyersdk.feedback.PgyFeedback;
+import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 
 public class AboutActivity extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private LinearLayout update_version;
     private LinearLayout feedback;
-    private TextView versionName;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -28,7 +27,6 @@ public class AboutActivity extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         update_version = getViewById(R.id.update_version);
         feedback = getViewById(R.id.feedback);
-        versionName = getViewById(R.id.versionNmae);
     }
 
     @Override
@@ -42,8 +40,6 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         initToolbar();
-        // 显示版本号
-        versionName.setText(getAppVersionName(this));
     }
 
     private void initToolbar() {
@@ -56,36 +52,46 @@ public class AboutActivity extends BaseActivity {
         subToolbarTitle.setText("关 于");
     }
 
-    /**
-     * 返回当前程序版本名
-     */
-    public static String getAppVersionName(Context context) {
-        String versionName = "";
-        // Integer versioncode;
-        try {
-            // ---get the package info---
-            PackageManager pm = context.getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
-            versionName = pi.versionName;
-            // versioncode = pi.versionCode;
-            if (versionName == null || versionName.length() <= 0) {
-                return "";
-            }
-        } catch (Exception e) {
-            Log.e("VersionInfo", "Exception", e);
-        }
-        return versionName;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.update_version:
-                PgyUpdateManager.register(this);
+                checkVersion();
                 break;
             case R.id.feedback:
                 PgyFeedback.getInstance().showDialog(AboutActivity.this);
                 break;
         }
+    }
+
+    // 检测更新
+    public void checkVersion() {
+        PgyUpdateManager.register(this, new UpdateManagerListener() {
+            @Override
+            public void onNoUpdateAvailable() {
+                showToast("已经是最新版本");
+            }
+
+            @Override
+            public void onUpdateAvailable(String result) {
+                // 将新版本信息封装到AppBean中
+                final AppBean appBean = getAppBeanFromString(result);
+                new AlertDialog.Builder(AboutActivity.this)
+                    .setTitle("更新提醒")
+                    .setMessage(appBean.getReleaseNote())
+                    .setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startDownloadTask(AboutActivity.this, appBean.getDownloadURL());
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+            }
+        });
     }
 }
