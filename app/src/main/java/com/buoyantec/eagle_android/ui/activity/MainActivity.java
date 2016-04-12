@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private NavigationView navigationView;
     private GridView gridView;
     private BadgeView badge;
+    private ImageView warnMessage;
 //    private SliderLayout sliderShow;
 
     @Override
@@ -141,6 +142,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         navigationView = getViewById(R.id.nav_view);
         gridView = getViewById(R.id.grid_view);
         badge = null;
+        warnMessage = null;
 
         roomIds = new ArrayList<>();
         roomNames = new ArrayList<>();
@@ -350,6 +352,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Intent i = new Intent(MainActivity.this, WorkPlan.class);
                     i.putExtra("title", texts[position]);
                     startActivity(i);
+                    showToast("暂未开通");
                 } else if (position == 3) {
                     Intent i = new Intent(MainActivity.this, PowerManage.class);
                     i.putExtra("title", texts[position]);
@@ -407,23 +410,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         systemAlarmCount.put(result.getName(), result.getSize());
                     }
 
-                    ImageView warnMessage = getViewById(R.id.grid_warn_message_image);
+                    if (warnMessage == null) {
+                        warnMessage = getViewById(R.id.grid_warn_message_image);
+                    }
                     if (badge == null) {
                         badge = new BadgeView(MainActivity.this, warnMessage);
                         badge.setBadgeMargin(0, 5);
                     }
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.INVISIBLE);
+
                     if (count == 0) {
                         badge.hide();
                     } else {
                         if (count >= 1000) {
                             badge.setText("···");
                         } else {
+                            System.out.println("----------"+ count);
                             badge.setText(count.toString());
                         }
                         badge.show();
                     }
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.INVISIBLE);
                     Log.i("获取子系统告警数", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 隐藏进度条
@@ -465,8 +472,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 // 更新机房信息,机房图片
                 subToolbarTitle.setText(roomNames.get(position));
                 roomImage();
-                // 初始化GridView
-                initGridView();
                 // 异步任务: 检测告警数量
                 getSubSystemAlarmCount();
             }
@@ -475,14 +480,37 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         popup.setContentView(layout);
         // 设置高度和宽度
         popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-        popup.setWidth(300);
+        popup.setWidth(350);
         // 失去焦点时,关闭popWindow
         popup.setOutsideTouchable(true);
         popup.setFocusable(true);
         // 给控件加上popWindow, setBackgroundDrawable可以取消popupWindow的边框
         popup.setBackgroundDrawable(new BitmapDrawable());
         // 设置相对于父级控件的位置
-        popup.showAsDropDown(anchorView, -200, 0);
+        popup.showAsDropDown(anchorView, -250, 0);
+    }
+
+    // 等待GridView加载完成,再执行异步操作获取告警数
+    class MyThread extends Thread
+    {
+        @Override
+        public void run() {
+            // 异步任务: 等待GridView加载完成后,获取告警数
+            initGridView();
+            handler.sendEmptyMessage(0x123);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, 10000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
     }
 
     // 初始化轮播控件
@@ -507,27 +535,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        sliderShow.addSlider(mySliderView);
 //        sliderShow.setDuration(8000);
 //    }
-
-    // 等待GridView加载完成,再执行异步操作获取告警数
-    class MyThread extends Thread
-    {
-        @Override
-        public void run() {
-            // 异步任务: 等待GridView加载完成后,获取告警数
-            initGridView();
-            handler.sendEmptyMessage(0x123);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handler.postDelayed(runnable, 10000);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacks(runnable);
-    }
 }

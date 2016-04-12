@@ -2,6 +2,7 @@ package com.buoyantec.eagle_android.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,24 +69,28 @@ public class TemperatureListAdapter extends BaseAdapter {
         TextView hum = BaseViewHolder.get(convertView, R.id.list_item_temperature_humidity);
 
         item.setBackgroundResource(colors[position % 2]);
-        num.setText(String.valueOf(position+1));
+        num.setText(String.valueOf(position + 1));
 
-        tem.setText(temperature.get(position) + "℃");
-        if (temColor.get(position).equals("blue")) {
-            tem.setTextColor(Color.parseColor("#105DF7"));
-        } else if (temColor.get(position).equals("red")) {
-            tem.setTextColor(Color.parseColor("#FF2600"));
-        } else {
-            tem.setTextColor(Color.parseColor("#44DB35"));
+        if (temperature.size() > position) {
+            tem.setText(temperature.get(position) + "℃");
+            if (temColor.get(position).equals("blue")) {
+                tem.setTextColor(Color.parseColor("#105DF7"));
+            } else if (temColor.get(position).equals("red")) {
+                tem.setTextColor(Color.parseColor("#FF2600"));
+            } else {
+                tem.setTextColor(Color.parseColor("#44DB35"));
+            }
         }
 
-        hum.setText(humidity.get(position) + "%");
-        if (humColor.get(position).equals("blue")) {
-            hum.setTextColor(Color.parseColor("#105DF7"));
-        } else if (humColor.get(position).equals("red")) {
-            hum.setTextColor(Color.parseColor("#FF2600"));
-        } else {
-            hum.setTextColor(Color.parseColor("#44DB35"));
+        if (humidity.size() > position) {
+            hum.setText(humidity.get(position) + "%");
+            if (humColor.get(position).equals("blue")) {
+                hum.setTextColor(Color.parseColor("#105DF7"));
+            } else if (humColor.get(position).equals("red")) {
+                hum.setTextColor(Color.parseColor("#FF2600"));
+            } else {
+                hum.setTextColor(Color.parseColor("#44DB35"));
+            }
         }
 
         return convertView;

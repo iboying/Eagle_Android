@@ -130,6 +130,7 @@ public class DeviceDetailSectionListAdapter extends BaseAdapter {
             holder.status.setTextColor(Color.parseColor("#6F7179"));
         } else {
 //            holder.icon.setTextColor(Color.parseColor("#ffffff"));
+            // 此处判断,是为了设置header的文字颜色
             holder.textView.setTextColor(Color.parseColor("#ffffff"));
             holder.status.setTextColor(Color.parseColor("#ffffff"));
         }
