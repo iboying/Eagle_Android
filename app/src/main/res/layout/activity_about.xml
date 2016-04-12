@@ -45,24 +45,24 @@
             android:visibility="visible"
             android:id="@+id/update_version"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:background="@drawable/list_item_bg"
             android:orientation="horizontal"
             android:layout_marginBottom="1dp"
             android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:paddingRight="32dp">
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/nav_font_color"
                 android:text="检查更新"/>
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:textSize="20sp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/nav_font_color"/>
         </LinearLayout>
@@ -71,7 +71,7 @@
             android:visibility="visible"
             android:id="@+id/feedback"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:background="@drawable/list_item_bg"
             android:orientation="horizontal"
             android:layout_marginBottom="1dp"
@@ -84,11 +84,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/nav_font_color"
+                android:layout_gravity="center_vertical"
                 android:text="问题反馈"/>
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:textSize="20sp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/nav_font_color"/>
         </LinearLayout>
