@@ -195,11 +195,11 @@
         <activity
             android:name=".WarnDetail"
             android:label="@string/title_activity_warn_detail"
-            android:parentActivityName=".WarnDevices"
+            android:parentActivityName=".WarnSystems"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.ui.activity.WarnDevices" />
+                android:value="com.buoyantec.eagle_android.ui.activity.WarnSystems" />
         </activity>
         <activity
             android:name=".PrecisionAirDetail"
@@ -303,15 +303,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.ui.activity.PowerDistribution" />
-        </activity>
-        <activity
-            android:name=".WarnDevices"
-            android:label="@string/title_activity_warn_devices"
-            android:launchMode="singleTop"
-            android:parentActivityName=".WarnSystems" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.ui.activity.WarnSystems" />
         </activity>
         <activity
             android:name=".CabinetDetail"

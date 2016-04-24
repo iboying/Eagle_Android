@@ -31,8 +31,8 @@ import android.widget.Toast;
 import com.buoyantec.eagle_android.adapter.ToolbarMenuAdapter;
 import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
-import com.buoyantec.eagle_android.model.Result;
-import com.buoyantec.eagle_android.model.Results;
+import com.buoyantec.eagle_android.model.SubSystemAlarm;
+import com.buoyantec.eagle_android.model.RoomAlarm;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -71,7 +71,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private GridView gridView;
     private BadgeView badge;
     private ImageView warnMessage;
-//    private SliderLayout sliderShow;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -106,8 +105,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             new MyThread().start();
             // 检测更新版本
             PgyUpdateManager.register(this);
-            // 图片轮播
-            // initCarousel();
         }
     }
 
@@ -395,19 +392,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void getSubSystemAlarmCount() {
         setEngine(sp);
         // 请求服务
-        mEngine.getSystemAlarmCount(current_room_id).enqueue(new Callback<Results>() {
+        mEngine.getSubSystemAlarmCount(current_room_id).enqueue(new Callback<RoomAlarm>() {
             @Override
-            public void onResponse(Response<Results> response) {
+            public void onResponse(Response<RoomAlarm> response) {
                 int code = response.code();
                 if (code == 200) {
                     // 计数
                     Integer count = 0;
                     systemAlarmCount = new HashMap<>();
 
-                    List<Result> results = response.body().getResults();
-                    for (Result result : results) {
-                        count += result.getSize();
-                        systemAlarmCount.put(result.getName(), result.getSize());
+                    List<SubSystemAlarm> subSystemAlarms = response.body().getSubSystemAlarms();
+                    for (SubSystemAlarm subSystemAlarm : subSystemAlarms) {
+                        count += subSystemAlarm.getSubSystemCount();
+                        systemAlarmCount.put(subSystemAlarm.getSubSystemName(), subSystemAlarm.getSubSystemCount());
                     }
 
                     if (warnMessage == null) {
@@ -421,10 +418,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     if (count == 0) {
                         badge.hide();
                     } else {
-                        if (count >= 1000) {
-                            badge.setText("···");
+                        if (count >= 100) {
+                            badge.setText("99+");
                         } else {
-                            System.out.println("----------"+ count);
                             badge.setText(count.toString());
                         }
                         badge.show();
@@ -512,27 +508,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onPause();
         handler.removeCallbacks(runnable);
     }
-
-    // 初始化轮播控件
-//    private void initCarousel() {
-//        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
-//        MySliderView mySliderView = new MySliderView(this);
-//        mySliderView
-//            .description(sp.getString("current_room", null))
-//                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg")
-//                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-//                    @Override
-//                    public void onSliderClick(BaseSliderView slider) {
-//                        SharedPreferences.Editor editor = sp.edit();
-//                        editor.putInt("current_room_id", sp.getInt("current_room_id", 0));
-//                        editor.putString("current_room", sp.getString("current_room", null));
-//                        editor.apply();
-//                        finish();
-//                        Intent i = new Intent(MainActivity.this, MainActivity.class);
-//                        startActivity(i);
-//                    }
-//            });
-//        sliderShow.addSlider(mySliderView);
-//        sliderShow.setDuration(8000);
-//    }
 }

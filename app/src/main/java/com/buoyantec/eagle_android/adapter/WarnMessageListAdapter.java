@@ -20,13 +20,13 @@ import java.util.List;
  */
 public class WarnMessageListAdapter extends BaseAdapter{
     private Context mContext;
-    private Integer[] images;
+    private List<Integer> images;
     private List<String> texts;
     private List<Integer> count;
     private ListView listView;
     private LayoutInflater mInflater;
 
-    public WarnMessageListAdapter(ListView listView, Context c, Integer[] images, List<String> texts,
+    public WarnMessageListAdapter(ListView listView, Context c, List<Integer> images, List<String> texts,
                                   List<Integer> count) {
         this.listView = listView;
         this.mContext = c;
@@ -66,8 +66,8 @@ public class WarnMessageListAdapter extends BaseAdapter{
             holder = (SystemAlarmViewHolder) convertView.getTag();
         }
 
-        if (images[position] != null) {
-            holder.icon.setBackgroundResource(images[position]);
+        if (images.get(position) != null) {
+            holder.icon.setBackgroundResource(images.get(position));
         }else{
             holder.icon.setBackgroundResource(R.drawable.system_status_air);
         }

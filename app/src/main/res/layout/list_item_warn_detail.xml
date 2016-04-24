@@ -26,7 +26,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="14sp"
-            android:text="name"/>
+            android:text="告警名称"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,11 +38,9 @@
                 android:layout_height="18dp"
                 android:layout_marginRight="16dp"
                 android:singleLine="true"
-                android:ellipsize="end"
-                android:maxLines="1"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
-                android:text="信息"/>
+                android:text="描述"/>
             <TextView
                 android:id="@+id/warn_detail_time"
                 android:layout_width="wrap_content"

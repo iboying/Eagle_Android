@@ -23,13 +23,13 @@ public class ReceiverPush extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private TextView deviceName;
-    private TextView info;
-    private TextView status;
+    private TextView pointName;
+    private TextView meaning;
     private TextView type;
-    private TextView alarmTime;
-    private TextView finishTime;
-    private TextView user;
-    private TextView confirmTime;
+    private TextView reportedAt;
+    private TextView clearedAt;
+    private TextView checkedUser;
+    private TextView checkedAt;
     private Button confirmButton;
 
     private Integer id;
@@ -42,20 +42,20 @@ public class ReceiverPush extends BaseActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         // 告警设备名称(device_name)
         deviceName = getViewById(R.id.push_device_name);
-        // 告警信息(comment)
-        info = getViewById(R.id.push_alarm_info);
-        // 状态(meaning)
-        status = getViewById(R.id.push_alarm_status);
+        // 详情(point_name)
+        pointName = getViewById(R.id.push_point_name);
+        // 描述(meaning)
+        meaning = getViewById(R.id.push_meaning);
         // 类型(type)
-        type = getViewById(R.id.push_alarm_type);
-        // 告警时间(updated_at)
-        alarmTime = getViewById(R.id.push_alarm_time);
-        // 解除时间(checked_at)
-        finishTime = getViewById(R.id.push_alarm_finish_time);
+        type = getViewById(R.id.push_type);
+        // 告警时间(reported_at)
+        reportedAt = getViewById(R.id.push_reported_at);
+        // 解除时间(cleared_at)
+        clearedAt = getViewById(R.id.push_cleared_at);
         // 操作员(checked_user)
-        user = getViewById(R.id.push_alarm_user);
-        // 确认时间
-        confirmTime = getViewById(R.id.push_alarm_confirm_time);
+        checkedUser = getViewById(R.id.push_checked_user);
+        // 确认时间(checked_at)
+        checkedAt = getViewById(R.id.push_checked_at);
         // 确认按钮
         confirmButton = getViewById(R.id.push_alarm_confirm_button);
         context = getApplicationContext();
@@ -73,8 +73,6 @@ public class ReceiverPush extends BaseActivity {
         confirmAlarm();
     }
 
-
-
     private void initToolBar() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -85,24 +83,9 @@ public class ReceiverPush extends BaseActivity {
     }
 
     private void setData() {
-        // custom_content = {
-        // "id":3210406,
-        // "is_checked":true,
-        // "updated_at":"2016-03-29T14:50:42.000Z",
-        // "device_name":"APC 空调",
-        // "alarm_value":"",
-        // "state":0,
-        // "created_at":"2016-03-02T08:39:57.000Z",
-        // "pid":null,"meaning":"分",
-        // "type":"digital",
-        // "comment":"APC空调-开机状态",
-        // "checked_at":null,
-        // "point_id":4570
-        // }
-
         // 显示载入
         showLoadingDialog("正在加载...");
-
+        // 获取推送内容
         String customContent = sp.getString("custom_content", null);
         Gson gson = new Gson();
         id = gson.fromJson(customContent, PointAlarm.class).getId();
@@ -119,21 +102,15 @@ public class ReceiverPush extends BaseActivity {
                             PointAlarm pointAlarm = response.body();
                             // 给UI设置数据
                             deviceName.setText(pointAlarm.getDeviceName());
-                            info.setText(pointAlarm.getComment());
-                            status.setText(pointAlarm.getMeaning());
+                            pointName.setText(pointAlarm.getPointName());
+                            meaning.setText(pointAlarm.getMeaning());
                             type.setText(pointAlarm.getType());
-                            alarmTime.setText(pointAlarm.getUpdatedAt());
-                            if (!String.valueOf(pointAlarm.getState()).isEmpty() && pointAlarm.getUpdatedAt() != null) {
-                                if (pointAlarm.getState() == 0) {
-                                    finishTime.setText(pointAlarm.getUpdatedAt());
-                                } else {
-                                    finishTime.setText("");
-                                }
-                            }
-                            user.setText(pointAlarm.getCheckedUser());
-                            confirmTime.setText(pointAlarm.getCheckedAt());
+                            reportedAt.setText(pointAlarm.getReportedAt());
+                            clearedAt.setText(pointAlarm.getClearedAt());
+                            checkedUser.setText(pointAlarm.getCheckedUser());
+                            checkedAt.setText(pointAlarm.getCheckedAt());
                             // 判断是否已被确认
-                            if (pointAlarm.getCheckedUser().length() > 0) {
+                            if (pointAlarm.getChecked()) {
                                 confirmButton.setText("已被确认");
                                 confirmButton.setClickable(false);
                             }
@@ -175,11 +152,11 @@ public class ReceiverPush extends BaseActivity {
                             if (data.get("result").equals("处理成功")) {
                                 dismissLoadingDialog();
                                 // 改变item操作员
-                                user.setText(sp.getString("name", ""));
+                                checkedUser.setText(sp.getString("name", ""));
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                                 Date currentDate = new Date(System.currentTimeMillis());
                                 String str = simpleDateFormat.format(currentDate);
-                                confirmTime.setText(str);
+                                checkedAt.setText(str);
                                 // 修改按钮
                                 confirmButton.setText("已被确认");
                                 confirmButton.setClickable(false);

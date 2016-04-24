@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="告警点"/>
+            android:text="device_name"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,13 +52,14 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="信 息:"/>
+                    android:text="详 情:"/>
                 <TextView
-                    android:id="@+id/push_alarm_info"
+                    android:id="@+id/push_point_name"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="point_name"/>
             </LinearLayout>
 
             <LinearLayout
@@ -74,13 +75,14 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="状 态:"/>
+                    android:text="描 述:"/>
                 <TextView
-                    android:id="@+id/push_alarm_status"
+                    android:id="@+id/push_meaning"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="meaning"/>
             </LinearLayout>
 
             <LinearLayout
@@ -99,11 +101,12 @@
                     android:gravity="center_vertical"
                     android:text="类 型:"/>
                 <TextView
-                    android:id="@+id/push_alarm_type"
+                    android:id="@+id/push_type"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="type"/>
             </LinearLayout>
 
             <LinearLayout
@@ -121,11 +124,12 @@
                     android:gravity="center_vertical"
                     android:text="告警时间:"/>
                 <TextView
-                    android:id="@+id/push_alarm_time"
+                    android:id="@+id/push_reported_at"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="reported_at"/>
             </LinearLayout>
 
             <LinearLayout
@@ -144,11 +148,12 @@
                     android:gravity="center_vertical"
                     android:text="解除时间:"/>
                 <TextView
-                    android:id="@+id/push_alarm_finish_time"
+                    android:id="@+id/push_cleared_at"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="cleared_at"/>
             </LinearLayout>
 
             <LinearLayout
@@ -166,11 +171,12 @@
                     android:gravity="center_vertical"
                     android:text="操作员:"/>
                 <TextView
-                    android:id="@+id/push_alarm_user"
+                    android:id="@+id/push_checked_user"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="checked_user"/>
             </LinearLayout>
 
             <LinearLayout
@@ -189,11 +195,12 @@
                     android:gravity="center_vertical"
                     android:text="确认时间:"/>
                 <TextView
-                    android:id="@+id/push_alarm_confirm_time"
+                    android:id="@+id/push_checked_at"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:text="checked_at"/>
             </LinearLayout>
 
             <Button

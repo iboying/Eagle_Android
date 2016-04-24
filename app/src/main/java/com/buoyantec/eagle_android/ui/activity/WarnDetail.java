@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 public class WarnDetail extends BaseActivity {
     private String title;
-    private Integer device_id;
+    private Integer subSystemId;
     private Context context;
     // 组件
     private CircleProgressBar circleProgressBar;
@@ -42,28 +42,27 @@ public class WarnDetail extends BaseActivity {
     private TextView subToolbarTitle;
     // 列表数据
     private List<Integer> ids = new ArrayList<>();
+    private List<String> deviceNames = new ArrayList<>();
     private List<String> pointNames = new ArrayList<>();
-    private List<String> comments = new ArrayList<>();
-    private List<String> types = new ArrayList<>();
-    private List<String> alarmTimes = new ArrayList<>();
-    private List<String> checkedAt = new ArrayList<>();
-    private List<String> alarms = new ArrayList<>();
     private List<String> meanings = new ArrayList<>();
-    private List<Boolean> isChecked = new ArrayList<>();
+    private List<String> types = new ArrayList<>();
+    private List<String> reportedAt = new ArrayList<>();
+    private List<String> clearedAt = new ArrayList<>();
     private List<String> checkedUser = new ArrayList<>();
-    private List<Integer> state = new ArrayList<>();
-    private List<String> confirmDate = new ArrayList<>();
+    private List<String> checkedAt = new ArrayList<>();
+    private List<Boolean> isChecked = new ArrayList<>();
+    private List<Boolean> isCleared = new ArrayList<>();
     // 模态框
     private MaterialDialog materialDialog;
     private View dialogDetail;
-    private TextView alarmPoint;
-    private TextView info;
-    private TextView alarmStatus;
-    private TextView type;
-    private TextView alarmTime;
-    private TextView finishTime;
-    private TextView user;
-    private TextView confirmTime;
+    private TextView alarmDeviceName;
+    private TextView alarmPointName;
+    private TextView alarmMeaning;
+    private TextView alarmType;
+    private TextView alarmReportedAt;
+    private TextView alarmClearedAt;
+    private TextView alarmCheckedUser;
+    private TextView alarmCheckedAt;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -72,9 +71,7 @@ public class WarnDetail extends BaseActivity {
     }
 
     @Override
-    protected void setListener() {
-
-    }
+    protected void setListener() {}
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
@@ -86,7 +83,8 @@ public class WarnDetail extends BaseActivity {
 
     private void init() {
         Intent i = getIntent();
-        device_id = i.getIntExtra("device_id", 1);
+        subSystemId = i.getIntExtra("subSystemId", 1);
+
         title = i.getStringExtra("title");
         context = this;
         // 组件
@@ -99,17 +97,6 @@ public class WarnDetail extends BaseActivity {
         View footer = getLayoutInflater().inflate(R.layout.list_view_footer, null);
         listView.addFooterView(footer);
         addMore = getViewById(R.id.list_more);
-        // 模态框
-        materialDialog = new MaterialDialog(this);
-        dialogDetail = View.inflate(context, R.layout.alarm_detail, null);
-        info = (TextView) dialogDetail.findViewById(R.id.push_alarm_info);
-        alarmPoint = (TextView) dialogDetail.findViewById(R.id.push_point_name);
-        alarmStatus = (TextView) dialogDetail.findViewById(R.id.push_alarm_status);
-        type = (TextView) dialogDetail.findViewById(R.id.push_alarm_type);
-        alarmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_time);
-        finishTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_finish_time);
-        user = (TextView) dialogDetail.findViewById(R.id.push_alarm_user);
-        confirmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_confirm_time);
     }
 
     private void initToolbar() {
@@ -121,104 +108,90 @@ public class WarnDetail extends BaseActivity {
         subToolbarTitle.setText(title);
     }
 
-    /**
-     * 解除时间：
-     * 如果state不为0，则空白，因为此时告警未解除。
-     * 如果state为0，则取updated_at，作为告警解除时间
-     */
     private void initListView(Integer page) {
+        Integer room_id = sp.getInt("current_room_id", 1);
         setEngine(sp);
-        mEngine.getWarnMessages(device_id, 0, page).enqueue(new Callback<Alarm>() {
+        mEngine.getWarnMessages(room_id, subSystemId, 0, page).enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Response<Alarm> response) {
                 // 初始化变量
                 Alarm alarm = response.body();
-                int code = response.code();
-
                 final Integer total_pages = alarm.getTotalPages();
                 final Integer current_page = alarm.getCurrentPage();
 
-                if (code == 200) {
+                if (response.code() == 200) {
                     // 获取数据
-                    List<PointAlarm> pointAlarms = alarm.getPointAlarms();
+                    final List<PointAlarm> pointAlarms = alarm.getPointAlarms();
                     for (PointAlarm pointAlarm : pointAlarms) {
-                        // 告警点id(id)
+                        // 告警记录id(id)
                         ids.add(pointAlarm.getId());
+                        // 设备名称
+                        deviceNames.add(pointAlarm.getDeviceName());
                         // 告警点名称(point_name)
                         pointNames.add(pointAlarm.getPointName());
-                        // 信息(comment)
-                        comments.add(pointAlarm.getComment());
-                        // 告警时间(updated_at)
-                        alarmTimes.add(pointAlarm.getUpdatedAt());
-                        // 告警解除时间(checked_at)
-                        checkedAt.add(pointAlarm.getCheckedAt());
-                        // 详情(alarm_value)
-                        alarms.add(pointAlarm.getAlarmValue());
-                        // 状态(meaning)
+                        // 描述(meaning)
                         meanings.add(pointAlarm.getMeaning());
+                        // 类型(Type)
+                        types.add(pointAlarm.getType());
+                        // 告警时间(updated_at)
+                        reportedAt.add(pointAlarm.getReportedAt());
+                        // 解除时间(cleared_at)
+                        clearedAt.add(pointAlarm.getClearedAt());
                         // 操作员(checked_user)
                         checkedUser.add(pointAlarm.getCheckedUser());
-                        // 是否已确认(is_checked)
-                        if (pointAlarm.getCheckedUser().equals("")) {
-                            isChecked.add(false);
-                        } else {
-                            isChecked.add(true);
-                        }
-                        // 标识(state)
-                        state.add(pointAlarm.getState());
-                        // 类型(type)
-                        types.add(pointAlarm.getType());
-                        // 确认时间(此字段根据state和update判断,此处声明用于不获取数据的情况下,确认后修改确认时间)
-                        confirmDate.add("");
+                        // 确认时间(确认后修改确认时间)
+                        checkedAt.add(pointAlarm.getCheckedAt());
 
+                        // 是否已确认(is_checked)
+                        isChecked.add(pointAlarm.getChecked());
+                        // 是否已清除(is_cleared)
+                        isCleared.add(pointAlarm.getCleared());
                     }
 
-                    circleProgressBar.setVisibility(View.GONE);
-
                     // ListView填装数据
-                    BaseAdapter adapter = new WarnDetailListAdapter(context, pointNames, comments, alarmTimes, isChecked);
+                    BaseAdapter adapter = new WarnDetailListAdapter(context, pointNames, meanings, reportedAt, isChecked);
                     adapter.notifyDataSetChanged();
                     listView.setAdapter(adapter);
+
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+                            // 模态框
                             materialDialog = new MaterialDialog(context);
                             dialogDetail = View.inflate(context, R.layout.alarm_detail, null);
-                            info = (TextView) dialogDetail.findViewById(R.id.push_alarm_info);
-                            alarmPoint = (TextView) dialogDetail.findViewById(R.id.push_point_name);
-                            alarmStatus = (TextView) dialogDetail.findViewById(R.id.push_alarm_status);
-                            type = (TextView) dialogDetail.findViewById(R.id.push_alarm_type);
-                            alarmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_time);
-                            finishTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_finish_time);
-                            user = (TextView) dialogDetail.findViewById(R.id.push_alarm_user);
-                            confirmTime = (TextView) dialogDetail.findViewById(R.id.push_alarm_confirm_time);
-                            // 传入数据
-                            alarmPoint.setText(pointNames.get(position));
-                            info.setText(comments.get(position));
-                            alarmStatus.setText(meanings.get(position));
-                            type.setText(types.get(position));
-                            alarmTime.setText(alarmTimes.get(position));
-                            user.setText(checkedUser.get(position));
-                            if (checkedAt.get(position) == null) {
-                                confirmTime.setText(confirmDate.get(position));
-                            } else {
-                                confirmTime.setText(checkedAt.get(position));
-                            }
-                            if (state.get(position) == 0) {
-                                finishTime.setText(alarmTimes.get(position));
-                            } else {
-                                finishTime.setText("");
-                            }
-                            materialDialog.setContentView(dialogDetail)
-                                    .setNegativeButton("取消", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            materialDialog.dismiss();
-                                        }
-                                    });
+                            // 获取组件
+                            alarmDeviceName = (TextView) dialogDetail.findViewById(R.id.alarm_device_name);
+                            alarmPointName = (TextView) dialogDetail.findViewById(R.id.alarm_point_name);
+                            alarmMeaning = (TextView) dialogDetail.findViewById(R.id.alarm_meaning);
+                            alarmType = (TextView) dialogDetail.findViewById(R.id.alarm_type);
+                            alarmReportedAt = (TextView) dialogDetail.findViewById(R.id.alarm_reported_at);
+                            alarmClearedAt = (TextView) dialogDetail.findViewById(R.id.alarm_cleared_at);
+                            alarmCheckedUser = (TextView) dialogDetail.findViewById(R.id.alarm_checked_user);
+                            alarmCheckedAt = (TextView) dialogDetail.findViewById(R.id.alarm_checked_at);
+                            // modal: 取消
+                            materialDialog.setContentView(dialogDetail).setNegativeButton("取消", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    materialDialog.dismiss();
+                                }
+                            });
 
-                            String checkedName = checkedUser.get(position);
-                            if (checkedName.equals("")) {
+                            // 向modal传入数据
+                            alarmDeviceName.setText(deviceNames.get(position));
+                            alarmPointName.setText(pointNames.get(position));
+                            alarmMeaning.setText(meanings.get(position));
+                            alarmType.setText(types.get(position));
+                            alarmReportedAt.setText(reportedAt.get(position));
+                            if (isCleared.get(position)) {
+                                alarmClearedAt.setText(clearedAt.get(position));
+                            } else {
+                                alarmClearedAt.setText("未解除");
+                            }
+                            alarmCheckedUser.setText(checkedUser.get(position));
+                            alarmCheckedAt.setText(checkedAt.get(position));
+
+                            // 确认告警事件
+                            if (!isChecked.get(position)) {
                                 materialDialog.setPositiveButton("确认告警", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -249,13 +222,14 @@ public class WarnDetail extends BaseActivity {
                         addMore.setVisibility(View.GONE);
                     }
 
-                    Log.i("设备告警->详情", context.getString(R.string.getSuccess) + code);
+                    circleProgressBar.setVisibility(View.GONE);
+                    Log.i("系统告警->详情", context.getString(R.string.getSuccess));
                 } else {
                     // 输出非201时的错误信息
                     circleProgressBar.setVisibility(View.GONE);
                     addMore.setClickable(true);
                     addMore.setText("点击重新加载");
-                    Log.i("设备告警->详情", context.getString(R.string.getFailed) + code);
+                    Log.i("系统告警->详情", context.getString(R.string.getFailed));
                 }
             }
 
@@ -264,7 +238,7 @@ public class WarnDetail extends BaseActivity {
                 circleProgressBar.setVisibility(View.GONE);
                 addMore.setClickable(true);
                 addMore.setText("点击重新加载");
-                Log.i("设备告警->详情", context.getString(R.string.linkFailed));
+                Log.i("系统告警->详情", context.getString(R.string.linkFailed));
             }
         });
     }
@@ -284,11 +258,12 @@ public class WarnDetail extends BaseActivity {
                     // 改变item操作员
                     checkedUser.set(position, getSharedPreferences("foobar", Activity.MODE_PRIVATE).getString("name", null));
                     icon.setTextColor(context.getResources().getColor(R.color.gray));
-                    // 改变确认时间
+                    // 改变确认时间和确认状态
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     Date currentDate = new Date(System.currentTimeMillis());
                     String str = simpleDateFormat.format(currentDate);
-                    confirmDate.set(position, str);
+                    checkedAt.set(position, str);
+                    isChecked.set(position, true);
                 } else {
                     dismissLoadingDialog();
                     showToast("确认失败");
