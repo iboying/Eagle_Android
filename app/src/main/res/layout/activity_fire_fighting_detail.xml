@@ -14,6 +14,72 @@
         <include layout="@layout/sub_toolbar"/>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_fire_fighting_detail"/>
+    <!--body-->
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:fresco="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackgroundColor"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_smoke">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/fire_fighting_detail_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:actualImageScaleType="fitXY"
+                fresco:placeholderImage="@drawable/device_default"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="1dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="名称"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="状态"/>
+        </LinearLayout>
+
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            app:mlpb_progress_stoke_width="@dimen/stoke_width"
+            app:mlpb_progress_color="@color/loginFocusedBorder"
+            android:layout_width="@dimen/progress_size"
+            android:layout_height="@dimen/progress_size"
+            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"/>
+
+        <ListView
+            android:id="@+id/fire_fighting_detail_listView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:clickable="true"
+            android:dividerHeight="1dp"
+            android:divider="@color/white"
+            android:background="@color/windowBackgroundColor"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

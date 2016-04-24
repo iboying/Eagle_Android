@@ -31,9 +31,17 @@ public class PointAlarm {
     @Expose
     private String updatedAt;
 
+    @SerializedName("checked_at")
+    @Expose
+    private String checkedAt;
+
     @SerializedName("is_checked")
     @Expose
-    private boolean isChecked;
+    private boolean checked;
+
+    @SerializedName("checked_user")
+    @Expose
+    private String checkedUser;
 
     @SerializedName("point_id")
     @Expose
@@ -47,9 +55,17 @@ public class PointAlarm {
     @Expose
     private String type;
 
+    @SerializedName("meaning")
+    @Expose
+    private String meaning;
+
     @SerializedName("alarm_value")
     @Expose
     private String alarmValue;
+
+    @SerializedName("point_name")
+    @Expose
+    private String pointName;
 
     /**
      *
@@ -108,10 +124,27 @@ public class PointAlarm {
     /**
      *
      * @return
-     * The isChecked
+     * The checked
      */
-    public boolean isIsChecked() {
-        return isChecked;
+    public boolean isChecked() {
+        return checked;
+    }
+
+    /**
+     *
+     * @return
+     * The checkedUser
+     */
+    public String getCheckedUser() {
+        return checkedUser;
+    }
+
+    public String getPointName() {
+        return pointName;
+    }
+
+    public String getCheckedAt() {
+        return checkedAt;
     }
 
     /**
@@ -139,6 +172,15 @@ public class PointAlarm {
      */
     public String getType() {
         return type;
+    }
+
+    /**
+     *
+     * @return
+     * The type
+     */
+    public String getMeaning() {
+        return meaning;
     }
 
     /**

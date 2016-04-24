@@ -14,7 +14,18 @@
         <!--顶部功能条-->
         <include layout="@layout/sub_toolbar"/>
     </android.support.design.widget.AppBarLayout>
+
     <!--主体内容-->
-    <include layout="@layout/content_other"/>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_other"
+        tools:context="com.buoyantec.eagle_android.ui.activity.Other">
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

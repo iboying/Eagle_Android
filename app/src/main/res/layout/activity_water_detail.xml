@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,17 +27,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="20dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/water_detail_image"
-                android:layout_width="wrap_content"
-                android:layout_height="150dp"
-                android:gravity="center"
-                android:src="@drawable/water"
-                android:contentDescription="漏水检测"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:actualImageScaleType="fitXY"
+                fresco:placeholderImage="@drawable/device_default"/>
         </LinearLayout>
 
         <LinearLayout
@@ -72,12 +72,13 @@
 
         <ListView
             android:id="@+id/water_detail_listView"
+            android:layout_weight="1.5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:clickable="true"
-            android:dividerHeight="1dp"
+            android:dividerHeight="0dp"
             android:divider="@color/white"
-            android:background="@color/white"/>
+            android:background="@color/windowBackgroundColor"/>
 
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -6,19 +6,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
-import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -27,64 +24,68 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
  * 当前: 系统状态 -> 电量仪系统
  */
-public class Meter extends AppCompatActivity {
-    private SharedPreferences sp;
+public class Meter extends BaseActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
     private CircleProgressBar circleProgressBar;
 
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //加载字体图标
-        Iconify.with(new FontAwesomeModule());
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_meter);
+        Iconify.with(new FontAwesomeModule());
         init();
         //初始化toolbar
         initToolbar();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         //初始化list
         initListView();
     }
 
     private void init() {
-        sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        // TODO: 16/2/7 默认值的问题
+        context = this;
         room_id = sp.getInt("current_room_id", 1);
+        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
 
-        Intent i = getIntent();
-        sub_sys_name = i.getStringExtra("sub_sys_name");
-
-        context = getApplicationContext();
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
         subToolbarTitle.setText(sub_sys_name);
     }
 
     private void initListView() {
         // 获取指定链接数据
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<Devices> call = apiRequest.getService().getDevices(room_id, sub_sys_name);
-        call.enqueue(new Callback<Devices>() {
+        setEngine(sp);
+        mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Response<Devices> response) {
                 int code = response.code();
@@ -111,14 +112,11 @@ public class Meter extends AppCompatActivity {
                         values.add(v);
                     }
 
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
-
                     // 图标
                     Integer image = R.drawable.power_distribution;
 
                     // 加载列表
-                    ListView listView = (ListView) findViewById(R.id.meter_listView);
+                    ListView listView = getViewById(R.id.meter_listView);
                     listView.setAdapter(new SystemStatusListAdapter(listView, context, image, names, keys, values));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -130,11 +128,14 @@ public class Meter extends AppCompatActivity {
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i(sub_sys_name, context.getString(R.string.getSuccess) + code);
                 } else {
                     // 输出非201时的错误信息
                     circleProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    showToast(context.getString(R.string.getDataFailed));
                     Log.i(sub_sys_name, context.getString(R.string.getFailed) + code);
                 }
             }
@@ -143,7 +144,7 @@ public class Meter extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                showToast(context.getString(R.string.netWorkFailed));
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });

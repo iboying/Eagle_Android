@@ -15,7 +15,8 @@ import java.util.ArrayList;
 
 /**
  * Created by kang on 16/1/17.
- * (机柜温度,空调,列头柜) ListView适配器
+ * 不含header的list
+ * (温湿度,消防系统,漏水) ListView适配器(未被使用)
  */
 public class DeviceDetailListAdapter extends BaseAdapter {
     private Context mContext;

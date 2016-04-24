@@ -22,11 +22,15 @@
     <!--侧边菜单栏背景色-->
     <color name="drawerBackgroundColor">#3F3F3F</color>
 
+    <!--侧边菜单内容文字颜色-->
+    <color name="nav_font_color">#959595</color>
+
     <!--登录页border-->
     <color name="loginFocusedBorder">#0072F8</color>
     <color name="loginNormalBorder">#9B9B9B</color>
     <!--登录按钮-->
     <color name="signInBackgroundColor">#157DF7</color>
+    <color name="signInBorderColor">#105DF7</color>
     <!--登陆页背景色-->
     <color name="loginWindowColor">#EEEEEE</color>
     
@@ -36,6 +40,7 @@
     <!--通用颜色-->
     <color name="white">#ffffff</color>
     <color name="gray">#aaaaaa</color>
-    <color name="list_dot_green">#34E8A3</color>
+    <color name="list_dot_green">#44DB35</color>
     <color name="list_dot_red">#FF2600</color>
+    <color name="listHeaderBg">#808080</color>
 </resources>

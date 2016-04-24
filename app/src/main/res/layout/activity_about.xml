@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/windowBackgroundColor"
+    tools:context="com.buoyantec.eagle_android.ui.activity.AboutActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <include layout="@layout/sub_toolbar"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <!--body-->
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackgroundColor"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.buoyantec.eagle_android.ui.activity.AboutActivity">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/about_logo"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="12dp"
+            android:layout_marginBottom="28dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/logo_shadow"/>
+
+        <LinearLayout
+            android:visibility="visible"
+            android:id="@+id/update_version"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/list_item_bg"
+            android:orientation="horizontal"
+            android:layout_marginBottom="1dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/nav_font_color"
+                android:text="检查更新"/>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="20sp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/nav_font_color"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="visible"
+            android:id="@+id/feedback"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/list_item_bg"
+            android:orientation="horizontal"
+            android:layout_marginBottom="1dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/nav_font_color"
+                android:layout_gravity="center_vertical"
+                android:text="问题反馈"/>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="20sp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/nav_font_color"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:lineSpacingExtra="6dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/nav_font_color"
+            android:text="@string/about_version_intro"/>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

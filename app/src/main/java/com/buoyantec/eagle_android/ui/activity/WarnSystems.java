@@ -4,42 +4,47 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
 import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.SubSystem;
-import com.buoyantec.eagle_android.myService.ApiRequest;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WarnSystems extends AppCompatActivity{
+public class WarnSystems extends BaseActivity{
     private HashMap<String, Integer> systemIcon;
     private Integer statusCode;
     private Context context;
     private CircleProgressBar circleProgressBar;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_warn_systems);
-        // 初始化
         init();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         // sub_toolbar
         initToolbar();
         // ListView
@@ -49,9 +54,10 @@ public class WarnSystems extends AppCompatActivity{
     private void init(){
         systemIcon = new HashMap<>();
         context = this;
-
-        // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
 
         // 动力
@@ -75,23 +81,21 @@ public class WarnSystems extends AppCompatActivity{
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        subToolbarTitle.setText(i.getStringExtra("title"));
+        subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 
     private void initListView() {
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<MySystems> call = apiRequest.getService().getSystems();
-        // 发送请求
-        call.enqueue(new Callback<MySystems>() {
+        Integer room_id = getIntent().getIntExtra("room_id", 0);
+        if (room_id == 0)
+            room_id = null;
+
+        setEngine(sp);
+        mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Response<MySystems> response) {
                 statusCode = response.code();
@@ -112,29 +116,22 @@ public class WarnSystems extends AppCompatActivity{
                         // 获取所有的子系统( 比如: ups, 配电..)
                         for (SubSystem subSystem : mySystem.getSubSystem()) {
                             String subName = subSystem.getSubSystemName();
-                            names.add(subName);
-                            device_images.add(systemIcon.get(subName));
-                            ids.add(subSystem.getId());
                             if (map != null) {
                                 if (map.get(subName) != null) {
+                                    names.add(subName);
+                                    ids.add(subSystem.getId());
+                                    device_images.add(systemIcon.get(subName));
                                     alarmCount.add(map.get(subName));
-                                } else {
-                                    alarmCount.add(0);
                                 }
-                            } else {
-                                alarmCount.add(0);
                             }
                         }
                     }
-
-                    // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
 
                     // 图片
                     Integer[] images = device_images.toArray(new Integer[device_images.size()]);
 
                     // 加载listView
-                    ListView listView = (ListView) findViewById(R.id.warn_systems_listView);
+                    ListView listView = getViewById(R.id.warn_systems_listView);
                     listView.setAdapter(new WarnMessageListAdapter(listView, context, images, names, alarmCount));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -144,9 +141,14 @@ public class WarnSystems extends AppCompatActivity{
                             startActivity(i);
                         }
                     });
+
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
                     Log.i("系统告警", context.getString(R.string.getSuccess) + statusCode);
                 } else {
-                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
+                    showToast(context.getString(R.string.getDataFailed));
                     Log.i("系统告警", context.getString(R.string.getFailed) + statusCode);
                 }
             }
@@ -155,7 +157,7 @@ public class WarnSystems extends AppCompatActivity{
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                showToast(context.getString(R.string.netWorkFailed));
                 Log.i("系统告警", context.getString(R.string.linkFailed));
             }
         });

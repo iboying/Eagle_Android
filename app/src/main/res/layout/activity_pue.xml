@@ -14,6 +14,28 @@
         <include layout="@layout/sub_toolbar"/>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_pue"/>
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackgroundColor"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.buoyantec.eagle_android.ui.activity.Pue">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3sp"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_bar_color"
+            android:id="@+id/pue_progress"/>
+
+        <WebView
+            android:id="@+id/pue_web"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        </WebView>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

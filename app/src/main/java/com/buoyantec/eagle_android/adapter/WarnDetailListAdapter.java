@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.ui.activity.R;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -17,23 +20,22 @@ import java.util.List;
  */
 public class WarnDetailListAdapter extends BaseAdapter {
     private Context mContext;
+    private List<String> pointNames;
     private List<String> comments;
-    private List<String> types;
     private List<String> updated_at;
-    private List<String> alarms;
+    private List<Boolean> checks;
 
     public WarnDetailListAdapter(Context c,
+                                 List<String> pointNames,
                                  List<String> comments,
-                                 List<String> types,
                                  List<String> updated_at,
-                                 List<String> alarms) {
+                                 List<Boolean> checks) {
         this.mContext = c;
         this.comments = comments;
-        this.types = types;
+        this.pointNames = pointNames;
         this.updated_at = updated_at;
-        this.alarms = alarms;
+        this.checks = checks;
     }
-
     @Override
     public int getCount() {
         return comments.size();
@@ -55,18 +57,19 @@ public class WarnDetailListAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext)
                     .inflate(R.layout.list_item_warn_detail, parent, false);
         }
-        TextView text_textView = BaseViewHolder.get(convertView, R.id.warn_detail_name);
+        TextView point = BaseViewHolder.get(convertView, R.id.warn_detail_name);
+        TextView text_textView = BaseViewHolder.get(convertView, R.id.warn_detail_comment);
         TextView data_textView = BaseViewHolder.get(convertView, R.id.warn_detail_time);
-        TextView type = BaseViewHolder.get(convertView, R.id.warn_detail_type);
-        TextView alarm = BaseViewHolder.get(convertView, R.id.warn_detail_alarm);
+        TextView checked_icon = BaseViewHolder.get(convertView, R.id.device_detail_checked);
 
-        text_textView.setText("信息:  "+comments.get(position));
-        data_textView.setText(updated_at.get(position));
-        type.setText("类型:  "+types.get(position));
-        if (alarms.get(position) == null || alarms.get(position).equals("")){
-            alarm.setText("备注:  无");
+        point.setText(pointNames.get(position));
+        text_textView.setText("信 息:  " + comments.get(position));
+        data_textView.setText("告警时间: " + updated_at.get(position));
+
+        if (checks.get(position)) {
+            checked_icon.setTextColor(mContext.getResources().getColor(R.color.gray));
         } else {
-            alarm.setText("备注:  "+alarms.get(position));
+            checked_icon.setTextColor(mContext.getResources().getColor(R.color.list_dot_red));
         }
 
         return convertView;

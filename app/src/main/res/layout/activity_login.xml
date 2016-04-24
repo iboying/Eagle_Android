@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -37,7 +38,6 @@
         android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -62,6 +62,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:paddingLeft="50dp"
+                    android:paddingRight="8dp"
                     android:background="@drawable/login_edit_text_bg"
                     android:hint="@string/prompt_phone"
                     android:inputType="phone"
@@ -89,6 +90,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:paddingLeft="50dp"
+                    android:paddingRight="8dp"
                     android:background="@drawable/login_edit_text_bg"
                     android:hint="@string/prompt_password"
                     android:imeActionId="@+id/login"
@@ -110,6 +112,14 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"/>
 
+            <TextView
+                android:id="@+id/forgotPasswordTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:textColor="@color/signInBackgroundColor"
+                android:text="忘记密码?"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

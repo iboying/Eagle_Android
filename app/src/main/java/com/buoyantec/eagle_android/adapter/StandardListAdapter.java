@@ -70,7 +70,6 @@ public class StandardListAdapter extends BaseAdapter {
             iv.setBackgroundResource(images.get(position));
         }
 
-        System.out.println(names.get(position)+"=====");
         tv.setText(names.get(position));
 
         return convertView;

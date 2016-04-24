@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/device_detail_list_header"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:background="@color/listHeaderBg"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="26dp">
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/list_item_device_list_icon"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:text="{fa-circle}"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:textColor="@color/list_dot_green"/>
+
+    <TextView
+        android:id="@+id/device_detail_list_title"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:id="@+id/device_detail_list_status"/>
+</LinearLayout>

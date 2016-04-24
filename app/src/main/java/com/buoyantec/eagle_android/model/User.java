@@ -16,24 +16,43 @@ public class User implements Serializable{
     @SerializedName("id")
     @Expose
     private int id;
+
     @SerializedName("email")
     @Expose
     private String email;
+
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+
     @SerializedName("name")
     @Expose
     private String name;
+
     @SerializedName("phone")
     @Expose
     private String phone;
+
     @SerializedName("authentication_token")
     @Expose
     private String authenticationToken;
+
+    @SerializedName("os")
+    @Expose
+    private String os;
+
+
+    @SerializedName("device_token")
+    @Expose
+    private String deviceToken;
+
+    @SerializedName("errors")
+    @Expose
+    private String errors;
 
     /**
      *
@@ -96,5 +115,18 @@ public class User implements Serializable{
      */
     public String getAuthenticationToken() {
         return authenticationToken;
+    }
+
+
+    public String getErrors() {
+        return errors;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public String getOs() {
+        return os;
     }
 }

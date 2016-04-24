@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -8,13 +12,80 @@ android {
         applicationId "com.buoyantec.eagle_android"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 18
+        versionName "2.4.1"
+
+        // dex突破65535的限制
+        multiDexEnabled true
+        // 默认是umeng的渠道
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
     }
-    buildTypes {
+
+    lintOptions {
+        abortOnError false
+    }
+
+    signingConfigs {
         release {
+            keyAlias 'igrid total solution'
+            keyPassword 'dtby1234'
+            storeFile file('/Users/kang/Documents/Android jks/igrid.jks')
+            storePassword 'dtby1234'
+        }
+    }
+
+    buildTypes {
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+
+            versionNameSuffix "-debug"
             minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            minifyEnabled false
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为iGrid_v1.0_2016-04-1.apk
+                        def fileName = "iGrid_v${defaultConfig.versionName}_${releaseTime()}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+    }
+
+//    // 友盟多渠道打包
+//    productFlavors {
+//        wandoujia {}
+//        _360 {}
+//        baidu {}
+//        xiaomi {}
+//        tencent {}
+//        taobao {}
+//    }
+//
+//    productFlavors.all { flavor ->
+//        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+//    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 }
@@ -28,18 +99,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.nineoldandroids:library:2.4.0'
-// 外部组件
-    // 首页轮播
-    compile 'com.daimajia.slider:library:1.1.5@aar'
-    // 圆形图片
-    compile 'de.hdodenhof:circleimageview:2.0.0'
-    // 字体图标
-    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
-    // 圆形进度条
-    compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
-    // 提示框
-    compile 'cn.pedant.sweetalert:library:1.3'
-// 网络通信
+    // 网络通信
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
     compile 'com.google.code.gson:gson:2.5'
@@ -48,4 +108,19 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0-SNAPSHOT'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
     compile 'org.glassfish:javax.annotation:10.0-b28'
+    // 外部组件
+    // 首页轮播
+    compile 'com.daimajia.slider:library:1.1.5@aar'
+    // 字体图标
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
+    // 圆形进度条
+    compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
+    // 图片加载
+    compile 'com.facebook.fresco:fresco:0.9.0+'
+    // 提示框
+    compile 'cn.pedant.sweetalert:library:1.3'
+    // 模态框
+    compile 'me.drakeet.materialdialog:library:1.3.0'
+    // 蒲公英应用发布(问题反馈,提示更新)
+    compile files('libs/pgyer_sdk_2.2.2.jar')
 }

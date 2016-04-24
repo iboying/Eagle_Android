@@ -1,97 +1,92 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.buoyantec.eagle_android.adapter.DeviceDetailListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
-import com.buoyantec.eagle_android.myService.ApiRequest;
+import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PowerDetail extends AppCompatActivity {
+public class PowerDetail extends BaseActivity {
     private CircleProgressBar circleProgressBar;
+    private Toolbar toolbar;
+    private TextView subToolbarTitle;
+
+    private Context context;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_power_detail);
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
+        context = this;
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
         initToolbar();
         initListView();
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sub_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        TextView subToolbarTitle = (TextView) findViewById(R.id.sub_toolbar_title);
-        Intent i = getIntent();
-        String title = i.getStringExtra("title");
-        subToolbarTitle.setText(title);
+        subToolbarTitle.setText(getIntent().getStringExtra("title"));
     }
 
     private void initListView() {
         // 进度条
-        circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
 
         // 获取device_id 和 room_id
-        final SharedPreferences sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
-        Intent i = getIntent();
-        Integer device_id = i.getIntExtra("device_id", 1);
+        Integer device_id = getIntent().getIntExtra("device_id", 1);
         Integer room_id = sp.getInt("current_room_id", 1);
-        final Context context = this;
 
+        setEngine(sp);
         // 获取指定链接数据
-        ApiRequest apiRequest = new ApiRequest(this);
-        Call<DeviceDetail> call = apiRequest.getService().getDeviceDataHash(room_id, device_id);
-        call.enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Response<DeviceDetail> response) {
                 int code = response.code();
                 if (code == 200) {
-                    DeviceDetail map = response.body();
-
-                    ArrayList<String> names = new ArrayList<>();
-                    ArrayList<String> values = new ArrayList<>();
-
                     // 循环list,存入数组
-                    List<HashMap<String, String>> points =  response.body().getPoints();
-                    for (HashMap<String, String> point: points) {
-                        names.add(point.get("name"));
-                        values.add(point.get("value"));
-                    }
+                    List<HashMap<String, String>> numbers = response.body().getNumberType();
+                    List<HashMap<String, String>> status = response.body().getStatusType();
+                    List<HashMap<String, String>> alarms = response.body().getAlarmType();
+
+                    // 调用helper,生成ListView
+                    ListView listView = getViewById(R.id.power_detail_listView);
+                    DeviceDetailList deviceDetailList = new DeviceDetailList(context, listView, numbers, status, alarms);
+                    deviceDetailList.setListView();
+
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.GONE);
-
-                    // 加载列表
-                    ListView listView = (ListView) findViewById(R.id.power_detail_listView);
-                    listView.setAdapter(new DeviceDetailListAdapter(listView, context, names, values));
                     Log.i("配电系统->详情", context.getString(R.string.getSuccess) + code);
                 } else {
-                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    // 隐藏进度条
+                    circleProgressBar.setVisibility(View.GONE);
+                    showToast(context.getString(R.string.getDataFailed));
                     Log.i("配电系统->详情", context.getString(R.string.getFailed) + code);
                 }
             }
@@ -100,7 +95,7 @@ public class PowerDetail extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                showToast(context.getString(R.string.netWorkFailed));
                 Log.i("配电系统->详情", context.getString(R.string.linkFailed));
             }
         });
