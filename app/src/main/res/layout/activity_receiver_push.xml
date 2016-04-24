@@ -23,7 +23,7 @@
         android:orientation="vertical"
         android:background="@color/windowBackgroundColor"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_reveiver_push"
+        tools:showIn="@layout/activity_receiver_push"
         tools:context="com.buoyantec.eagle_android.ui.activity.ReceiverPush">
 
         <TextView

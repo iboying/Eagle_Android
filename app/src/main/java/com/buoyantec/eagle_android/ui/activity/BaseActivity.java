@@ -12,8 +12,6 @@ import com.buoyantec.eagle_android.App;
 import com.buoyantec.eagle_android.engine.Engine;
 import com.buoyantec.eagle_android.util.ToastUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.pgyersdk.feedback.PgyFeedbackShakeManager;
-
 import java.io.IOException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -56,22 +54,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         stopElement();
         super.onStop();
     }
-
-    // 蒲公英应用crash(未发布,有次需求时,取消注释即可)
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        // 自定义摇一摇的灵敏度，默认为950，数值越小灵敏度越高。
-//        PgyFeedbackShakeManager.setShakingThreshold(1000);
-//        // 以对话框的形式弹出
-//        PgyFeedbackShakeManager.register(this);
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        PgyFeedbackShakeManager.unregister();
-//    }
 
     /**
      * 信鸽推送: 效果统计

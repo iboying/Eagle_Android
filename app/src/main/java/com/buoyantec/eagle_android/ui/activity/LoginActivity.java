@@ -286,10 +286,6 @@ public class LoginActivity extends BaseActivity {
                     editor.putString("token", user.getAuthenticationToken());
                     editor.putString("phone", phone);
                     editor.apply();
-                    /**
-                     * 初始化全局静态变量mEngine(登录时初始化第一次)
-                     */
-                    setEngine(sp);
                     // 获取用户机房列表,并跳转页面
                     getUserRooms();
 
@@ -428,6 +424,7 @@ public class LoginActivity extends BaseActivity {
     // 注册设备信息,用于推送
     public void uploadDeviceInfo() {
         // 注册设备到服务器
+        setEngine(sp);
         mEngine.upLoadDeviceToken("android", deviceToken).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Response<User> response) {
