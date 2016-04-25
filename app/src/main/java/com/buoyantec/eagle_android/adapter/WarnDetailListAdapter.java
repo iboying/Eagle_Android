@@ -54,9 +54,9 @@ public class WarnDetailListAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext)
                     .inflate(R.layout.list_item_warn_detail, parent, false);
         }
-        TextView point = BaseViewHolder.get(convertView, R.id.warn_detail_name);
-        TextView text_textView = BaseViewHolder.get(convertView, R.id.warn_detail_comment);
-        TextView data_textView = BaseViewHolder.get(convertView, R.id.warn_detail_time);
+        TextView point = BaseViewHolder.get(convertView, R.id.warn_detail_point_name);
+        TextView text_textView = BaseViewHolder.get(convertView, R.id.warn_detail_meaning);
+        TextView data_textView = BaseViewHolder.get(convertView, R.id.warn_detail_reported_at);
         TextView checked_icon = BaseViewHolder.get(convertView, R.id.device_detail_checked);
 
         point.setText(pointNames.get(position));

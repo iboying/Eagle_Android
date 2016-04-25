@@ -30,8 +30,7 @@
             android:id="@+id/push_device_name"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:gravity="center"
-            android:text="device_name"/>
+            android:gravity="center"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,13 +41,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:orientation="horizontal"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:background="@color/stripListViewGrayColor">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="80sp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
@@ -58,20 +56,18 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="point_name"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
@@ -81,21 +77,19 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="meaning"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:orientation="horizontal"
                 android:background="@color/stripListViewGrayColor">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
@@ -105,20 +99,18 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="type"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
@@ -128,21 +120,19 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="reported_at"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:orientation="horizontal"
                 android:background="@color/stripListViewGrayColor">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
@@ -152,20 +142,18 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="cleared_at"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
@@ -175,21 +163,19 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="checked_user"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:orientation="horizontal"
                 android:background="@color/stripListViewGrayColor">
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
@@ -199,8 +185,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="checked_at"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <Button
