@@ -97,6 +97,7 @@ public class WaterDetail extends BaseActivity {
 
                     // 加载列表
                     ListView listView = (ListView) findViewById(R.id.water_detail_listView);
+                    assert listView != null;
                     listView.setAdapter(new WaterListAdapter(listView, context, names, status));
 
                     // 隐藏进度条

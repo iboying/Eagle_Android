@@ -267,9 +267,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 调用接口,处理数据
-     */
+    //  验证用户: Y: 获取机房, N: 回到登录页
     private void loginTask(final String phone, final String password) {
         mNoHeaderEngine.getUser(phone, password).enqueue(new Callback<User>() {
             @Override
@@ -308,7 +306,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    // 获取用户成功后,后取机房信息
+    // 获取机房: Y: 注册信鸽服务, N: 回到登陆页,显示错误信息
     public void getUserRooms() {
         setEngine(sp);
         mEngine.getRooms().enqueue(new Callback<Rooms>() {
@@ -361,10 +359,6 @@ public class LoginActivity extends BaseActivity {
                             editor.putString("push", "");
                             registerXgPush();
                         }
-                        // 进入主页
-                        Intent i = new Intent(context, MainActivity.class);
-                        startActivity(i);
-                        finish();
                     }
 
                     Log.i("机房列表", context.getString(R.string.getSuccess) + code);
@@ -384,7 +378,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    // 注册信鸽推送
+    // 注册信鸽服务: Y: 上传device_token, N: 回到登录页,显示错误信息
     private void registerXgPush() {
         /**
          * 注册信鸽推送
@@ -405,6 +399,9 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFail(Object o, int i, String s) {
+                showProgress(false);
+                mPasswordView.requestFocus();
+                showToast("推送服务注册失败,重新登陆");
                 Log.w(Constants.LogTag, "信鸽推送注册(失败).token:" + o + ", errCode:" + i + ",msg:" + s);
             }
         });
@@ -421,7 +418,7 @@ public class LoginActivity extends BaseActivity {
         // 删除标签：deleteTag(context, tagName)
     }
 
-    // 注册设备信息,用于推送
+    // 上传device_token: Y: 跳转主页面, N: 回到登录页,显示错误信息
     public void uploadDeviceInfo() {
         // 注册设备到服务器
         setEngine(sp);
@@ -435,10 +432,17 @@ public class LoginActivity extends BaseActivity {
                     editor.putString("device_token", user.getDeviceToken());
                     editor.apply();
 
+                    // 进入主页
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+
                     Log.i("device_token", user.getDeviceToken());
                     Log.i("上传推送token", context.getString(R.string.getSuccess) + response.code());
                 } else {
-                    showToast(context.getString(R.string.getDataFailed));
+                    showProgress(false);
+                    mPasswordView.requestFocus();
+                    showToast("上传推送信息失败");
                     Log.i("上传推送token", context.getString(R.string.getFailed) + response.code());
                 }
             }
