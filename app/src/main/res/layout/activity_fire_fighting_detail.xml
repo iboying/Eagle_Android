@@ -17,13 +17,12 @@
     <!--body-->
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:fresco="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/windowBackgroundColor"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_smoke">
+        tools:showIn="@layout/activity_fire_fighting">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,8 +34,7 @@
                 android:id="@+id/fire_fighting_detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:actualImageScaleType="fitXY"
-                fresco:placeholderImage="@drawable/device_default"/>
+                app:actualImageScaleType="fitXY"/>
         </LinearLayout>
 
         <LinearLayout
