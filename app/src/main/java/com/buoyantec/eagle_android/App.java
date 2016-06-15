@@ -19,6 +19,7 @@ import android.util.Log;
 import com.buoyantec.eagle_android.engine.Engine;
 import com.buoyantec.eagle_android.ui.activity.R;
 import com.buoyantec.eagle_android.ui.activity.ReceiverPush;
+import com.orhanobut.logger.Logger;
 import com.pgyersdk.crash.PgyCrashManager;
 import com.tencent.android.tpush.XGNotifaction;
 import com.tencent.android.tpush.XGPushManager;

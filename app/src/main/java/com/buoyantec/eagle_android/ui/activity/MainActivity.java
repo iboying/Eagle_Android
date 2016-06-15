@@ -37,6 +37,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 import com.pgyersdk.update.PgyUpdateManager;
 
 import java.util.ArrayList;

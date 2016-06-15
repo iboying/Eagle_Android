@@ -20,6 +20,7 @@ import com.buoyantec.eagle_android.model.SubSystem;
 import com.buoyantec.eagle_android.model.SubSystemAlarm;
 import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;

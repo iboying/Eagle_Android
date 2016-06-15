@@ -19,6 +19,7 @@ import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -14,6 +14,7 @@ import com.buoyantec.eagle_android.adapter.WaterListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;

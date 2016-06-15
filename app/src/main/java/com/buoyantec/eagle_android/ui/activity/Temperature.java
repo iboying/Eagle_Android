@@ -17,6 +17,7 @@ import com.buoyantec.eagle_android.model.Devices;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

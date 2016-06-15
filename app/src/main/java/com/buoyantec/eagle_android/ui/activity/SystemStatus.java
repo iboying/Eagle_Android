@@ -17,6 +17,7 @@ import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.SubSystem;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 
 
 import java.util.ArrayList;

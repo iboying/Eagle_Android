@@ -121,4 +121,6 @@ dependencies {
     compile 'me.drakeet.materialdialog:library:1.3.0'
     // 蒲公英应用发布(问题反馈,提示更新)
     compile files('libs/pgyer_sdk_2.2.2.jar')
+    // 日志
+    compile 'com.github.orhanobut:logger:1.12'
 }

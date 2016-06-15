@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
 import java.util.List;
