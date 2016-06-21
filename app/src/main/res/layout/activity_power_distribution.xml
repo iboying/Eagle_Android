@@ -22,14 +22,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/windowBackgroundColor"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_power_distribution"
-        tools:context="com.buoyantec.eagle_android.ui.activity.PowerDistribution">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"
             app:mlpb_progress_stoke_width="@dimen/stoke_width"
             app:mlpb_progress_color="@color/loginFocusedBorder"
+            android:layout_marginTop="10dp"
             android:layout_width="@dimen/progress_size"
             android:layout_height="@dimen/progress_size"
             android:visibility="invisible"

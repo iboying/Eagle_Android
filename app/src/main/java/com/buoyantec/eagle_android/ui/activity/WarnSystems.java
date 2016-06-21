@@ -16,6 +16,7 @@ import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
 import com.buoyantec.eagle_android.model.RoomAlarm;
 import com.buoyantec.eagle_android.model.SubSystemAlarm;
 import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
@@ -26,12 +27,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WarnSystems extends BaseActivity {
+public class WarnSystems extends BaseTimerActivity {
     private HashMap<String, Integer> systemIcon;
     private Context context;
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
     private TextView subToolbarTitle;
+
+    private Integer current_room_id;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -52,20 +55,25 @@ public class WarnSystems extends BaseActivity {
         initListView();
     }
 
+    @Override
+    protected void beginTimerTask() {
+        initListView();
+    }
+
     private void init(){
         systemIcon = new HashMap<>();
         context = this;
+        current_room_id = getIntent().getIntExtra("room_id", 0);
         // 组件
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
 
         // 动力
         systemIcon.put("UPS系统", R.drawable.system_status_ups);
         systemIcon.put("电量仪系统", R.drawable.system_status_box);
         systemIcon.put("配电系统", R.drawable.system_status_power);
-        systemIcon.put("电池检测", R.drawable.system_status_battery);
+        systemIcon.put("电池系统", R.drawable.system_status_battery);
         systemIcon.put("发电机系统", R.drawable.system_status_engine);
         // 环境
         systemIcon.put("温湿度系统", R.drawable.system_status_temperature);
@@ -91,8 +99,9 @@ public class WarnSystems extends BaseActivity {
     }
 
     private void initListView() {
-        Integer current_room_id = getIntent().getIntExtra("room_id", 0);
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 请求服务
         mEngine.getSubSystemAlarmCount(current_room_id).enqueue(new Callback<RoomAlarm>() {
             @Override

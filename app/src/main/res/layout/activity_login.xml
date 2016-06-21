@@ -19,6 +19,7 @@
         android:id="@+id/progressBar"
         app:mlpb_progress_stoke_width="@dimen/stoke_width"
         app:mlpb_progress_color="@color/loginFocusedBorder"
+        android:layout_marginTop="10dp"
         android:layout_width="@dimen/progress_size"
         android:layout_height="@dimen/progress_size"
         android:visibility="gone"

@@ -28,12 +28,18 @@ public class UpsDetail extends BaseTimerActivity {
     private TextView subToolbarTitle;
     private Context context;
 
+    private Integer room_id;
+    private Integer device_id;
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_ups_detail);
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
+        // 获取device_id 和 room_id
+        room_id = sp.getInt("current_room_id", 1);
+        device_id = getIntent().getIntExtra("device_id", 1);
         context = this;
     }
 
@@ -63,13 +69,9 @@ public class UpsDetail extends BaseTimerActivity {
     }
 
     private void initListView() {
-        // 进度条
-        circleProgressBar.setVisibility(View.VISIBLE);
-        // 获取device_id 和 room_id
-        Integer room_id = sp.getInt("current_room_id", 1);
-        Integer device_id = getIntent().getIntExtra("device_id", 1);
-
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {

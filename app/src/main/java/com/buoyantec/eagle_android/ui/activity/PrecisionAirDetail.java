@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.model.DeviceDetail;
-import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.joanzapata.iconify.Iconify;
@@ -30,6 +29,9 @@ public class PrecisionAirDetail extends BaseTimerActivity {
     private TextView subToolbarTitle;
     private Context context;
 
+    private Integer room_id;
+    private Integer device_id;
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_precision_air_detail);
@@ -39,6 +41,9 @@ public class PrecisionAirDetail extends BaseTimerActivity {
         circleProgressBar = (CircleProgressBar) findViewById(R.id.progressBar);
 
         context = this;
+
+        room_id = sp.getInt("current_room_id", 1);
+        device_id = getIntent().getIntExtra("device_id", 1);
     }
 
     @Override
@@ -69,13 +74,9 @@ public class PrecisionAirDetail extends BaseTimerActivity {
     }
 
     private void initListView() {
-        // 进度条
-        circleProgressBar.setVisibility(View.VISIBLE);
-
-        Integer room_id = sp.getInt("current_room_id", 1);
-        Integer device_id = getIntent().getIntExtra("device_id", 1);
-
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override

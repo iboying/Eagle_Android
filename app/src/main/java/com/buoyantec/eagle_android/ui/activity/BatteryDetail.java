@@ -28,6 +28,10 @@ public class BatteryDetail extends BaseTimerActivity {
     private TextView subToolbarTitle;
     private Context context;
 
+    // 获取device_id 和 room_id
+    private Integer room_id;
+    private Integer device_id;
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_battery_detail);
@@ -35,6 +39,8 @@ public class BatteryDetail extends BaseTimerActivity {
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
         context = this;
+        room_id = sp.getInt("current_room_id", 1);
+        device_id = getIntent().getIntExtra("device_id", 1);
     }
 
     @Override
@@ -63,13 +69,9 @@ public class BatteryDetail extends BaseTimerActivity {
     }
 
     private void initListView() {
-        // 进度条
-        circleProgressBar.setVisibility(View.VISIBLE);
-        // 获取device_id 和 room_id
-        Integer room_id = sp.getInt("current_room_id", 1);
-        Integer device_id = getIntent().getIntExtra("device_id", 1);
-
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {

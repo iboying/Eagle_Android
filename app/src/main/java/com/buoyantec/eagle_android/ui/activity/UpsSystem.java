@@ -40,7 +40,19 @@ public class UpsSystem extends BaseTimerActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_ups_system);
-        init();
+
+        Iconify.with(new FontAwesomeModule());
+        room_id = sp.getInt("current_room_id", 1);
+        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
+        context = this;
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
+        listView = getViewById(R.id.ups_system_listView);
     }
 
     @Override
@@ -60,22 +72,6 @@ public class UpsSystem extends BaseTimerActivity {
         initListView();
     }
 
-    private void init() {
-        Iconify.with(new FontAwesomeModule());
-        room_id = sp.getInt("current_room_id", 1);
-        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
-        if (sub_sys_name == null) {
-            sub_sys_name = "";
-        }
-        context = this;
-        // 组件
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
-        listView = getViewById(R.id.ups_system_listView);
-    }
-
     private void initToolbar() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -87,6 +83,8 @@ public class UpsSystem extends BaseTimerActivity {
 
     private void initListView() {
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override

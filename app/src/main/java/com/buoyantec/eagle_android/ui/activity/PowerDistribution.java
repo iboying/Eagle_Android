@@ -55,7 +55,6 @@ public class PowerDistribution extends BaseTimerActivity {
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
         listView = getViewById(R.id.power_distribution_listView);
     }
 
@@ -88,6 +87,8 @@ public class PowerDistribution extends BaseTimerActivity {
 
     private void initListView() {
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override

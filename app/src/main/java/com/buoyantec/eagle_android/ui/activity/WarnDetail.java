@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
-import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
@@ -35,9 +35,10 @@ import retrofit2.Response;
 /**
  * 告警系统 -> 详情
  */
-public class WarnDetail extends BaseActivity {
+public class WarnDetail extends BaseTimerActivity {
     private String title;
     private Integer subSystemId;
+    private Integer room_id;
     private Context context;
     // 组件
     private CircleProgressBar circleProgressBar;
@@ -86,9 +87,15 @@ public class WarnDetail extends BaseActivity {
         initListView(1);
     }
 
+    @Override
+    protected void beginTimerTask() {
+        initListView(1);
+    }
+
     private void init() {
         Intent i = getIntent();
         subSystemId = i.getIntExtra("subSystemId", 1);
+        room_id = sp.getInt("current_room_id", 1);
 
         title = i.getStringExtra("title");
         context = this;
@@ -96,7 +103,6 @@ public class WarnDetail extends BaseActivity {
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
         // 列表
         listView = getViewById(R.id.warn_detail_listView);
         View footer = getLayoutInflater().inflate(R.layout.list_view_footer, null);
@@ -114,8 +120,9 @@ public class WarnDetail extends BaseActivity {
     }
 
     private void initListView(Integer page) {
-        Integer room_id = sp.getInt("current_room_id", 1);
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         mEngine.getWarnMessages(room_id, subSystemId, 0, page).enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Call<Alarm> call, Response<Alarm> response) {

@@ -111,14 +111,15 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
             roomIds = new ArrayList<>();
             roomNames = new ArrayList<>();
             roomPics = new ArrayList<>();
+
+            mainTask();
         }
     }
 
-    @Override
-    protected void setListener() {}
-
-    @Override
-    protected void processLogic(Bundle savedInstanceState) {
+    /**
+     * 登录成功后执行
+     */
+    private void mainTask() {
         // 初始化toolbar
         initToolBar();
         // 初始化侧边栏
@@ -129,6 +130,13 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
         initGridView();
         // 检测更新版本
         PgyUpdateManager.register(this);
+    }
+
+    @Override
+    protected void setListener() {}
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
     }
 
     @Override

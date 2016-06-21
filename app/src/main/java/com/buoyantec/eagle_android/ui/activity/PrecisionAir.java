@@ -40,7 +40,16 @@ public class PrecisionAir extends BaseTimerActivity {
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_precision_air);
         Iconify.with(new FontAwesomeModule());
-        init();
+        room_id = sp.getInt("current_room_id", 1);
+        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
+        context = this;
+
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
     }
 
     @Override
@@ -61,19 +70,6 @@ public class PrecisionAir extends BaseTimerActivity {
         initListView();
     }
 
-    private void init() {
-        room_id = sp.getInt("current_room_id", 1);
-        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
-        if (sub_sys_name == null) {
-            sub_sys_name = "";
-        }
-        context = this;
-
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
-    }
 
     private void initToolbar() {
         toolbar.setTitle("");
@@ -86,6 +82,8 @@ public class PrecisionAir extends BaseTimerActivity {
 
     private void initListView() {
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override

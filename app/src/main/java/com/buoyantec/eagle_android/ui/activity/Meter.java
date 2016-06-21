@@ -44,28 +44,6 @@ public class Meter extends BaseTimerActivity {
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_meter);
         Iconify.with(new FontAwesomeModule());
-        init();
-        //初始化toolbar
-        initToolbar();
-    }
-
-    @Override
-    protected void setListener() {
-
-    }
-
-    @Override
-    protected void processLogic(Bundle savedInstanceState) {
-        //初始化list
-        initListView();
-    }
-
-    @Override
-    protected void beginTimerTask() {
-        initListView();
-    }
-
-    private void init() {
         context = this;
         room_id = sp.getInt("current_room_id", 1);
         sub_sys_name = getIntent().getStringExtra("sub_sys_name");
@@ -76,7 +54,24 @@ public class Meter extends BaseTimerActivity {
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        //初始化toolbar
+        initToolbar();
+        //初始化list
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
+        initListView();
     }
 
     private void initToolbar() {
@@ -91,6 +86,8 @@ public class Meter extends BaseTimerActivity {
     private void initListView() {
         // 获取指定链接数据
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Call<Devices> call, Response<Devices> response) {

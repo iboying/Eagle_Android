@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.model.DeviceDetail;
-import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -30,6 +29,8 @@ public class CabinetDetail extends BaseTimerActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private Context context;
+    private Integer room_id;
+    private Integer device_id;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class CabinetDetail extends BaseTimerActivity {
         circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
         context = this;
+        room_id = sp.getInt("current_room_id", 1);
+        device_id = getIntent().getIntExtra("device_id", 1);
     }
 
     @Override
@@ -68,12 +71,10 @@ public class CabinetDetail extends BaseTimerActivity {
     }
 
     private void initListView() {
-        // 获取device_id 和 room_id
-        Integer room_id = sp.getInt("current_room_id", 1);
-        Integer device_id = getIntent().getIntExtra("device_id", 1);
-
         // 以下一句不是必须的,只是以防万一的bug,我菜,你咬我
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override

@@ -16,21 +16,19 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <FrameLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/warn_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/windowBackgroundColor"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_warn_detail"
-        tools:context="com.buoyantec.eagle_android.ui.activity.WarnDetail">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"
             app:mlpb_progress_stoke_width="@dimen/stoke_width"
             app:mlpb_progress_color="@color/loginFocusedBorder"
+            android:layout_marginTop="10dp"
             android:layout_width="@dimen/progress_size"
             android:layout_height="@dimen/progress_size"
             android:visibility="gone"
@@ -43,6 +41,6 @@
             android:clickable="true"
             android:dividerHeight="1dp"
             android:divider="@color/windowBackgroundColor"/>
-    </LinearLayout>
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

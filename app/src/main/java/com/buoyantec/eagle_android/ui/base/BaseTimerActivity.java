@@ -66,7 +66,7 @@ public abstract class BaseTimerActivity extends AppCompatActivity implements Vie
             public void run() {
                 // 启动定时任务
                 beginTimerTask();
-                handler.postDelayed(runnable, 5000);
+                handler.postDelayed(runnable, 10000);
             }
         };
     }
@@ -180,7 +180,7 @@ public abstract class BaseTimerActivity extends AppCompatActivity implements Vie
     @Override
     protected void onResume() {
         super.onResume();
-        handler.postDelayed(runnable, 5000);
+        handler.postDelayed(runnable, 10000);
         Log.i("onResume:", "begin runnable");
     }
 
