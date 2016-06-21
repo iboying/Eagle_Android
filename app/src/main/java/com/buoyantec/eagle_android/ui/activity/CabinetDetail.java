@@ -10,9 +10,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ import retrofit2.Response;
 /**
  * 机柜环境->详情
  */
-public class CabinetDetail extends BaseActivity {
+public class CabinetDetail extends BaseTimerActivity {
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
     private TextView subToolbarTitle;
@@ -49,6 +50,11 @@ public class CabinetDetail extends BaseActivity {
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         initToolbar();
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
         initListView();
     }
 

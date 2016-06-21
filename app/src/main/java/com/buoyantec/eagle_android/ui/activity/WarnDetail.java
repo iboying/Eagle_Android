@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.WarnDetailListAdapter;
 import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
@@ -31,6 +32,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * 告警系统 -> 详情
+ */
 public class WarnDetail extends BaseActivity {
     private String title;
     private Integer subSystemId;

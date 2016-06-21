@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.DeviceStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -25,6 +26,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * 系统状态 -> 配电系统
+ */
 public class PowerDistribution extends BaseActivity {
     private Integer room_id;
     private String sub_sys_name;

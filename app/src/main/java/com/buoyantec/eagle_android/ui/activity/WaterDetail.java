@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.adapter.WaterListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
@@ -23,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WaterDetail extends BaseActivity {
+public class WaterDetail extends BaseTimerActivity {
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
     private TextView subToolbarTitle;
@@ -51,6 +53,11 @@ public class WaterDetail extends BaseActivity {
         // 初始化toolbar
         initToolbar();
         // 初始化list
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
         initListView();
     }
 

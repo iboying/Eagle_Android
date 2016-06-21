@@ -13,14 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
-import com.buoyantec.eagle_android.model.MySystem;
-import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.RoomAlarm;
-import com.buoyantec.eagle_android.model.SubSystem;
 import com.buoyantec.eagle_android.model.SubSystemAlarm;
-import com.buoyantec.eagle_android.ui.customView.BadgeView;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WarnSystems extends BaseActivity{
+public class WarnSystems extends BaseActivity {
     private HashMap<String, Integer> systemIcon;
     private Context context;
     private CircleProgressBar circleProgressBar;

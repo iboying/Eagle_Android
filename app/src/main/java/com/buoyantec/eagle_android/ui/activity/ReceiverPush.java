@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.model.PointAlarm;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.buoyantec.eagle_android.model.User;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;

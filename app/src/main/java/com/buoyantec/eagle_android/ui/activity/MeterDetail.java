@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -25,7 +27,7 @@ import retrofit2.Response;
 /**
  * 当前: 系统状态 -> 电量仪系统 -> 详情
  */
-public class MeterDetail extends BaseActivity {
+public class MeterDetail extends BaseTimerActivity {
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
     private TextView subToolbarTitle;
@@ -56,6 +58,11 @@ public class MeterDetail extends BaseActivity {
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         //初始化list
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
         initListView();
     }
 

@@ -15,21 +15,14 @@
     </android.support.design.widget.AppBarLayout>
 
     <!--body-->
-    <LinearLayout
+    <FrameLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/windowBackgroundColor"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_box_detail"
         tools:context="com.buoyantec.eagle_android.ui.activity.MeterDetail">
-
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:gravity="center"-->
-            <!--android:text="元件状态"/>-->
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"
@@ -46,6 +39,6 @@
             android:layout_height="match_parent"
             android:dividerHeight="0dp"
             android:divider="@color/white"/>
-    </LinearLayout>
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

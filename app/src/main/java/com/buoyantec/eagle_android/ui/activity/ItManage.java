@@ -5,6 +5,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.support.v7.app.ActionBar;
 
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+
 public class ItManage extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;

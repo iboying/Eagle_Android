@@ -5,7 +5,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-public class BatteryDetail extends BaseActivity {
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
+
+public class BatteryDetail extends BaseTimerActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;
 
@@ -31,5 +34,10 @@ public class BatteryDetail extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         subToolbarTitle.setText(getIntent().getStringExtra("title"));
+    }
+
+    @Override
+    protected void beginTimerTask() {
+
     }
 }

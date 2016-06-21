@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.ToolbarMenuAdapter;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.model.SubSystemAlarm;
@@ -37,7 +38,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.orhanobut.logger.Logger;
 import com.pgyersdk.update.PgyUpdateManager;
 
 import java.util.ArrayList;
@@ -126,6 +126,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             //要做的事情
             getSubSystemAlarmCount();
             handler.postDelayed(this, 10000);
+            Log.i("runable===>", "runable run");
         }
     };
 

@@ -1,4 +1,4 @@
-package com.buoyantec.eagle_android.ui.activity;
+package com.buoyantec.eagle_android.ui.base;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.buoyantec.eagle_android.App;
 import com.buoyantec.eagle_android.engine.Engine;
+import com.buoyantec.eagle_android.ui.activity.R;
 import com.buoyantec.eagle_android.util.ToastUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import java.io.IOException;

@@ -16,6 +16,7 @@ import com.buoyantec.eagle_android.adapter.SystemStatusGridAdapter;
 import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.SubSystem;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;

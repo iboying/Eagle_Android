@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
@@ -23,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TemperatureDetail extends BaseActivity {
+public class TemperatureDetail extends BaseTimerActivity {
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
     private SimpleDraweeView myImage;
@@ -53,6 +55,11 @@ public class TemperatureDetail extends BaseActivity {
         // 初始化toolbar
         initToolbar();
         // 初始化list
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
         initListView();
     }
 
