@@ -27,8 +27,8 @@ import com.tencent.android.tpush.XGPushNotifactionCallback;
 
 import java.util.List;
 
-import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by kang on 16/3/3.

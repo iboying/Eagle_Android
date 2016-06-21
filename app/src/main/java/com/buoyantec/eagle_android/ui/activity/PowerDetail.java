@@ -12,11 +12,11 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.model.DeviceDetail;
 import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -68,7 +68,7 @@ public class PowerDetail extends BaseActivity {
         // 获取指定链接数据
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
-            public void onResponse(Response<DeviceDetail> response) {
+            public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {
                 int code = response.code();
                 if (code == 200) {
                     // 循环list,存入数组
@@ -93,7 +93,7 @@ public class PowerDetail extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<DeviceDetail> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 showToast(context.getString(R.string.netWorkFailed));

@@ -17,11 +17,11 @@ import com.buoyantec.eagle_android.model.Devices;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -82,7 +82,7 @@ public class FireFighting extends BaseActivity {
         setEngine(sp);
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
-            public void onResponse(Response<Devices> response) {
+            public void onResponse(Call<Devices> call, Response<Devices> response) {
                 int code = response.code();
                 if (code == 200) {
                     List<String> names = new ArrayList<>();
@@ -127,7 +127,7 @@ public class FireFighting extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Devices> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 showToast(context.getString(R.string.netWorkFailed));

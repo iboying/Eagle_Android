@@ -48,6 +48,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -118,7 +119,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     };
 
-    // 启动定时任务,五分钟获取一次告警数
+    // 启动定时任务,10秒获取一次告警数
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -395,7 +396,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // 请求服务
         mEngine.getSubSystemAlarmCount(current_room_id).enqueue(new Callback<RoomAlarm>() {
             @Override
-            public void onResponse(Response<RoomAlarm> response) {
+            public void onResponse(Call<RoomAlarm> call, Response<RoomAlarm> response) {
                 int code = response.code();
                 if (code == 200) {
                     // 计数
@@ -438,7 +439,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<RoomAlarm> call, Throwable t) {
                 circleProgressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i("获取子系统告警数", context.getString(R.string.linkFailed));

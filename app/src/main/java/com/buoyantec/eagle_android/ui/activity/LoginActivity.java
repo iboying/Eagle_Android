@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -272,7 +273,7 @@ public class LoginActivity extends BaseActivity {
     private void loginTask(final String phone, final String password) {
         mNoHeaderEngine.getUser(phone, password).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Response<User> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 int code = response.code();
                 if (code == 201) {
                     // 获取用户
@@ -298,7 +299,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 showProgress(false);
                 mPasswordView.requestFocus();
                 showToast(context.getString(R.string.netWorkFailed));
@@ -312,7 +313,7 @@ public class LoginActivity extends BaseActivity {
         setEngine(sp);
         mEngine.getRooms().enqueue(new Callback<Rooms>() {
             @Override
-            public void onResponse(Response<Rooms> response) {
+            public void onResponse(Call<Rooms> call, Response<Rooms> response) {
                 int code = response.code();
                 if (response.body() != null && code == 200) {
                     String result = "";
@@ -371,7 +372,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Rooms> call, Throwable t) {
                 showProgress(false);
                 showToast(context.getString(R.string.netWorkFailed));
                 Log.i("机房列表", context.getString(R.string.linkFailed));
@@ -425,7 +426,7 @@ public class LoginActivity extends BaseActivity {
         setEngine(sp);
         mEngine.upLoadDeviceToken("android", deviceToken).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Response<User> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 200) {
                     User user = response.body();
                     // 保存数据
@@ -449,7 +450,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 showToast("上传推送token"+context.getString(R.string.getDataFailed));
                 Log.i("上传推送token", context.getString(R.string.linkFailed));
             }

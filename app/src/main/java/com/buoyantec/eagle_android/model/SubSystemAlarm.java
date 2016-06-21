@@ -1,11 +1,10 @@
 package com.buoyantec.eagle_android.model;
 
-import javax.annotation.Generated;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 // 机房下某个子系统的告警信息
-@Generated("org.jsonschema2pojo")
 public class SubSystemAlarm {
 
     @SerializedName("sub_system_id")

@@ -18,8 +18,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by kang on 16/3/3.

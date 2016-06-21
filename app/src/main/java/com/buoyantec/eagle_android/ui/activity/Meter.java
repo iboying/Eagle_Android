@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -88,7 +89,7 @@ public class Meter extends BaseActivity {
         setEngine(sp);
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
-            public void onResponse(Response<Devices> response) {
+            public void onResponse(Call<Devices> call, Response<Devices> response) {
                 int code = response.code();
                 if (code == 200) {
                     final List<Integer> ids = new ArrayList<>();
@@ -142,7 +143,7 @@ public class Meter extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Devices> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
                 showToast(context.getString(R.string.netWorkFailed));

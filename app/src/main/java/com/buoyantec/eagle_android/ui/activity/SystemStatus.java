@@ -17,14 +17,13 @@ import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.SubSystem;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.orhanobut.logger.Logger;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -130,7 +129,7 @@ public class SystemStatus extends BaseActivity {
         setEngine(sp);
         mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
             @Override
-            public void onResponse(Response<MySystems> response) {
+            public void onResponse(Call<MySystems> call, Response<MySystems> response) {
                 statusCode = response.code();
                 if (response.body() != null && statusCode == 200) {
                     // 定义动态数组,用于保存子系统
@@ -207,7 +206,7 @@ public class SystemStatus extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<MySystems> call, Throwable t) {
                 circleProgressBar.setVisibility(View.GONE);
                 showToast(context.getString(R.string.netWorkFailed));
                 Log.i("系统状态", context.getString(R.string.linkFailed));

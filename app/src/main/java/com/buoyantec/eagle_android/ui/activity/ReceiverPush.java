@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -98,7 +99,7 @@ public class ReceiverPush extends BaseActivity {
                 setEngine(sp);
                 mEngine.getAlarm(id).enqueue(new Callback<PointAlarm>() {
                     @Override
-                    public void onResponse(Response<PointAlarm> response) {
+                    public void onResponse(Call<PointAlarm> call, Response<PointAlarm> response) {
                         if (response.code() == 200) {
                             PointAlarm pointAlarm = response.body();
                             // 给UI设置数据
@@ -127,7 +128,7 @@ public class ReceiverPush extends BaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<PointAlarm> call, Throwable t) {
                         // 隐藏dialog
                         dismissLoadingDialog();
                         showToast(context.getString(R.string.netWorkFailed));
@@ -148,7 +149,7 @@ public class ReceiverPush extends BaseActivity {
                     setEngine(sp);
                     mEngine.checkAlarm(id).enqueue(new Callback<HashMap<String, String>>() {
                         @Override
-                        public void onResponse(Response<HashMap<String, String>> response) {
+                        public void onResponse(Call<HashMap<String, String>> call, Response<HashMap<String, String>> response) {
                             HashMap<String, String> data = response.body();
                             if (data.get("result").equals("处理成功")) {
                                 dismissLoadingDialog();
@@ -169,7 +170,7 @@ public class ReceiverPush extends BaseActivity {
                         }
 
                         @Override
-                        public void onFailure(Throwable t) {
+                        public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
                             dismissLoadingDialog();
                             showToast("网络连接失败");
                         }

@@ -2,12 +2,11 @@ package com.buoyantec.eagle_android.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Generated;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 // 告警列表
-@Generated("org.jsonschema2pojo")
 public class Alarm {
 
     @SerializedName("total_pages")

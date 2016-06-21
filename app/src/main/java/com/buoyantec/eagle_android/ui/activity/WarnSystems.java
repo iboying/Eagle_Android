@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -99,7 +100,7 @@ public class WarnSystems extends BaseActivity{
         // 请求服务
         mEngine.getSubSystemAlarmCount(current_room_id).enqueue(new Callback<RoomAlarm>() {
             @Override
-            public void onResponse(Response<RoomAlarm> response) {
+            public void onResponse(Call<RoomAlarm> call, Response<RoomAlarm> response) {
                 int code = response.code();
                 if (code == 200) {
                     List<SubSystemAlarm> subSystemAlarms = response.body().getSubSystemAlarms();
@@ -138,7 +139,7 @@ public class WarnSystems extends BaseActivity{
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<RoomAlarm> call, Throwable t) {
                 circleProgressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
                 Log.i("获取子系统告警数", context.getString(R.string.linkFailed));

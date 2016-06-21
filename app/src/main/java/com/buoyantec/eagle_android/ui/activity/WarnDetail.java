@@ -19,7 +19,6 @@ import com.buoyantec.eagle_android.model.Alarm;
 import com.buoyantec.eagle_android.model.PointAlarm;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import me.drakeet.materialdialog.MaterialDialog;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -114,7 +114,7 @@ public class WarnDetail extends BaseActivity {
         setEngine(sp);
         mEngine.getWarnMessages(room_id, subSystemId, 0, page).enqueue(new Callback<Alarm>() {
             @Override
-            public void onResponse(Response<Alarm> response) {
+            public void onResponse(Call<Alarm> call, Response<Alarm> response) {
                 // 初始化变量
                 Alarm alarm = response.body();
                 final Integer total_pages = alarm.getTotalPages();
@@ -235,7 +235,7 @@ public class WarnDetail extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Alarm> call, Throwable t) {
                 circleProgressBar.setVisibility(View.GONE);
                 addMore.setClickable(true);
                 addMore.setText("点击重新加载");
@@ -252,7 +252,7 @@ public class WarnDetail extends BaseActivity {
         setEngine(sp);
         mEngine.checkAlarm(id).enqueue(new Callback<HashMap<String, String>>() {
             @Override
-            public void onResponse(Response<HashMap<String, String>> response) {
+            public void onResponse(Call<HashMap<String, String>> call, Response<HashMap<String, String>> response) {
                 HashMap<String, String> data = response.body();
                 if (data.get("result").equals("处理成功")) {
                     dismissLoadingDialog();
@@ -272,7 +272,7 @@ public class WarnDetail extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
                 dismissLoadingDialog();
                 showToast("网络连接失败");
             }
