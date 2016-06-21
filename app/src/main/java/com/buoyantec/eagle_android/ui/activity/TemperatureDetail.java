@@ -106,6 +106,9 @@ public class TemperatureDetail extends BaseTimerActivity {
                         } else if (point.get("name").contains("湿度")) {
                             hum.add(point.get("value"));
                             humColor.add(point.get("color"));
+                        } else if (point.get("name") == null) {
+                            hum.add("-");
+                            humColor.add("-");
                         }
                     }
                     // 隐藏进度条

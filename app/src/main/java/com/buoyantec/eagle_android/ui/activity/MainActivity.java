@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.ToolbarMenuAdapter;
 import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
 import com.buoyantec.eagle_android.model.SubSystemAlarm;
@@ -52,7 +53,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseTimerActivity implements NavigationView.OnNavigationItemSelectedListener {
     private List<String> roomNames;
     private List<Integer> roomIds;
     private List<String> roomPics;
@@ -96,64 +97,44 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
             // 初始化变量
-            init();
-            // 初始化toolbar
-            initToolBar();
-            // 初始化侧边栏
-            initDrawer();
-            // 首页机房图片
-            roomImage();
-            // 初始化GridView
-            new MyThread().start();
-            // 检测更新版本
-            PgyUpdateManager.register(this);
+            circleProgressBar = getViewById(R.id.progressBar);
+            myImage = getViewById(R.id.room_image);
+            toolbar = getViewById(R.id.toolbar);
+            subToolbarTitle = getViewById(R.id.toolbar_title);
+            drawer = getViewById(R.id.drawer_layout);
+            signOutButton = getViewById(R.id.sign_out_button);
+            navigationView = getViewById(R.id.nav_view);
+            gridView = getViewById(R.id.grid_view);
+            badge = null;
+            warnMessage = null;
+
+            roomIds = new ArrayList<>();
+            roomNames = new ArrayList<>();
+            roomPics = new ArrayList<>();
         }
-    }
-
-    // 如果GridView加载完成,,异步获取告警数了,更新角标
-    Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if(msg.what==0x123) {
-                getSubSystemAlarmCount();
-            }
-        }
-    };
-
-    // 启动定时任务,10秒获取一次告警数
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            //要做的事情
-            getSubSystemAlarmCount();
-            handler.postDelayed(this, 10000);
-            Log.i("runable===>", "runable run");
-        }
-    };
-
-    // 初始化
-    private void init() {
-        // sliderShow = getViewById(R.id.slider);
-        circleProgressBar = getViewById(R.id.progressBar);
-        myImage = getViewById(R.id.room_image);
-        toolbar = getViewById(R.id.toolbar);
-        subToolbarTitle = getViewById(R.id.toolbar_title);
-        drawer = getViewById(R.id.drawer_layout);
-        signOutButton = getViewById(R.id.sign_out_button);
-        navigationView = getViewById(R.id.nav_view);
-        gridView = getViewById(R.id.grid_view);
-        badge = null;
-        warnMessage = null;
-
-        roomIds = new ArrayList<>();
-        roomNames = new ArrayList<>();
-        roomPics = new ArrayList<>();
     }
 
     @Override
     protected void setListener() {}
 
     @Override
-    protected void processLogic(Bundle savedInstanceState) {}
+    protected void processLogic(Bundle savedInstanceState) {
+        // 初始化toolbar
+        initToolBar();
+        // 初始化侧边栏
+        initDrawer();
+        // 首页机房图片
+        roomImage();
+        // 初始化GridView
+        initGridView();
+        // 检测更新版本
+        PgyUpdateManager.register(this);
+    }
+
+    @Override
+    protected void beginTimerTask() {
+        getSubSystemAlarmCount();
+    }
 
     // 为后退键绑定关闭侧边菜单功能
     @Override
@@ -220,13 +201,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             displayPopupWindow(room);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // onStop事件,使用轮播时,需调用
-    @Override
-    public void stopElement() {
-//        sliderShow.stopAutoCycle();
-        super.stopElement();
     }
 
     // 初始化toolbar
@@ -393,6 +367,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // 异步任务,获取机房总告警数
     public void getSubSystemAlarmCount() {
+        circleProgressBar.setVisibility(View.VISIBLE);
         setEngine(sp);
         // 请求服务
         mEngine.getSubSystemAlarmCount(current_room_id).enqueue(new Callback<RoomAlarm>() {
@@ -487,28 +462,5 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         popup.setBackgroundDrawable(new BitmapDrawable());
         // 设置相对于父级控件的位置
         popup.showAsDropDown(anchorView, -250, 0);
-    }
-
-    // 等待GridView加载完成,再执行异步操作获取告警数
-    class MyThread extends Thread
-    {
-        @Override
-        public void run() {
-            // 异步任务: 等待GridView加载完成后,获取告警数
-            initGridView();
-            handler.sendEmptyMessage(0x123);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handler.postDelayed(runnable, 10000);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacks(runnable);
     }
 }

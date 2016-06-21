@@ -15,6 +15,7 @@ import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -27,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UpsSystem extends BaseActivity {
+public class UpsSystem extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -51,6 +52,11 @@ public class UpsSystem extends BaseActivity {
     protected void processLogic(Bundle savedInstanceState) {
         initToolbar();
         //初始化list
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
         initListView();
     }
 
@@ -102,11 +108,18 @@ public class UpsSystem extends BaseActivity {
                         List<String> v = new ArrayList<>();
                         List<HashMap<String, String>> points = device.getPoints();
                         for (HashMap<String, String> point : points) {
-                            k.add(point.get("name"));
-                            v.add(point.get("value"));
+                            if (point.get("name") == null) {
+                                k.add("-");
+                                v.add("-");
+                            } else {
+                                k.add(point.get("name"));
+                                v.add(point.get("value"));
+                            }
                         }
-                        keys.add(k);
-                        values.add(v);
+                        if (k.size() > 0 && v.size() > 0) {
+                            keys.add(k);
+                            values.add(v);
+                        }
                     }
 
                     // references to our images

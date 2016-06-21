@@ -100,7 +100,7 @@ public class Cabinet extends BaseActivity {
                     Integer image = R.drawable.system_status_cabinet;
 
                     // 加载列表
-                    ListView listView = (ListView) getViewById(R.id.cabinet_listView);
+                    ListView listView = getViewById(R.id.cabinet_listView);
                     listView.setAdapter(new StandardListAdapter(listView, context, image, names));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

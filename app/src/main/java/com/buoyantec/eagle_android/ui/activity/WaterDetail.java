@@ -99,8 +99,13 @@ public class WaterDetail extends BaseTimerActivity {
                     // 循环list,存入数组
                     List<HashMap<String, String>> points =  response.body().getAlarms();
                     for (HashMap<String, String> point: points) {
-                        names.add(point.get("name"));
-                        status.add(point.get("value"));
+                        if (point.get("name") == null) {
+                            names.add("-");
+                            status.add("-");
+                        } else {
+                            names.add(point.get("name"));
+                            status.add(point.get("value"));
+                        }
                     }
 
                     // 加载列表

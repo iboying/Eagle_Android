@@ -15,6 +15,7 @@ import com.buoyantec.eagle_android.adapter.DeviceStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -29,7 +30,7 @@ import retrofit2.Response;
 /**
  * 系统状态 -> 配电系统
  */
-public class PowerDistribution extends BaseActivity {
+public class PowerDistribution extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -44,7 +45,18 @@ public class PowerDistribution extends BaseActivity {
         setContentView(R.layout.activity_power_distribution);
         Iconify.with(new FontAwesomeModule());
         // 初始化变量
-        init();
+        room_id = sp.getInt("current_room_id", 1);
+        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
+        context = getApplicationContext();
+        // 进度条
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
+        circleProgressBar.setVisibility(View.VISIBLE);
+        listView = getViewById(R.id.power_distribution_listView);
     }
 
     @Override
@@ -60,19 +72,9 @@ public class PowerDistribution extends BaseActivity {
         initListView();
     }
 
-    private void init() {
-        room_id = sp.getInt("current_room_id", 1);
-        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
-        if (sub_sys_name == null) {
-            sub_sys_name = "";
-        }
-        context = getApplicationContext();
-        // 进度条
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
-        listView = getViewById(R.id.power_distribution_listView);
+    @Override
+    protected void beginTimerTask() {
+        initListView();
     }
 
     private void initToolbar() {

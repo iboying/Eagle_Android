@@ -15,6 +15,7 @@ import com.buoyantec.eagle_android.adapter.PrecisionAirListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -27,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PrecisionAir extends BaseActivity {
+public class PrecisionAir extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -52,6 +53,11 @@ public class PrecisionAir extends BaseActivity {
         //初始化toolbar
         initToolbar();
         //初始化list
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
         initListView();
     }
 
@@ -102,8 +108,13 @@ public class PrecisionAir extends BaseActivity {
 
                         List<HashMap<String, String>> points = device.getPoints();
                         for (HashMap<String, String> point : points) {
-                            label.add(point.get("name"));
-                            data.add(point.get("value"));
+                            if (point.get("name") == null) {
+                                label.add("-");
+                                data.add("-");
+                            }else{
+                                label.add(point.get("name"));
+                                data.add(point.get("value"));
+                            }
                         }
                         labels.add(label);
                         datas.add(data);

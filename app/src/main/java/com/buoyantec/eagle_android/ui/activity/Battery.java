@@ -15,6 +15,7 @@ import com.buoyantec.eagle_android.adapter.BatteryListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
 import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -27,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Battery extends BaseActivity {
+public class Battery extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -39,8 +40,15 @@ public class Battery extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_battery);
         Iconify.with(new FontAwesomeModule());
-        init();
-        initToolbar();
+        room_id = sp.getInt("current_room_id", 1);
+        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
+        context = this;
     }
 
     @Override
@@ -50,6 +58,26 @@ public class Battery extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        initToolbar();
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
+        initListView();
+    }
+
+    private void initToolbar() {
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        subToolbarTitle.setText(sub_sys_name);
+    }
+
+    private void initListView() {
+        circleProgressBar.setVisibility(View.VISIBLE);
         setEngine(sp);
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
@@ -71,11 +99,18 @@ public class Battery extends BaseActivity {
                         List<String> v = new ArrayList<>();
                         List<HashMap<String, String>> points = device.getPoints();
                         for (HashMap<String, String> point : points) {
-                            k.add(point.get("name"));
-                            v.add(point.get("value"));
+                            if (point.get("name") == null) {
+                                k.add("-");
+                                v.add("-");
+                            }else{
+                                k.add(point.get("name"));
+                                v.add(point.get("value"));
+                            }
                         }
-                        keys.add(k);
-                        values.add(v);
+                        if (k.size() > 0 && v.size() > 0) {
+                            keys.add(k);
+                            values.add(v);
+                        }
                     }
 
                     // 列表图标
@@ -114,28 +149,5 @@ public class Battery extends BaseActivity {
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });
-    }
-
-    // 初始化变量
-    private void init() {
-        room_id = sp.getInt("current_room_id", 1);
-        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
-        if (sub_sys_name == null) {
-            sub_sys_name = "";
-        }
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
-        context = this;
-    }
-
-    private void initToolbar() {
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        subToolbarTitle.setText(sub_sys_name);
     }
 }

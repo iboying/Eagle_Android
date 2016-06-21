@@ -76,16 +76,29 @@ public class BatteryListAdapter extends BaseAdapter{
         tv.setText(names.get(position));
         iv.setImageResource(image);
 
-        // keys
-        oneKey.setText(keys.get(position).get(0));
-        twoKey.setText(keys.get(position).get(1));
-        threeKey.setText(keys.get(position).get(2));
-        fourKey.setText(keys.get(position).get(3));
-        // values
-        oneValue.setText(values.get(position).get(0));
-        twoValue.setText(values.get(position).get(1));
-        threeValue.setText(values.get(position).get(2));
-        fourValue.setText(values.get(position).get(3));
+        if (keys.size() == 0) {
+            // keys
+            oneKey.setText(" ");
+            twoKey.setText(" ");
+            threeKey.setText(" ");
+            fourKey.setText(" ");
+            // values
+            oneValue.setText(" ");
+            twoValue.setText(" ");
+            threeValue.setText(" ");
+            fourValue.setText(" ");
+        } else {
+            // keys
+            oneKey.setText(keys.get(position).get(0));
+            twoKey.setText(keys.get(position).get(1));
+            threeKey.setText(keys.get(position).get(2));
+            fourKey.setText(keys.get(position).get(3));
+            // values
+            oneValue.setText(values.get(position).get(0));
+            twoValue.setText(values.get(position).get(1));
+            threeValue.setText(values.get(position).get(2));
+            fourValue.setText(values.get(position).get(3));
+        }
 
         return convertView;
     }
