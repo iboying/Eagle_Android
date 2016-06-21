@@ -25,6 +25,14 @@
         android:background="@color/windowBackgroundColor"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cabinet_listView"
+            android:clickable="true"
+            android:dividerHeight="1dp"
+            android:background="@color/white"/>
+
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"
             app:mlpb_progress_stoke_width="@dimen/stoke_width"
@@ -34,14 +42,6 @@
             android:layout_height="@dimen/progress_size"
             android:visibility="invisible"
             android:layout_gravity="center_horizontal"/>
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/cabinet_listView"
-            android:clickable="true"
-            android:dividerHeight="1dp"
-            android:background="@color/white"/>
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

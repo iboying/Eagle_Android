@@ -63,15 +63,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.5">
-            <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
-                android:id="@+id/progressBar"
-                app:mlpb_progress_stoke_width="@dimen/stoke_width"
-                app:mlpb_progress_color="@color/loginFocusedBorder"
-                android:layout_marginTop="10dp"
-                android:layout_width="@dimen/progress_size"
-                android:layout_height="@dimen/progress_size"
-                android:visibility="invisible"
-                android:layout_gravity="center_horizontal"/>
 
             <ListView
                 android:id="@+id/fire_fighting_detail_listView"
@@ -81,6 +72,16 @@
                 android:dividerHeight="1dp"
                 android:divider="@color/white"
                 android:background="@color/windowBackgroundColor"/>
+
+            <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+                android:id="@+id/progressBar"
+                app:mlpb_progress_stoke_width="@dimen/stoke_width"
+                app:mlpb_progress_color="@color/loginFocusedBorder"
+                android:layout_marginTop="10dp"
+                android:layout_width="@dimen/progress_size"
+                android:layout_height="@dimen/progress_size"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"/>
         </FrameLayout>
 
 

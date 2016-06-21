@@ -26,6 +26,15 @@
         tools:showIn="@layout/activity_ups_system"
         tools:context="com.buoyantec.eagle_android.ui.activity.UpsSystem">
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ups_system_listView"
+            android:clickable="true"
+            android:dividerHeight="1dp"
+            android:background="@color/white"
+            android:divider="@color/windowBackgroundColor"/>
+
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"
             app:mlpb_progress_stoke_width="@dimen/stoke_width"
@@ -35,15 +44,6 @@
             android:layout_height="@dimen/progress_size"
             android:visibility="invisible"
             android:layout_gravity="center_horizontal"/>
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ups_system_listView"
-            android:clickable="true"
-            android:dividerHeight="1dp"
-            android:background="@color/white"
-            android:divider="@color/windowBackgroundColor"/>
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

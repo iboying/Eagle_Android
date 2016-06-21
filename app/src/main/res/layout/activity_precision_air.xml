@@ -26,6 +26,15 @@
         tools:showIn="@layout/activity_precision_air"
         tools:context="com.buoyantec.eagle_android.ui.activity.PrecisionAir">
 
+        <ListView
+            android:id="@+id/precision_air_listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:dividerHeight="1dp"
+            android:background="@color/white"
+            android:divider="@color/windowBackgroundColor"/>
+
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"
             app:mlpb_progress_stoke_width="@dimen/stoke_width"
@@ -35,15 +44,6 @@
             android:layout_height="@dimen/progress_size"
             android:visibility="invisible"
             android:layout_gravity="center_horizontal"/>
-
-        <ListView
-            android:id="@+id/precision_air_listView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:dividerHeight="1dp"
-            android:background="@color/white"
-            android:divider="@color/windowBackgroundColor"/>
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
