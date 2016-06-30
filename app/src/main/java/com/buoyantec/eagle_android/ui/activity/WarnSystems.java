@@ -18,6 +18,7 @@ import com.buoyantec.eagle_android.model.SubSystemAlarm;
 import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +40,11 @@ public class WarnSystems extends BaseTimerActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_warn_systems);
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
+        // 变量
         init();
     }
 
@@ -64,10 +70,6 @@ public class WarnSystems extends BaseTimerActivity {
         systemIcon = new HashMap<>();
         context = this;
         current_room_id = getIntent().getIntExtra("room_id", 0);
-        // 组件
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        circleProgressBar = getViewById(R.id.progressBar);
 
         // 动力
         systemIcon.put("UPS系统", R.drawable.system_status_ups);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.buoyantec.eagle_android.App;
 import com.buoyantec.eagle_android.engine.Engine;
@@ -33,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected Engine mNoHeaderEngine;
     private SweetAlertDialog mLoadingDialog;
     protected SharedPreferences sp;
+    private TextView networkState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         mNoHeaderEngine = mApp.getNoHeaderEngine();
 
         initView(savedInstanceState);
+        // 布局加载后, 初始化网络状态组件
+        networkState = getViewById(R.id.network_error);
         setListener();
         processLogic(savedInstanceState);
     }
@@ -105,6 +109,17 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     protected void showToast(String text) {
         ToastUtil.show(text);
+    }
+
+    /**
+     * 设置网络状态
+     */
+    protected void setNetworkState(Boolean state) {
+        if (state) {
+            networkState.setVisibility(View.GONE);
+        } else {
+            networkState.setVisibility(View.VISIBLE);
+        }
     }
 
     /**

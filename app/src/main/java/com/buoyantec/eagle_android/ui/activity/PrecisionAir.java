@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.PrecisionAirListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
-import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;

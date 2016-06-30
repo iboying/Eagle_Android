@@ -9,12 +9,15 @@ import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.buoyantec.eagle_android.App;
 import com.buoyantec.eagle_android.engine.Engine;
 import com.buoyantec.eagle_android.ui.activity.R;
 import com.buoyantec.eagle_android.util.ToastUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
+
 import java.io.IOException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -35,6 +38,7 @@ public abstract class BaseTimerActivity extends AppCompatActivity implements Vie
     protected Engine mNoHeaderEngine;
     private SweetAlertDialog mLoadingDialog;
     protected SharedPreferences sp;
+    private TextView networkState;
 
     private Handler handler;
     private Runnable runnable;
@@ -49,10 +53,11 @@ public abstract class BaseTimerActivity extends AppCompatActivity implements Vie
         // 在登录成功后初始化通用链接
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         mNoHeaderEngine = mApp.getNoHeaderEngine();
-
         handler = new Handler();
 
         initView(savedInstanceState);
+        // 布局加载后, 初始化网络状态组件
+        networkState = getViewById(R.id.network_error);
         setListener();
         processLogic(savedInstanceState);
     }
@@ -116,6 +121,22 @@ public abstract class BaseTimerActivity extends AppCompatActivity implements Vie
     protected <VT extends View> VT getViewById(@IdRes int id) {
         return (VT) findViewById(id);
     }
+
+
+    /**
+     * 设置网络状态
+     */
+    protected void setNetworkState(Boolean state) {
+        if (state) {
+            networkState.setVisibility(View.GONE);
+        } else {
+            networkState.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     *
+     */
 
     /**
      * 显示Toast
@@ -189,5 +210,10 @@ public abstract class BaseTimerActivity extends AppCompatActivity implements Vie
         super.onPause();
         handler.removeCallbacks(runnable);
         Log.i("onPause:", "remove runnable");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

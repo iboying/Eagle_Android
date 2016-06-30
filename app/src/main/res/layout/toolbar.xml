@@ -1,42 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:background="?attr/colorPrimary"
-    android:minHeight="48dp"
-    android:fitsSystemWindows="true"
-    android:theme="@style/ActionBarThemeOverlay"
-    app:popupTheme="@style/ActionBarPopupThemeOverlay"
-    app:titleTextAppearance="@style/ActionBar.TitleText">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="48dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ActionBarThemeOverlay"
+        app:popupTheme="@style/ActionBarPopupThemeOverlay"
+        app:titleTextAppearance="@style/ActionBar.TitleText">
 
-    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
-        android:layout_width="24sp"
-        android:layout_height="24sp"
-        android:visibility="invisible"
-        android:layout_gravity="center"/>
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:layout_width="24sp"
+            android:layout_height="24sp"
+            android:visibility="invisible"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/textColorPrimary"
+            android:layout_gravity="center"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold"/>
+
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            app:mlpb_progress_stoke_width="2sp"
+            app:mlpb_background_color="@color/colorPrimary"
+            app:mlpb_enable_circle_background="false"
+            app:mlpb_progress_color="@color/gray"
+            android:layout_width="24sp"
+            android:layout_height="24sp"
+            android:visibility="visible"
+            android:layout_gravity="center"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:id="@+id/toolbar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/textColorPrimary"
-        android:layout_gravity="center"
-        android:textSize="@dimen/text_large"
-        android:textStyle="bold"/>
+        android:id="@+id/network_error"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@color/network_error_bg"
+        android:visibility="gone"
+        android:textColor="@color/normal_text"
+        android:gravity="center"
+        android:text="@string/network_error"/>
 
-    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
-        android:id="@+id/progressBar"
-        app:mlpb_progress_stoke_width="2sp"
-        app:mlpb_background_color="@color/colorPrimary"
-        app:mlpb_enable_circle_background="false"
-        app:mlpb_progress_color="@color/gray"
-        android:layout_width="24sp"
-        android:layout_height="24sp"
-        android:visibility="visible"
-        android:layout_gravity="center"/>
-
-</android.support.v7.widget.Toolbar>
+</LinearLayout>

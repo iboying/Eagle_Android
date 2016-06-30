@@ -431,6 +431,7 @@
                 <data android:scheme="file" />
             </intent-filter>
         </receiver>
+
         <!-- 【必须】 信鸽service -->
         <service
             android:name="com.tencent.android.tpush.service.XGPushService"

@@ -89,7 +89,33 @@ public class WarnDetail extends BaseTimerActivity {
 
     @Override
     protected void beginTimerTask() {
+        reInitVariable();
         initListView(1);
+    }
+
+    private void reInitVariable() {
+        // 告警记录id(id)
+        ids.clear();
+        // 设备名称
+        deviceNames.clear();
+        // 告警点名称(point_name)
+        pointNames.clear();
+        // 描述(meaning)
+        meanings.clear();
+        // 类型(Type)
+        types.clear();
+        // 告警时间(updated_at)
+        reportedAt.clear();
+        // 解除时间(cleared_at)
+        clearedAt.clear();
+        // 操作员(checked_user)
+        checkedUser.clear();
+        // 确认时间(确认后修改确认时间)
+        checkedAt.clear();
+        // 是否已确认(is_checked)
+        isChecked.clear();
+        // 是否已清除(is_cleared)
+        isCleared.clear();
     }
 
     private void init() {
@@ -118,6 +144,8 @@ public class WarnDetail extends BaseTimerActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         subToolbarTitle.setText(title);
     }
+
+
 
     private void initListView(Integer page) {
         setEngine(sp);
