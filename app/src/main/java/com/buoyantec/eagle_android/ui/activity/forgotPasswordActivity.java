@@ -168,6 +168,7 @@ public class forgotPasswordActivity extends BaseActivity {
         mNoHeaderEngine.updatePassword(phone, password, sms).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+                setNetworkState(true);
                 // 加载框
                 showLoadingDialog("正在修改...");
                 if (response.code() == 200) {
@@ -201,7 +202,7 @@ public class forgotPasswordActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
             }
         });
     }
@@ -254,7 +255,7 @@ public class forgotPasswordActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
             }
         });
     }

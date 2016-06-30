@@ -154,6 +154,7 @@ public class WarnDetail extends BaseTimerActivity {
         mEngine.getWarnMessages(room_id, subSystemId, 0, page).enqueue(new Callback<Alarm>() {
             @Override
             public void onResponse(Call<Alarm> call, Response<Alarm> response) {
+                setNetworkState(true);
                 // 初始化变量
                 Alarm alarm = response.body();
                 final Integer total_pages = alarm.getTotalPages();
@@ -276,6 +277,7 @@ public class WarnDetail extends BaseTimerActivity {
             @Override
             public void onFailure(Call<Alarm> call, Throwable t) {
                 circleProgressBar.setVisibility(View.GONE);
+                setNetworkState(false);
                 addMore.setClickable(true);
                 addMore.setText("点击重新加载");
                 Log.i("系统告警->详情", context.getString(R.string.linkFailed));
@@ -292,6 +294,7 @@ public class WarnDetail extends BaseTimerActivity {
         mEngine.checkAlarm(id).enqueue(new Callback<HashMap<String, String>>() {
             @Override
             public void onResponse(Call<HashMap<String, String>> call, Response<HashMap<String, String>> response) {
+                setNetworkState(true);
                 HashMap<String, String> data = response.body();
                 if (data.get("result").equals("处理成功")) {
                     dismissLoadingDialog();
@@ -313,7 +316,7 @@ public class WarnDetail extends BaseTimerActivity {
             @Override
             public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
                 dismissLoadingDialog();
-                showToast("网络连接失败");
+                setNetworkState(false);
             }
         });
     }

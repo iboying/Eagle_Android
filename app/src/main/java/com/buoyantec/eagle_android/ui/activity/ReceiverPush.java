@@ -100,6 +100,7 @@ public class ReceiverPush extends BaseActivity {
                 mEngine.getAlarm(id).enqueue(new Callback<PointAlarm>() {
                     @Override
                     public void onResponse(Call<PointAlarm> call, Response<PointAlarm> response) {
+                        setNetworkState(true);
                         if (response.code() == 200) {
                             PointAlarm pointAlarm = response.body();
                             // 给UI设置数据
@@ -131,7 +132,7 @@ public class ReceiverPush extends BaseActivity {
                     public void onFailure(Call<PointAlarm> call, Throwable t) {
                         // 隐藏dialog
                         dismissLoadingDialog();
-                        showToast(context.getString(R.string.netWorkFailed));
+                        setNetworkState(false);
                         Log.i("推送->告警详情", context.getString(R.string.linkFailed));
                     }
                 });

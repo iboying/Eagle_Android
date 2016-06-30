@@ -93,6 +93,7 @@ public class Temperature extends BaseTimerActivity {
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
             public void onResponse(Call<Devices> call, Response<Devices> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> names = new ArrayList<>();
@@ -134,7 +135,7 @@ public class Temperature extends BaseTimerActivity {
             public void onFailure(Call<Devices> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });

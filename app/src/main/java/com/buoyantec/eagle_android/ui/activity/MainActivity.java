@@ -381,6 +381,7 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
         mEngine.getSubSystemAlarmCount(current_room_id).enqueue(new Callback<RoomAlarm>() {
             @Override
             public void onResponse(Call<RoomAlarm> call, Response<RoomAlarm> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     // 计数
@@ -425,7 +426,7 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
             @Override
             public void onFailure(Call<RoomAlarm> call, Throwable t) {
                 circleProgressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                setNetworkState(false);
                 Log.i("获取子系统告警数", context.getString(R.string.linkFailed));
             }
         });

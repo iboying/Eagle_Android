@@ -81,6 +81,7 @@ public class FireFightingDetail extends BaseTimerActivity {
         mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> names = new ArrayList<>();
@@ -125,7 +126,7 @@ public class FireFightingDetail extends BaseTimerActivity {
             public void onFailure(Call<DeviceDetail> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("消防系统->详情", context.getString(R.string.linkFailed));
             }
         });

@@ -83,6 +83,7 @@ public class TemperatureDetail extends BaseTimerActivity {
         mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> tem = new ArrayList<>();
@@ -128,7 +129,7 @@ public class TemperatureDetail extends BaseTimerActivity {
             public void onFailure(Call<DeviceDetail> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("温湿度系统->详情", context.getString(R.string.linkFailed));
             }
         });

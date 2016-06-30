@@ -301,7 +301,7 @@ public class LoginActivity extends BaseActivity {
             public void onFailure(Call<User> call, Throwable t) {
                 showProgress(false);
                 mPasswordView.requestFocus();
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("用户登录", getResources().getString(R.string.linkFailed));
             }
         });
@@ -373,7 +373,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFailure(Call<Rooms> call, Throwable t) {
                 showProgress(false);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("机房列表", context.getString(R.string.linkFailed));
             }
         });
@@ -426,6 +426,7 @@ public class LoginActivity extends BaseActivity {
         mEngine.upLoadDeviceToken("android", deviceToken).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+                setNetworkState(true);
                 if (response.code() == 200) {
                     User user = response.body();
                     // 保存数据
@@ -450,7 +451,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                showToast("上传推送token"+context.getString(R.string.getDataFailed));
+                setNetworkState(false);
                 Log.i("上传推送token", context.getString(R.string.linkFailed));
             }
         });

@@ -131,6 +131,7 @@ public class SystemStatus extends BaseActivity {
         mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
             @Override
             public void onResponse(Call<MySystems> call, Response<MySystems> response) {
+                setNetworkState(true);
                 statusCode = response.code();
                 if (response.body() != null && statusCode == 200) {
                     // 定义动态数组,用于保存子系统
@@ -213,7 +214,7 @@ public class SystemStatus extends BaseActivity {
             @Override
             public void onFailure(Call<MySystems> call, Throwable t) {
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("系统状态", context.getString(R.string.linkFailed));
             }
         });
