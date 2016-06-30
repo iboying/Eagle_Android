@@ -3,6 +3,7 @@ package com.buoyantec.eagle_android.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -89,12 +90,14 @@ public class Battery extends BaseTimerActivity {
                     List<String> names = new ArrayList<>();
                     List<List<String>> keys = new ArrayList<>();
                     List<List<String>> values = new ArrayList<>();
+                    List<String> alarms = new ArrayList<>();
 
                     // 获取UPS系统的设备列表
                     List<Device> devices = response.body().getDevices();
                     for (Device device : devices) {
                         ids.add(device.getId());
                         names.add(device.getName());
+                        alarms.add(device.getAlarm());
                         // 获取point数据
                         List<String> k = new ArrayList<>();
                         List<String> v = new ArrayList<>();
@@ -119,7 +122,7 @@ public class Battery extends BaseTimerActivity {
 
                     // 加载设备列表
                     ListView listView = getViewById(R.id.battery_listView);
-                    listView.setAdapter(new BatteryListAdapter(listView, context, image, names, keys, values));
+                    listView.setAdapter(new BatteryListAdapter(listView, context, image, names, alarms, keys, values));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

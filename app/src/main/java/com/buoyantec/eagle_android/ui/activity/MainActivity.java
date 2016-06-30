@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.ToolbarMenuAdapter;
+import com.buoyantec.eagle_android.model.Room;
+import com.buoyantec.eagle_android.model.Rooms;
 import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.buoyantec.eagle_android.ui.customView.BadgeView;
@@ -205,8 +207,7 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_room) {
-            View room = getViewById(R.id.toolbar_room);
-            displayPopupWindow(room);
+            getUserRooms();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -217,29 +218,13 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
+        subToolbarTitle.setText(current_room);
 
         // 获取机房图片
         String sp_paths = sp.getString("pic_paths", null);
         if (sp_paths != null) {
             String[] paths = sp_paths.split("##");
             Collections.addAll(roomPics, paths);
-        }
-        // 获取所有机房([id1, room1, id2, room2, ...])
-        String sp_rooms = sp.getString("rooms", null);
-        if (sp_rooms != null) {
-            // [1,name,2,name2,...]
-            String[] rooms = sp_rooms.split("#");
-            // 存储机房id和机房名称
-            for (int i = 0; i < rooms.length; i++) {
-                if (i%2==0) {
-                    roomIds.add(Integer.parseInt(rooms[i]));
-                } else {
-                    roomNames.add(rooms[i]);
-                }
-            }
-            subToolbarTitle.setText(current_room);
-        } else {
-            subToolbarTitle.setText("无可管理机房");
         }
     }
 
@@ -434,6 +419,25 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
 
     // 显示下拉菜单
     private void displayPopupWindow(View anchorView) {
+        // 获取所有机房([id1, room1, id2, room2, ...])
+        roomIds.clear();
+        roomNames.clear();
+        String sp_rooms = sp.getString("rooms", null);
+        if (sp_rooms != null) {
+            // [1,name,2,name2,...]
+            String[] rooms = sp_rooms.split("#");
+            // 存储机房id和机房名称
+            for (int i = 0; i < rooms.length; i++) {
+                if (i%2==0) {
+                    roomIds.add(Integer.parseInt(rooms[i]));
+                } else {
+                    roomNames.add(rooms[i]);
+                }
+            }
+        } else {
+            subToolbarTitle.setText("无可管理机房");
+        }
+
         // 实例化popWindow,并获取菜单
         final PopupWindow popup = new PopupWindow(context);
         View layout = getLayoutInflater().inflate(R.layout.toolbar_menu, null);
@@ -471,5 +475,65 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
         popup.setBackgroundDrawable(new BitmapDrawable());
         // 设置相对于父级控件的位置
         popup.showAsDropDown(anchorView, -250, 0);
+    }
+
+    // 获取机房: Y: 注册信鸽服务, N: 回到登陆页,显示错误信息
+    public void getUserRooms() {
+        setEngine(sp);
+        mEngine.getRooms().enqueue(new Callback<Rooms>() {
+            @Override
+            public void onResponse(Call<Rooms> call, Response<Rooms> response) {
+                setNetworkState(true);
+                int code = response.code();
+                if (response.body() != null && code == 200) {
+                    String result = "";
+                    String pic_path = "";
+                    // 获得机房List
+                    List<Room> roomList = response.body().getRooms();
+                    // 遍历机房
+                    for (Room room : roomList) {
+                        if (room.getName() != null) {
+                            result += (room.getId() + "");
+                            result += '#';
+                            result += room.getName();
+                            result += '#';
+                            pic_path += room.getPic();
+                            pic_path += "##";
+                        }
+                    }
+
+                    SharedPreferences.Editor editor = sp.edit();
+
+                    if (result.equals("")) {
+                        // 登陆页,显示错误信息
+                        // 退出时删除用户信息
+                        editor.putString("token", "");
+                        editor.apply();
+                        finish();
+                        // 退回登录页
+                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(i);
+                    } else {
+                        // 保存当前机房信息
+                        editor.putString("rooms", result);
+                        editor.putString("pic_paths", pic_path);
+                        editor.apply();
+                    }
+                    View room = getViewById(R.id.toolbar_room);
+                    displayPopupWindow(room);
+
+                    Log.i("机房列表", context.getString(R.string.getSuccess) + code);
+                } else {
+                    showToast(context.getString(R.string.getDataFailed));
+                    Log.i("机房列表", context.getString(R.string.getFailed) + code);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Rooms> call, Throwable t) {
+                setNetworkState(false);
+                Log.i("机房列表", context.getString(R.string.linkFailed));
+            }
+        });
     }
 }

@@ -62,13 +62,7 @@ public class PrecisionAirListAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        boolean click;
-        if (status.get(position) == 2){
-            click = true;
-        } else {
-            click = false;
-        }
-        return click;
+        return true;
     }
 
     @Override
@@ -108,10 +102,6 @@ public class PrecisionAirListAdapter extends BaseAdapter {
             TextView tv = BaseViewHolder.get(convertView, R.id.list_item_device_status_text);
             ImageView imageStatus = BaseViewHolder.get(convertView, R.id.list_item_device_status_status_image);
             TextView textStatus = BaseViewHolder.get(convertView, R.id.list_item_device_status_status_text);
-
-            // 不显示
-            IconTextView rightIcon = BaseViewHolder.get(convertView, R.id.list_item_device_status_right);
-            rightIcon.setText("");
 
             iv.setImageResource(image);
             tv.setText(texts.get(position));

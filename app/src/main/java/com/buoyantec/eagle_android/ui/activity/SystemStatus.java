@@ -79,6 +79,7 @@ public class SystemStatus extends BaseActivity {
         systemIcon.put("温湿度系统", R.drawable.system_status_temperature);
         systemIcon.put("机柜环境", R.drawable.system_status_cabinet);
         systemIcon.put("空调系统", R.drawable.system_status_air);
+        systemIcon.put("空调运维系统", R.drawable.system_status_air);
         systemIcon.put("漏水系统", R.drawable.system_status_water);
         // 联动
         // 安全
@@ -98,6 +99,7 @@ public class SystemStatus extends BaseActivity {
         systemClass.put("温湿度系统", Temperature.class);
         systemClass.put("机柜环境", Cabinet.class);
         systemClass.put("空调系统", PrecisionAir.class);
+        systemClass.put("空调运维系统", PrecisionAir.class);
         systemClass.put("漏水系统", Water.class);
         // 联动
         // 安全

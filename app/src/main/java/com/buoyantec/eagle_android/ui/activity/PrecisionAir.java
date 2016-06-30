@@ -119,7 +119,7 @@ public class PrecisionAir extends BaseTimerActivity {
 
                         // 获取存在状态的设备数据
                         String alarm = device.getAlarm();
-                        if (alarm == null) {
+                        if (sub_sys_name.equals("空调系统")) {
                             status.add(2);
                         } else {
                             if (alarm.equals("false")) {
