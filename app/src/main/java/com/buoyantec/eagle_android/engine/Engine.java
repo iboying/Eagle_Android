@@ -69,14 +69,8 @@ public interface Engine {
 
     // 根据设备id获取设备信息 status: 200, 返回hashMap
     @Headers("Accept: application/json")
-    @GET("rooms/{room_id}/devices/{id}")
+    @GET("rooms/{room_id}/devices/{id}?api_version=2")
     Call<DeviceDetail> getDeviceDataHash(@Path("room_id") Integer room_id, @Path("id") Integer device_id);
-
-    // 根据设备id获取设备信息(v2版本) status: 200, 返回hashMap
-    @Headers("Accept: application/json")
-    @GET("v2/rooms/{room_id}/devices/{id}")
-    Call<DeviceDetail> getDeviceDataHashV2(@Path("room_id") Integer room_id, @Path("id") Integer device_id);
-
 
 
     // 根据子系统id获取子系统告警列表 status: 200

@@ -71,7 +71,7 @@ public class BatteryDetail extends BaseTimerActivity {
         setEngine(sp);
 
         circleProgressBar.setVisibility(View.VISIBLE);
-        mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {
                 setNetworkState(true);

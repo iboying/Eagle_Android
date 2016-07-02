@@ -21,13 +21,6 @@ public class DeviceDetail {
     @Expose
     private String pic;
 
-    @SerializedName("points")
-    @Expose
-    private List<HashMap<String, String>> points = new ArrayList<HashMap<String, String>>();
-
-    @SerializedName("alarms")
-    @Expose
-    private List<HashMap<String, String>> alarms = new ArrayList<HashMap<String, String>>();
 
     // V2版本
     @SerializedName("number_type")
@@ -65,27 +58,8 @@ public class DeviceDetail {
         return pic;
     }
 
-    /**
-     *
-     * @return
-     * The points
-     */
-    public List<HashMap<String, String>> getPoints() {
-        return points;
-    }
-
-    /**
-     *
-     * @return
-     * The alarms
-     */
-    public List<HashMap<String, String>> getAlarms() {
-        return alarms;
-    }
-
 
     // V2 版本
-
 
     public List<HashMap<String, String>> getNumberType() {
         return numberType;

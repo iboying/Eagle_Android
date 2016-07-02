@@ -99,13 +99,13 @@ public class TemperatureDetail extends BaseTimerActivity {
                     }
 
                     // 循环list,存入数组
-                    List<HashMap<String, String>> points = response.body().getPoints();
+                    List<HashMap<String, String>> points = response.body().getNumberType();
                     for (HashMap<String, String> point : points) {
                         if (point.get("name").contains("温度")) {
-                            tem.add(point.get("value"));
+                            tem.add(point.get("meaning"));
                             temColor.add(point.get("color"));
                         } else if (point.get("name").contains("湿度")) {
-                            hum.add(point.get("value"));
+                            hum.add(point.get("meaning"));
                             humColor.add(point.get("color"));
                         } else if (point.get("name") == null) {
                             hum.add("-");

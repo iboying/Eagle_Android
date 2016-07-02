@@ -86,7 +86,7 @@ public class MeterDetail extends BaseTimerActivity {
 
         circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
-        mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {
                 setNetworkState(true);

@@ -78,7 +78,7 @@ public class FireFightingDetail extends BaseTimerActivity {
         setEngine(sp);
 
         circleProgressBar.setVisibility(View.VISIBLE);
-        mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
             public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {
                 setNetworkState(true);
@@ -94,15 +94,14 @@ public class FireFightingDetail extends BaseTimerActivity {
                     }
 
                     // 循环list,存入数组
-                    // 循环list,存入数组
-                    List<HashMap<String, String>> points =  response.body().getAlarms();
+                    List<HashMap<String, String>> points =  response.body().getAlarmType();
                     for (HashMap<String, String> point: points) {
                         if (point.get("name") == null) {
                             names.add("-");
                             status.add("-");
-                        }else{
+                        } else {
                             names.add(point.get("name"));
-                            status.add(point.get("value"));
+                            status.add(point.get("color"));
                         }
                     }
 
