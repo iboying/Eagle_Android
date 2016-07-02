@@ -94,7 +94,7 @@ public class SystemStatus extends BaseActivity {
         systemClass.put("电量仪系统", Meter.class);
         systemClass.put("配电系统", PowerDistribution.class);
         systemClass.put("电池系统", Battery.class);
-        systemClass.put("发电机系统", Meter.class);
+        systemClass.put("发电机系统", Battery.class);
         // 环境
         systemClass.put("温湿度系统", Temperature.class);
         systemClass.put("机柜环境", Cabinet.class);

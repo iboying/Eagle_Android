@@ -147,8 +147,8 @@
     <orderEntry type="library" exported="" name="imagepipeline-base-0.11.0" level="project" />
     <orderEntry type="library" exported="" name="android-iconify-2.1.1" level="project" />
     <orderEntry type="library" exported="" name="materialloadingprogressbar-0.5.8-RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="gson-2.7" level="project" />
     <orderEntry type="library" exported="" name="retrofit-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.7" level="project" />
     <orderEntry type="library" exported="" name="converter-gson-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="materialish-progress-1.0" level="project" />
     <orderEntry type="library" exported="" name="design-23.3.0" level="project" />

@@ -29,6 +29,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * 电池系统 , 发电机系统
+ */
+
 public class Battery extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
