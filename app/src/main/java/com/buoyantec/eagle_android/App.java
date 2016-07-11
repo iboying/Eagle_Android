@@ -60,6 +60,8 @@ public class App extends Application {
         sInstance = this;
         context = getApplicationContext();
         setLoginEngine();
+        // 初始化Logger
+        Logger.init();
         // 蒲公英应用管理:注册Crash接口
         PgyCrashManager.register(this);
         /**
@@ -76,7 +78,7 @@ public class App extends Application {
                 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                 @Override
                 public void handleNotify(XGNotifaction xGNotifaction) {
-                    Log.i("App.java ->", "拦截处理信鸽通知：" + xGNotifaction);
+                    Logger.i("拦截处理信鸽通知：" + xGNotifaction);
                     // 获取标签、内容、自定义内容
                     String title = xGNotifaction.getTitle();
                     String content = xGNotifaction.getContent();

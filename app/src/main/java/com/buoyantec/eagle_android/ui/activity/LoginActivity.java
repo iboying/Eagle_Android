@@ -27,6 +27,7 @@ import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.android.tpush.common.Constants;
@@ -355,11 +356,11 @@ public class LoginActivity extends BaseActivity {
                         editor.putInt("current_room_id", room_id);
                         editor.putString("current_room_pic", path);
                         editor.apply();
-                        // 用户如果设置为接收推送,注册信鸽推送
-                        if (sp.getString("push", "").equals("")) {
-                            editor.putString("push", "");
-                            registerXgPush();
-                        }
+                        // 用户如果设置为接收推送,注册信鸽推送(已改为在MainActivity中判断)
+//                        if (sp.getString("push", "").equals("")) {
+//                            editor.putString("push", "");
+//                            registerXgPush();
+//                        }
                     }
 
                     Log.i("机房列表", context.getString(R.string.getSuccess) + code);
@@ -394,8 +395,9 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess(Object o, int i) {
                 deviceToken = o.toString();
+                // 上传用户token
                 uploadDeviceInfo();
-                Log.i(Constants.LogTag, "信鸽推送注册(成功).token:" + o);
+                Logger.i("信鸽推送注册(成功).token:" + o);
             }
 
             @Override
@@ -403,7 +405,7 @@ public class LoginActivity extends BaseActivity {
                 showProgress(false);
                 mPasswordView.requestFocus();
                 showToast("推送服务注册失败,重新登陆");
-                Log.w(Constants.LogTag, "信鸽推送注册(失败).token:" + o + ", errCode:" + i + ",msg:" + s);
+                Logger.w("信鸽推送注册(失败).token:" + o + ", errCode:" + i + ",msg:" + s);
             }
         });
 
@@ -439,7 +441,6 @@ public class LoginActivity extends BaseActivity {
                     startActivity(intent);
                     finish();
 
-                    Log.i("device_token", user.getDeviceToken());
                     Log.i("上传推送token", context.getString(R.string.getSuccess) + response.code());
                 } else {
                     showProgress(false);
