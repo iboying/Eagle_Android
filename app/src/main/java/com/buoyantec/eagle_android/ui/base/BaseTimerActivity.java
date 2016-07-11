@@ -201,7 +201,7 @@ public abstract class BaseTimerActivity extends AppCompatActivity implements Vie
     @Override
     protected void onResume() {
         super.onResume();
-        handler.postDelayed(runnable, 10000);
+        handler.postDelayed(runnable, 30000);
         Log.i("onResume:", "begin runnable");
     }
 
