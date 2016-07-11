@@ -71,7 +71,7 @@ public abstract class BaseTimerActivity extends AppCompatActivity implements Vie
             public void run() {
                 // 启动定时任务
                 beginTimerTask();
-                handler.postDelayed(runnable, 10000);
+                handler.postDelayed(runnable, 30000);
             }
         };
     }

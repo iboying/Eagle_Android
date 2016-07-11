@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/windowBackgroundColor"
     tools:context="com.buoyantec.eagle_android.ui.activity.PowerDetail">
 
     <android.support.design.widget.AppBarLayout
@@ -30,6 +31,7 @@
             android:id="@+id/power_detail_listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/windowBackgroundColor"
             android:dividerHeight="0dp"
             android:divider="@color/white"/>
 

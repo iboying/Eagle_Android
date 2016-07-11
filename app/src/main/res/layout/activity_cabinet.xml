@@ -29,9 +29,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cabinet_listView"
+            android:background="@color/windowBackgroundColor"
             android:clickable="true"
             android:dividerHeight="1dp"
-            android:background="@color/white"/>
+            android:divider="@color/windowBackgroundColor"/>
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/windowBackgroundColor"
     tools:context="com.buoyantec.eagle_android.ui.activity.WarnSystems">
 
     <android.support.design.widget.AppBarLayout
@@ -28,9 +29,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/warn_systems_listView"
+            android:background="@color/windowBackgroundColor"
             android:clickable="true"
             android:dividerHeight="1dp"
-            android:background="@color/white"/>
+            android:divider="@color/windowBackgroundColor"/>
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
             android:id="@+id/progressBar"

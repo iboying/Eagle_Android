@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/windowBackgroundColor"
     tools:context="com.buoyantec.eagle_android.ui.activity.Battery">
 
     <android.support.design.widget.AppBarLayout
@@ -32,7 +33,7 @@
             android:id="@+id/battery_listView"
             android:clickable="true"
             android:dividerHeight="1dp"
-            android:background="@color/white"
+            android:background="@color/windowBackgroundColor"
             android:divider="@color/windowBackgroundColor"/>
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar

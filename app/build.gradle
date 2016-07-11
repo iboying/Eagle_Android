@@ -5,15 +5,15 @@ def releaseTime() {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
         applicationId "com.buoyantec.eagle_android"
         minSdkVersion 14
-        targetSdkVersion 23
-        versionCode 26
-        versionName "2.5.2"
+        targetSdkVersion 22
+        versionCode 27
+        versionName "2.5.3"
 
         // dex突破65535的限制
         multiDexEnabled true
@@ -93,9 +93,9 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:design:23.3.0'
-    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:design:22.2.1'
+    compile 'com.android.support:support-v4:22.2.1'
     compile 'com.nineoldandroids:library:2.4.0'
     // 网络通信
     compile 'com.squareup.okhttp3:okhttp:3.3.1'

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/windowBackgroundColor"
     tools:context="com.buoyantec.eagle_android.ui.activity.Meter">
 
     <android.support.design.widget.AppBarLayout
@@ -30,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="1dp"
+            android:background="@color/windowBackgroundColor"
             android:divider="@color/windowBackgroundColor" />
 
         <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
