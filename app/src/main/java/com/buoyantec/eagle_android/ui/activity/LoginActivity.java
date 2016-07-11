@@ -356,6 +356,10 @@ public class LoginActivity extends BaseActivity {
                         editor.putInt("current_room_id", room_id);
                         editor.putString("current_room_pic", path);
                         editor.apply();
+                        // 进入主页
+                        Intent intent = new Intent(context, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                         // 用户如果设置为接收推送,注册信鸽推送(已改为在MainActivity中判断)
 //                        if (sp.getString("push", "").equals("")) {
 //                            editor.putString("push", "");
