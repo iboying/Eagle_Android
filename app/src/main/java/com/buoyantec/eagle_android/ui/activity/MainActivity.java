@@ -144,6 +144,8 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
             editor.putString("push", "");
             registerXgPush();
         }
+        // 获取告警数
+        getSubSystemAlarmCount();
     }
 
     @Override
@@ -390,26 +392,26 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
                         count += subSystemAlarm.getSubSystemCount();
                         systemAlarmCount.put(subSystemAlarm.getSubSystemName(), subSystemAlarm.getSubSystemCount());
                     }
-
-                    if (warnMessage == null) {
-                        warnMessage = getViewById(R.id.grid_warn_message_image);
-                    }
-
-                    if (badge == null) {
-                        badge = new BadgeView(MainActivity.this, warnMessage);
-                        badge.setBadgeMargin(0, 5);
-                    }
-
-                    if (count == 0) {
-                        badge.hide();
-                    } else {
-                        if (count >= 100) {
-                            badge.setText("99+");
+                    // 获取告警信息按钮
+                    warnMessage = getViewById(R.id.grid_warn_message_image);
+                    if (warnMessage != null) {
+                        if (badge == null) {
+                            badge = new BadgeView(MainActivity.this, warnMessage);
+                            badge.setBadgeMargin(0, 5);
                         } else {
-                            badge.setText(count.toString());
+                            if (count == 0) {
+                                badge.hide();
+                            } else {
+                                if (count >= 100) {
+                                    badge.setText("99+");
+                                } else {
+                                    badge.setText(count.toString());
+                                }
+                                badge.show();
+                            }
                         }
-                        badge.show();
                     }
+
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.INVISIBLE);
                     Log.i("获取子系统告警数", context.getString(R.string.getSuccess) + code);
@@ -549,7 +551,6 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
             }
         });
     }
-
 
     // 注册信鸽服务: Y: 上传device_token, N: 回到登录页,显示错误信息
     private void registerXgPush() {
