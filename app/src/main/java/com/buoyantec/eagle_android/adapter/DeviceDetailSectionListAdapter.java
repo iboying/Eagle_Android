@@ -113,23 +113,18 @@ public class DeviceDetailSectionListAdapter extends BaseAdapter {
             holder.item.setBackgroundResource(colors[position % 2]);
         }
         if (mColors.get(position).equals("blue")) {
-//            holder.icon.setTextColor(Color.parseColor("#105DF7"));
             holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#105DF7"));
         } else if (mColors.get(position).equals("red")) {
-//            holder.icon.setTextColor(Color.parseColor("#FF2600"));
             holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#FF2600"));
         } else if (mColors.get(position).equals("green")){
-//            holder.icon.setTextColor(Color.parseColor("#44DB35"));
             holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#44DB35"));
         } else if (mColors.get(position).equals("black")){
-//            holder.icon.setTextColor(Color.parseColor("#6F7179"));
             holder.textView.setTextColor(Color.parseColor("#6F7179"));
             holder.status.setTextColor(Color.parseColor("#6F7179"));
         } else {
-//            holder.icon.setTextColor(Color.parseColor("#ffffff"));
             // 此处判断,是为了设置header的文字颜色
             holder.textView.setTextColor(Color.parseColor("#ffffff"));
             holder.status.setTextColor(Color.parseColor("#ffffff"));

@@ -493,7 +493,7 @@ public class MainActivity extends BaseTimerActivity implements NavigationView.On
     }
 
     // 获取机房: Y: 切换机房, N: 回到登陆页,显示错误信息
-    public void getUserRooms() {
+    private void getUserRooms() {
         setEngine(sp);
         mEngine.getRooms().enqueue(new Callback<Rooms>() {
             @Override
