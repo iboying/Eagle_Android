@@ -1,37 +1,47 @@
-package com.buoyantec.eagle_android.ui.activity;
+package com.buoyantec.eagle_android.ui.base;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.buoyantec.eagle_android.App;
 import com.buoyantec.eagle_android.engine.Engine;
+import com.buoyantec.eagle_android.ui.activity.R;
 import com.buoyantec.eagle_android.util.ToastUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
+
 import java.io.IOException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by kang on 16/3/3.
  * 全局操作
  */
-public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener{
+public abstract class BaseTimerActivity extends AppCompatActivity implements View.OnClickListener{
     protected String TAG;
     protected App mApp;
     protected static Engine mEngine;
     protected Engine mNoHeaderEngine;
     private SweetAlertDialog mLoadingDialog;
     protected SharedPreferences sp;
+    private TextView networkState;
+
+    private Handler handler;
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +53,27 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         // 在登录成功后初始化通用链接
         sp = getSharedPreferences("foobar", Activity.MODE_PRIVATE);
         mNoHeaderEngine = mApp.getNoHeaderEngine();
+        handler = new Handler();
 
         initView(savedInstanceState);
+        // 布局加载后, 初始化网络状态组件
+        networkState = getViewById(R.id.network_error);
         setListener();
         processLogic(savedInstanceState);
     }
 
     @Override
-    protected void onStop() {
-        stopElement();
-        super.onStop();
+    protected void onStart() {
+        super.onStart();
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // 启动定时任务
+                beginTimerTask();
+                handler.postDelayed(runnable, 30000);
+            }
+        };
     }
 
     /**
@@ -66,17 +87,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         setIntent(intent);// 必须要调用这句
     }
 
-    /**
-     * stop事件
-     */
-    protected void stopElement() {}
-
-    /**
-     * 全局查找View
-     */
-    protected <VT extends View> VT getViewById(@IdRes int id) {
-        return (VT) findViewById(id);
-    }
 
     /**
      * 初始化布局以及View控件
@@ -93,11 +103,40 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     protected abstract void processLogic(Bundle savedInstanceState);
 
+
+    /**
+     * 启动定时任务,刷新网络数据
+     */
+    protected abstract void beginTimerTask();
+
     /**
      * 需要处理点击事件时，重写该方法
      */
     public void onClick(View v) {
     }
+
+    /**
+     * 全局查找View
+     */
+    protected <VT extends View> VT getViewById(@IdRes int id) {
+        return (VT) findViewById(id);
+    }
+
+
+    /**
+     * 设置网络状态
+     */
+    protected void setNetworkState(Boolean state) {
+        if (state) {
+            networkState.setVisibility(View.GONE);
+        } else {
+            networkState.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     *
+     */
 
     /**
      * 显示Toast
@@ -157,5 +196,24 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, 30000);
+        Log.i("onResume:", "begin runnable");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
+        Log.i("onPause:", "remove runnable");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -10,23 +10,27 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.buoyantec.eagle_android.ui.helper.DeviceDetailList;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
  * 机柜环境->详情
  */
-public class CabinetDetail extends BaseActivity {
+public class CabinetDetail extends BaseTimerActivity {
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
     private TextView subToolbarTitle;
     private Context context;
+    private Integer room_id;
+    private Integer device_id;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -37,6 +41,8 @@ public class CabinetDetail extends BaseActivity {
         circleProgressBar = getViewById(R.id.progressBar);
         circleProgressBar.setVisibility(View.VISIBLE);
         context = this;
+        room_id = sp.getInt("current_room_id", 1);
+        device_id = getIntent().getIntExtra("device_id", 1);
     }
 
     @Override
@@ -50,6 +56,11 @@ public class CabinetDetail extends BaseActivity {
         initListView();
     }
 
+    @Override
+    protected void beginTimerTask() {
+        initListView();
+    }
+
     private void initToolbar() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -60,16 +71,15 @@ public class CabinetDetail extends BaseActivity {
     }
 
     private void initListView() {
-        // 获取device_id 和 room_id
-        Integer room_id = sp.getInt("current_room_id", 1);
-        Integer device_id = getIntent().getIntExtra("device_id", 1);
-
         // 以下一句不是必须的,只是以防万一的bug,我菜,你咬我
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
-        mEngine.getDeviceDataHashV2(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
+        mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
-            public void onResponse(Response<DeviceDetail> response) {
+            public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {
+                setNetworkState(true);
                 int code = response.code();
 
                 if (code == 200) {
@@ -94,10 +104,10 @@ public class CabinetDetail extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<DeviceDetail> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("机柜环境->详情", context.getString(R.string.linkFailed));
             }
         });

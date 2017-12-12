@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.StandardListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -21,10 +23,14 @@ import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Cabinet extends BaseActivity {
+/**
+ * 机柜环境
+ */
+public class Cabinet extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -36,23 +42,6 @@ public class Cabinet extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_cabinet);
         Iconify.with(new FontAwesomeModule());
-        init();
-        //初始化toolbar
-        initToolbar();
-    }
-
-    @Override
-    protected void setListener() {
-
-    }
-
-    @Override
-    protected void processLogic(Bundle savedInstanceState) {
-        //初始化list
-        initListView();
-    }
-
-    private void init() {
         room_id = sp.getInt("current_room_id", 1);
         sub_sys_name = getIntent().getStringExtra("sub_sys_name");
         if (sub_sys_name == null) {
@@ -63,7 +52,24 @@ public class Cabinet extends BaseActivity {
         toolbar = getViewById(R.id.sub_toolbar);
         subToolbarTitle = getViewById(R.id.sub_toolbar_title);
         circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        //初始化toolbar
+        initToolbar();
+        //初始化list
+        initListView();
+    }
+
+    @Override
+    protected void beginTimerTask() {
+        initListView();
     }
 
     private void initToolbar() {
@@ -77,11 +83,15 @@ public class Cabinet extends BaseActivity {
     }
 
     private void initListView() {
-        // 以下两句不是必须的,只是以防万一的bug,我菜,你咬我
+        // 以下一句不是必须的,只是以防万一的bug,暂时菜,LOL...
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
+
             @Override
-            public void onResponse(Response<Devices> response) {
+            public void onResponse(Call<Devices> call, Response<Devices> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> names = new ArrayList<>();
@@ -97,7 +107,7 @@ public class Cabinet extends BaseActivity {
                     Integer image = R.drawable.system_status_cabinet;
 
                     // 加载列表
-                    ListView listView = (ListView) getViewById(R.id.cabinet_listView);
+                    ListView listView = getViewById(R.id.cabinet_listView);
                     listView.setAdapter(new StandardListAdapter(listView, context, image, names));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -121,10 +131,10 @@ public class Cabinet extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Devices> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });

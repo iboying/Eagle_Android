@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.pgyersdk.feedback.PgyFeedback;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;

@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+
 public class InfoActivity extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;

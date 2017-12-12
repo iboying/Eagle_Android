@@ -14,18 +14,21 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.SystemStatusListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UpsSystem extends BaseActivity {
+public class UpsSystem extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -37,7 +40,19 @@ public class UpsSystem extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_ups_system);
-        init();
+
+        Iconify.with(new FontAwesomeModule());
+        room_id = sp.getInt("current_room_id", 1);
+        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
+        context = this;
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
+        listView = getViewById(R.id.ups_system_listView);
     }
 
     @Override
@@ -52,20 +67,9 @@ public class UpsSystem extends BaseActivity {
         initListView();
     }
 
-    private void init() {
-        Iconify.with(new FontAwesomeModule());
-        room_id = sp.getInt("current_room_id", 1);
-        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
-        if (sub_sys_name == null) {
-            sub_sys_name = "";
-        }
-        context = this;
-        // 组件
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
-        listView = getViewById(R.id.ups_system_listView);
+    @Override
+    protected void beginTimerTask() {
+        initListView();
     }
 
     private void initToolbar() {
@@ -79,10 +83,13 @@ public class UpsSystem extends BaseActivity {
 
     private void initListView() {
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
-            public void onResponse(Response<Devices> response) {
+            public void onResponse(Call<Devices> call, Response<Devices> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     final List<Integer> ids = new ArrayList<>();
@@ -100,11 +107,18 @@ public class UpsSystem extends BaseActivity {
                         List<String> v = new ArrayList<>();
                         List<HashMap<String, String>> points = device.getPoints();
                         for (HashMap<String, String> point : points) {
-                            k.add(point.get("name"));
-                            v.add(point.get("value"));
+                            if (point.get("name") == null) {
+                                k.add("-");
+                                v.add("-");
+                            } else {
+                                k.add(point.get("name"));
+                                v.add(point.get("value"));
+                            }
                         }
-                        keys.add(k);
-                        values.add(v);
+                        if (k.size() > 0 && v.size() > 0) {
+                            keys.add(k);
+                            values.add(v);
+                        }
                     }
 
                     // references to our images
@@ -134,10 +148,10 @@ public class UpsSystem extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Devices> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });

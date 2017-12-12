@@ -29,15 +29,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.ToolbarMenuAdapter;
+import com.buoyantec.eagle_android.model.Room;
+import com.buoyantec.eagle_android.model.Rooms;
+import com.buoyantec.eagle_android.model.User;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.buoyantec.eagle_android.ui.customView.BadgeView;
 import com.buoyantec.eagle_android.adapter.MainGridAdapter;
-import com.buoyantec.eagle_android.model.Result;
-import com.buoyantec.eagle_android.model.Results;
+import com.buoyantec.eagle_android.model.SubSystemAlarm;
+import com.buoyantec.eagle_android.model.RoomAlarm;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 import com.pgyersdk.update.PgyUpdateManager;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,10 +55,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseTimerActivity implements NavigationView.OnNavigationItemSelectedListener {
     private List<String> roomNames;
     private List<Integer> roomIds;
     private List<String> roomPics;
@@ -60,6 +69,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private Integer current_room_id;
     private String current_room;
+    private String deviceToken;
     // 组件
     private Toolbar toolbar;
     private TextView subToolbarTitle;
@@ -71,7 +81,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private GridView gridView;
     private BadgeView badge;
     private ImageView warnMessage;
-//    private SliderLayout sliderShow;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -95,65 +104,61 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             // 加载字体图标
             Iconify.with(new FontAwesomeModule());
             // 初始化变量
-            init();
-            // 初始化toolbar
-            initToolBar();
-            // 初始化侧边栏
-            initDrawer();
-            // 首页机房图片
-            roomImage();
-            // 初始化GridView
-            new MyThread().start();
-            // 检测更新版本
-            PgyUpdateManager.register(this);
-            // 图片轮播
-            // initCarousel();
+            circleProgressBar = getViewById(R.id.progressBar);
+            myImage = getViewById(R.id.room_image);
+            toolbar = getViewById(R.id.toolbar);
+            subToolbarTitle = getViewById(R.id.toolbar_title);
+            drawer = getViewById(R.id.drawer_layout);
+            signOutButton = getViewById(R.id.sign_out_button);
+            navigationView = getViewById(R.id.nav_view);
+            gridView = getViewById(R.id.grid_view);
+            badge = null;
+            warnMessage = null;
+
+            roomIds = new ArrayList<>();
+            roomNames = new ArrayList<>();
+            roomPics = new ArrayList<>();
+
+            mainTask();
         }
     }
 
-    // 如果GridView加载完成,,异步获取告警数了,更新角标
-    Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if(msg.what==0x123) {
-                getSubSystemAlarmCount();
-            }
+    /**
+     * 登录成功后执行
+     */
+    private void mainTask() {
+        // 初始化toolbar
+        initToolBar();
+        // 初始化侧边栏
+        initDrawer();
+        // 首页机房图片
+        roomImage();
+        // 初始化GridView
+        initGridView();
+        // 检测更新版本
+        PgyUpdateManager.register(this);
+        // 设备注册信鸽推送,上传设备token
+        // 用户如果设置为接收推送,注册信鸽推送
+        SharedPreferences.Editor editor = sp.edit();
+        if (sp.getString("push", "").equals("")) {
+            editor.putString("push", "");
+            registerXgPush();
         }
-    };
-
-    // 启动定时任务,五分钟获取一次告警数
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            //要做的事情
-            getSubSystemAlarmCount();
-            handler.postDelayed(this, 10000);
-        }
-    };
-
-    // 初始化
-    private void init() {
-        // sliderShow = getViewById(R.id.slider);
-        circleProgressBar = getViewById(R.id.progressBar);
-        myImage = getViewById(R.id.room_image);
-        toolbar = getViewById(R.id.toolbar);
-        subToolbarTitle = getViewById(R.id.toolbar_title);
-        drawer = getViewById(R.id.drawer_layout);
-        signOutButton = getViewById(R.id.sign_out_button);
-        navigationView = getViewById(R.id.nav_view);
-        gridView = getViewById(R.id.grid_view);
-        badge = null;
-        warnMessage = null;
-
-        roomIds = new ArrayList<>();
-        roomNames = new ArrayList<>();
-        roomPics = new ArrayList<>();
+        // 获取告警数
+        getSubSystemAlarmCount();
     }
 
     @Override
     protected void setListener() {}
 
     @Override
-    protected void processLogic(Bundle savedInstanceState) {}
+    protected void processLogic(Bundle savedInstanceState) {
+    }
+
+    @Override
+    protected void beginTimerTask() {
+        getSubSystemAlarmCount();
+    }
 
     // 为后退键绑定关闭侧边菜单功能
     @Override
@@ -216,17 +221,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_room) {
-            View room = getViewById(R.id.toolbar_room);
-            displayPopupWindow(room);
+            getUserRooms();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // onStop事件,使用轮播时,需调用
-    @Override
-    public void stopElement() {
-//        sliderShow.stopAutoCycle();
-        super.stopElement();
     }
 
     // 初始化toolbar
@@ -235,29 +232,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
+        subToolbarTitle.setText(current_room);
 
         // 获取机房图片
         String sp_paths = sp.getString("pic_paths", null);
         if (sp_paths != null) {
             String[] paths = sp_paths.split("##");
             Collections.addAll(roomPics, paths);
-        }
-        // 获取所有机房([id1, room1, id2, room2, ...])
-        String sp_rooms = sp.getString("rooms", null);
-        if (sp_rooms != null) {
-            // [1,name,2,name2,...]
-            String[] rooms = sp_rooms.split("#");
-            // 存储机房id和机房名称
-            for (int i = 0; i < rooms.length; i++) {
-                if (i%2==0) {
-                    roomIds.add(Integer.parseInt(rooms[i]));
-                } else {
-                    roomNames.add(rooms[i]);
-                }
-            }
-            subToolbarTitle.setText(current_room);
-        } else {
-            subToolbarTitle.setText("无可管理机房");
         }
     }
 
@@ -393,42 +374,44 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // 异步任务,获取机房总告警数
     public void getSubSystemAlarmCount() {
+        circleProgressBar.setVisibility(View.VISIBLE);
         setEngine(sp);
         // 请求服务
-        mEngine.getSystemAlarmCount(current_room_id).enqueue(new Callback<Results>() {
+        mEngine.getSubSystemAlarmCount(current_room_id).enqueue(new Callback<RoomAlarm>() {
             @Override
-            public void onResponse(Response<Results> response) {
+            public void onResponse(Call<RoomAlarm> call, Response<RoomAlarm> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     // 计数
                     Integer count = 0;
                     systemAlarmCount = new HashMap<>();
 
-                    List<Result> results = response.body().getResults();
-                    for (Result result : results) {
-                        count += result.getSize();
-                        systemAlarmCount.put(result.getName(), result.getSize());
+                    List<SubSystemAlarm> subSystemAlarms = response.body().getSubSystemAlarms();
+                    for (SubSystemAlarm subSystemAlarm : subSystemAlarms) {
+                        count += subSystemAlarm.getSubSystemCount();
+                        systemAlarmCount.put(subSystemAlarm.getSubSystemName(), subSystemAlarm.getSubSystemCount());
                     }
-
-                    if (warnMessage == null) {
-                        warnMessage = getViewById(R.id.grid_warn_message_image);
-                    }
-                    if (badge == null) {
-                        badge = new BadgeView(MainActivity.this, warnMessage);
-                        badge.setBadgeMargin(0, 5);
-                    }
-
-                    if (count == 0) {
-                        badge.hide();
-                    } else {
-                        if (count >= 1000) {
-                            badge.setText("···");
+                    // 获取告警信息按钮
+                    warnMessage = getViewById(R.id.grid_warn_message_image);
+                    if (warnMessage != null) {
+                        if (badge == null) {
+                            badge = new BadgeView(MainActivity.this, warnMessage);
+                            badge.setBadgeMargin(0, 5);
                         } else {
-                            System.out.println("----------"+ count);
-                            badge.setText(count.toString());
+                            if (count == 0) {
+                                badge.hide();
+                            } else {
+                                if (count >= 100) {
+                                    badge.setText("99+");
+                                } else {
+                                    badge.setText(count.toString());
+                                }
+                                badge.show();
+                            }
                         }
-                        badge.show();
                     }
+
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.INVISIBLE);
                     Log.i("获取子系统告警数", context.getString(R.string.getSuccess) + code);
@@ -441,9 +424,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<RoomAlarm> call, Throwable t) {
                 circleProgressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(context, context.getString(R.string.netWorkFailed), Toast.LENGTH_SHORT).show();
+                setNetworkState(false);
                 Log.i("获取子系统告警数", context.getString(R.string.linkFailed));
             }
         });
@@ -451,6 +434,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // 显示下拉菜单
     private void displayPopupWindow(View anchorView) {
+        // 获取所有机房([id1, room1, id2, room2, ...])
+        roomIds.clear();
+        roomNames.clear();
+        String sp_rooms = sp.getString("rooms", null);
+        if (sp_rooms != null) {
+            // [1,name,2,name2,...]
+            String[] rooms = sp_rooms.split("#");
+            // 存储机房id和机房名称
+            for (int i = 0; i < rooms.length; i++) {
+                if (i%2==0) {
+                    roomIds.add(Integer.parseInt(rooms[i]));
+                } else {
+                    roomNames.add(rooms[i]);
+                }
+            }
+        } else {
+            subToolbarTitle.setText("无可管理机房");
+        }
+
         // 实例化popWindow,并获取菜单
         final PopupWindow popup = new PopupWindow(context);
         View layout = getLayoutInflater().inflate(R.layout.toolbar_menu, null);
@@ -490,49 +492,131 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         popup.showAsDropDown(anchorView, -250, 0);
     }
 
-    // 等待GridView加载完成,再执行异步操作获取告警数
-    class MyThread extends Thread
-    {
-        @Override
-        public void run() {
-            // 异步任务: 等待GridView加载完成后,获取告警数
-            initGridView();
-            handler.sendEmptyMessage(0x123);
-        }
+    // 获取机房: Y: 切换机房, N: 回到登陆页,显示错误信息
+    private void getUserRooms() {
+        setEngine(sp);
+        mEngine.getRooms().enqueue(new Callback<Rooms>() {
+            @Override
+            public void onResponse(Call<Rooms> call, Response<Rooms> response) {
+                setNetworkState(true);
+                int code = response.code();
+                if (response.body() != null && code == 200) {
+                    String result = "";
+                    String pic_path = "";
+                    // 获得机房List
+                    List<Room> roomList = response.body().getRooms();
+                    // 遍历机房
+                    for (Room room : roomList) {
+                        if (room.getName() != null) {
+                            result += (room.getId() + "");
+                            result += '#';
+                            result += room.getName();
+                            result += '#';
+                            pic_path += room.getPic();
+                            pic_path += "##";
+                        }
+                    }
+
+                    SharedPreferences.Editor editor = sp.edit();
+
+                    if (result.equals("")) {
+                        // 登陆页,显示错误信息
+                        // 退出时删除用户信息
+                        editor.putString("token", "");
+                        editor.apply();
+                        finish();
+                        // 退回登录页
+                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(i);
+                    } else {
+                        // 保存当前机房信息
+                        editor.putString("rooms", result);
+                        editor.putString("pic_paths", pic_path);
+                        editor.apply();
+                    }
+                    View room = getViewById(R.id.toolbar_room);
+                    displayPopupWindow(room);
+
+                    Log.i("机房列表", context.getString(R.string.getSuccess) + code);
+                } else {
+                    showToast(context.getString(R.string.getDataFailed));
+                    Log.i("机房列表", context.getString(R.string.getFailed) + code);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Rooms> call, Throwable t) {
+                setNetworkState(false);
+                Log.i("机房列表", context.getString(R.string.linkFailed));
+            }
+        });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handler.postDelayed(runnable, 10000);
+    // 注册信鸽服务: Y: 上传device_token, N: 回到登录页,显示错误信息
+    private void registerXgPush() {
+        /**
+         * 注册信鸽推送
+         */
+        // 开启logcat输出，方便debug，发布时请关闭
+        // XGPushConfig.enableDebug(this, true);
+        // 如果需要知道注册是否成功，请使用registerPush(getApplicationContext(), XGIOperateCallback)带callback版本
+        // 如果需要绑定账号，请使用registerPush(getApplicationContext(),account)版本
+        // 具体可参考详细的开发指南
+        // 传递的参数为ApplicationContext
+        XGPushManager.registerPush(context, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object o, int i) {
+                deviceToken = o.toString();
+                // 上传用户token
+                uploadDeviceInfo();
+                Logger.i("信鸽推送注册(成功), token:" + o);
+            }
+
+            @Override
+            public void onFail(Object o, int i, String s) {
+                showToast("推送服务注册失败,尝试重新登陆");
+                Logger.w("信鸽推送注册(失败), token:" + o + ", errCode:" + i + ",msg:" + s);
+            }
+        });
+
+        // 2.36（不包括）之前的版本需要调用以下2行代码(新版本,一定要注释掉)
+        // Intent service = new Intent(context, XGPushService.class);
+        // context.startService(service);
+
+        // 其它常用的API：
+        // 绑定账号（别名）注册：registerPush(context,account)或registerPush(context,account, XGIOperateCallback)，其中account为APP账号，可以为任意字符串（qq、openid或任意第三方），业务方一定要注意终端与后台保持一致。
+        // 取消绑定账号（别名）：registerPush(context,"*")，即account="*"为取消绑定，解绑后，该针对该账号的推送将失效
+        // 反注册（不再接收消息）：unregisterPush(context)
+        // 设置标签：setTag(context, tagName)
+        // 删除标签：deleteTag(context, tagName)
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacks(runnable);
-    }
+    // 上传device_token: Y: 跳转主页面, N: 回到登录页,显示错误信息
+    private void uploadDeviceInfo() {
+        // 注册设备到服务器
+        setEngine(sp);
+        mEngine.upLoadDeviceToken("android", deviceToken).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                setNetworkState(true);
+                if (response.code() == 200) {
+                    User user = response.body();
+                    // 保存数据
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("device_token", user.getDeviceToken());
+                    editor.apply();
 
-    // 初始化轮播控件
-//    private void initCarousel() {
-//        sliderShow.setCustomIndicator((PagerIndicator) getViewById(R.id.custom_indicator));
-//        MySliderView mySliderView = new MySliderView(this);
-//        mySliderView
-//            .description(sp.getString("current_room", null))
-//                .image("http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg")
-//                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-//                    @Override
-//                    public void onSliderClick(BaseSliderView slider) {
-//                        SharedPreferences.Editor editor = sp.edit();
-//                        editor.putInt("current_room_id", sp.getInt("current_room_id", 0));
-//                        editor.putString("current_room", sp.getString("current_room", null));
-//                        editor.apply();
-//                        finish();
-//                        Intent i = new Intent(MainActivity.this, MainActivity.class);
-//                        startActivity(i);
-//                    }
-//            });
-//        sliderShow.addSlider(mySliderView);
-//        sliderShow.setDuration(8000);
-//    }
+                    Logger.i("上传设备token成功" + ", 返回码:" + response.code());
+                } else {
+                    showToast("注册设备失败,尝试重新登录");
+                    Logger.i("上传设备token失败" + ", 返回码:" + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                setNetworkState(false);
+            }
+        });
+    }
 }

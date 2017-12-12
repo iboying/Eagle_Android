@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.StandardListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -21,13 +23,14 @@ import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
  * 温湿度系统详情
  */
-public class Temperature extends BaseActivity {
+public class Temperature extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -42,7 +45,17 @@ public class Temperature extends BaseActivity {
         setContentView(R.layout.activity_temperature);
         Iconify.with(new FontAwesomeModule());
         // 初始化变量
-        init();
+        room_id = sp.getInt("current_room_id", 1);
+        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
+        context = this;
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        listView = getViewById(R.id.temperature_listView);
+        circleProgressBar = getViewById(R.id.progressBar);
     }
 
     @Override
@@ -58,19 +71,9 @@ public class Temperature extends BaseActivity {
         initListView();
     }
 
-    private void init() {
-        room_id = sp.getInt("current_room_id", 1);
-        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
-        if (sub_sys_name == null) {
-            sub_sys_name = "";
-        }
-        context = this;
-        // 组件
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        listView = getViewById(R.id.temperature_listView);
-        circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
+    @Override
+    protected void beginTimerTask() {
+        initListView();
     }
 
     private void initToolbar() {
@@ -84,10 +87,13 @@ public class Temperature extends BaseActivity {
 
     private void initListView() {
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
-            public void onResponse(Response<Devices> response) {
+            public void onResponse(Call<Devices> call, Response<Devices> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> names = new ArrayList<>();
@@ -126,10 +132,10 @@ public class Temperature extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Devices> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });

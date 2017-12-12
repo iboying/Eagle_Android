@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,12 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.buoyantec.eagle_android.model.User;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -166,7 +167,8 @@ public class forgotPasswordActivity extends BaseActivity {
     private void beginUpdatePassword(final String phone, String password, String sms) {
         mNoHeaderEngine.updatePassword(phone, password, sms).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Response<User> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
+                setNetworkState(true);
                 // 加载框
                 showLoadingDialog("正在修改...");
                 if (response.code() == 200) {
@@ -199,8 +201,8 @@ public class forgotPasswordActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                showToast(context.getString(R.string.netWorkFailed));
+            public void onFailure(Call<User> call, Throwable t) {
+                setNetworkState(false);
             }
         });
     }
@@ -240,7 +242,7 @@ public class forgotPasswordActivity extends BaseActivity {
     private void beginGetSms(String phone) {
         mNoHeaderEngine.getSms(phone).enqueue(new Callback<HashMap<String, String>>() {
             @Override
-            public void onResponse(Response<HashMap<String, String>> response) {
+            public void onResponse(Call<HashMap<String, String>> call, Response<HashMap<String, String>> response) {
                 if (response.code() == 200) {
                     HashMap<String, String> result = response.body();
                     getSms.setEnabled(false);
@@ -252,8 +254,8 @@ public class forgotPasswordActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                showToast(context.getString(R.string.netWorkFailed));
+            public void onFailure(Call<HashMap<String, String>> call, Throwable t) {
+                setNetworkState(false);
             }
         });
     }

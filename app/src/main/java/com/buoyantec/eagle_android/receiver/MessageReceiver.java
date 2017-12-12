@@ -1,12 +1,9 @@
 package com.buoyantec.eagle_android.receiver;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.buoyantec.eagle_android.common.NotificationService;
-import com.buoyantec.eagle_android.model.XGNotification;
+import com.orhanobut.logger.Logger;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
@@ -16,13 +13,10 @@ import com.tencent.android.tpush.XGPushTextMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 /**
  * Created by kang on 16/3/28.
  * 自定义receiver,处理 -> 消息命令
- * 注: 现版本只使用了推送通知,没有适应消息命令
+ * 注: 现版本只使用了推送通知,没有使用消息命令
  */
 public class MessageReceiver extends XGPushBaseReceiver {
     public static final String LogTag = "TPushReceiver";
@@ -40,14 +34,14 @@ public class MessageReceiver extends XGPushBaseReceiver {
         }
         String text;
         if (errorCode == XGPushBaseReceiver.SUCCESS) {
-            text = xgPushRegisterResult + "注册成功";
+            text = "MessageReceiver,注册成功: " + xgPushRegisterResult;
             // 在这里拿token
             String token = xgPushRegisterResult.getToken();
+            Logger.i(text + "token: " + token);
         } else {
-            text = xgPushRegisterResult + "注册失败，错误码：" + errorCode;
+            text = "MessageReceiver,注册失败: " + "错误码:" + errorCode + "结果:" + xgPushRegisterResult;
+            Logger.i(text);
         }
-        Log.d(LogTag, text);
-//        show(context, text);
     }
 
     /**
@@ -66,8 +60,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
         } else {
             text = "反注册失败" + errorCode;
         }
-        Log.d(LogTag, text);
-//        show(context, text);
+        Logger.i(text);
     }
 
     /**
@@ -87,8 +80,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
         } else {
             text = "\"" + tagName + "\"设置失败,错误码：" + errorCode;
         }
-        Log.d(LogTag, text);
-//        show(context, text);
+        Logger.i(text);
     }
 
     /**
@@ -108,12 +100,11 @@ public class MessageReceiver extends XGPushBaseReceiver {
         } else {
             text = "\"" + tagName + "\"删除失败,错误码：" + errorCode;
         }
-        Log.d(LogTag, text);
-//        show(context, text);
+        Logger.i(text);
     }
 
     /**
-     * 收到消息
+     * 收到消息命令
      * @param context
      * @param xgPushTextMessage
      */
@@ -140,7 +131,6 @@ public class MessageReceiver extends XGPushBaseReceiver {
         Log.d(LogTag, "====================");
         Log.d(LogTag, text);
         Log.d(LogTag, "====================");
-//        show(context, text);
     }
 
     /**
@@ -205,10 +195,5 @@ public class MessageReceiver extends XGPushBaseReceiver {
 //        NotificationService.getInstance(context).save(msg);
 //        context.sendBroadcast(intent);
 //        show(context, "您有1条新消息, " + "通知被展示 ， " + xgPushShowedResult.toString());
-    }
-
-    // 显示提示
-    public void show(Context context, String text) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 }

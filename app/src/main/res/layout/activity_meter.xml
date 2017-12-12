@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/windowBackgroundColor"
     tools:context="com.buoyantec.eagle_android.ui.activity.Meter">
 
     <android.support.design.widget.AppBarLayout
@@ -16,34 +17,32 @@
     </android.support.design.widget.AppBarLayout>
 
     <!--body-->
-    <LinearLayout
+    <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_meter"
-        android:background="@color/windowBackgroundColor"
-        tools:context="com.buoyantec.eagle_android.ui.activity.Meter">
-
-        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
-            android:id="@+id/progressBar"
-            app:mlpb_progress_stoke_width="@dimen/stoke_width"
-            app:mlpb_progress_color="@color/loginFocusedBorder"
-            android:layout_width="@dimen/progress_size"
-            android:layout_height="@dimen/progress_size"
-            android:visibility="invisible"
-            android:layout_gravity="center_horizontal"/>
+        android:background="@color/windowBackgroundColor">
 
         <ListView
             android:id="@+id/meter_listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="1dp"
-            android:divider="@color/windowBackgroundColor">
-        </ListView>
-    </LinearLayout>
+            android:background="@color/windowBackgroundColor"
+            android:divider="@color/windowBackgroundColor" />
+
+        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+            android:id="@+id/progressBar"
+            app:mlpb_progress_stoke_width="@dimen/stoke_width"
+            app:mlpb_progress_color="@color/loginFocusedBorder"
+            android:layout_marginTop="10dp"
+            android:layout_width="@dimen/progress_size"
+            android:layout_height="@dimen/progress_size"
+            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"/>
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -10,31 +10,41 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buoyantec.eagle_android.adapter.WarnMessageListAdapter;
-import com.buoyantec.eagle_android.model.MySystem;
-import com.buoyantec.eagle_android.model.MySystems;
-import com.buoyantec.eagle_android.model.SubSystem;
+import com.buoyantec.eagle_android.model.RoomAlarm;
+import com.buoyantec.eagle_android.model.SubSystemAlarm;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WarnSystems extends BaseActivity{
+public class WarnSystems extends BaseTimerActivity {
     private HashMap<String, Integer> systemIcon;
-    private Integer statusCode;
     private Context context;
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
     private TextView subToolbarTitle;
 
+    private Integer current_room_id;
+
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_warn_systems);
+        // 组件
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
+        // 变量
         init();
     }
 
@@ -51,20 +61,21 @@ public class WarnSystems extends BaseActivity{
         initListView();
     }
 
+    @Override
+    protected void beginTimerTask() {
+        initListView();
+    }
+
     private void init(){
         systemIcon = new HashMap<>();
         context = this;
-        // 组件
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
+        current_room_id = getIntent().getIntExtra("room_id", 0);
 
         // 动力
         systemIcon.put("UPS系统", R.drawable.system_status_ups);
         systemIcon.put("电量仪系统", R.drawable.system_status_box);
         systemIcon.put("配电系统", R.drawable.system_status_power);
-        systemIcon.put("电池检测", R.drawable.system_status_battery);
+        systemIcon.put("电池系统", R.drawable.system_status_battery);
         systemIcon.put("发电机系统", R.drawable.system_status_engine);
         // 环境
         systemIcon.put("温湿度系统", R.drawable.system_status_temperature);
@@ -90,75 +101,56 @@ public class WarnSystems extends BaseActivity{
     }
 
     private void initListView() {
-        Integer room_id = getIntent().getIntExtra("room_id", 0);
-        if (room_id == 0)
-            room_id = null;
-
         setEngine(sp);
-        mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
+
+        circleProgressBar.setVisibility(View.VISIBLE);
+        // 请求服务
+        mEngine.getSubSystemAlarmCount(current_room_id).enqueue(new Callback<RoomAlarm>() {
             @Override
-            public void onResponse(Response<MySystems> response) {
-                statusCode = response.code();
-                if (response.body() != null && statusCode == 200) {
-                    // 定义动态数组,用于保存子系统及图标
-                    final ArrayList<String> names = new ArrayList<>();
-                    ArrayList<Integer> device_images = new ArrayList<>();
-                    ArrayList<Integer> alarmCount = new ArrayList<>();
-                    final ArrayList<Integer> ids = new ArrayList<>();
-
-                    // 读取子系统告警数量
-                    Bundle bundle = getIntent().getExtras();
-                    HashMap<String, Integer> map = (HashMap<String, Integer>) bundle.getSerializable("systemAlarmCount");
-
-                    //  获取所有的分类系统(比如: 动力,环境..)
-                    List<MySystem> mySystems = response.body().getMySystems();
-                    for (MySystem mySystem : mySystems) {
-                        // 获取所有的子系统( 比如: ups, 配电..)
-                        for (SubSystem subSystem : mySystem.getSubSystem()) {
-                            String subName = subSystem.getSubSystemName();
-                            if (map != null) {
-                                if (map.get(subName) != null) {
-                                    names.add(subName);
-                                    ids.add(subSystem.getId());
-                                    device_images.add(systemIcon.get(subName));
-                                    alarmCount.add(map.get(subName));
-                                }
-                            }
-                        }
+            public void onResponse(Call<RoomAlarm> call, Response<RoomAlarm> response) {
+                setNetworkState(true);
+                int code = response.code();
+                if (code == 200) {
+                    List<SubSystemAlarm> subSystemAlarms = response.body().getSubSystemAlarms();
+                    // 列表数据
+                    List<Integer> images = new ArrayList<>();
+                    final List<Integer> subSystemId = new ArrayList<>();
+                    final List<String> subSystemNames = new ArrayList<>();
+                    List<Integer> subSystemAlarmCount = new ArrayList<>();
+                    // 获取数据
+                    for (SubSystemAlarm subSystemAlarm : subSystemAlarms) {
+                        subSystemId.add(subSystemAlarm.getSubSystemId());
+                        subSystemNames.add(subSystemAlarm.getSubSystemName());
+                        subSystemAlarmCount.add(subSystemAlarm.getSubSystemCount());
+                        images.add(systemIcon.get(subSystemAlarm.getSubSystemName()));
                     }
-
-                    // 图片
-                    Integer[] images = device_images.toArray(new Integer[device_images.size()]);
-
-                    // 加载listView
+                    // 加载列表
                     ListView listView = getViewById(R.id.warn_systems_listView);
-                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, names, alarmCount));
+                    listView.setAdapter(new WarnMessageListAdapter(listView, context, images, subSystemNames, subSystemAlarmCount));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                            Intent i = new Intent(WarnSystems.this, WarnDevices.class);
-                            i.putExtra("title", names.get(position));
-                            i.putExtra("subSystem_id", ids.get(position));
+                            Intent i = new Intent(WarnSystems.this, WarnDetail.class);
+                            i.putExtra("title", subSystemNames.get(position));
+                            i.putExtra("subSystemId", subSystemId.get(position));
                             startActivity(i);
                         }
                     });
-
                     // 隐藏进度条
                     circleProgressBar.setVisibility(View.GONE);
-                    Log.i("系统告警", context.getString(R.string.getSuccess) + statusCode);
+                    Log.i("获取子系统告警数", context.getString(R.string.getSuccess) + code);
                 } else {
                     // 隐藏进度条
-                    circleProgressBar.setVisibility(View.GONE);
-                    showToast(context.getString(R.string.getDataFailed));
-                    Log.i("系统告警", context.getString(R.string.getFailed) + statusCode);
+                    circleProgressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(context, context.getString(R.string.getDataFailed), Toast.LENGTH_SHORT).show();
+                    Log.i("获取子系统告警数", context.getString(R.string.getFailed) + code);
                 }
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                // 隐藏进度条
-                circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
-                Log.i("系统告警", context.getString(R.string.linkFailed));
+            public void onFailure(Call<RoomAlarm> call, Throwable t) {
+                circleProgressBar.setVisibility(View.INVISIBLE);
+                setNetworkState(false);
+                Log.i("获取子系统告警数", context.getString(R.string.linkFailed));
             }
         });
     }

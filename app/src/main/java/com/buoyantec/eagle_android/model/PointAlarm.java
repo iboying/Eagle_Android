@@ -1,10 +1,9 @@
 package com.buoyantec.eagle_android.model;
 
-import javax.annotation.Generated;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Generated("org.jsonschema2pojo")
 public class PointAlarm {
 
     @SerializedName("id")
@@ -17,19 +16,19 @@ public class PointAlarm {
 
     @SerializedName("pid")
     @Expose
-    private Object pid;
+    private String pid;
 
-    @SerializedName("state")
+    @SerializedName("room_id")
     @Expose
-    private int state;
+    private Integer roomId;
 
-    @SerializedName("created_at")
+    @SerializedName("reported_at")
     @Expose
-    private String createdAt;
+    private String reportedAt;
 
-    @SerializedName("updated_at")
+    @SerializedName("cleared_at")
     @Expose
-    private String updatedAt;
+    private String clearedAt;
 
     @SerializedName("checked_at")
     @Expose
@@ -37,19 +36,19 @@ public class PointAlarm {
 
     @SerializedName("is_checked")
     @Expose
-    private boolean checked;
+    private Boolean isChecked;
 
-    @SerializedName("checked_user")
+    @SerializedName("is_cleared")
     @Expose
-    private String checkedUser;
+    private Boolean isCleared;
 
     @SerializedName("point_id")
     @Expose
-    private int pointId;
+    private Integer pointId;
 
-    @SerializedName("comment")
+    @SerializedName("point_name")
     @Expose
-    private String comment;
+    private String pointName;
 
     @SerializedName("type")
     @Expose
@@ -59,137 +58,64 @@ public class PointAlarm {
     @Expose
     private String meaning;
 
-    @SerializedName("alarm_value")
+    @SerializedName("checked_user")
     @Expose
-    private String alarmValue;
+    private String checkedUser;
 
-    @SerializedName("point_name")
-    @Expose
-    private String pointName;
 
-    /**
-     *
-     * @return
-     * The id
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     *
-     * @return
-     * The deviceName
-     */
     public String getDeviceName() {
         return deviceName;
     }
 
-    /**
-     *
-     * @return
-     * The pid
-     */
-    public Object getPid() {
+    public String getPid() {
         return pid;
     }
 
-    /**
-     *
-     * @return
-     * The state
-     */
-    public int getState() {
-        return state;
+    public Integer getRoomId() {
+        return roomId;
     }
 
-    /**
-     *
-     * @return
-     * The createdAt
-     */
-    public String getCreatedAt() {
-        return createdAt;
+    public String getReportedAt() {
+        return reportedAt;
     }
 
-    /**
-     *
-     * @return
-     * The createdAt
-     */
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /**
-     *
-     * @return
-     * The checked
-     */
-    public boolean isChecked() {
-        return checked;
-    }
-
-    /**
-     *
-     * @return
-     * The checkedUser
-     */
-    public String getCheckedUser() {
-        return checkedUser;
-    }
-
-    public String getPointName() {
-        return pointName;
+    public String getClearedAt() {
+        return clearedAt;
     }
 
     public String getCheckedAt() {
         return checkedAt;
     }
 
-    /**
-     *
-     * @return
-     * The pointId
-     */
-    public int getPointId() {
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public Boolean getCleared() {
+        return isCleared;
+    }
+
+    public Integer getPointId() {
         return pointId;
     }
 
-    /**
-     *
-     * @return
-     * The comment
-     */
-    public String getComment() {
-        return comment;
+    public String getPointName() {
+        return pointName;
     }
 
-    /**
-     *
-     * @return
-     * The type
-     */
     public String getType() {
         return type;
     }
 
-    /**
-     *
-     * @return
-     * The type
-     */
     public String getMeaning() {
         return meaning;
     }
 
-    /**
-     *
-     * @return
-     * The alarmValue
-     */
-    public String getAlarmValue() {
-        return alarmValue;
+    public String getCheckedUser() {
+        return checkedUser;
     }
-
 }

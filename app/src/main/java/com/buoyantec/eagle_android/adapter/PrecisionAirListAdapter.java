@@ -1,6 +1,7 @@
 package com.buoyantec.eagle_android.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.ui.activity.R;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -60,13 +62,7 @@ public class PrecisionAirListAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        boolean click;
-        if (status.get(position) == 2){
-            click = true;
-        } else {
-            click = false;
-        }
-        return click;
+        return true;
     }
 
     @Override
@@ -87,7 +83,7 @@ public class PrecisionAirListAdapter extends BaseAdapter {
             iv.setBackgroundResource(image);
             tv.setText(texts.get(position));
 
-            if (datas.size() > 0) {
+            if (labels.get(position).size() > 0) {
                 degree_label.setText("{fa-square #FF987E} "+labels.get(position).get(0));
                 degree.setText(datas.get(position).get(0)+"℃");
                 humidity_label.setText("{fa-square #00BDFF} "+labels.get(position).get(1));
@@ -106,10 +102,6 @@ public class PrecisionAirListAdapter extends BaseAdapter {
             TextView tv = BaseViewHolder.get(convertView, R.id.list_item_device_status_text);
             ImageView imageStatus = BaseViewHolder.get(convertView, R.id.list_item_device_status_status_image);
             TextView textStatus = BaseViewHolder.get(convertView, R.id.list_item_device_status_status_text);
-
-            // 不显示
-            IconTextView rightIcon = BaseViewHolder.get(convertView, R.id.list_item_device_status_right);
-            rightIcon.setText("");
 
             iv.setImageResource(image);
             tv.setText(texts.get(position));

@@ -10,6 +10,8 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
+
 public class Pue extends BaseActivity {
     private Toolbar toolbar;
     private TextView subToolbarTitle;

@@ -1,12 +1,12 @@
 package com.buoyantec.eagle_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
+
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 
 public class VideoSystem extends BaseActivity {
     private Integer room_id;

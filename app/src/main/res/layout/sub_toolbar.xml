@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sub_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:background="?attr/colorPrimary"
-    android:minHeight="48dp"
-    android:theme="@style/ActionBarThemeOverlay"
-    app:popupTheme="@style/ActionBarPopupThemeOverlay"
-    app:titleTextAppearance="@style/ActionBar.TitleText">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sub_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="48dp"
+        android:theme="@style/ActionBarThemeOverlay"
+        app:popupTheme="@style/ActionBarPopupThemeOverlay"
+        app:titleTextAppearance="@style/ActionBar.TitleText">
+        <TextView
+            android:id="@+id/sub_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/textColorPrimary"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+    </android.support.v7.widget.Toolbar>
+
     <TextView
-        android:id="@+id/sub_toolbar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/textColorPrimary"
-        android:layout_gravity="center"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
-</android.support.v7.widget.Toolbar>
+        android:id="@+id/network_error"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:textColor="@color/normal_text"
+        android:background="@color/network_error_bg"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/network_error"/>
+</LinearLayout>
+
+

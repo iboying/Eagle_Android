@@ -25,6 +25,8 @@
     <!--侧边菜单内容文字颜色-->
     <color name="nav_font_color">#959595</color>
 
+    <!--网络状态错误背景色-->
+    <color name="network_error_bg">#FFEFB8</color>
     <!--登录页border-->
     <color name="loginFocusedBorder">#0072F8</color>
     <color name="loginNormalBorder">#9B9B9B</color>
@@ -43,4 +45,5 @@
     <color name="list_dot_green">#44DB35</color>
     <color name="list_dot_red">#FF2600</color>
     <color name="listHeaderBg">#808080</color>
+    <color name="normal_text">#333333</color>
 </resources>

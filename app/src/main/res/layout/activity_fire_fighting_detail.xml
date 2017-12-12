@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/windowBackgroundColor"
     tools:context="com.buoyantec.eagle_android.ui.activity.FireFightingDetail">
 
     <android.support.design.widget.AppBarLayout
@@ -17,32 +18,29 @@
     <!--body-->
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:fresco="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/windowBackgroundColor"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_smoke">
+        tools:showIn="@layout/activity_fire_fighting">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="235dp"
             android:background="@color/white">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/fire_fighting_detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:actualImageScaleType="fitXY"
-                fresco:placeholderImage="@drawable/device_default"/>
+                app:actualImageScaleType="fitXY"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:gravity="center"
             android:background="@color/white"
@@ -61,24 +59,31 @@
                 android:text="状态"/>
         </LinearLayout>
 
-        <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
-            android:id="@+id/progressBar"
-            app:mlpb_progress_stoke_width="@dimen/stoke_width"
-            app:mlpb_progress_color="@color/loginFocusedBorder"
-            android:layout_width="@dimen/progress_size"
-            android:layout_height="@dimen/progress_size"
-            android:visibility="invisible"
-            android:layout_gravity="center_horizontal"/>
-
-        <ListView
-            android:id="@+id/fire_fighting_detail_listView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:clickable="true"
-            android:dividerHeight="1dp"
-            android:divider="@color/white"
-            android:background="@color/windowBackgroundColor"/>
+            android:layout_height="match_parent"
+            android:background="@color/windowBackgroundColor">
+
+            <ListView
+                android:id="@+id/fire_fighting_detail_listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:dividerHeight="1dp"
+                android:divider="@color/white"
+                android:background="@color/windowBackgroundColor"/>
+
+            <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+                android:id="@+id/progressBar"
+                app:mlpb_progress_stoke_width="@dimen/stoke_width"
+                app:mlpb_progress_color="@color/loginFocusedBorder"
+                android:layout_marginTop="10dp"
+                android:layout_width="@dimen/progress_size"
+                android:layout_height="@dimen/progress_size"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"/>
+        </FrameLayout>
+
 
     </LinearLayout>
 

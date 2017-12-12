@@ -19,6 +19,7 @@ import android.util.Log;
 import com.buoyantec.eagle_android.engine.Engine;
 import com.buoyantec.eagle_android.ui.activity.R;
 import com.buoyantec.eagle_android.ui.activity.ReceiverPush;
+import com.orhanobut.logger.Logger;
 import com.pgyersdk.crash.PgyCrashManager;
 import com.tencent.android.tpush.XGNotifaction;
 import com.tencent.android.tpush.XGPushManager;
@@ -26,8 +27,8 @@ import com.tencent.android.tpush.XGPushNotifactionCallback;
 
 import java.util.List;
 
-import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by kang on 16/3/3.
@@ -59,6 +60,8 @@ public class App extends Application {
         sInstance = this;
         context = getApplicationContext();
         setLoginEngine();
+        // 初始化Logger
+        Logger.init();
         // 蒲公英应用管理:注册Crash接口
         PgyCrashManager.register(this);
         /**
@@ -75,7 +78,7 @@ public class App extends Application {
                 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                 @Override
                 public void handleNotify(XGNotifaction xGNotifaction) {
-                    Log.i("App.java ->", "拦截处理信鸽通知：" + xGNotifaction);
+                    Logger.i("拦截处理信鸽通知：" + xGNotifaction);
                     // 获取标签、内容、自定义内容
                     String title = xGNotifaction.getTitle();
                     String content = xGNotifaction.getContent();

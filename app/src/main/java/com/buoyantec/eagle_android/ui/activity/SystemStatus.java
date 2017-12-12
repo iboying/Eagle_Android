@@ -16,14 +16,15 @@ import com.buoyantec.eagle_android.adapter.SystemStatusGridAdapter;
 import com.buoyantec.eagle_android.model.MySystem;
 import com.buoyantec.eagle_android.model.MySystems;
 import com.buoyantec.eagle_android.model.SubSystem;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -72,12 +73,13 @@ public class SystemStatus extends BaseActivity {
         systemIcon.put("UPS系统", R.drawable.system_status_ups);
         systemIcon.put("电量仪系统", R.drawable.system_status_box);
         systemIcon.put("配电系统", R.drawable.system_status_power);
-        systemIcon.put("电池检测", R.drawable.system_status_battery);
+        systemIcon.put("电池系统", R.drawable.system_status_battery);
         systemIcon.put("发电机系统", R.drawable.system_status_engine);
         // 环境
         systemIcon.put("温湿度系统", R.drawable.system_status_temperature);
         systemIcon.put("机柜环境", R.drawable.system_status_cabinet);
         systemIcon.put("空调系统", R.drawable.system_status_air);
+        systemIcon.put("空调运维系统", R.drawable.system_status_air);
         systemIcon.put("漏水系统", R.drawable.system_status_water);
         // 联动
         // 安全
@@ -91,12 +93,13 @@ public class SystemStatus extends BaseActivity {
         systemClass.put("UPS系统", UpsSystem.class);
         systemClass.put("电量仪系统", Meter.class);
         systemClass.put("配电系统", PowerDistribution.class);
-        systemClass.put("电池检测", Battery.class);
-        systemClass.put("发电机系统", Meter.class);//// TODO: 16/2/2  无页面
+        systemClass.put("电池系统", Battery.class);
+        systemClass.put("发电机系统", Battery.class);
         // 环境
         systemClass.put("温湿度系统", Temperature.class);
         systemClass.put("机柜环境", Cabinet.class);
         systemClass.put("空调系统", PrecisionAir.class);
+        systemClass.put("空调运维系统", PrecisionAir.class);
         systemClass.put("漏水系统", Water.class);
         // 联动
         // 安全
@@ -129,7 +132,8 @@ public class SystemStatus extends BaseActivity {
         setEngine(sp);
         mEngine.getSystems(room_id).enqueue(new Callback<MySystems>() {
             @Override
-            public void onResponse(Response<MySystems> response) {
+            public void onResponse(Call<MySystems> call, Response<MySystems> response) {
+                setNetworkState(true);
                 statusCode = response.code();
                 if (response.body() != null && statusCode == 200) {
                     // 定义动态数组,用于保存子系统
@@ -165,7 +169,7 @@ public class SystemStatus extends BaseActivity {
                         final ArrayList<String> names = new ArrayList<>();
                         ArrayList<Integer> images = new ArrayList<>();
 
-                        String[] systems = entry.getValue();
+                        final String[] systems = entry.getValue();
                         for (String system : systems) {
                             names.add(system);
                             if (systemIcon.get(system) == null) {
@@ -187,12 +191,16 @@ public class SystemStatus extends BaseActivity {
                             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                                 for (int j = 0; j < names.size(); j++) {
                                     if (position == j) {
-                                        Intent i = new Intent(context, systemClass.get(names.get(j)));
-                                        // 获取子系统名称
-                                        TextView tv = (TextView) v.findViewById(R.id.sub_grid_view_text);
-                                        String sub_sys_name = (String) tv.getText();
-                                        i.putExtra("sub_sys_name", sub_sys_name);
-                                        startActivity(i);
+                                        if (systemClass.get(names.get(j)) != null) {
+                                            Intent i = new Intent(context, systemClass.get(names.get(j)));
+                                            // 获取子系统名称
+                                            TextView tv = (TextView) v.findViewById(R.id.sub_grid_view_text);
+                                            String sub_sys_name = (String) tv.getText();
+                                            i.putExtra("sub_sys_name", sub_sys_name);
+                                            startActivity(i);
+                                        } else {
+                                            showToast("无页面");
+                                        }
                                     }
                                 }
                             }
@@ -206,9 +214,9 @@ public class SystemStatus extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<MySystems> call, Throwable t) {
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("系统状态", context.getString(R.string.linkFailed));
             }
         });

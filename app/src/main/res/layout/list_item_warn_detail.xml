@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
-    android:paddingLeft="24dp"
+    android:paddingLeft="16dp"
     android:paddingBottom="10dp"
-    android:paddingRight="24dp"
+    android:paddingRight="16dp"
     android:orientation="horizontal"
     android:background="@drawable/list_item_bg">
 
@@ -15,44 +15,37 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:layout_weight="1">
         <TextView
-            android:id="@+id/warn_detail_name"
+            android:id="@+id/warn_detail_point_name"
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:singleLine="true"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="14sp"
-            android:text="name"/>
+            android:textSize="14sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="18dp"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/warn_detail_comment"
+                android:id="@+id/warn_detail_meaning"
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"
                 android:layout_marginRight="16dp"
                 android:singleLine="true"
-                android:ellipsize="end"
-                android:maxLines="1"
                 android:textColor="@color/gray"
-                android:textSize="12sp"
-                android:text="信息"/>
+                android:textSize="12sp"/>
             <TextView
-                android:id="@+id/warn_detail_time"
+                android:id="@+id/warn_detail_reported_at"
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/gray"
-                android:textSize="12sp"
-                android:text="时间"/>
+                android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
 

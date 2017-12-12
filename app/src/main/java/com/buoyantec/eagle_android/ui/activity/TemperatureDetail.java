@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.buoyantec.eagle_android.adapter.TemperatureListAdapter;
 import com.buoyantec.eagle_android.model.DeviceDetail;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
@@ -19,10 +20,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TemperatureDetail extends BaseActivity {
+public class TemperatureDetail extends BaseTimerActivity {
     private CircleProgressBar circleProgressBar;
     private Toolbar toolbar;
     private SimpleDraweeView myImage;
@@ -30,6 +32,8 @@ public class TemperatureDetail extends BaseActivity {
     private ListView listView;
     private Context context;
 
+    private Integer room_id;
+    private Integer device_id;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -40,6 +44,9 @@ public class TemperatureDetail extends BaseActivity {
         listView = getViewById(R.id.temperature_detail_listView);
         circleProgressBar = getViewById(R.id.progressBar);
         context = this;
+
+        room_id = sp.getInt("current_room_id", 1);
+        device_id = getIntent().getIntExtra("device_id", 1);
     }
 
     @Override
@@ -55,6 +62,11 @@ public class TemperatureDetail extends BaseActivity {
         initListView();
     }
 
+    @Override
+    protected void beginTimerTask() {
+        initListView();
+    }
+
     private void initToolbar() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -65,16 +77,13 @@ public class TemperatureDetail extends BaseActivity {
     }
 
     private void initListView() {
-        // 进度条
-        circleProgressBar.setVisibility(View.VISIBLE);
-        // 获取device_id 和 room_id
-        Integer room_id = sp.getInt("current_room_id", 1);
-        Integer device_id = getIntent().getIntExtra("device_id", 1);
-
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         mEngine.getDeviceDataHash(room_id, device_id).enqueue(new Callback<DeviceDetail>() {
             @Override
-            public void onResponse(Response<DeviceDetail> response) {
+            public void onResponse(Call<DeviceDetail> call, Response<DeviceDetail> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> tem = new ArrayList<>();
@@ -90,14 +99,17 @@ public class TemperatureDetail extends BaseActivity {
                     }
 
                     // 循环list,存入数组
-                    List<HashMap<String, String>> points = response.body().getPoints();
+                    List<HashMap<String, String>> points = response.body().getNumberType();
                     for (HashMap<String, String> point : points) {
                         if (point.get("name").contains("温度")) {
-                            tem.add(point.get("value"));
+                            tem.add(point.get("meaning"));
                             temColor.add(point.get("color"));
                         } else if (point.get("name").contains("湿度")) {
-                            hum.add(point.get("value"));
+                            hum.add(point.get("meaning"));
                             humColor.add(point.get("color"));
+                        } else if (point.get("name") == null) {
+                            hum.add("-");
+                            humColor.add("-");
                         }
                     }
                     // 隐藏进度条
@@ -114,10 +126,10 @@ public class TemperatureDetail extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<DeviceDetail> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("温湿度系统->详情", context.getString(R.string.linkFailed));
             }
         });

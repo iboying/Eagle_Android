@@ -72,7 +72,7 @@ public class TemperatureListAdapter extends BaseAdapter {
         num.setText(String.valueOf(position + 1));
 
         if (temperature.size() > position) {
-            tem.setText(temperature.get(position) + "℃");
+            tem.setText(temperature.get(position) + " ℃");
             if (temColor.get(position).equals("blue")) {
                 tem.setTextColor(Color.parseColor("#105DF7"));
             } else if (temColor.get(position).equals("red")) {
@@ -83,7 +83,7 @@ public class TemperatureListAdapter extends BaseAdapter {
         }
 
         if (humidity.size() > position) {
-            hum.setText(humidity.get(position) + "%");
+            hum.setText(humidity.get(position) + " %");
             if (humColor.get(position).equals("blue")) {
                 hum.setTextColor(Color.parseColor("#105DF7"));
             } else if (humColor.get(position).equals("red")) {

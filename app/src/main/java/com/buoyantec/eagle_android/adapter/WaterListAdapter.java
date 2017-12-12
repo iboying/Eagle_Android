@@ -1,6 +1,7 @@
 package com.buoyantec.eagle_android.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 
 /**
  * Created by kang on 16/2/23.
- * 漏水系统list适配器
+ * 漏水系统, 烟感 list适配器
  */
 public class WaterListAdapter extends BaseAdapter {
     private Context mContext;
@@ -63,8 +64,9 @@ public class WaterListAdapter extends BaseAdapter {
         item.setBackgroundResource(colors[position % 2]);
         name.setText(names.get(position));
 
-        if (status.get(position).equals("true")) {
-            st.setTextColor(mContext.getResources().getColor(R.color.list_dot_red));
+        Log.i("漏水,烟感",status.get(position) );
+        if (status.get(position).equals("green")) {
+            st.setTextColor(mContext.getResources().getColor(R.color.list_dot_green));
         }
 
         return convertView;

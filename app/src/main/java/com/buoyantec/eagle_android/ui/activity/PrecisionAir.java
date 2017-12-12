@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.buoyantec.eagle_android.adapter.PrecisionAirListAdapter;
 import com.buoyantec.eagle_android.model.Device;
 import com.buoyantec.eagle_android.model.Devices;
+import com.buoyantec.eagle_android.ui.base.BaseTimerActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -22,10 +23,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PrecisionAir extends BaseActivity {
+public class PrecisionAir extends BaseTimerActivity {
     private Integer room_id;
     private String sub_sys_name;
     private Context context;
@@ -37,7 +39,16 @@ public class PrecisionAir extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_precision_air);
         Iconify.with(new FontAwesomeModule());
-        init();
+        room_id = sp.getInt("current_room_id", 1);
+        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
+        if (sub_sys_name == null) {
+            sub_sys_name = "";
+        }
+        context = this;
+
+        toolbar = getViewById(R.id.sub_toolbar);
+        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
+        circleProgressBar = getViewById(R.id.progressBar);
     }
 
     @Override
@@ -53,19 +64,11 @@ public class PrecisionAir extends BaseActivity {
         initListView();
     }
 
-    private void init() {
-        room_id = sp.getInt("current_room_id", 1);
-        sub_sys_name = getIntent().getStringExtra("sub_sys_name");
-        if (sub_sys_name == null) {
-            sub_sys_name = "";
-        }
-        context = this;
-
-        toolbar = getViewById(R.id.sub_toolbar);
-        subToolbarTitle = getViewById(R.id.sub_toolbar_title);
-        circleProgressBar = getViewById(R.id.progressBar);
-        circleProgressBar.setVisibility(View.VISIBLE);
+    @Override
+    protected void beginTimerTask() {
+        initListView();
     }
+
 
     private void initToolbar() {
         toolbar.setTitle("");
@@ -78,10 +81,13 @@ public class PrecisionAir extends BaseActivity {
 
     private void initListView() {
         setEngine(sp);
+
+        circleProgressBar.setVisibility(View.VISIBLE);
         // 获取指定链接数据
         mEngine.getDevices(room_id, sub_sys_name).enqueue(new Callback<Devices>() {
             @Override
-            public void onResponse(Response<Devices> response) {
+            public void onResponse(Call<Devices> call, Response<Devices> response) {
+                setNetworkState(true);
                 int code = response.code();
                 if (code == 200) {
                     ArrayList<String> names = new ArrayList<>();
@@ -100,15 +106,20 @@ public class PrecisionAir extends BaseActivity {
 
                         List<HashMap<String, String>> points = device.getPoints();
                         for (HashMap<String, String> point : points) {
-                            label.add(point.get("name"));
-                            data.add(point.get("value"));
+                            if (point.get("name") == null) {
+                                label.add("-");
+                                data.add("-");
+                            }else{
+                                label.add(point.get("name"));
+                                data.add(point.get("value"));
+                            }
                         }
                         labels.add(label);
                         datas.add(data);
 
                         // 获取存在状态的设备数据
                         String alarm = device.getAlarm();
-                        if (alarm == null) {
+                        if (sub_sys_name.equals("空调系统")) {
                             status.add(2);
                         } else {
                             if (alarm.equals("false")) {
@@ -150,10 +161,10 @@ public class PrecisionAir extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Devices> call, Throwable t) {
                 // 隐藏进度条
                 circleProgressBar.setVisibility(View.GONE);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i(sub_sys_name, context.getString(R.string.linkFailed));
             }
         });

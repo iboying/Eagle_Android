@@ -14,11 +14,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.buoyantec.eagle_android.ui.activity.LoginActivity">
 
+    <TextView
+        android:id="@+id/network_error"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@color/network_error_bg"
+        android:visibility="gone"
+        android:textColor="@color/normal_text"
+        android:gravity="center"
+        android:text="@string/network_error"/>
+
     <!-- Login progress -->
     <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
         android:id="@+id/progressBar"
         app:mlpb_progress_stoke_width="@dimen/stoke_width"
         app:mlpb_progress_color="@color/loginFocusedBorder"
+        android:layout_marginTop="10dp"
         android:layout_width="@dimen/progress_size"
         android:layout_height="@dimen/progress_size"
         android:visibility="gone"

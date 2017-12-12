@@ -2,7 +2,6 @@ package com.buoyantec.eagle_android.ui.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,9 +23,11 @@ import android.widget.Toast;
 import com.buoyantec.eagle_android.model.Room;
 import com.buoyantec.eagle_android.model.Rooms;
 import com.buoyantec.eagle_android.model.User;
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.orhanobut.logger.Logger;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.android.tpush.common.Constants;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -219,7 +221,7 @@ public class LoginActivity extends BaseActivity {
     private boolean isPhoneValid(String phone) {
         boolean flag;
         try{
-            Pattern pattern = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+            Pattern pattern = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-9]))\\d{8}$");
             Matcher matcher = pattern.matcher(phone);
             flag = matcher.matches();
         }catch(Exception e){
@@ -267,13 +269,11 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 调用接口,处理数据
-     */
+    //  验证用户: Y: 获取机房, N: 回到登录页
     private void loginTask(final String phone, final String password) {
         mNoHeaderEngine.getUser(phone, password).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Response<User> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 int code = response.code();
                 if (code == 201) {
                     // 获取用户
@@ -299,21 +299,21 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 showProgress(false);
                 mPasswordView.requestFocus();
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("用户登录", getResources().getString(R.string.linkFailed));
             }
         });
     }
 
-    // 获取用户成功后,后取机房信息
+    // 获取机房: Y: 注册信鸽服务, N: 回到登陆页,显示错误信息
     public void getUserRooms() {
         setEngine(sp);
         mEngine.getRooms().enqueue(new Callback<Rooms>() {
             @Override
-            public void onResponse(Response<Rooms> response) {
+            public void onResponse(Call<Rooms> call, Response<Rooms> response) {
                 int code = response.code();
                 if (response.body() != null && code == 200) {
                     String result = "";
@@ -356,15 +356,15 @@ public class LoginActivity extends BaseActivity {
                         editor.putInt("current_room_id", room_id);
                         editor.putString("current_room_pic", path);
                         editor.apply();
-                        // 用户如果设置为接收推送,注册信鸽推送
-                        if (sp.getString("push", "").equals("")) {
-                            editor.putString("push", "");
-                            registerXgPush();
-                        }
                         // 进入主页
-                        Intent i = new Intent(context, MainActivity.class);
-                        startActivity(i);
+                        Intent intent = new Intent(context, MainActivity.class);
+                        startActivity(intent);
                         finish();
+                        // 用户如果设置为接收推送,注册信鸽推送(已改为在MainActivity中判断)
+//                        if (sp.getString("push", "").equals("")) {
+//                            editor.putString("push", "");
+//                            registerXgPush();
+//                        }
                     }
 
                     Log.i("机房列表", context.getString(R.string.getSuccess) + code);
@@ -376,15 +376,15 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<Rooms> call, Throwable t) {
                 showProgress(false);
-                showToast(context.getString(R.string.netWorkFailed));
+                setNetworkState(false);
                 Log.i("机房列表", context.getString(R.string.linkFailed));
             }
         });
     }
 
-    // 注册信鸽推送
+    // 注册信鸽服务: Y: 上传device_token, N: 回到登录页,显示错误信息
     private void registerXgPush() {
         /**
          * 注册信鸽推送
@@ -399,13 +399,17 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess(Object o, int i) {
                 deviceToken = o.toString();
+                // 上传用户token
                 uploadDeviceInfo();
-                Log.i(Constants.LogTag, "信鸽推送注册(成功).token:" + o);
+                Logger.i("信鸽推送注册(成功).token:" + o);
             }
 
             @Override
             public void onFail(Object o, int i, String s) {
-                Log.w(Constants.LogTag, "信鸽推送注册(失败).token:" + o + ", errCode:" + i + ",msg:" + s);
+                showProgress(false);
+                mPasswordView.requestFocus();
+                showToast("推送服务注册失败,重新登陆");
+                Logger.w("信鸽推送注册(失败).token:" + o + ", errCode:" + i + ",msg:" + s);
             }
         });
 
@@ -421,13 +425,14 @@ public class LoginActivity extends BaseActivity {
         // 删除标签：deleteTag(context, tagName)
     }
 
-    // 注册设备信息,用于推送
+    // 上传device_token: Y: 跳转主页面, N: 回到登录页,显示错误信息
     public void uploadDeviceInfo() {
         // 注册设备到服务器
         setEngine(sp);
         mEngine.upLoadDeviceToken("android", deviceToken).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Response<User> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
+                setNetworkState(true);
                 if (response.code() == 200) {
                     User user = response.body();
                     // 保存数据
@@ -435,17 +440,23 @@ public class LoginActivity extends BaseActivity {
                     editor.putString("device_token", user.getDeviceToken());
                     editor.apply();
 
-                    Log.i("device_token", user.getDeviceToken());
+                    // 进入主页
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+
                     Log.i("上传推送token", context.getString(R.string.getSuccess) + response.code());
                 } else {
-                    showToast(context.getString(R.string.getDataFailed));
+                    showProgress(false);
+                    mPasswordView.requestFocus();
+                    showToast("上传推送信息失败");
                     Log.i("上传推送token", context.getString(R.string.getFailed) + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                showToast("上传推送token"+context.getString(R.string.getDataFailed));
+            public void onFailure(Call<User> call, Throwable t) {
+                setNetworkState(false);
                 Log.i("上传推送token", context.getString(R.string.linkFailed));
             }
         });

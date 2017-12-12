@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <!-- 【常用】 信鸽SDK所需权限 -->
@@ -195,11 +197,11 @@
         <activity
             android:name=".WarnDetail"
             android:label="@string/title_activity_warn_detail"
-            android:parentActivityName=".WarnDevices"
+            android:parentActivityName=".WarnSystems"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.ui.activity.WarnDevices" />
+                android:value="com.buoyantec.eagle_android.ui.activity.WarnSystems" />
         </activity>
         <activity
             android:name=".PrecisionAirDetail"
@@ -303,15 +305,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.buoyantec.eagle_android.ui.activity.PowerDistribution" />
-        </activity>
-        <activity
-            android:name=".WarnDevices"
-            android:label="@string/title_activity_warn_devices"
-            android:launchMode="singleTop"
-            android:parentActivityName=".WarnSystems" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.buoyantec.eagle_android.ui.activity.WarnSystems" />
         </activity>
         <activity
             android:name=".CabinetDetail"
@@ -440,6 +433,7 @@
                 <data android:scheme="file" />
             </intent-filter>
         </receiver>
+
         <!-- 【必须】 信鸽service -->
         <service
             android:name="com.tencent.android.tpush.service.XGPushService"

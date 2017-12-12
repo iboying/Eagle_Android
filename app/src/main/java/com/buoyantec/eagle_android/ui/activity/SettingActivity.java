@@ -3,13 +3,13 @@ package com.buoyantec.eagle_android.ui.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.buoyantec.eagle_android.ui.base.BaseActivity;
 import com.tencent.android.tpush.XGPushManager;
 
 public class SettingActivity extends BaseActivity {
